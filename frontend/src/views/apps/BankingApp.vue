@@ -180,6 +180,20 @@ const cardHolder = computed(() =>
   (banking.overview?.playerName ?? '').toUpperCase(),
 )
 
+// Teinte de la pastille, derivee du nom : une bande etroite autour du violet
+// de l'application, assez pour distinguer deux contacts sans partir en
+// arc-en-ciel. Le hachage reste stable d'une session a l'autre.
+const AVATAR_HUE_BASE = 236
+const AVATAR_HUE_SPREAD = 60
+
+function contactHue(name: string): number {
+  let hash = 0
+  for (let index = 0; index < name.length; index += 1) {
+    hash = (hash * 31 + name.charCodeAt(index)) % 100003
+  }
+  return AVATAR_HUE_BASE + (hash % AVATAR_HUE_SPREAD)
+}
+
 function contactInitials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean)
   if (parts.length === 0) return '?'
@@ -776,9 +790,11 @@ onBeforeUnmount(() => {
               :title="formatPhoneNumber(contact.phone_number)"
               @click="selectContact(contact)"
             >
-              <span class="banking-send__avatar">{{
-                contactInitials(contact.name)
-              }}</span>
+              <span
+                class="banking-send__avatar"
+                :style="{ '--banking-avatar-hue': contactHue(contact.name) }"
+                >{{ contactInitials(contact.name) }}</span
+              >
               <span class="banking-send__contact-name">{{ contact.name }}</span>
             </button>
           </div>

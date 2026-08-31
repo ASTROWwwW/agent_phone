@@ -4404,8 +4404,8 @@ button {
   border-radius: 50%;
   background: linear-gradient(
     160deg,
-    rgb(124 77 255 / 55%),
-    rgb(56 52 128 / 55%)
+    hsl(var(--banking-avatar-hue, 258) 88% 66% / 58%),
+    hsl(var(--banking-avatar-hue, 258) 45% 34% / 58%)
   );
   color: #fff;
   font-size: 15px;
