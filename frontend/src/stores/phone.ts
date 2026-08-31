@@ -2334,12 +2334,12 @@ const defaultLocales: LocaleTree = {
       refresh: 'Refresh banking data',
       unavailable: 'Banking unavailable',
       tryAgain: 'Try Again',
-      recipientPhone: 'Phone number',
       recipientPhonePlaceholder: "Enter the recipient's number",
       chooseContact: 'Choose from contacts',
       noContacts: 'No contacts saved yet.',
       amount: 'Amount',
-      amountPlaceholder: 'Enter an amount',
+      recipient: 'Recipient',
+      availableBalance: 'Available',
       transactionDetails: 'Transaction details',
       transactionDate: 'Date',
       transactionDirection: 'Direction',
@@ -2357,7 +2357,6 @@ const defaultLocales: LocaleTree = {
       forms: {
         transfer: {
           title: 'Send money',
-          body: 'Transfer money from your bank account to an online player.',
           submit: 'Send transfer',
         },
       },

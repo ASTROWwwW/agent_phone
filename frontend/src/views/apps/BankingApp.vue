@@ -180,6 +180,24 @@ const cardHolder = computed(() =>
   (banking.overview?.playerName ?? '').toUpperCase(),
 )
 
+function contactInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  const first = parts[0][0] ?? ''
+  const last = parts.length > 1 ? (parts.at(-1)?.[0] ?? '') : ''
+  return (first + last).toUpperCase()
+}
+
+const selectedContactId = computed(() => {
+  const normalized = normalizePhoneNumber(target.value)
+  if (!normalized) return null
+  return (
+    calls.contacts.find(
+      (contact) => normalizePhoneNumber(contact.phone_number) === normalized,
+    )?.id ?? null
+  )
+})
+
 function formatMoney(value: number, signed = false): string {
   const formatted = new Intl.NumberFormat(phone.lang, {
     maximumFractionDigits: 0,
@@ -717,60 +735,87 @@ onBeforeUnmount(() => {
       @grabberclick="closeAction"
       @swipeclose="closeAction"
     >
-      <section v-if="action" class="banking-sheet__content">
-        <span class="banking-modal__icon">
-          <Send :size="23" />
-        </span>
-        <h2 :id="`banking-${action}-title`">
-          {{ phone.t(`Apps.banking.forms.${action}.title`) }}
-        </h2>
-        <p>{{ phone.t(`Apps.banking.forms.${action}.body`) }}</p>
-        <SkyList aria-live="polite" inset strong class="banking-form-list">
+      <section v-if="action" class="banking-sheet__content banking-send">
+        <header class="banking-send__head">
+          <h2 :id="`banking-${action}-title`">
+            {{ phone.t(`Apps.banking.forms.${action}.title`) }}
+          </h2>
+          <p class="banking-send__available">
+            {{ phone.t('Apps.banking.availableBalance') }}
+            <b>{{ formatMoney(banking.overview?.bank ?? 0) }}</b>
+          </p>
+        </header>
+
+        <div class="banking-send__block">
+          <span class="banking-send__label">
+            {{ phone.t('Apps.banking.recipient') }}
+          </span>
           <SkyField
-            :label="phone.t('Apps.banking.recipientPhone')"
+            class="banking-send__number"
             input-id="banking-transfer-target"
             inputmode="tel"
-            outline
             :placeholder="phone.t('Apps.banking.recipientPhonePlaceholder')"
             type="tel"
             :value="target"
             @input="updateTarget"
           />
-          <SkyField
-            autocomplete="off"
-            class="banking-amount-field"
-            :label="phone.t('Apps.banking.amount')"
-            :error="formError || false"
-            input-id="banking-transfer-amount"
-            inputmode="decimal"
-            outline
-            pattern="[0-9]+([,][0-9]{0,2})?"
-            :placeholder="phone.t('Apps.banking.amountPlaceholder')"
-            type="text"
-            :value="amount"
-            @input="updateAmount"
-            @keydown.enter="handleEnterAction($event, submitAction)"
-          />
-        </SkyList>
-        <div class="banking-contact-picker">
-          <span>{{ phone.t('Apps.banking.chooseContact') }}</span>
-          <SkyList v-if="calls.contacts.length" inset strong>
-            <SkyListItem
+          <div
+            v-if="calls.contacts.length"
+            class="banking-send__contacts"
+            :aria-label="phone.t('Apps.banking.chooseContact')"
+            role="listbox"
+          >
+            <button
               v-for="contact in calls.contacts"
               :key="contact.id"
-              :title="contact.name"
-              :subtitle="formatPhoneNumber(contact.phone_number)"
-              link
-              link-component="button"
+              class="banking-send__contact"
+              :class="{ 'is-selected': selectedContactId === contact.id }"
+              role="option"
+              type="button"
+              :aria-selected="selectedContactId === contact.id"
+              :title="formatPhoneNumber(contact.phone_number)"
               @click="selectContact(contact)"
-            />
-          </SkyList>
-          <p v-else>{{ phone.t('Apps.banking.noContacts') }}</p>
+            >
+              <span class="banking-send__avatar">{{
+                contactInitials(contact.name)
+              }}</span>
+              <span class="banking-send__contact-name">{{ contact.name }}</span>
+            </button>
+          </div>
+          <p v-else class="banking-send__empty">
+            {{ phone.t('Apps.banking.noContacts') }}
+          </p>
         </div>
+
+        <div class="banking-send__block">
+          <span class="banking-send__label">
+            {{ phone.t('Apps.banking.amount') }}
+          </span>
+          <div class="banking-amount-field">
+            <span aria-hidden="true">{{ banking.overview?.currency ?? '$' }}</span>
+            <input
+              id="banking-transfer-amount"
+              autocomplete="off"
+              inputmode="decimal"
+              pattern="[0-9]+([,][0-9]{0,2})?"
+              placeholder="0"
+              type="text"
+              :aria-label="phone.t('Apps.banking.amount')"
+              :value="amount"
+              @input="updateAmount"
+              @keydown.enter="handleEnterAction($event, submitAction)"
+            />
+          </div>
+          <p v-if="formError" class="banking-send__error" aria-live="polite">
+            {{ formError }}
+          </p>
+        </div>
+
         <SkyButton
           block
           large
           rounded
+          class="banking-send__submit"
           :disabled="banking.isLoading"
           @click="submitAction"
         >

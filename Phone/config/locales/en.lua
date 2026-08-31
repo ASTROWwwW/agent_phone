@@ -839,9 +839,9 @@ Locales["en"] = {
                 chartDaySummary = "{day}: {incoming} incoming, {outgoing} outgoing",
                 navigation = "Banking navigation", incoming = "Incoming", outgoing = "Outgoing",
                 refresh = "Refresh banking data", unavailable = "Banking unavailable", tryAgain = "Try Again",
-                recipientPhone = "Phone number", recipientPhonePlaceholder = "Enter the recipient's number",
+                recipientPhonePlaceholder = "Enter the recipient's number",
                 chooseContact = "Choose from contacts", noContacts = "No contacts saved yet.",
-                amount = "Amount", amountPlaceholder = "Enter an amount",
+                amount = "Amount", recipient = "Recipient", availableBalance = "Available",
                 transactionDetails = "Transaction details", transactionDate = "Date",
                 transactionDirection = "Direction", transactionReference = "Reference",
                 notifications = {
@@ -853,7 +853,7 @@ Locales["en"] = {
                     transfer_in = "Incoming transfer", transfer_out = "Outgoing transfer",
                 },
                 forms = {
-                    transfer = { title = "Send money", body = "Transfer money from your bank account to an online player.", submit = "Send transfer" },
+                    transfer = { title = "Send money", submit = "Send transfer" },
                 },
                 errors = {
                     invalid_request = "Enter a valid phone number and whole amount.", insufficient_funds = "There is not enough money in this account.",

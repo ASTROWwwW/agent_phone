@@ -4287,31 +4287,183 @@ button {
   line-height: 1.5;
 }
 
-.banking-form-list {
-  margin: 0;
+/* -------------------------------------------------------------------------
+   Feuille de virement : le montant fait office de titre, le destinataire se
+   choisit sur une rangee de pastilles plutot que dans une liste qui deborde.
+   ------------------------------------------------------------------------- */
+
+/* La feuille n'a pas de gouttiere propre : sans elle le champ et la rangee
+   de contacts sont coupes par le bord de l'ecran. */
+.banking-send {
+  --banking-sheet-gutter: 16px;
+  gap: 20px;
+  padding: 4px var(--banking-sheet-gutter) 10px;
 }
 
-.banking-contact-picker {
+.banking-send__head {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
 }
 
-.banking-contact-picker > span {
-  padding: 0 4px;
+.banking-send__available {
   color: var(--sky-text-muted, #8a8a8e);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 12.5px;
 }
 
-.banking-contact-picker > div {
-  overflow-y: auto;
+.banking-send__available b {
+  color: var(--sky-text);
+  font-weight: 650;
+}
+
+.banking-send__block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.banking-send__label {
+  padding-left: 2px;
+  color: var(--sky-text-muted, #8a8a8e);
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+/* Champ du numero : une pastille pleine, sans encadrement ni etiquette
+   flottante, pour rester dans le vocabulaire de l'application. */
+.banking-send__number {
   margin: 0;
-  max-height: 168px;
 }
 
-.banking-contact-picker > p {
-  padding: 12px 4px;
+.banking-send__number .sky-field__inner {
+  padding: 0;
+}
+
+.banking-send__number .sky-field__control {
+  height: 46px;
+  padding: 0 16px;
+  border: 1px solid var(--bank-border, rgb(255 255 255 / 8%));
+  border-radius: 999px;
+  background: rgb(255 255 255 / 6%);
+}
+
+.banking-send__number .sky-field__input {
+  font-size: 15px;
+  font-weight: 550;
+  letter-spacing: 0.3px;
+}
+
+.banking-send__contacts {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin: 0 calc(var(--banking-sheet-gutter) * -1);
+  padding: 2px var(--banking-sheet-gutter) 4px;
+  scrollbar-width: none;
+}
+
+.banking-send__contacts::-webkit-scrollbar {
+  display: none;
+}
+
+.banking-send__contact {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 62px;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.banking-send__avatar {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 50%;
+  background: linear-gradient(
+    160deg,
+    rgb(124 77 255 / 55%),
+    rgb(56 52 128 / 55%)
+  );
+  color: #fff;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.4px;
+  transition:
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
+}
+
+.banking-send__contact.is-selected .banking-send__avatar {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 2px var(--sky-sheet-background, #17171b),
+    0 0 0 4px rgb(160 120 255 / 90%);
+}
+
+.banking-send__contact-name {
+  overflow: hidden;
+  max-width: 100%;
+  color: var(--sky-text-muted, #8a8a8e);
+  font-size: 10.5px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.banking-send__contact.is-selected .banking-send__contact-name {
+  color: var(--sky-text);
+}
+
+/* Le montant est l'element principal de la feuille : saisie sans cadre, au
+   centre, avec le symbole monetaire cale contre le chiffre. */
+.banking-amount-field {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 2px 4px;
+}
+
+.banking-amount-field > span {
+  color: var(--sky-text-muted, #8a8a8e);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.banking-amount-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--sky-text);
+  font-family: inherit;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -1.4px;
+  outline: none;
+}
+
+.banking-amount-field input::placeholder {
+  color: var(--sky-text-muted, #8a8a8e);
+  opacity: 0.45;
+}
+
+.banking-send__error {
+  padding-left: 2px;
+  color: #ff6b6b;
+  font-size: 12.5px;
+}
+
+.banking-send__empty {
+  padding: 4px 2px;
   color: var(--sky-text-muted, #8a8a8e);
   font-size: 12.5px;
 }
@@ -4322,6 +4474,20 @@ button {
   justify-content: center;
   gap: 8px;
   margin-top: 4px;
+}
+
+/* Meme pastille claire que l'action principale de l'accueil : la feuille et
+   la page proposent la meme affordance. */
+.banking-app .banking-send__submit {
+  height: 50px;
+  border: 0;
+  background: linear-gradient(180deg, #fdfdff 0%, #e9e9f1 100%);
+  box-shadow:
+    0 12px 28px rgb(6 4 20 / 42%),
+    inset 0 1px 0 rgb(255 255 255 / 90%);
+  color: #0c0b14;
+  font-size: 15px;
+  font-weight: 650;
 }
 
 .banking-transaction-detail {
