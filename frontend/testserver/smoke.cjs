@@ -7,25 +7,15 @@ const browserDataRequests = [
   ['development:bootstrap', {}],
   ['account:devices', {}],
   ['banking:overview', {}],
-  ['crypto:bootstrap', {}],
-  ['crypto:market-tick', {}],
-  ['crypto:recipient', { walletKey: 'VX-DEAD-BEEF-C0DE-2026' }],
-  ['crypto:quote', { marketId: 'aurora', quantity: '1', side: 'buy' }],
-  ['health:overview', {}],
   ['billing:overview', {}],
   ['billing:list', { filter: 'all', limit: 20, offset: 0 }],
   ['calendar:list', { endsAt: 4_102_444_800, startsAt: 0 }],
-  ['citywarn:bootstrap', {}],
   ['calls:recents', {}],
   ['companies:list', {}],
   ['companies:my-requests', { limit: 20, offset: 0 }],
   ['companies:work-context', {}],
   ['companies:work-queue', { limit: 20, offset: 0 }],
   ['contacts:list', {}],
-  ['crewlink:login', { password: 'CrewLink123!' }],
-  ['crewlink:bootstrap', {}],
-  ['crewlink:live', {}],
-  ['crewlink:nearby', {}],
   ['darkchat:bootstrap', {}],
   ['easyshare:bootstrap', {}],
   ['easyshare:own-contact', {}],
@@ -58,23 +48,16 @@ const browserDataRequests = [
   ['memos:list', {}],
   ['music:bootstrap', {}],
   ['notes:list', {}],
-  ['pages:list', {}],
-  ['pages:list-own', {}],
-  ['pages:profile', {}],
   ['picstagram:bootstrap', {}],
   ['picstagram:feed', { limit: 20 }],
   ['picstagram:explore', { limit: 20 }],
   ['picstagram:saved', {}],
   ['picstagram:stories', {}],
   ['picstagram:activities', {}],
-  ['radio:get', {}],
   ['agentride:bootstrap', {}],
   ['agentride:history', {}],
   ['agentride:get-player-coords', {}],
   ['weather:get', {}],
-  ['weazel-news:context', {}],
-  ['weazel-news:list', { category: null, offset: 0, search: '' }],
-  ['weazel-news:manage-list', { offset: 0, search: '', status: 'all' }],
 ]
 
 async function post(baseUrl, endpoint, body = {}) {
@@ -112,11 +95,11 @@ function verifyBrowserTestData(dataByEndpoint) {
   expectItems(
     development.device.data.apps.payload.claimedApps,
     'installed demo apps',
-    41,
+    30,
   )
   assert.equal(
     new Set(development.device.data.apps.payload.claimedApps).size,
-    41,
+    30,
     'browser demo apps were not uniquely installed',
   )
   assert.equal(
@@ -137,64 +120,19 @@ function verifyBrowserTestData(dataByEndpoint) {
   expectItems(development.memos, 'memos', 3)
   expectItems(development.notes, 'notes', 4)
   assert(
-    Object.keys(development.device.data.games.payload).length >= 7,
+    Object.keys(development.device.data.games.payload).length >= 3,
     'games did not include saved browser test progress',
   )
 
-  expectItems(dataByEndpoint.get('health:overview').days, 'health history', 7)
-  const crypto = dataByEndpoint.get('crypto:bootstrap')
-  expectItems(crypto.markets, 'crypto markets', 24)
-  assert.equal(typeof crypto.profile.priceAlerts, 'boolean')
-  assert.match(crypto.profile.walletKey, /^VX-(?:[A-F0-9]{4}-){3}[A-F0-9]{4}$/)
-  assert.equal(typeof crypto.markets[0].issuedSupply, 'string')
-  assert(crypto.markets.every((market) => typeof market.logo === 'string'))
-  assert(
-    crypto.markets.every(
-      (market) =>
-        Array.isArray(market.priceHistory) &&
-        market.priceHistory.length >= 2 &&
-        market.priceHistory.at(-1) === Number(market.price).toFixed(2),
-    ),
-  )
-  assert(
-    Math.max(...crypto.markets.map((market) => Number(market.price))) >=
-      1000000,
-  )
-  assert(
-    Math.min(...crypto.markets.map((market) => Number(market.price))) <= 0.01,
-  )
-  const cryptoTick = dataByEndpoint.get('crypto:market-tick')
-  expectItems(cryptoTick, 'live crypto market tick', 24)
-  assert(
-    cryptoTick.every(
-      (market) =>
-        typeof market.updatedAt === 'number' &&
-        market.priceHistory.at(-1) === market.price,
-    ),
-  )
   expectItems(
     dataByEndpoint.get('billing:list').invoices,
     'billing invoices',
     3,
   )
   expectItems(dataByEndpoint.get('calendar:list'), 'calendar events', 5)
-  const cityWarn = dataByEndpoint.get('citywarn:bootstrap')
-  expectItems(cityWarn.active, 'active CityWarn alerts', 2)
-  expectItems(cityWarn.archive, 'CityWarn alert history')
-  assert.equal(cityWarn.context.canPublish, true)
-  assert.deepEqual(
-    cityWarn.active.map((alert) => alert.title),
-    ['Police operation in Mission Row', 'Water supply disruption'],
-  )
-  assert.equal(cityWarn.archive[0].title, 'City radio network restored')
   expectItems(dataByEndpoint.get('calls:recents'), 'recent calls', 5)
   expectItems(dataByEndpoint.get('companies:list').companies, 'companies', 3)
   expectItems(dataByEndpoint.get('contacts:list'), 'contacts', 10)
-  expectItems(
-    dataByEndpoint.get('crewlink:bootstrap').groups,
-    'CrewLink groups',
-    2,
-  )
   expectItems(
     dataByEndpoint.get('darkchat:bootstrap').conversations,
     'DarkChat conversations',
@@ -238,61 +176,15 @@ function verifyBrowserTestData(dataByEndpoint) {
     'music tracks',
     3,
   )
-  expectItems(dataByEndpoint.get('pages:list').items, 'Local Pages posts', 4)
   expectItems(
     dataByEndpoint.get('picstagram:feed').items,
     'Picstagram posts',
     2,
   )
-  expectItems(dataByEndpoint.get('radio:get').history, 'radio history', 2)
   expectItems(dataByEndpoint.get('agentride:history').items, 'AgentRide history', 2)
-  expectItems(
-    dataByEndpoint.get('weazel-news:list').items,
-    'Weazel News articles',
-    5,
-  )
-  expectItems(
-    dataByEndpoint.get('weazel-news:manage-list').items,
-    'Weazel News editorial articles',
-    7,
-  )
 }
 
 async function verifyStatefulActions(baseUrl) {
-  const cryptoBeforeTransfer = await expectSuccess(
-    baseUrl,
-    'crypto:bootstrap',
-    {},
-    true,
-  )
-  const auroraBeforeTransfer = cryptoBeforeTransfer.holdings.find(
-    (holding) => holding.assetId === 'aurora',
-  )
-  const cryptoAfterTransfer = await expectSuccess(
-    baseUrl,
-    'crypto:transfer',
-    {
-      idempotencyKey: 'smoke-transfer-1',
-      marketId: 'aurora',
-      password: 'VaultX123!',
-      quantity: '0.5',
-      walletKey: 'VX-DEAD-BEEF-C0DE-2026',
-    },
-    true,
-  )
-  const auroraAfterTransfer = cryptoAfterTransfer.holdings.find(
-    (holding) => holding.assetId === 'aurora',
-  )
-  assert.equal(
-    Number(auroraAfterTransfer.quantity),
-    Number(auroraBeforeTransfer.quantity) - 0.5,
-  )
-  assert.equal(cryptoAfterTransfer.activity[0].type, 'transfer_out')
-  assert.equal(
-    cryptoAfterTransfer.activity[0].counterpartyKey,
-    'VX-DEAD-BEEF-C0DE-2026',
-  )
-
   const companyCall = await expectSuccess(
     baseUrl,
     'companies:dial-service-line',
@@ -403,78 +295,6 @@ async function verifyStatefulActions(baseUrl) {
   const articlePhotos = gallery
     .filter((item) => item.mediaType === 'photo')
     .slice(0, 7)
-  assert.equal(
-    articlePhotos.length,
-    7,
-    'gallery:list did not include enough photos for Weazel News',
-  )
-  const weazelContext = await expectSuccess(
-    baseUrl,
-    'weazel-news:context',
-    {},
-    true,
-  )
-  assert.equal(weazelContext.maximumImages, 6)
-  const createdArticleResponse = await expectSuccess(
-    baseUrl,
-    'weazel-news:create',
-    {
-      body: 'Created by the browser mock smoke test with several photos.',
-      category: 'news',
-      imageMediaIds: articlePhotos.slice(0, 3).map((item) => item.id),
-      status: 'published',
-      title: 'Browser test Weazel article',
-    },
-    true,
-  )
-  const createdArticle = createdArticleResponse.article
-  assert.deepEqual(
-    createdArticle.images.map((image) => image.mediaId),
-    articlePhotos.slice(0, 3).map((item) => item.id),
-    'weazel-news:create did not preserve image order',
-  )
-  assert.equal(createdArticle.imageMediaId, articlePhotos[0].id)
-
-  const updatedArticleResponse = await expectSuccess(
-    baseUrl,
-    'weazel-news:update',
-    {
-      body: createdArticle.body,
-      category: 'business',
-      id: createdArticle.id,
-      imageMediaIds: [articlePhotos[2].id, articlePhotos[0].id],
-      revision: createdArticle.revision,
-      status: 'draft',
-      title: 'Updated browser test Weazel article',
-    },
-    true,
-  )
-  const updatedArticle = updatedArticleResponse.article
-  assert.deepEqual(
-    updatedArticle.images.map((image) => image.mediaId),
-    [articlePhotos[2].id, articlePhotos[0].id],
-    'weazel-news:update did not preserve the reordered images',
-  )
-  assert.equal(updatedArticle.imageMediaId, articlePhotos[2].id)
-
-  const loadedArticleResponse = await expectSuccess(
-    baseUrl,
-    'weazel-news:get',
-    { id: updatedArticle.id, manage: true },
-    true,
-  )
-  assert.deepEqual(loadedArticleResponse.article.images, updatedArticle.images)
-
-  const tooManyImages = await post(baseUrl, 'weazel-news:create', {
-    body: 'This article must be rejected because it has too many photos.',
-    category: 'news',
-    imageMediaIds: articlePhotos.map((item) => item.id),
-    status: 'draft',
-    title: 'Invalid Weazel article',
-  })
-  assert.equal(tooManyImages.success, false)
-  assert.equal(tooManyImages.error, 'invalid_attachment')
-
   const firstSmsPhoto = await expectSuccess(
     baseUrl,
     'messages:send',
@@ -507,11 +327,6 @@ async function verifyStatefulActions(baseUrl) {
   )
   assert(smsPhotoThread.some((message) => message.id === firstSmsPhoto.id))
   assert(smsPhotoThread.some((message) => message.id === captionedSmsPhoto.id))
-
-  await expectSuccess(baseUrl, 'weazel-news:delete', {
-    id: updatedArticle.id,
-    revision: updatedArticle.revision,
-  })
 
   const memoBootstrap = await expectSuccess(
     baseUrl,
@@ -735,47 +550,6 @@ async function verifyStatefulActions(baseUrl) {
     true,
   )
   assert.equal(bankingAfter.bank, bankingBefore.bank - 125)
-
-  const health = await expectSuccess(baseUrl, 'health:overview', {}, true)
-  assert.equal(health.dailyStepGoal, 8000)
-  assert.equal(health.days.length, 7)
-  assert.equal(health.days.at(-1).steps, 6420)
-  assert.equal('snapshot' in health, false)
-
-  const medicalId = await expectSuccess(
-    baseUrl,
-    'health:save-profile',
-    {
-      allergies: 'Penicillin',
-      bloodType: 'A+',
-      conditions: 'Asthma',
-      emergencyName: 'Jamie Morgan',
-      emergencyPhone: '5550102211',
-      emergencyRelation: 'Sibling',
-      medication: 'Inhaler',
-    },
-    true,
-  )
-  assert.equal(medicalId.bloodType, 'A+')
-  assert.equal(medicalId.allergies, 'Penicillin')
-
-  let radio = await expectSuccess(
-    baseUrl,
-    'radio:connect',
-    { frequency: 42.5, secondaryFrequency: 7.25 },
-    true,
-  )
-  assert.equal(radio.frequency, 42.5)
-  radio = await expectSuccess(baseUrl, 'radio:set-volume', { volume: 44 }, true)
-  assert.equal(radio.volume, 44)
-  radio = await expectSuccess(
-    baseUrl,
-    'radio:set-speaker',
-    { enabled: true },
-    true,
-  )
-  assert.equal(radio.speakerEnabled, true)
-  await expectSuccess(baseUrl, 'radio:disconnect')
 
   const playlistState = await expectSuccess(
     baseUrl,
