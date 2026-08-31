@@ -830,7 +830,7 @@ Locales["es"] = {
                 name = "Banca", totalBalance = "Saldo de la cuenta", recentPeriod = "en actividad reciente",
                 cash = "Efectivo", accountNumber = "Número de cuenta", debitCard = "Tarjeta de débito",
                 totalIncome = "Ingresos", totalExpenses = "Gastos", totalTransfers = "Transferencias",
-                quickTransfer = "Transferencia rápida", quickTransferBody = "Envía dinero a un número de teléfono",
+                quickTransfer = "Transferencia rápida",
                 analytics = "Análisis", thisWeek = "Esta semana",
                 searchPlaceholder = "Buscar una transacción…", noResults = "Ninguna transacción coincide con esta búsqueda.",
                 filters = { all = "Todo", income = "Ingresos", expenses = "Gastos", transfers = "Transferencias" },

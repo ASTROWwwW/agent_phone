@@ -830,7 +830,7 @@ Locales["en"] = {
                 name = "Banking", totalBalance = "Account balance", recentPeriod = "in recent activity",
                 cash = "Cash", accountNumber = "Account number", debitCard = "Debit card",
                 totalIncome = "Income", totalExpenses = "Expenses", totalTransfers = "Transfers",
-                quickTransfer = "Quick transfer", quickTransferBody = "Send money to a phone number",
+                quickTransfer = "Quick transfer",
                 analytics = "Analytics", thisWeek = "This week",
                 searchPlaceholder = "Search a transaction…", noResults = "No transaction matches this search.",
                 filters = { all = "All", income = "Income", expenses = "Expenses", transfers = "Transfers" },

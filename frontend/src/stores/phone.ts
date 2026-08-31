@@ -2311,7 +2311,6 @@ const defaultLocales: LocaleTree = {
       totalExpenses: 'Expenses',
       totalTransfers: 'Transfers',
       quickTransfer: 'Quick transfer',
-      quickTransferBody: 'Send money to a phone number',
       analytics: 'Analytics',
       thisWeek: 'This week',
       searchPlaceholder: 'Search a transaction…',

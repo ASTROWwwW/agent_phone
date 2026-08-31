@@ -5,7 +5,6 @@ import {
   ArrowLeftRight,
   ArrowUpRight,
   BarChart3,
-  ChevronRight,
   House,
   Landmark,
   Search,
@@ -487,19 +486,16 @@ onBeforeUnmount(() => {
           </SkyGlass>
         </section>
 
-        <SkyGlass
-          component="button"
-          type="button"
+        <SkyButton
+          block
+          large
+          rounded
           class="banking-transfer"
           @click="openAction('transfer')"
         >
-          <span class="banking-transfer__icon"><Send :size="18" /></span>
-          <span class="banking-transfer__copy">
-            <b>{{ phone.t('Apps.banking.quickTransfer') }}</b>
-            <small>{{ phone.t('Apps.banking.quickTransferBody') }}</small>
-          </span>
-          <ChevronRight :size="17" aria-hidden="true" />
-        </SkyGlass>
+          <Send :size="17" aria-hidden="true" />
+          {{ phone.t('Apps.banking.quickTransfer') }}
+        </SkyButton>
 
         <section class="banking-panel">
           <div class="banking-panel__head">
