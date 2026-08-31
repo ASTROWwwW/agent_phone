@@ -11,7 +11,6 @@ local allowed_device_namespaces = {
     apps = true,
     games = true,
     widgets = true,
-    citywarn = true,
 }
 
 local function affected_rows(result)

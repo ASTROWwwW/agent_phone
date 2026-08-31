@@ -611,7 +611,6 @@ button {
 .phone-screen--app .phone-app--performance .springboard,
 .phone-app--performance .lock-screen__time,
 .phone-app--performance .lock-screen-leave-to,
-.phone-app--performance .minesweeper-marker-drop__trail,
 .phone-app--performance .flappy-clouds i::after {
   filter: none !important;
 }
@@ -3258,11 +3257,6 @@ button {
 }
 .app-window--camera-landscape {
   background: transparent;
-}
-.app-window--citywarn {
-  backface-visibility: visible;
-  filter: none;
-  will-change: auto;
 }
 .app-window-enter-active {
   transition:

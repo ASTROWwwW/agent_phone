@@ -411,7 +411,6 @@ function emptyStructure(scope, path) {
     }
   }
   if (
-    path === 'CrewLink.ExternalPingResources' ||
     path === 'CustomApps.TrustedAdapters'
   ) {
     return {

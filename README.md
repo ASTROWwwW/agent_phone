@@ -22,6 +22,22 @@ compatibilité téléphone et la migration lb-phone ont été retirés — 51 fi
 Les tables d'adaptateurs ont été purgées en conséquence, sinon la détection
 automatique pouvait sélectionner un adaptateur dont le fichier n'existe plus.
 
+**Applications retirées.** Onze applications ont été supprimées : Radio,
+CrewLink, CityWarn, Weazel News, Santé, Pages Locales, VaultX (crypto) et les
+quatre jeux Memory, Démineur, Tower Stack et Neon Drop.
+
+La suppression va jusqu'au bout : vues, stores, types, aperçus de l'App Store,
+fichiers Lua client et serveur, entrées du `fxmanifest`, sections de
+`config.lua`, clés des trois locales, définitions de tables et
+`sql/install.sql`. Le pont radio du système vocal part avec l'application —
+les appels ne s'en servaient pas.
+
+Les tables déjà créées en base ne sont pas supprimées : le schéma se contente
+de ne plus les créer. Pour récupérer la place, un `DROP TABLE` manuel sur les
+préfixes `agent_phone_radio_`, `agent_phone_crewlink_`,
+`agent_phone_citywarn_`, `agent_phone_weazel_`, `agent_phone_health_`,
+`agent_phone_pages_` et `agent_phone_crypto_` suffit.
+
 **Renommage complet.** L'identité technique et les marques visibles par les
 joueurs sont passées de « Sky » à « Agent » : événements, tables, globals Lua,
 libellés des trois locales, et le contrat NUI des deux côtés.

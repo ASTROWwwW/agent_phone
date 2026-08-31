@@ -20,9 +20,6 @@ describe('phone audio output contract', () => {
   it('applies the hardware volume to app media and live YouTube playback', () => {
     expect(appSource).toContain('installPhoneAudioController()')
     expect(appSource).toContain('setPhoneOutputVolume(volume / 100)')
-    expect(appSource).toContain(
-      'if (radio.data.connected) void radio.setVolume(volume)',
-    )
     expect(audioSource).toContain(
       "document.addEventListener('play', onMediaPlay, true)",
     )

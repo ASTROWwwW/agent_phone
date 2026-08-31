@@ -171,16 +171,6 @@ RegisterNetEvent("agent_phone:mail:new", function(data)
     SendNUIMessage({ type = "mail:new", data = data })
 end)
 
-RegisterNetEvent("agent_phone:citywarn:changed", function(data)
-    if type(data) ~= "table" then
-        return
-    end
-    local locale = app_locales.citywarn
-    data.title = locale.name
-    data.text = locale.notifications[data.kind] or locale.notifications.update
-    SendNUIMessage({ type = "citywarn:changed", data = data })
-end)
-
 RegisterNetEvent("agent_phone:companies:notification", function(data)
     local locale = app_locales.companies
     data.title = locale.name
@@ -269,17 +259,6 @@ RegisterNetEvent("agent_phone:billing:new", function(data)
         :gsub("{issuer}", tostring(data.issuer))
         :gsub("{amount}", ("%s %s"):format(tostring(data.amount), Config.Billing.Currency))
     SendNUIMessage({ type = "billing:new", data = data })
-end)
-
-RegisterNetEvent("agent_phone:crewlink:notification", function(data)
-    local locale = app_locales.crewlink
-    local notification_text = locale.notifications[data.kind] or locale.notifications.default
-    data.title = locale.name
-    data.text = notification_text
-        :gsub("{actor}", tostring(data.actor or ""))
-        :gsub("{group}", tostring(data.groupName or ""))
-        :gsub("{ping}", tostring(data.pingLabel or ""))
-    SendNUIMessage({ type = "crewlink:notification", data = data })
 end)
 
 RegisterNetEvent("agent_phone:messages:new", function(data)

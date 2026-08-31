@@ -176,7 +176,7 @@ describe('standalone admin panel contracts', () => {
 
   it('applies global bundled-app availability to phones and admin management', () => {
     expect(config).toContain('Config.Apps = {')
-    expect(config).toContain('memory = true,')
+    expect(config).toContain('snake = true,')
     expect(config).toContain('weather = true,')
     expect(configDefault).toContain('Config.Apps = {')
     expect(configuratorServer).toContain('Apps = true,')

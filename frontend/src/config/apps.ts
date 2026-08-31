@@ -1,7 +1,6 @@
 import {
   AudioLines,
   Calculator,
-  Bomb,
   Blocks,
   Camera,
   CarFront,
@@ -10,34 +9,25 @@ import {
   Clock3,
   Gamepad2,
   Grid2X2,
-  Brain,
   Images,
-  Layers3,
   Mail,
   MapPinned,
   MessageCircle,
   ShieldCheck,
   NotebookPen,
   Phone,
-  RadioTower,
   Settings,
   ShoppingBag,
   CloudSun,
   Landmark,
   Wind,
   Tag,
-  MapPinHouse,
   Flame,
   House,
   Music2,
   Feather,
   ReceiptText,
-  UsersRound,
   Building2,
-  Newspaper,
-  Siren,
-  HeartPulse,
-  ChartCandlestick,
 } from 'lucide-vue-next'
 import { defineAsyncComponent, markRaw, shallowReactive } from 'vue'
 
@@ -51,37 +41,26 @@ import mapIcon from '@/assets/img/app-icons/map.webp'
 import messagesIcon from '@/assets/img/app-icons/sms.webp'
 import darkChatIcon from '@/assets/img/app-icons/darkchat.webp'
 import notesIcon from '@/assets/img/app-icons/notes.webp'
-import radioIcon from '@/assets/img/app-icons/radio.webp'
 import memosIcon from '@/assets/img/app-icons/memos.webp'
 import photosIcon from '@/assets/img/app-icons/gallery.webp'
 import phoneIcon from '@/assets/img/app-icons/phone.svg'
 import settingsIcon from '@/assets/img/app-icons/settings.svg'
 import snakeIcon from '@/assets/img/app-icons/snake.webp'
-import memoryIcon from '@/assets/img/app-icons/memory.webp'
 import numberMergeIcon from '@/assets/img/app-icons/number-merge.webp'
-import minesweeperIcon from '@/assets/img/app-icons/minesweeper.webp'
-import towerStackIcon from '@/assets/img/app-icons/tower-stack.webp'
 import agentFlappyIcon from '@/assets/img/app-icons/agent-flappy.webp'
-import neonDropIcon from '@/assets/img/app-icons/neon-drop.webp'
 import weatherIcon from '@/assets/img/app-icons/weather.webp'
-import healthIcon from '@/assets/img/app-icons/health.webp'
 import bankingIcon from '@/assets/img/app-icons/banking.webp'
-import cryptoIcon from '@/assets/img/app-icons/crypto.webp'
 import billingIcon from '@/assets/img/app-icons/billing.webp'
 import garageIcon from '@/assets/img/app-icons/garage.webp'
 import houseIcon from '@/assets/img/app-icons/house.webp'
 import citymarktIcon from '@/assets/img/app-icons/citymarkt.webp'
-import localPagesIcon from '@/assets/img/app-icons/local-pages.webp'
 import flareIcon from '@/assets/img/app-icons/flare.webp'
 import flipTokIcon from '@/assets/img/app-icons/fliptok.webp'
 import picstagramIcon from '@/assets/img/app-icons/picstagram.webp'
 import skyRideIcon from '@/assets/img/app-icons/agentride.webp'
 import musicIcon from '@/assets/img/app-icons/music.webp'
 import featherIcon from '@/assets/img/app-icons/feather.webp'
-import crewLinkIcon from '@/assets/img/app-icons/crewlink.webp'
 import companiesIcon from '@/assets/img/app-icons/companies.webp'
-import weazelNewsIcon from '@/assets/img/app-icons/weazel-news.webp'
-import cityWarnIcon from '@/assets/img/app-icons/citywarn.webp'
 import type {
   BuiltinPhoneAppDefinition,
   BuiltinPhoneAppId,
@@ -93,62 +72,6 @@ import type {
 } from '@/types/apps'
 
 export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
-  {
-    category: 'utilities',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/CityWarnApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 30,
-    icon: markRaw(Siren),
-    iconClass: 'app-icon--citywarn',
-    iconImage: cityWarnIcon,
-    id: 'citywarn',
-    labelKey: 'Apps.citywarn.name',
-    route: '/apps/citywarn',
-  },
-  {
-    category: 'utilities',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/CryptoApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 7,
-    icon: markRaw(ChartCandlestick),
-    iconClass: 'app-icon--crypto',
-    iconImage: cryptoIcon,
-    id: 'crypto',
-    labelKey: 'Apps.crypto.name',
-    route: '/apps/crypto',
-  },
-  {
-    category: 'utilities',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/HealthApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 11,
-    icon: markRaw(HeartPulse),
-    iconClass: 'app-icon--health',
-    iconImage: healthIcon,
-    id: 'health',
-    labelKey: 'Apps.health.name',
-    route: '/apps/health',
-  },
-  {
-    category: 'social',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/WeazelNewsApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 29,
-    icon: markRaw(Newspaper),
-    iconClass: 'app-icon--weazel-news',
-    iconImage: weazelNewsIcon,
-    id: 'weazel-news',
-    labelKey: 'Apps.weazelNews.name',
-    route: '/apps/weazel-news',
-  },
   {
     category: 'utilities',
     component: markRaw(
@@ -246,48 +169,6 @@ export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
     id: 'calendar',
     labelKey: 'Apps.calendar.name',
     route: '/apps/calendar',
-  },
-  {
-    category: 'social',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/RadioApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 21,
-    icon: markRaw(RadioTower),
-    iconClass: 'app-icon--radio',
-    iconImage: radioIcon,
-    id: 'radio',
-    labelKey: 'Apps.radio.name',
-    route: '/apps/radio',
-  },
-  {
-    category: 'social',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/LocalPagesApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 20,
-    icon: markRaw(MapPinHouse),
-    iconClass: 'app-icon--local-pages',
-    iconImage: localPagesIcon,
-    id: 'local-pages',
-    labelKey: 'Apps.localPages.name',
-    route: '/apps/local-pages',
-  },
-  {
-    category: 'social',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/CrewLinkApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 27,
-    icon: markRaw(UsersRound),
-    iconClass: 'app-icon--crewlink',
-    iconImage: crewLinkIcon,
-    id: 'crewlink',
-    labelKey: 'Apps.crewlink.name',
-    route: '/apps/crewlink',
   },
   {
     category: 'social',
@@ -572,20 +453,6 @@ export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
   {
     category: 'games',
     component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/MemoryApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 13,
-    icon: markRaw(Brain),
-    iconClass: 'app-icon--memory',
-    iconImage: memoryIcon,
-    id: 'memory',
-    labelKey: 'Apps.memory.name',
-    route: '/apps/memory',
-  },
-  {
-    category: 'games',
-    component: markRaw(
       defineAsyncComponent(() => import('@/views/apps/NumberMergeApp.vue')),
     ),
     dockOrder: null,
@@ -596,34 +463,6 @@ export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
     id: 'number-merge',
     labelKey: 'Apps.numberMerge.name',
     route: '/apps/number-merge',
-  },
-  {
-    category: 'games',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/MinesweeperApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 15,
-    icon: markRaw(Bomb),
-    iconClass: 'app-icon--minesweeper',
-    iconImage: minesweeperIcon,
-    id: 'minesweeper',
-    labelKey: 'Apps.minesweeper.name',
-    route: '/apps/minesweeper',
-  },
-  {
-    category: 'games',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/TowerStackApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 16,
-    icon: markRaw(Layers3),
-    iconClass: 'app-icon--tower-stack',
-    iconImage: towerStackIcon,
-    id: 'tower-stack',
-    labelKey: 'Apps.towerStack.name',
-    route: '/apps/tower-stack',
   },
   {
     category: 'games',
@@ -653,20 +492,6 @@ export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
     labelKey: 'Apps.citymarkt.name',
     route: '/apps/citymarkt',
   },
-  {
-    category: 'games',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/NeonDropApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 18,
-    icon: markRaw(Blocks),
-    iconClass: 'app-icon--neon-drop',
-    iconImage: neonDropIcon,
-    id: 'neon-drop',
-    labelKey: 'Apps.neonDrop.name',
-    route: '/apps/neon-drop',
-  },
 ])
 
 const BUILTIN_PHONE_APPS = [...PHONE_APPS] as BuiltinPhoneAppDefinition[]
@@ -691,8 +516,6 @@ export const DEFAULT_INSTALLED_PHONE_APP_IDS: ReadonlySet<BuiltinPhoneAppId> =
     'settings',
     'map',
     'calendar',
-    'health',
-    'citywarn',
   ])
 
 export const NON_REMOVABLE_PHONE_APP_IDS: ReadonlySet<LaunchablePhoneAppId> =
@@ -704,8 +527,6 @@ export const NON_REMOVABLE_PHONE_APP_IDS: ReadonlySet<LaunchablePhoneAppId> =
     'phone',
     'messages',
     'mail',
-    'health',
-    'citywarn',
   ])
 
 export const PHONE_APP_IDS = PHONE_APPS.map((app) => app.id)

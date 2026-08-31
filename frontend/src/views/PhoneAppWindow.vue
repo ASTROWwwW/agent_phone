@@ -33,7 +33,6 @@ const launchStyle = computed(() => {
     :class="{
       'app-window--camera-landscape':
         app.id === 'camera' && phone.cameraLandscape,
-      'app-window--citywarn': app.id === 'citywarn',
     }"
     :style="launchStyle"
   >

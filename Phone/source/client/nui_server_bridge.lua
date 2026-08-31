@@ -8,7 +8,6 @@ local callback_groups = {
     billing = [[overview list detail markRead pay dispute]],
     calendar = [[list create update delete]],
     calls = [[recents dial answer set-speaker set-muted decline hangup block]],
-    citywarn = [[bootstrap publish update resolve]],
     companies = [[
         list get my-requests get-request work-context work-queue list-members
         create-request cancel-request send-message claim-request assign-request update-request-status
@@ -16,14 +15,6 @@ local callback_groups = {
         set-call-availability call-customer dial-service-line
     ]],
     contacts = [[list save delete favorite]],
-    crewlink = [[
-        bootstrap login register logout update-profile create-group update-group delete-group set-active
-        join-code rotate-code nearby invite-nearby respond-invite update-member transfer-owner
-        remove-member leave create-ping remove-ping
-    ]],
-    crypto = [[
-        bootstrap register login logout quote execute deposit withdraw update-profile recipient transfer
-    ]],
     ["custom-app"] = [[storage:get storage:set]],
     darkchat = [[
         bootstrap create-profile delete-profile update-profile start thread send media react
@@ -60,9 +51,6 @@ local callback_groups = {
     ]],
     notes = [[list create update delete]],
     notifications = [[save]],
-    pages = [[
-        list get profile profile-save list-own create share-citymarkt react delete
-    ]],
     picstagram = [[
         register login logout bootstrap feed post explore search saved profile connections update-profile
         publish-post update-post set-post-status react follow respond-follow comments comment comment-react
@@ -71,7 +59,6 @@ local callback_groups = {
     ]],
     security = [[unlock set-passcode change-passcode disable-passcode]],
     sim = [[insert eject]],
-    ["weazel-news"] = [[context list get manage-list create update delete]],
 }
 
 for namespace, endpoints in pairs(callback_groups) do

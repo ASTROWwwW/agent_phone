@@ -33,7 +33,7 @@ describe('app store', () => {
     vi.useRealTimers()
   })
 
-  it('installs the sixteen system apps by default', () => {
+  it('installs the fourteen system apps by default', () => {
     const apps = useAppStoreStore()
 
     apps.hydrate(null)
@@ -53,8 +53,6 @@ describe('app store', () => {
       'settings',
       'map',
       'calendar',
-      'health',
-      'citywarn',
     ])
     for (const appId of DEFAULT_INSTALLED_PHONE_APP_IDS) {
       expect(apps.isInstalled(appId)).toBe(true)
@@ -62,8 +60,8 @@ describe('app store', () => {
     expect(apps.isInstalled('banking')).toBe(false)
     expect(apps.isInstalled('feather')).toBe(false)
     expect(apps.isInstalled('snake')).toBe(false)
-    expect(apps.isInstalled('health')).toBe(true)
-    expect(apps.isInstalled('citywarn')).toBe(true)
+    expect(apps.isInstalled('map')).toBe(true)
+    expect(apps.isInstalled('calendar')).toBe(true)
     expect(apps.homeLayout.dock).toEqual([
       'phone',
       'messages',
@@ -309,12 +307,12 @@ describe('app store', () => {
     vi.useFakeTimers()
     const apps = useAppStoreStore()
 
-    apps.hydrate({ claimedApps: ['memory', 'not-an-app'] })
+    apps.hydrate({ claimedApps: ['agent-flappy', 'not-an-app'] })
     apps.installApp('snake')
     apps.installApp('snake')
     vi.advanceTimersByTime(3000)
 
-    expect(apps.claimedApps).toEqual(['memory', 'snake'])
+    expect(apps.claimedApps).toEqual(['agent-flappy', 'snake'])
     expect(mocks.phone.saveDeviceNamespace).toHaveBeenCalledTimes(1)
   })
 
@@ -322,24 +320,24 @@ describe('app store', () => {
     vi.useFakeTimers()
     const apps = useAppStoreStore()
 
-    apps.hydrate({ claimedApps: ['memory'] })
+    apps.hydrate({ claimedApps: ['agent-flappy'] })
     apps.removeHomeApp('notes')
-    apps.removeHomeApp('memory')
+    apps.removeHomeApp('agent-flappy')
     mocks.phone.saveDeviceNamespace.mockClear()
 
     apps.installApp('notes')
-    apps.installApp('memory')
+    apps.installApp('agent-flappy')
 
-    expect(apps.installingApps).toEqual({ memory: true })
-    expect(apps.homeLayout.hidden).toEqual(['memory'])
+    expect(apps.installingApps).toEqual({ 'agent-flappy': true })
+    expect(apps.homeLayout.hidden).toEqual(['agent-flappy'])
 
     vi.advanceTimersByTime(3000)
 
     expect(apps.installingApps).toEqual({})
     expect(apps.homeLayout.hidden).toEqual([])
     expect(apps.homeLayout.grid).toContain('notes')
-    expect(apps.homeLayout.grid).toContain('memory')
-    expect(apps.claimedApps).toEqual(['memory'])
+    expect(apps.homeLayout.grid).toContain('agent-flappy')
+    expect(apps.claimedApps).toEqual(['agent-flappy'])
     expect(mocks.phone.saveDeviceNamespace).toHaveBeenCalledTimes(1)
   })
 
@@ -373,18 +371,18 @@ describe('app store', () => {
 
   it('persists home reordering and removal independently from installation', () => {
     const apps = useAppStoreStore()
-    apps.hydrate({ claimedApps: ['memory'] })
+    apps.hydrate({ claimedApps: ['agent-flappy'] })
     mocks.phone.saveDeviceNamespace.mockClear()
 
-    const memoryIndex = apps.homeLayout.grid.indexOf('memory')
-    apps.moveHomeApp('grid', memoryIndex, 'grid', 0)
-    expect(apps.homeLayout.grid[0]).toBe('memory')
+    const flappyIndex = apps.homeLayout.grid.indexOf('agent-flappy')
+    apps.moveHomeApp('grid', flappyIndex, 'grid', 0)
+    expect(apps.homeLayout.grid[0]).toBe('agent-flappy')
 
-    apps.removeHomeApp('memory')
-    expect(apps.homeLayout.grid).not.toContain('memory')
-    expect(apps.homeLayout.hidden).toContain('memory')
+    apps.removeHomeApp('agent-flappy')
+    expect(apps.homeLayout.grid).not.toContain('agent-flappy')
+    expect(apps.homeLayout.hidden).toContain('agent-flappy')
     expect(mocks.phone.saveDeviceNamespace).toHaveBeenLastCalledWith('apps', {
-      claimedApps: ['memory'],
+      claimedApps: ['agent-flappy'],
       homeLayout: apps.homeLayout,
       launchCounts: {},
     })
@@ -415,18 +413,18 @@ describe('app store', () => {
 
     expect(
       apps.applyWidgetGridCapacities(
-        [10, HOME_GRID_PAGE_SIZE],
-        [HOME_GRID_PAGE_SIZE, 10],
+        [8, HOME_GRID_PAGE_SIZE],
+        [HOME_GRID_PAGE_SIZE, 8],
       ),
     ).toBe(true)
     expect(
       apps.homeLayout.grid.slice(0, HOME_GRID_PAGE_SIZE).filter(Boolean),
-    ).toEqual(originalApps.slice(0, 10))
+    ).toEqual(originalApps.slice(0, 8))
     expect(
       apps.homeLayout.grid
         .slice(HOME_GRID_PAGE_SIZE, HOME_GRID_PAGE_SIZE * 2)
         .filter(Boolean),
-    ).toEqual(originalApps.slice(10))
+    ).toEqual(originalApps.slice(8))
     expect(mocks.phone.saveDeviceNamespace).toHaveBeenCalledTimes(1)
   })
 

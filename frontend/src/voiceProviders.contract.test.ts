@@ -27,20 +27,8 @@ const phoneApp = readFileSync(
   new URL('./views/apps/PhoneApp.vue', import.meta.url),
   'utf8',
 )
-const clientRadio = readFileSync(
-  resourceUrl('source/bridge/client/radio.lua'),
-  'utf8',
-)
-const radioNui = readFileSync(
-  resourceUrl('source/client/radio.lua'),
-  'utf8',
-)
 const serverCalls = readFileSync(
   resourceUrl('source/server/calls.lua'),
-  'utf8',
-)
-const serverRadio = readFileSync(
-  resourceUrl('source/server/radio.lua'),
   'utf8',
 )
 const serverVoice = readFileSync(
@@ -49,7 +37,7 @@ const serverVoice = readFileSync(
 )
 
 describe('voice provider contracts', () => {
-  it('loads the provider bridges before their call and radio consumers', () => {
+  it('loads the provider bridges before their call consumers', () => {
     expect(manifest.indexOf("'source/bridge/client/calls.lua'")).toBeLessThan(
       manifest.indexOf("'source/client/payphones.lua'"),
     )
@@ -83,14 +71,8 @@ describe('voice provider contracts', () => {
     expect(clientCalls).toContain(
       'Bridge.Speaker.IsEnabled() and (selected == "yaca" or selected == "saltychat")',
     )
-    expect(clientRadio).toContain(
-      'Bridge.Speaker.IsEnabled() and resolve_provider() == "saltychat"',
-    )
     expect(serverVoice).toContain(
       'Bridge.Speaker.IsEnabled() and (selected == "yaca" or selected == "saltychat")',
-    )
-    expect(serverVoice).toContain(
-      'Bridge.Speaker.IsEnabled() and resolve_radio_provider() == "saltychat"',
     )
     expect(serverCalls).toContain('if not Bridge.Speaker.IsEnabled() then')
   })
@@ -131,36 +113,4 @@ describe('voice provider contracts', () => {
     )
   })
 
-  it('passes Yaca radio volume arguments in the documented order', () => {
-    expect(clientRadio).toContain(
-      'changeRadioChannelVolumeRaw(volume / 100, 1)',
-    )
-    expect(clientRadio).toContain(
-      'changeRadioChannelVolumeRaw(volume / 100, 2)',
-    )
-  })
-
-  it('provides safe shared defaults for the optional server radio speaker adapter', () => {
-    expect(sharedBridge).toContain('function Bridge.Radio.SupportsSpeaker()')
-    expect(sharedBridge).toMatch(
-      /function Bridge\.Radio\.SupportsSpeaker\(\)\s+return false\s+end/,
-    )
-    expect(sharedBridge).toContain('function Bridge.Radio.SetPlayerSpeaker()')
-    expect(serverVoice).toContain('function Bridge.Radio.SupportsSpeaker()')
-    expect(serverVoice).toContain('function Bridge.Radio.SetPlayerSpeaker(')
-  })
-
-  it('uses the documented client and server Radio speaker exports', () => {
-    expect(clientRadio).toContain('exports.saltychat:GetRadioSpeaker()')
-    expect(clientRadio).toContain('exports.saltychat:SetRadioSpeaker(')
-    expect(serverVoice).toContain('exports.saltychat:SetPlayerRadioSpeaker(')
-    expect(radioNui).toContain('RegisterNUICallback("radio:set-speaker"')
-    expect(serverRadio).toContain(
-      'Bridge.Callbacks.Register("agent_phone:radio:set-speaker"',
-    )
-    expect(serverRadio).toContain('if not channels[source] then')
-    expect(serverRadio).toContain(
-      'AddEventHandler("onResourceStop", function(resource_name)',
-    )
-  })
 })

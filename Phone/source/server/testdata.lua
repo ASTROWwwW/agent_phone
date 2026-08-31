@@ -436,19 +436,6 @@ local function seed_core(context)
         INSERT INTO `agent_phone_music_playlist_items` (`playlist_id`, `source`, `song_id`, `position`)
         VALUES (?, 'youtube', ?, 1)
     ]], { playlist_id, song_id })
-
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_radio_profiles`
-            (`identifier`, `history`, `settings`, `primary_frequency`, `secondary_frequency`, `badge`, `display_name`)
-        VALUES (?, ?, ?, 100.1, 101.5, 'QA', ?)
-        ON DUPLICATE KEY UPDATE `history` = VALUES(`history`), `settings` = VALUES(`settings`),
-            `primary_frequency` = VALUES(`primary_frequency`), `secondary_frequency` = VALUES(`secondary_frequency`)
-    ]], {
-        context.identifier,
-        json.encode({ 100.1, 101.5, 99.9 }),
-        json.encode({ volume = 65, notifications = true, autoRejoin = false }),
-        context.player_name,
-    })
     Bridge.Database.Query([[
         INSERT INTO `agent_phone_easyshare_preferences` (`device_imei`, `visibility`)
         VALUES (?, 'everyone') ON DUPLICATE KEY UPDATE `visibility` = 'everyone'
@@ -470,7 +457,7 @@ local function seed_core(context)
     })
 end
 
-local function seed_marketplace_and_pages(context)
+local function seed_marketplace(context)
     local account_id = context.account.id
     local bot_id = context.bot_one.account.id
     local own_handle = "tester" .. tostring(account_id)
@@ -535,35 +522,6 @@ local function seed_marketplace_and_pages(context)
         INSERT IGNORE INTO `agent_phone_marketplace_offers` (`inquiry_id`, `proposer_account_id`, `amount`)
         VALUES (?, ?, 40000)
     ]], { inquiry_id, account_id })
-
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_pages_profiles` (`account_id`, `handle`, `bio`, `avatar_media_id`)
-        VALUES (?, ?, 'Lokale Tests, Events und Angebote.', ?)
-        ON DUPLICATE KEY UPDATE `handle` = VALUES(`handle`), `bio` = VALUES(`bio`),
-            `avatar_media_id` = VALUES(`avatar_media_id`)
-    ]], { account_id, own_handle, context.media.user_portrait })
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_pages_profiles` (`account_id`, `handle`, `bio`, `avatar_media_id`)
-        VALUES (?, 'alex.local', 'News aus Los Santos.', ?)
-        ON DUPLICATE KEY UPDATE `bio` = VALUES(`bio`), `avatar_media_id` = VALUES(`avatar_media_id`)
-    ]], { bot_id, context.media.bot_portrait })
-    local page_post = stable_uuid(context.key .. ":pages:post")
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_pages_posts`
-            (`id`, `account_id`, `source_type`, `title`, `body`, `category`, `district`)
-        VALUES (?, ?, 'personal', 'Car Meet am Pier', 'Heute Abend findet ein offenes Test-Car-Meet statt.',
-            'event', 'los_santos')
-        ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `body` = VALUES(`body`)
-    ]], { page_post, bot_id })
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_pages_images` (`post_id`, `media_id`, `gradient`, `sort_order`)
-        VALUES (?, ?, ?, 1)
-        ON DUPLICATE KEY UPDATE `media_id` = VALUES(`media_id`), `gradient` = VALUES(`gradient`)
-    ]], { page_post, tostring(context.media.bot_car), car_gradient })
-    Bridge.Database.Query([[
-        INSERT IGNORE INTO `agent_phone_pages_reactions` (`post_id`, `account_id`, `kind`)
-        VALUES (?, ?, 'like'), (?, ?, 'save')
-    ]], { page_post, account_id, page_post, account_id })
 end
 
 local function seed_social_apps(context)
@@ -815,57 +773,6 @@ local function seed_private_and_services(context)
         ON DUPLICATE KEY UPDATE `body` = VALUES(`body`), `reactions` = VALUES(`reactions`)
     ]], { dark_two, conversation_id, dark_user, json.encode({ ["🔥"] = { dark_bot } }) })
 
-    local crew_user_seed = stable_uuid(context.key .. ":crew:user")
-    local crew_bot_seed = stable_uuid("agent_phone:testbot:crew:alex")
-    local group_id = stable_uuid(context.key .. ":crew:group")
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_crewlink_profiles` (`id`, `account_id`, `username`, `active_group_id`)
-        VALUES (?, ?, ?, NULL)
-        ON DUPLICATE KEY UPDATE `username` = VALUES(`username`)
-    ]], { crew_user_seed, account_id, ("tester%s"):format(account_id):sub(1, 20) })
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_crewlink_profiles` (`id`, `account_id`, `username`, `active_group_id`)
-        VALUES (?, ?, 'alexcrew', NULL)
-        ON DUPLICATE KEY UPDATE `username` = VALUES(`username`)
-    ]], { crew_bot_seed, bot_id })
-    local crew_user = ensure_string_profile("agent_phone_crewlink_profiles", account_id)
-    local crew_bot = ensure_string_profile("agent_phone_crewlink_profiles", bot_id)
-    local crew_password_salt = crew_user_seed:gsub("-", "")
-    local crew_bot_password_salt = crew_bot_seed:gsub("-", "")
-    local crew_password_pepper = tostring(Config.Server.CrewLinkPasswordPepper or "")
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_crewlink_credentials` (`profile_id`, `password_hash`, `password_salt`)
-        VALUES (?, UNHEX(SHA2(CONCAT(?, ?, 'CrewLink123!'), 256)), ?),
-            (?, UNHEX(SHA2(CONCAT(?, ?, 'CrewLink123!'), 256)), ?)
-        ON DUPLICATE KEY UPDATE `password_hash` = VALUES(`password_hash`),
-            `password_salt` = VALUES(`password_salt`)
-    ]], {
-        crew_user, crew_password_pepper, crew_password_salt, crew_password_salt,
-        crew_bot, crew_password_pepper, crew_bot_password_salt, crew_bot_password_salt,
-    })
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_crewlink_groups`
-            (`id`, `name`, `colour`, `owner_profile_id`, `invite_code`, `allow_member_pings`, `overhead_allowed`)
-        VALUES (?, 'Phone QA Crew', 'violet', ?, ?, 1, 1)
-        ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `colour` = VALUES(`colour`)
-    ]], { group_id, crew_user, ("QA%s"):format(account_id):sub(1, 12) })
-    Bridge.Database.Query([[
-        INSERT IGNORE INTO `agent_phone_crewlink_memberships` (`group_id`, `profile_id`, `role`)
-        VALUES (?, ?, 'owner'), (?, ?, 'member')
-    ]], { group_id, crew_user, group_id, crew_bot })
-    Bridge.Database.Query(
-        "UPDATE `agent_phone_crewlink_profiles` SET `active_group_id` = ? WHERE `id` IN (?, ?)",
-        { group_id, crew_user, crew_bot }
-    )
-    local ping_id = stable_uuid(context.key .. ":crew:ping")
-    Bridge.Database.Query([[
-        INSERT INTO `agent_phone_crewlink_pings`
-            (`id`, `group_id`, `creator_profile_id`, `type`, `label`, `position_x`, `position_y`, `position_z`, `expires_at`)
-        VALUES (?, ?, ?, 'meeting', 'QA Treffpunkt', -337.3, -136.9, 39.0,
-            DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 12 HOUR))
-        ON DUPLICATE KEY UPDATE `label` = VALUES(`label`), `expires_at` = VALUES(`expires_at`)
-    ]], { ping_id, group_id, crew_bot })
-
     local ride_user_seed = stable_uuid(context.key .. ":agentride:user")
     local ride_bot_seed = stable_uuid("agent_phone:testbot:agentride:alex")
     Bridge.Database.Query([[
@@ -1030,7 +937,7 @@ local function seed_for_source(source)
     context.media.bot_video = ensure_media(bot_two.account.id, "test-bot-mia-video", video_url, "video")
 
     seed_core(context)
-    seed_marketplace_and_pages(context)
+    seed_marketplace(context)
     seed_social_apps(context)
     seed_private_and_services(context)
     AgentPhone.RefreshSource(source)

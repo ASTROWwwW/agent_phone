@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 
 import type { EasySharePayload } from '@/types/easyshare'
 import {
-  easyShareCrewLinkInviteCode,
   easyShareDarkChatInviteCode,
   easyShareDestinationAppIds,
   easyShareMusicTarget,
@@ -61,7 +60,6 @@ describe('EasyShare deep links', () => {
     ['picstagram', 'profile', 'pic-profile-1', '/apps/picstagram'],
     ['feather', 'post', 'feather-post-1', '/apps/feather'],
     ['fliptok', 'post', 'fliptok-1', '/apps/fliptok'],
-    ['local-pages', 'post', 'pages-post-1', '/apps/local-pages'],
   ])('preserves the exact %s %s target', (appId, kind, id, path) => {
     expect(
       easyShareRoute(
@@ -76,22 +74,6 @@ describe('EasyShare deep links', () => {
       path,
       query: { easyShareId: id, easyShareKind: kind },
     })
-  })
-
-  it('extracts a CrewLink invitation code from a shared deep link', () => {
-    expect(
-      easyShareCrewLinkInviteCode(
-        'link',
-        'agentphone://crewlink/invite/ab12cd34',
-        'ignored',
-      ),
-    ).toBe('AB12CD34')
-  })
-
-  it('accepts the canonical payload id as a CrewLink invite fallback', () => {
-    expect(easyShareCrewLinkInviteCode('link', '', 'n1ght247')).toBe('N1GHT247')
-    expect(easyShareCrewLinkInviteCode('profile', '', 'n1ght247')).toBeNull()
-    expect(easyShareCrewLinkInviteCode('link', '', 'invalid-code')).toBeNull()
   })
 
   it('extracts a private DarkChat invitation from its profile share', () => {

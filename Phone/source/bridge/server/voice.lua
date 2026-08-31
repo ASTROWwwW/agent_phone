@@ -8,16 +8,6 @@ local call_provider_aliases = {
     ["pma-voice"] = "pma",
     salty = "saltychat",
 }
-local radio_provider_resources = {
-    yaca = "yaca-voice",
-    pma = "pma-voice",
-    saltychat = "saltychat",
-}
-local radio_provider_aliases = {
-    ["yaca-voice"] = "yaca",
-    ["pma-voice"] = "pma",
-    salty = "saltychat",
-}
 
 local function yaca_is_enabled()
     if GetResourceState("yaca-voice") ~= "started" then
@@ -54,25 +44,6 @@ local function resolve_call_provider()
     local resource_name = call_provider_resources[selected]
     if resource_name and GetResourceState(resource_name) == "started" then
         return selected
-    end
-    return nil
-end
-
-local function resolve_radio_provider()
-    local configured = tostring(Config.Radio.VoiceProvider or "")
-    if configured ~= "auto" then
-        local selected = radio_provider_aliases[configured] or configured
-        local resource_name = radio_provider_resources[selected]
-        if resource_name and GetResourceState(resource_name) == "started" then
-            return selected
-        end
-        return nil
-    end
-
-    for _, candidate in ipairs({ "yaca", "pma", "saltychat" }) do
-        if GetResourceState(radio_provider_resources[candidate]) == "started" then
-            return candidate
-        end
     end
     return nil
 end
@@ -247,43 +218,6 @@ function Bridge.Calls.SetMuted(player_source, enabled, provider)
         Bridge.Debug(
             "error",
             "[agent_phone] Yaca could not update the phone mute state for source %s: %s",
-            tostring(player_source),
-            tostring(error_message),
-            { always = true }
-        )
-        return false
-    end
-    return true
-end
-
-function Bridge.Radio.GetProvider()
-    return resolve_radio_provider()
-end
-
-function Bridge.Radio.SupportsSecondary()
-    local selected = resolve_radio_provider()
-    return Config.Radio.AllowSecondary and (selected == "yaca" or selected == "saltychat")
-end
-
-function Bridge.Radio.SupportsSpeaker()
-    return Bridge.Speaker.IsEnabled() and resolve_radio_provider() == "saltychat"
-end
-
-function Bridge.Radio.SetPlayerSpeaker(player_source, enabled)
-    if enabled == true and not Bridge.Speaker.IsEnabled() then
-        return false
-    end
-    if resolve_radio_provider() ~= "saltychat" then
-        return false
-    end
-
-    local success, error_message = pcall(function()
-        exports.saltychat:SetPlayerRadioSpeaker(tonumber(player_source), enabled == true)
-    end)
-    if not success then
-        Bridge.Debug(
-            "error",
-            "[agent_phone] SaltyChat could not update the radio speaker for source %s: %s",
             tostring(player_source),
             tostring(error_message),
             { always = true }

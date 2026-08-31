@@ -499,14 +499,14 @@ describe('home layout', () => {
     const hidden = {
       ...defaults,
       grid: [...defaults.grid],
-      hidden: [...defaults.hidden, 'health' as const],
+      hidden: [...defaults.hidden, 'garage' as const],
     }
-    hidden.grid[5] = 'health'
+    hidden.grid[5] = 'garage'
 
-    const restored = restoreHomeApp(hidden, 'health')
+    const restored = restoreHomeApp(hidden, 'garage')
 
-    expect(restored.grid[5]).toBe('health')
-    expect(restored.hidden).not.toContain('health')
+    expect(restored.grid[5]).toBe('garage')
+    expect(restored.hidden).not.toContain('garage')
   })
 
   it('adds persistent empty pages up to the home screen limit', () => {

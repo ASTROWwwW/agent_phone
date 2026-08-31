@@ -77,13 +77,13 @@ describe('admin configurator fixture', () => {
           root !== 'CommandPermissions',
       )
 
-    expect(sections).toHaveLength(46)
+    expect(sections).toHaveLength(39)
     expect(
       fields.reduce(
         (total, field) => total + countStructure(field.structure),
         0,
       ),
-    ).toBeGreaterThan(700)
+    ).toBeGreaterThan(650)
     for (const root of new Set(roots)) {
       expect(
         sections.some(
@@ -194,29 +194,6 @@ describe('admin configurator fixture', () => {
     })
   })
 
-  it('allows custom jobs in locked radio channel entries', () => {
-    const radio = loadConfiguratorSections()
-      .flatMap((section) => section.fields)
-      .find((field) => field.path === 'Radio')
-    const lockedChannels = radio?.structure?.fields?.LockedChannels
-    const jobs = lockedChannels?.items?.[0]?.fields?.jobs
-
-    expect(jobs).toMatchObject({
-      fields: {
-        ambulance: { kind: 'value', valueType: 'boolean' },
-        police: { kind: 'value', valueType: 'boolean' },
-      },
-      kind: 'table',
-      mutableKeys: true,
-      template: { kind: 'value', valueType: 'boolean' },
-    })
-    expect(lockedChannels?.template?.fields?.jobs).toMatchObject({
-      kind: 'table',
-      mutableKeys: true,
-      template: { kind: 'value', valueType: 'boolean' },
-    })
-  })
-
   it('publishes fixed schemas for every empty configurable collection', () => {
     const fields = loadConfiguratorSections().flatMap(
       (section) => section.fields,
@@ -243,12 +220,6 @@ describe('admin configurator fixture', () => {
     expect(root('Payphones')?.fields?.CustomLocations.template).toEqual({
       kind: 'vector',
       vectorType: 'vector4',
-    })
-    expect(root('CrewLink')?.fields?.ExternalPingResources).toMatchObject({
-      fields: {},
-      kind: 'table',
-      mutableKeys: true,
-      template: { kind: 'value', valueType: 'boolean' },
     })
     expect(root('CustomApps')?.fields?.TrustedAdapters).toMatchObject({
       fields: {},

@@ -282,24 +282,6 @@ describe('phone locale contract', () => {
     expect(missing).toEqual([])
   })
 
-  it('keeps the VaultX browser fallback complete for auth and transfers', () => {
-    const fallbackPaths = collectDefaultLocalePaths(phoneStoreSource)
-
-    for (const path of [
-      'Apps.crypto.auth.network',
-      'Apps.crypto.auth.confirmPassword',
-      'Apps.crypto.quick.send',
-      'Apps.crypto.transfer.walletKey',
-      'Apps.crypto.profile.copyKey',
-      'Apps.crypto.profile.shareKey',
-      'Apps.crypto.activityTypes.transfer_in',
-      'Apps.crypto.activityTypes.transfer_out',
-      'Apps.crypto.errors.invalid_wallet_key',
-    ]) {
-      expect(fallbackPaths.has(path), path).toBe(true)
-    }
-  })
-
   it.each(translatedLocaleValues)(
     'keeps %s structurally aligned with English',
     (_locale, values) => {
@@ -349,18 +331,15 @@ describe('phone locale contract', () => {
 
   it('keeps standard app names German and custom game names unchanged', () => {
     const standardAppNames = {
-      health: 'Gesundheit',
       messages: 'Nachrichten',
       companies: 'Unternehmen',
       phone: 'Telefon',
-      radio: 'Funk',
       billing: 'Rechnungen',
       house: 'Haus',
       calculator: 'Rechner',
       camera: 'Kamera',
       calendar: 'Kalender',
       clock: 'Uhr',
-      localPages: 'Lokale Seiten',
       map: 'Karte',
       weather: 'Wetter',
       music: 'Musik',
@@ -375,12 +354,8 @@ describe('phone locale contract', () => {
 
     for (const app of [
       'snake',
-      'memory',
       'numberMerge',
-      'minesweeper',
-      'towerStack',
       'agentFlappy',
-      'neonDrop',
     ]) {
       const path = `Nui.Apps.${app}.name`
       expect(germanValues.get(path), app).toBe(englishValues.get(path))

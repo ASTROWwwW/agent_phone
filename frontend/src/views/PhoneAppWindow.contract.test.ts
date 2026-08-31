@@ -15,6 +15,5 @@ describe('PhoneAppWindow bundle contract', () => {
     expect(source).toContain("app.value?.id === 'app-store'")
     expect(source).toContain('? AppStoreApp : app.value?.component')
     expect(source).toContain('<component :is="builtinAppComponent" />')
-    expect(source).toContain("'app-window--citywarn': app.id === 'citywarn'")
   })
 })

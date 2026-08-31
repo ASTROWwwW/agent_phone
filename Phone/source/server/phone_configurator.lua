@@ -48,17 +48,13 @@ local CLIENT_CONFIG_KEYS = {
     Calendar = true,
     Calls = true,
     Command = true,
-    CrewLink = true,
-    Crypto = true,
     CustomApps = true,
     DarkChat = true,
     EasyShare = true,
     Feather = true,
     FlipTok = true,
     Garage = true,
-    Health = true,
     Housing = true,
-    LocalPages = true,
     Mail = true,
     MapMarkers = true,
     Marketplace = true,
@@ -67,7 +63,6 @@ local CLIENT_CONFIG_KEYS = {
     Payphones = true,
     Phone = true,
     Picstagram = true,
-    Radio = true,
     Security = true,
     Sim = true,
     AgentRide = true,
@@ -500,7 +495,7 @@ local function empty_structure(scope, path)
             template = { kind = "value", valueType = "string" },
         }
     end
-    if path == "CrewLink.ExternalPingResources" or path == "CustomApps.TrustedAdapters" then
+    if path == "CustomApps.TrustedAdapters" then
         return {
             fields = {},
             kind = "table",
@@ -636,21 +631,6 @@ local function build_structure(value, scope, path)
     local value_type = type(value)
     if scope == "config" and path == "Phone.Keybind" then
         return { kind = "optionalString" }
-    end
-    if scope == "config"
-        and path:match("^Radio%.LockedChannels%.%d+%.jobs$")
-        and value_type == "table"
-    then
-        local fields = {}
-        for key, child in pairs(value) do
-            fields[key] = build_structure(child, scope, path .. "." .. tostring(key))
-        end
-        return {
-            fields = fields,
-            kind = "table",
-            mutableKeys = true,
-            template = { kind = "value", valueType = "boolean" },
-        }
     end
     if scope == "config" and path == "Companies.Definitions" and value_type == "table" then
         local keys = {}

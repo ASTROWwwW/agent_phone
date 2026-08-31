@@ -49,12 +49,12 @@ describe('message media handoff', () => {
 
   it('preserves the requesting app context when selection is cancelled', () => {
     const store = useMessageMediaStore()
-    store.begin('local-pages:compose', 'photo', '/apps/local-pages?compose=1', 6, {
+    store.begin('citymarkt:compose', 'photo', '/apps/citymarkt?compose=1', 6, {
       title: 'Draft post',
     })
 
-    expect(store.cancel()).toBe('/apps/local-pages?compose=1')
-    expect(store.consumeMany<{ title: string }>('local-pages:compose')).toEqual({
+    expect(store.cancel()).toBe('/apps/citymarkt?compose=1')
+    expect(store.consumeMany<{ title: string }>('citymarkt:compose')).toEqual({
       context: { title: 'Draft post' },
       media: [],
     })

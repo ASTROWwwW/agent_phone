@@ -4,7 +4,6 @@ Bridge.Calls = Bridge.Calls or {}
 Bridge.Database = Bridge.Database or {}
 Bridge.Framework = Bridge.Framework or {}
 Bridge.Inventory = Bridge.Inventory or {}
-Bridge.Radio = Bridge.Radio or {}
 Bridge.Normalize = Bridge.Normalize or {}
 Bridge.Speaker = Bridge.Speaker or {}
 
@@ -46,14 +45,6 @@ function Bridge.Calls.SupportsMute()
 end
 
 function Bridge.Calls.SetMuted()
-    return false
-end
-
-function Bridge.Radio.SupportsSpeaker()
-    return false
-end
-
-function Bridge.Radio.SetPlayerSpeaker()
     return false
 end
 

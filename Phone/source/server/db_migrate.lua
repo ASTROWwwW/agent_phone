@@ -692,43 +692,6 @@ local schema = {
         tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
     },
     {
-        name = "agent_phone_health_daily",
-        columns = {
-            { name = "id", type = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT" },
-            { name = "owner_identifier", type = "VARCHAR(80) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "activity_date", type = "DATE NOT NULL" },
-            { name = "steps", type = "INT UNSIGNED NOT NULL DEFAULT 0" },
-            { name = "distance_meters", type = "INT UNSIGNED NOT NULL DEFAULT 0" },
-            { name = "active_seconds", type = "INT UNSIGNED NOT NULL DEFAULT 0" },
-            { name = "energy_kcal", type = "INT UNSIGNED NOT NULL DEFAULT 0" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_health_daily", columns = "(`owner_identifier`, `activity_date`)" },
-        },
-        indexes = {
-            { name = "idx_agent_phone_health_history", columns = "(`owner_identifier`, `activity_date`)" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_health_profiles",
-        columns = {
-            { name = "owner_identifier", type = "VARCHAR(80) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "blood_type", type = "VARCHAR(3) NOT NULL DEFAULT ''", characterSet = "ascii", collation = "ascii_general_ci" },
-            { name = "allergies", type = "VARCHAR(500) NOT NULL DEFAULT ''" },
-            { name = "conditions", type = "VARCHAR(500) NOT NULL DEFAULT ''" },
-            { name = "medication", type = "VARCHAR(500) NOT NULL DEFAULT ''" },
-            { name = "emergency_name", type = "VARCHAR(80) NOT NULL DEFAULT ''" },
-            { name = "emergency_relation", type = "VARCHAR(40) NOT NULL DEFAULT ''" },
-            { name = "emergency_phone", type = "VARCHAR(24) NOT NULL DEFAULT ''", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "owner_identifier",
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
         name = "agent_phone_billing_invoices",
         columns = {
             { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
@@ -1035,106 +998,6 @@ local schema = {
         tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
     },
     {
-        name = "agent_phone_pages_profiles",
-        columns = {
-            { name = "account_id", type = "BIGINT UNSIGNED NOT NULL" },
-            {
-                name = "handle",
-                type = "VARCHAR(24) NOT NULL",
-                characterSet = "utf8mb4",
-                collation = "utf8mb4_unicode_ci",
-            },
-            { name = "bio", type = "VARCHAR(160) NOT NULL DEFAULT ''" },
-            { name = "avatar_media_id", type = "BIGINT UNSIGNED NULL" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            {
-                name = "updated_at",
-                type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
-            },
-        },
-        primaryKey = "account_id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_pages_profile_handle", columns = "(`handle`)" },
-        },
-        indexes = {
-            { name = "idx_agent_phone_pages_profile_avatar", columns = "(`avatar_media_id`)" },
-        },
-        foreignKeys = {
-            { column = "account_id", references = "`agent_phone_accounts` (`id`) ON DELETE CASCADE" },
-            { column = "avatar_media_id", references = "`agent_phone_media` (`id`) ON DELETE SET NULL" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_pages_posts",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "account_id", type = "BIGINT UNSIGNED NOT NULL" },
-            { name = "source_type", type = "ENUM('personal', 'citymarkt') NOT NULL DEFAULT 'personal'" },
-            { name = "share_date", type = "DATE NULL" },
-            { name = "citymarkt_listing_id", type = "CHAR(36) NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "title", type = "VARCHAR(80) NOT NULL" },
-            { name = "body", type = "TEXT NOT NULL" },
-            { name = "category", type = "VARCHAR(32) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "district", type = "VARCHAR(32) NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_pages_citymarkt_listing", columns = "(`citymarkt_listing_id`)" },
-            { name = "uniq_agent_phone_pages_daily_share", columns = "(`account_id`, `source_type`, `share_date`)" },
-        },
-        indexes = {
-            { name = "idx_agent_phone_pages_feed", columns = "(`created_at`)" },
-            { name = "idx_agent_phone_pages_category", columns = "(`category`, `created_at`)" },
-            { name = "idx_agent_phone_pages_owner", columns = "(`account_id`, `created_at`)" },
-            { name = "idx_agent_phone_pages_daily_share", columns = "(`account_id`, `source_type`, `created_at`)" },
-        },
-        foreignKeys = {
-            { column = "account_id", references = "`agent_phone_accounts` (`id`) ON DELETE CASCADE" },
-            { column = "citymarkt_listing_id", references = "`agent_phone_marketplace_listings` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_pages_images",
-        columns = {
-            { name = "id", type = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT" },
-            { name = "post_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "media_id", type = "VARCHAR(64) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "gradient", type = "VARCHAR(2200) NOT NULL" },
-            { name = "sort_order", type = "TINYINT UNSIGNED NOT NULL" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_pages_image_order", columns = "(`post_id`, `sort_order`)" },
-        },
-        foreignKeys = {
-            { column = "post_id", references = "`agent_phone_pages_posts` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_pages_reactions",
-        columns = {
-            { name = "id", type = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT" },
-            { name = "post_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "account_id", type = "BIGINT UNSIGNED NOT NULL" },
-            { name = "kind", type = "ENUM('like', 'save') NOT NULL" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_pages_reaction", columns = "(`post_id`, `account_id`, `kind`)" },
-        },
-        foreignKeys = {
-            { column = "post_id", references = "`agent_phone_pages_posts` (`id`) ON DELETE CASCADE" },
-            { column = "account_id", references = "`agent_phone_accounts` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
         name = "agent_phone_map_markers",
         columns = {
             { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
@@ -1253,24 +1116,6 @@ local schema = {
         foreignKeys = {
             { column = "playlist_id", references = "`agent_phone_music_playlists` (`id`) ON DELETE CASCADE" },
         },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_radio_profiles",
-        columns = {
-            { name = "identifier", type = "VARCHAR(80) NOT NULL" },
-            { name = "history", type = "LONGTEXT NOT NULL" },
-            { name = "settings", type = "LONGTEXT NOT NULL" },
-            { name = "primary_frequency", type = "DOUBLE NOT NULL DEFAULT 0" },
-            { name = "secondary_frequency", type = "DOUBLE NOT NULL DEFAULT 0" },
-            { name = "badge", type = "VARCHAR(32) NOT NULL DEFAULT ''" },
-            { name = "display_name", type = "VARCHAR(64) NOT NULL DEFAULT ''" },
-            {
-                name = "updated_at",
-                type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
-            },
-        },
-        primaryKey = "identifier",
         tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
     },
     {
@@ -2404,164 +2249,6 @@ local schema = {
         tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
     },
     {
-        name = "agent_phone_crewlink_profiles",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "account_id", type = "BIGINT UNSIGNED NOT NULL" },
-            { name = "username", type = "VARCHAR(20) NOT NULL", characterSet = "ascii", collation = "ascii_general_ci" },
-            { name = "avatar_media_id", type = "BIGINT UNSIGNED NULL" },
-            { name = "active_group_id", type = "CHAR(36) NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "map_visible", type = "TINYINT(1) NOT NULL DEFAULT 1" },
-            { name = "overhead_visible", type = "TINYINT(1) NOT NULL DEFAULT 0" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_crewlink_account", columns = "(`account_id`)" },
-            { name = "uniq_agent_phone_crewlink_username", columns = "(`username`)" },
-        },
-        indexes = {
-            { name = "idx_agent_phone_crewlink_active", columns = "(`active_group_id`)" },
-            { name = "idx_agent_phone_crewlink_avatar", columns = "(`avatar_media_id`)" },
-        },
-        foreignKeys = {
-            { column = "account_id", references = "`agent_phone_accounts` (`id`) ON DELETE CASCADE" },
-            { column = "avatar_media_id", references = "`agent_phone_media` (`id`) ON DELETE SET NULL" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_crewlink_credentials",
-        columns = {
-            { name = "profile_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "password_hash", type = "BINARY(32) NOT NULL" },
-            { name = "password_salt", type = "CHAR(32) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "profile_id",
-        foreignKeys = {
-            { column = "profile_id", references = "`agent_phone_crewlink_profiles` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_crewlink_sessions",
-        columns = {
-            { name = "device_imei", type = "CHAR(15) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "profile_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "device_imei",
-        indexes = {
-            { name = "idx_agent_phone_crewlink_sessions_profile", columns = "(`profile_id`, `updated_at`)" },
-        },
-        foreignKeys = {
-            { column = "device_imei", references = "`agent_phone_devices` (`imei`) ON DELETE CASCADE" },
-            { column = "profile_id", references = "`agent_phone_crewlink_profiles` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_crewlink_groups",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "name", type = "VARCHAR(32) NOT NULL" },
-            { name = "colour", type = "ENUM('cyan','blue','violet','orange','green','rose') NOT NULL DEFAULT 'cyan'" },
-            { name = "owner_profile_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "invite_code", type = "VARCHAR(12) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "allow_member_pings", type = "TINYINT(1) NOT NULL DEFAULT 1" },
-            { name = "overhead_allowed", type = "TINYINT(1) NOT NULL DEFAULT 1" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_crewlink_invite_code", columns = "(`invite_code`)" },
-        },
-        indexes = {
-            { name = "idx_agent_phone_crewlink_owner", columns = "(`owner_profile_id`)" },
-        },
-        foreignKeys = {
-            { column = "owner_profile_id", references = "`agent_phone_crewlink_profiles` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_crewlink_memberships",
-        columns = {
-            { name = "id", type = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT" },
-            { name = "group_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "profile_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "role", type = "ENUM('owner','coordinator','moderator','member','guest') NOT NULL DEFAULT 'member'" },
-            { name = "joined_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_crewlink_membership", columns = "(`group_id`, `profile_id`)" },
-        },
-        indexes = {
-            { name = "idx_agent_phone_crewlink_profile_groups", columns = "(`profile_id`, `joined_at`)" },
-        },
-        foreignKeys = {
-            { column = "group_id", references = "`agent_phone_crewlink_groups` (`id`) ON DELETE CASCADE" },
-            { column = "profile_id", references = "`agent_phone_crewlink_profiles` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_crewlink_invitations",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "group_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "inviter_profile_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "invitee_profile_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "status", type = "ENUM('pending','accepted','declined','expired') NOT NULL DEFAULT 'pending'" },
-            { name = "expires_at", type = "DATETIME NOT NULL" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_crewlink_pending_invite", columns = "(`group_id`, `invitee_profile_id`)" },
-        },
-        indexes = {
-            { name = "idx_agent_phone_crewlink_invitee", columns = "(`invitee_profile_id`, `status`, `expires_at`)" },
-        },
-        foreignKeys = {
-            { column = "group_id", references = "`agent_phone_crewlink_groups` (`id`) ON DELETE CASCADE" },
-            { column = "inviter_profile_id", references = "`agent_phone_crewlink_profiles` (`id`) ON DELETE CASCADE" },
-            { column = "invitee_profile_id", references = "`agent_phone_crewlink_profiles` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_crewlink_pings",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "group_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "creator_profile_id", type = "CHAR(36) NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "source_resource", type = "VARCHAR(64) NULL", characterSet = "ascii", collation = "ascii_general_ci" },
-            { name = "type", type = "ENUM('meeting','danger','help','target','info') NOT NULL" },
-            { name = "label", type = "VARCHAR(48) NOT NULL" },
-            { name = "position_x", type = "DECIMAL(10,3) NOT NULL" },
-            { name = "position_y", type = "DECIMAL(10,3) NOT NULL" },
-            { name = "position_z", type = "DECIMAL(10,3) NOT NULL" },
-            { name = "expires_at", type = "DATETIME NOT NULL" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        indexes = {
-            { name = "idx_agent_phone_crewlink_pings", columns = "(`group_id`, `expires_at`)" },
-        },
-        foreignKeys = {
-            { column = "group_id", references = "`agent_phone_crewlink_groups` (`id`) ON DELETE CASCADE" },
-            { column = "creator_profile_id", references = "`agent_phone_crewlink_profiles` (`id`) ON DELETE SET NULL" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
         name = "agent_phone_easyshare_preferences",
         columns = {
             {
@@ -2844,111 +2531,6 @@ local schema = {
         },
         tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
     },
-    {
-        name = "agent_phone_weazel_articles",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "title", type = "VARCHAR(160) NOT NULL" },
-            { name = "body", type = "LONGTEXT NOT NULL" },
-            { name = "excerpt", type = "VARCHAR(240) NOT NULL" },
-            { name = "category", type = "ENUM('official','events','jobs','news','business') NOT NULL" },
-            { name = "image_media_id", type = "BIGINT UNSIGNED NULL" },
-            { name = "author_identifier", type = "VARCHAR(80) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "author_name", type = "VARCHAR(120) NOT NULL" },
-            { name = "updated_by_identifier", type = "VARCHAR(80) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "status", type = "ENUM('draft','published') NOT NULL DEFAULT 'draft'" },
-            { name = "revision", type = "INT UNSIGNED NOT NULL DEFAULT 1" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-            { name = "published_at", type = "DATETIME NULL" },
-            { name = "deleted_at", type = "DATETIME NULL" },
-            { name = "deleted_by_identifier", type = "VARCHAR(80) NULL", characterSet = "ascii", collation = "ascii_bin" },
-        },
-        primaryKey = "id",
-        indexes = {
-            { name = "idx_agent_phone_weazel_public", columns = "(`status`, `deleted_at`, `published_at`, `id`)" },
-            { name = "idx_agent_phone_weazel_category", columns = "(`category`, `status`, `deleted_at`, `published_at`, `id`)" },
-            { name = "idx_agent_phone_weazel_manage", columns = "(`deleted_at`, `status`, `updated_at`, `id`)" },
-            { name = "idx_agent_phone_weazel_media", columns = "(`image_media_id`)" },
-        },
-        foreignKeys = {
-            { column = "image_media_id", references = "`agent_phone_media` (`id`) ON DELETE SET NULL" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_weazel_article_media",
-        columns = {
-            { name = "id", type = "BIGINT UNSIGNED NOT NULL AUTO_INCREMENT" },
-            { name = "article_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "media_id", type = "BIGINT UNSIGNED NOT NULL" },
-            { name = "position", type = "TINYINT UNSIGNED NOT NULL" },
-        },
-        primaryKey = "id",
-        uniqueKeys = {
-            { name = "uniq_agent_phone_weazel_article_position", columns = "(`article_id`, `position`)" },
-            { name = "uniq_agent_phone_weazel_article_media", columns = "(`article_id`, `media_id`)" },
-        },
-        foreignKeys = {
-            { column = "article_id", references = "`agent_phone_weazel_articles` (`id`) ON DELETE CASCADE" },
-            { column = "media_id", references = "`agent_phone_media` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_citywarn_alerts",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "title", type = "VARCHAR(120) NOT NULL" },
-            { name = "body", type = "VARCHAR(2000) NOT NULL" },
-            { name = "instructions", type = "VARCHAR(2000) NOT NULL" },
-            { name = "category", type = "ENUM('public_safety','police','fire','medical','infrastructure','evacuation') NOT NULL" },
-            { name = "severity", type = "ENUM('information','warning','danger','extreme') NOT NULL" },
-            { name = "status", type = "ENUM('active','resolved','expired') NOT NULL DEFAULT 'active'" },
-            { name = "area_type", type = "ENUM('radius','district','city') NOT NULL" },
-            { name = "area_label", type = "VARCHAR(120) NOT NULL" },
-            { name = "center_x", type = "DECIMAL(12,4) NULL" },
-            { name = "center_y", type = "DECIMAL(12,4) NULL" },
-            { name = "radius", type = "INT UNSIGNED NULL" },
-            { name = "source_job", type = "VARCHAR(64) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "source_label", type = "VARCHAR(120) NOT NULL" },
-            { name = "author_identifier", type = "VARCHAR(80) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "author_name", type = "VARCHAR(120) NOT NULL" },
-            { name = "revision", type = "INT UNSIGNED NOT NULL DEFAULT 1" },
-            { name = "starts_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "expires_at", type = "DATETIME NOT NULL" },
-            { name = "resolved_at", type = "DATETIME NULL" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-            { name = "updated_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        indexes = {
-            { name = "idx_agent_phone_citywarn_active", columns = "(`status`, `expires_at`, `created_at`, `id`)" },
-            { name = "idx_agent_phone_citywarn_area", columns = "(`area_type`, `status`, `created_at`, `id`)" },
-            { name = "idx_agent_phone_citywarn_source", columns = "(`source_job`, `created_at`, `id`)" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
-    {
-        name = "agent_phone_citywarn_updates",
-        columns = {
-            { name = "id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "alert_id", type = "CHAR(36) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "kind", type = "ENUM('published','update','resolved') NOT NULL" },
-            { name = "message", type = "VARCHAR(2000) NOT NULL" },
-            { name = "actor_identifier", type = "VARCHAR(80) NOT NULL", characterSet = "ascii", collation = "ascii_bin" },
-            { name = "actor_name", type = "VARCHAR(120) NOT NULL" },
-            { name = "created_at", type = "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP" },
-        },
-        primaryKey = "id",
-        indexes = {
-            { name = "idx_agent_phone_citywarn_timeline", columns = "(`alert_id`, `created_at`, `id`)" },
-        },
-        foreignKeys = {
-            { column = "alert_id", references = "`agent_phone_citywarn_alerts` (`id`) ON DELETE CASCADE" },
-        },
-        tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
-    },
 }
 
 schema[#schema + 1] = AgentPhoneConfiguratorSchema
@@ -2957,12 +2539,6 @@ Bridge.Database.Migrate("agent_phone", schema)
 Bridge.Database.Query([[
     INSERT IGNORE INTO `agent_phone_fliptok_video_media` (`video_id`, `media_id`, `sort_order`)
     SELECT `id`, `media_id`, 1 FROM `agent_phone_fliptok_videos`
-]], {})
-Bridge.Database.Query([[
-    INSERT IGNORE INTO `agent_phone_weazel_article_media` (`article_id`, `media_id`, `position`)
-    SELECT `id`, `image_media_id`, 1
-    FROM `agent_phone_weazel_articles`
-    WHERE `image_media_id` IS NOT NULL
 ]], {})
 Bridge.Database.Query("DELETE FROM `agent_phone_feather_notifications` WHERE `kind` = 'repost'", {})
 Bridge.Database.Query("DELETE FROM `agent_phone_feather_reactions` WHERE `kind` = 'repost'", {})
@@ -3035,10 +2611,6 @@ Bridge.Database.Query([[
 ]], {})
 Bridge.Database.Query([[
     ALTER TABLE `agent_phone_marketplace_images`
-    MODIFY COLUMN `gradient` VARCHAR(2200) NOT NULL
-]], {})
-Bridge.Database.Query([[
-    ALTER TABLE `agent_phone_pages_images`
     MODIFY COLUMN `gradient` VARCHAR(2200) NOT NULL
 ]], {})
 Bridge.Database.EnsureIndex("agent_phone_devices", "uniq_agent_phone_devices_sim", "(`sim_id`)", { unique = true })

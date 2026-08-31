@@ -22,13 +22,11 @@ local valid_apps = {
     camera = true,
     citymarkt = true,
     companies = true,
-    crewlink = true,
     darkchat = true,
     feather = true,
     flare = true,
     fliptok = true,
     house = true,
-    ["local-pages"] = true,
     mail = true,
     map = true,
     messages = true,
@@ -194,21 +192,6 @@ local function canonical_profile(device, app_id, id)
                 link = "agentphone://flare/profile/" .. id,
             }
         end
-    elseif app_id == "crewlink" and device.account_id then
-        local profile = first_row([[
-            SELECT p.`username`, g.`name` AS `group_name`
-            FROM `agent_phone_crewlink_profiles` p
-            LEFT JOIN `agent_phone_crewlink_groups` g ON g.`id` = p.`active_group_id`
-            WHERE p.`id` = ? AND p.`account_id` = ? LIMIT 1
-        ]], { id, tonumber(device.account_id) })
-        if profile then
-            return {
-                title = "@" .. profile.username,
-                subtitle = profile.group_name,
-                copyText = "@" .. profile.username,
-                link = "agentphone://crewlink/profile/" .. id,
-            }
-        end
     elseif app_id == "darkchat" and device.account_id then
         local profile = first_row([[
             SELECT `alias`, `dark_id`, `invite_code` FROM `agent_phone_darkchat_profiles`
@@ -241,39 +224,6 @@ local function canonical_profile(device, app_id, id)
         end
     end
     return nil
-end
-
-local function canonical_crewlink_invite(device, invite_code)
-    if not device.account_id
-        or type(invite_code) ~= "string"
-        or #invite_code ~= 8
-        or invite_code:find("[^A-Z0-9]")
-    then
-        return nil
-    end
-    local group = first_row([[
-        SELECT g.`name`, g.`invite_code`
-        FROM `agent_phone_crewlink_profiles` p
-        JOIN `agent_phone_crewlink_memberships` m ON m.`profile_id` = p.`id`
-        JOIN `agent_phone_crewlink_groups` g ON g.`id` = m.`group_id`
-        WHERE p.`account_id` = ? AND g.`invite_code` = ?
-            AND m.`role` IN ('owner', 'coordinator')
-        LIMIT 1
-    ]], { tonumber(device.account_id), invite_code })
-    if not group then
-        return nil
-    end
-    local locale = AgentPhoneLocales.Resolve(Config.Bridge.Locale).Nui.Apps.crewlink
-    local title = locale.shareInviteTitle:gsub("{group}", function() return group.name end)
-    local copy_text = locale.shareInviteBody
-        :gsub("{code}", function() return group.invite_code end)
-        :gsub("{group}", function() return group.name end)
-    return {
-        title = title,
-        subtitle = group.invite_code,
-        copyText = copy_text,
-        link = "agentphone://crewlink/invite/" .. group.invite_code,
-    }
 end
 
 local function canonical_post(device, app_id, id)
@@ -354,25 +304,6 @@ local function canonical_post(device, app_id, id)
                 copyText = "@" .. post.handle .. ": " .. post.caption,
                 imageUrl = post.image_url,
                 link = "agentphone://fliptok/video/" .. id,
-            }
-        end
-    elseif app_id == "local-pages" then
-        local post = first_row([[
-            SELECT post.`title`, post.`body`, SUBSTRING_INDEX(account.`email`, '@', 1) AS `author_name`,
-                media.`url` AS `image_url`
-            FROM `agent_phone_pages_posts` post
-            JOIN `agent_phone_accounts` account ON account.`id` = post.`account_id`
-            LEFT JOIN `agent_phone_pages_images` image ON image.`post_id` = post.`id` AND image.`sort_order` = 1
-            LEFT JOIN `agent_phone_media` media ON media.`id` = image.`media_id`
-            WHERE post.`id` = ? LIMIT 1
-        ]], { id })
-        if post then
-            return {
-                title = post.title,
-                subtitle = post.author_name,
-                copyText = post.title .. "\n" .. post.body,
-                imageUrl = post.image_url,
-                link = "agentphone://local-pages/post/" .. id,
             }
         end
     elseif app_id == "citymarkt" then
@@ -766,10 +697,8 @@ local function sanitize_payload(source, device, data)
         elseif data.kind == "text" and payload.id then
             canonical = canonical_text(device, app_id, payload.id)
         elseif data.kind == "link" and payload.id then
-            if app_id == "citymarkt" or app_id == "local-pages" then
+            if app_id == "citymarkt" then
                 canonical = canonical_post(device, app_id, payload.id)
-            elseif app_id == "crewlink" then
-                canonical = canonical_crewlink_invite(device, payload.id)
             end
         end
         if not canonical then

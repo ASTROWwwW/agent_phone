@@ -62,7 +62,6 @@ import { useAppStoreStore } from '@/stores/app-store'
 import { useEasyShareStore } from '@/stores/easyshare'
 import { useMarketplaceStore } from '@/stores/marketplace'
 import { useMessageMediaStore } from '@/stores/messageMedia'
-import { usePagesStore } from '@/stores/pages'
 import { usePhoneStore } from '@/stores/phone'
 import { parseDatabaseDate, type DatabaseDateValue } from '@/utils/date'
 import { formatPhoneNumber } from '@/utils/phone'
@@ -127,7 +126,6 @@ const appStore = useAppStoreStore()
 const easyShare = useEasyShareStore()
 const marketplace = useMarketplaceStore()
 const messageMedia = useMessageMediaStore()
-const pages = usePagesStore()
 const logoutDialogOpen = ref(false)
 const authMode = ref<'login' | 'register'>('login')
 const authError = ref('')
@@ -258,11 +256,6 @@ const tabs = [
 ] as const
 
 const isAuthenticated = computed(() => appAuth.isSignedIn('citymarkt'))
-const localPagesInstalled = computed(
-  () =>
-    appStore.isInstalled('local-pages') &&
-    !appStore.homeLayout.hidden.includes('local-pages'),
-)
 const canSaveProfile = computed(() => {
   const nameLength = profileDraft.value.displayName.trim().length
   return (
@@ -393,67 +386,6 @@ function setFeedback(key: string): void {
   window.setTimeout(() => {
     feedback.value = ''
   }, 2600)
-}
-
-async function shareToLocalPages(listingId?: string): Promise<void> {
-  const id = listingId ?? selectedListing.value?.id
-  if (!id) return
-  if (!localPagesInstalled.value) {
-    setFeedback('Apps.localPages.cityMarktAppMissing')
-    return
-  }
-  if (!pages.profile?.exists) {
-    setFeedback('Apps.localPages.cityMarktAccountMissing')
-    return
-  }
-  const existingPost = pages.ownItems.find(
-    (item) => item.citymarkt_listing_id === id,
-  )
-  if (existingPost) {
-    await router.push({
-      path: '/apps/local-pages',
-      query: {
-        easyShareId: existingPost.id,
-        easyShareKind: 'post',
-      },
-    })
-    return
-  }
-  await router.push({
-    path: '/apps/local-pages',
-    query: {
-      cityMarktListingId: id,
-      compose: '1',
-    },
-  })
-}
-
-function localPagesShareLabel(listingId: string): string {
-  if (!localPagesInstalled.value)
-    return phone.t('Apps.localPages.cityMarktAppMissing')
-  if (!pages.profile?.exists)
-    return phone.t('Apps.localPages.cityMarktAccountMissing')
-  return phone.t(
-    hasLocalPagesPost(listingId)
-      ? 'Apps.localPages.cityMarktAlreadyShared'
-      : 'Apps.localPages.cityMarktShare',
-  )
-}
-
-function localPagesShareHint(listingId: string): string {
-  if (!localPagesInstalled.value)
-    return phone.t('Apps.localPages.cityMarktInstallHint')
-  if (!pages.profile?.exists)
-    return phone.t('Apps.localPages.cityMarktAccountHint')
-  return phone.t(
-    hasLocalPagesPost(listingId)
-      ? 'Apps.localPages.cityMarktOpenSharedHint'
-      : 'Apps.localPages.cityMarktShareHint',
-  )
-}
-
-function hasLocalPagesPost(listingId: string): boolean {
-  return pages.ownItems.some((item) => item.citymarkt_listing_id === listingId)
 }
 
 function shareListing(): void {
@@ -1039,10 +971,7 @@ onMounted(async () => {
     screen.value = 'sell'
   }
   if (isAuthenticated.value) {
-    await Promise.all([
-      marketplace.loadProfile(),
-      localPagesInstalled.value ? pages.loadProfile() : Promise.resolve(false),
-    ])
+    await marketplace.loadProfile()
     if (!marketplace.profile?.exists) {
       if (!profileSelection) syncProfileDraft()
       profileEditing.value = true
@@ -1477,23 +1406,7 @@ onMounted(async () => {
                     <strong>{{ item.title }}</strong>
                     <small>{{ label('status', item.status) }}</small>
                   </div>
-                  <ChevronRight :size="17" /></button
-                ><button
-                  v-if="
-                    profileMode === 'own' &&
-                    (item.status === 'active' || item.status === 'reserved')
-                  "
-                  class="citymarkt-profile-listing__share"
-                  type="button"
-                  @click="shareToLocalPages(item.id)"
-                >
-                  <CircleCheck
-                    v-if="hasLocalPagesPost(item.id)"
-                    :size="15"
-                  /><Share2 v-else :size="15" />{{
-                    localPagesShareLabel(item.id)
-                  }}
-                </button></sky-glass
+                  <ChevronRight :size="17" /></button></sky-glass
               >
             </div>
           </template>
@@ -1626,25 +1539,6 @@ onMounted(async () => {
           >
         </button>
         <template v-if="selectedListing.is_owner">
-          <button
-            v-if="
-              selectedListing.status === 'active' ||
-              selectedListing.status === 'reserved'
-            "
-            class="citymarkt__pages-share"
-            type="button"
-            @click="shareToLocalPages()"
-          >
-            <CircleCheck
-              v-if="hasLocalPagesPost(selectedListing.id)"
-              :size="17"
-            /><Share2 v-else :size="17" /><span
-              ><strong>{{ localPagesShareLabel(selectedListing.id) }}</strong
-              ><small>{{
-                localPagesShareHint(selectedListing.id)
-              }}</small></span
-            >
-          </button>
           <div class="citymarkt__owner-actions">
             <button
               v-if="

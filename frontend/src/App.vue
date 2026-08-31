@@ -25,7 +25,6 @@ import NotificationPhonePreview from '@/components/NotificationPhonePreview.vue'
 import PhoneStatusBar from '@/components/PhoneStatusBar.vue'
 import EasyShareSheet from '@/components/EasyShareSheet.vue'
 import PayphoneOverlay from '@/components/PayphoneOverlay.vue'
-import RadioHud from '@/components/RadioHud.vue'
 import SimPhonePicker, {
   type SimPhoneChoice,
 } from '@/components/SimPhonePicker.vue'
@@ -34,10 +33,8 @@ import { useClockStore } from '@/stores/clock'
 import { useGamesStore } from '@/features/games/store'
 import { useCallsStore } from '@/stores/calls'
 import { useBankingStore } from '@/stores/banking'
-import { useCryptoStore } from '@/stores/crypto'
 import { useBillingStore } from '@/stores/billing'
 import { useCompaniesStore } from '@/stores/companies'
-import { useCityWarnStore } from '@/stores/citywarn'
 import { useAccountStore } from '@/stores/account'
 import { useAppAuthStore } from '@/stores/app-auth'
 import { useMailStore } from '@/stores/mail'
@@ -57,7 +54,6 @@ import { useNotesStore } from '@/stores/notes'
 import { useMemosStore } from '@/stores/memos'
 import { useWeatherStore } from '@/stores/weather'
 import { useEasyShareStore } from '@/stores/easyshare'
-import { useRadioStore } from '@/stores/radio'
 import {
   useNotificationsStore,
   type PhoneNotification,
@@ -74,8 +70,6 @@ import type {
 import type { PhoneCall, PhoneNumberFormat } from '@/types/phone'
 import type { DynamicIslandActivity } from '@/types/dynamicIsland'
 import type { EasyShareEvent } from '@/types/easyshare'
-import type { CryptoMarketChangedData } from '@/types/crypto'
-import type { CityWarnEventData } from '@/types/citywarn'
 import { nuiCall } from '@/utils/nui'
 import {
   installPhoneAudioController,
@@ -98,7 +92,6 @@ type AppMessage = {
     | MailEventData
     | MarketplaceEventData
     | CompaniesEventData
-    | CityWarnEventData
     | MessagesEventData
     | DarkChatEventData
     | FlareEventData
@@ -108,7 +101,6 @@ type AppMessage = {
     | PicstagramNotificationData
     | FeatherNotificationData
     | BankingChangedData
-    | CryptoMarketChangedData
     | BillingNotificationData
     | EasyShareEvent
     | PhoneCall
@@ -275,15 +267,6 @@ type BankingChangedData = {
   sender?: string
 }
 
-type CrewLinkNotificationData = {
-  actor?: string
-  device?: PhoneNotificationDevicePayload
-  groupName?: string
-  kind?: 'invite' | 'member_joined' | 'ping' | 'role' | 'removed'
-  pingLabel?: string
-  text?: string
-  title?: string
-}
 const REFERENCE_VIEWPORT_WIDTH = 1920
 const REFERENCE_VIEWPORT_HEIGHT = 1080
 const PHONE_BASE_SCALE = 0.69 * 1.2
@@ -309,10 +292,8 @@ const clock = useClockStore()
 const games = useGamesStore()
 const calls = useCallsStore()
 const banking = useBankingStore()
-const crypto = useCryptoStore()
 const billing = useBillingStore()
 const companies = useCompaniesStore()
-const citywarn = useCityWarnStore()
 const mail = useMailStore()
 const messages = useMessagesStore()
 const darkchat = useDarkChatStore()
@@ -329,7 +310,6 @@ const notes = useNotesStore()
 const memos = useMemosStore()
 const weather = useWeatherStore()
 const easyShare = useEasyShareStore()
-const radio = useRadioStore()
 const notifications = useNotificationsStore()
 const route = useRoute()
 const router = useRouter()
@@ -342,16 +322,10 @@ const WHITE_STATUS_BAR_APP_IDS = new Set([
   'calculator',
   'camera',
   'fliptok',
-  'neon-drop',
   'agent-flappy',
   'snake',
-  'tower-stack',
 ])
-const DARK_STATUS_BAR_APP_IDS = new Set([
-  'memory',
-  'minesweeper',
-  'number-merge',
-])
+const DARK_STATUS_BAR_APP_IDS = new Set(['number-merge'])
 const isDynamicIslandGalleryRoute = computed(
   () => isDevelopment && route.name === 'development-dynamic-islands',
 )
@@ -917,25 +891,6 @@ function onMessage(event: MessageEvent<AppMessage>): void {
       }
     }
     notifications.show(notification)
-  } else if (event.data?.type === 'citywarn:changed' && event.data.data) {
-    const data = event.data.data as CityWarnEventData
-    if (data.alert) citywarn.applyEvent(data)
-    if (phone.isOpen && citywarn.initialized) void citywarn.refresh()
-
-    const alert = data.alert
-    if (alert && citywarn.accepts(alert)) {
-      notifications.show({
-        appId: 'citywarn',
-        critical: alert.severity === 'danger' || alert.severity === 'extreme',
-        persistent: alert.severity === 'extreme',
-        route: `/apps/citywarn?alertId=${encodeURIComponent(alert.id)}`,
-        subtitle: data.sourceLabel ?? alert.sourceLabel,
-        text:
-          data.text ??
-          phone.t(`Apps.citywarn.notifications.${data.kind ?? 'update'}`),
-        title: data.title ?? phone.t('Apps.citywarn.name'),
-      })
-    }
   } else if (
     event.data?.type === 'fliptok:verification-changed' &&
     event.data.data
@@ -1195,11 +1150,6 @@ function onMessage(event: MessageEvent<AppMessage>): void {
         title: phone.t('Apps.banking.notifications.receivedTitle'),
       })
     }
-  } else if (event.data?.type === 'crypto:changed' && event.data.data) {
-    const data = event.data.data as CryptoMarketChangedData
-    crypto.applyMarketUpdate(data.markets)
-  } else if (event.data?.type === 'crypto:account-changed') {
-    if (crypto.data?.authenticated) void crypto.load()
   } else if (event.data?.type === 'billing:changed') {
     void billing.loadOverview()
   } else if (event.data?.type === 'billing:new' && event.data.data) {
@@ -1215,25 +1165,6 @@ function onMessage(event: MessageEvent<AppMessage>): void {
           issuer: data.issuer ?? '',
         }),
       title: data.title ?? phone.t('Apps.billing.name'),
-    }
-    if (
-      data.device &&
-      (!phone.isOpen || data.device.imei !== phone.device?.imei)
-    ) {
-      notification.device = {
-        imei: data.device.imei,
-        name: data.device.name,
-        preferences: parsePhonePreferences(data.device.settings ?? null),
-      }
-    }
-    notifications.show(notification)
-  } else if (event.data?.type === 'crewlink:notification' && event.data.data) {
-    const data = event.data.data as CrewLinkNotificationData
-    const notification: PhoneNotificationInput = {
-      appId: 'crewlink',
-      subtitle: data.groupName,
-      text: data.text ?? phone.t('Apps.crewlink.notifications.default'),
-      title: data.title ?? phone.t('Apps.crewlink.name'),
     }
     if (
       data.device &&
@@ -1660,7 +1591,6 @@ watch(
   hardwareAlertVolume,
   (volume) => {
     setPhoneOutputVolume(volume / 100)
-    if (radio.data.connected) void radio.setVolume(volume)
   },
   { immediate: true },
 )
@@ -1773,7 +1703,6 @@ onBeforeUnmount(() => {
   </SkyProvider>
   <PhoneMediaCapture />
   <PhoneMemoRecorder />
-  <RadioHud />
   <PayphoneOverlay />
   <SimPhonePicker
     v-if="simPicker"

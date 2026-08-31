@@ -2,12 +2,7 @@ import { defineStore } from 'pinia'
 
 import { usePhoneStore } from '@/stores/phone'
 
-export const APP_AUTH_IDS = [
-  'citymarkt',
-  'local-pages',
-  'feather',
-  'crewlink',
-] as const
+export const APP_AUTH_IDS = ['citymarkt', 'feather'] as const
 
 export type AppAuthId = (typeof APP_AUTH_IDS)[number]
 
@@ -20,9 +15,7 @@ type PersistedAppAuth = {
 function emptySessions(): Record<AppAuthId, boolean> {
   return {
     citymarkt: false,
-    'local-pages': false,
     feather: false,
-    crewlink: false,
   }
 }
 

@@ -97,15 +97,10 @@ describe('phone apps use Agent UI', () => {
       'FeatherApp.vue': 2,
       'FlareApp.vue': 1,
       'FlipTokApp.vue': 2,
-      'MemoryApp.vue': 2,
-      'MinesweeperApp.vue': 3,
-      'NeonDropApp.vue': 3,
       'NumberMergeApp.vue': 3,
       'PicstagramApp.vue': 6,
       'SkyFlappyApp.vue': 3,
       'SnakeApp.vue': 2,
-      'TowerStackApp.vue': 3,
-      'WeazelNewsApp.vue': 2,
     }
 
     for (const [file, minimum] of Object.entries(minimumGlassButtons)) {
