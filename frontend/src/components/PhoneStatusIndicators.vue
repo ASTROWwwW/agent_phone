@@ -1,18 +1,39 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Plane } from 'lucide-vue-next'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     airplaneMode?: boolean
+    batteryLevel?: number
     cellularEnabled?: boolean
     wifiEnabled?: boolean
   }>(),
   {
     airplaneMode: false,
+    batteryLevel: 100,
     cellularEnabled: true,
     wifiEnabled: true,
   },
 )
+
+// Piste interieure de la batterie, en unites du viewBox : de x = 2 a x = 23.
+const TRACK_X = 2
+const TRACK_WIDTH = 21
+const FILL_RADIUS = 2.3
+
+const clampedLevel = computed(() =>
+  Math.min(100, Math.max(0, Math.round(props.batteryLevel))),
+)
+
+const fillWidth = computed(() => {
+  if (clampedLevel.value === 0) return 0
+  // Sous un diametre de coin, un rectangle arrondi degenere en trait
+  // illisible : on garde une pastille minimale pour que 1 % reste visible.
+  return Math.max(FILL_RADIUS * 2, (TRACK_WIDTH * clampedLevel.value) / 100)
+})
+
+const isLow = computed(() => clampedLevel.value <= 20)
 </script>
 
 <template>
@@ -44,10 +65,29 @@ withDefaults(
       <path d="M8.5 13a3.8 3.8 0 0 1 5 0" />
       <circle cx="11" cy="15.3" r="1.45" />
     </svg>
-    <svg class="phone-status-indicators__battery" viewBox="0 0 29 16">
-      <rect x="0.75" y="0.75" width="25" height="14.5" rx="4" />
-      <rect x="3" y="3" width="14.5" height="10" rx="2.25" />
-      <rect x="26.6" y="5" width="2.4" height="6" rx="1.2" />
+    <svg
+      class="phone-status-indicators__battery"
+      :class="{ 'phone-status-indicators__battery--low': isLow }"
+      viewBox="0 0 27.4 13"
+    >
+      <rect x="0.5" y="0.5" width="24" height="12" rx="4.2" />
+      <rect
+        class="phone-status-indicators__battery-cap"
+        x="25.5"
+        y="4.35"
+        width="1.9"
+        height="4.3"
+        rx="0.95"
+      />
+      <rect
+        v-if="fillWidth > 0"
+        class="phone-status-indicators__battery-level"
+        :x="TRACK_X"
+        y="2"
+        :width="fillWidth"
+        height="9"
+        :rx="FILL_RADIUS"
+      />
     </svg>
   </span>
 </template>
@@ -86,14 +126,25 @@ withDefaults(
 }
 
 .phone-status-indicators__battery {
-  width: 25px;
-  height: 14px;
+  width: 27px;
+  height: 13px;
   fill: currentColor;
 }
 
+/* Coque et embout restent en retrait : seul le niveau est a pleine opacite,
+   comme dans la barre d'etat d'iOS. */
 .phone-status-indicators__battery rect:first-child {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.5;
+  stroke-width: 1;
+  opacity: 0.38;
+}
+
+.phone-status-indicators__battery-cap {
+  opacity: 0.42;
+}
+
+.phone-status-indicators__battery--low .phone-status-indicators__battery-level {
+  fill: #ff453a;
 }
 </style>
