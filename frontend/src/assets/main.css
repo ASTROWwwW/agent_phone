@@ -4292,18 +4292,32 @@ button {
    choisit sur une rangee de pastilles plutot que dans une liste qui deborde.
    ------------------------------------------------------------------------- */
 
+/* La poignee de la feuille se confond avec le contenu : on lui donne une
+   bande a elle, separee par un filet, pour que la prise soit lisible. La
+   poignee etant collante, le filet reste visible pendant le defilement. */
+.banking-app .sky-sheet__grabber {
+  height: 42px;
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+}
+
+.banking-app .sky-sheet__grabber::after {
+  width: 48px;
+  height: 5px;
+  background: rgb(255 255 255 / 34%);
+}
+
 /* La feuille n'a pas de gouttiere propre : sans elle le champ et la rangee
    de contacts sont coupes par le bord de l'ecran. */
 .banking-send {
   --banking-sheet-gutter: 16px;
-  gap: 20px;
-  padding: 4px var(--banking-sheet-gutter) 10px;
+  gap: 30px;
+  padding: 6px var(--banking-sheet-gutter) 30px;
 }
 
 .banking-send__head {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
 }
 
 .banking-send__available {
@@ -4319,7 +4333,7 @@ button {
 .banking-send__block {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .banking-send__label {
@@ -4357,10 +4371,10 @@ button {
 
 .banking-send__contacts {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  margin: 0 calc(var(--banking-sheet-gutter) * -1);
-  padding: 2px var(--banking-sheet-gutter) 4px;
+  margin: 10px calc(var(--banking-sheet-gutter) * -1) 0;
+  padding: 2px var(--banking-sheet-gutter) 6px;
   scrollbar-width: none;
 }
 
@@ -4429,7 +4443,7 @@ button {
   display: flex;
   align-items: baseline;
   gap: 6px;
-  padding: 8px 2px 4px;
+  padding: 2px 2px 4px;
 }
 
 .banking-amount-field > span {
@@ -4448,6 +4462,7 @@ button {
   font-size: 44px;
   font-weight: 700;
   letter-spacing: -1.4px;
+  line-height: 1.05;
   outline: none;
 }
 
