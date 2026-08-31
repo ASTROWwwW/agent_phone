@@ -2,14 +2,14 @@
 import {
   ArrowDownLeft,
   ArrowRight,
+  ArrowLeftRight,
   ArrowUpRight,
   BarChart3,
   ChevronRight,
-  CircleDollarSign,
   House,
   Landmark,
+  Search,
   Send,
-  WalletCards,
 } from 'lucide-vue-next'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
@@ -48,11 +48,14 @@ import {
 } from '@/ui'
 
 type BankingTab = 'home' | 'activity'
+type BankingFilter = 'all' | 'income' | 'expenses' | 'transfers'
 
 const phone = usePhoneStore()
 const banking = useBankingStore()
 const calls = useCallsStore()
 const activeTab = ref<BankingTab>('home')
+const activeFilter = ref<BankingFilter>('all')
+const search = ref('')
 const action = ref<BankingAction | null>(null)
 const selectedTransaction = ref<BankingTransaction | null>(null)
 const amount = ref('')
@@ -93,6 +96,11 @@ const transactionIcons: Record<BankingTransactionKind, typeof Send> = {
 const isIncoming = (kind: BankingTransactionKind): boolean =>
   kind === 'deposit' || kind === 'transfer_in'
 
+const isTransfer = (kind: BankingTransactionKind): boolean =>
+  kind === 'transfer_in' || kind === 'transfer_out'
+
+const transactions = computed(() => banking.overview?.transactions ?? [])
+
 const chart = computed(() => {
   const days = Array.from({ length: 7 }, (_, offset) => {
     const date = new Date()
@@ -100,7 +108,7 @@ const chart = computed(() => {
     date.setDate(date.getDate() - (6 - offset))
     return { date, incoming: 0, outgoing: 0 }
   })
-  for (const transaction of banking.overview?.transactions ?? []) {
+  for (const transaction of transactions.value) {
     const transactionDate = new Date(transaction.createdAt)
     transactionDate.setHours(0, 0, 0, 0)
     const day = days.find(
@@ -116,23 +124,61 @@ const chart = computed(() => {
   )
   return days.map((day) => ({
     ...day,
-    incomingHeight: Math.max(5, (day.incoming / maximum) * 100),
+    incomingHeight: Math.max(4, (day.incoming / maximum) * 100),
     label: new Intl.DateTimeFormat(phone.lang, { weekday: 'narrow' }).format(
       day.date,
     ),
-    outgoingHeight: Math.max(5, (day.outgoing / maximum) * 100),
+    outgoingHeight: Math.max(4, (day.outgoing / maximum) * 100),
   }))
 })
 
+// Graduation de l'axe vertical : quatre paliers sur le maximum reel de la
+// semaine, arrondis pour rester lisibles.
+const chartScale = computed(() => {
+  const maximum = Math.max(
+    1,
+    ...chart.value.flatMap((day) => [day.incoming, day.outgoing]),
+  )
+  return [4, 3, 2, 1].map((step) => compactMoney((maximum / 4) * step))
+})
+
 const totals = computed(() =>
-  (banking.overview?.transactions ?? []).reduce(
+  transactions.value.reduce(
     (result, transaction) => {
       if (isIncoming(transaction.kind)) result.incoming += transaction.amount
       else result.outgoing += transaction.amount
+      if (isTransfer(transaction.kind)) result.transfers += transaction.amount
       return result
     },
-    { incoming: 0, outgoing: 0 },
+    { incoming: 0, outgoing: 0, transfers: 0 },
   ),
+)
+
+const filteredTransactions = computed(() => {
+  const query = search.value.trim().toLowerCase()
+  return transactions.value.filter((transaction) => {
+    if (activeFilter.value === 'income' && !isIncoming(transaction.kind))
+      return false
+    if (activeFilter.value === 'expenses' && isIncoming(transaction.kind))
+      return false
+    if (activeFilter.value === 'transfers' && !isTransfer(transaction.kind))
+      return false
+    if (!query) return true
+    return `${transactionTitle(transaction)} ${transaction.reference}`
+      .toLowerCase()
+      .includes(query)
+  })
+})
+
+// Numero de compte affiche sur la carte. Le backend n'en expose pas : on le
+// derive de l'identifiant du joueur, stable pour un meme personnage.
+const accountNumber = computed(() => {
+  const id = banking.overview?.playerId
+  return id === undefined ? '—' : `FLE-${String(id).padStart(4, '0')}`
+})
+
+const cardHolder = computed(() =>
+  (banking.overview?.playerName ?? '').toUpperCase(),
 )
 
 function formatMoney(value: number, signed = false): string {
@@ -142,6 +188,13 @@ function formatMoney(value: number, signed = false): string {
   }).format(Math.abs(value))
   const prefix = signed ? (value >= 0 ? '+' : '−') : ''
   return `${prefix}${banking.overview?.currency ?? '$'}${formatted}`
+}
+
+function compactMoney(value: number): string {
+  return new Intl.NumberFormat(phone.lang, {
+    maximumFractionDigits: value >= 10000 ? 0 : 1,
+    notation: 'compact',
+  }).format(value)
 }
 
 function formatDate(timestamp: number): string {
@@ -164,6 +217,18 @@ async function selectTab(nextTab: BankingTab): Promise<void> {
   activeTab.value = nextTab
   await nextTick()
   if (bankingScroll.value) bankingScroll.value.scrollTop = 0
+}
+
+function selectFilter(nextFilter: BankingFilter): void {
+  activeFilter.value = nextFilter
+}
+
+function updateSearch(event: Event): void {
+  if (!(event.target instanceof HTMLInputElement)) {
+    console.error('[banking] Search input emitted without an input target.')
+    return
+  }
+  search.value = event.target.value
 }
 
 function openAction(nextAction: BankingAction): void {
@@ -277,18 +342,21 @@ onBeforeUnmount(() => {
     class="banking-app pb-safe-24"
     :label="phone.t('Apps.banking.name')"
     :dark="phone.isDarkMode"
-    accent="#2d76ff"
-    accent-soft="rgba(45, 118, 255, 0.18)"
+    accent="#e8e8e8"
+    accent-soft="rgba(255, 255, 255, 0.08)"
   >
-    <div class="banking-app__aurora" aria-hidden="true"></div>
-
     <SkyNavbar
       class="banking-navbar"
       :aria-hidden="overlayOpened"
       :inert="overlayOpened"
-      :subtitle="phone.t('Apps.banking.welcome')"
-      :title="banking.overview?.playerName ?? phone.t('Common.loading')"
-    />
+    >
+      <template #title>
+        <span class="banking-brand">
+          <span class="banking-brand__name">FLEECA</span>
+          <span class="banking-brand__sub">B A N K</span>
+        </span>
+      </template>
+    </SkyNavbar>
 
     <div
       v-if="!banking.overview && banking.isLoading"
@@ -336,59 +404,105 @@ onBeforeUnmount(() => {
       >
         <SkySpinner :label="phone.t('Common.loading')" />
       </div>
+
       <template v-if="activeTab === 'home'">
-        <SkyGlass class="banking-balance">
-          <div class="banking-balance__label">
-            <span>{{ phone.t('Apps.banking.totalBalance') }}</span>
-            <small>#{{ banking.overview.playerId }}</small>
-          </div>
-          <strong>{{ formatMoney(banking.overview.bank) }}</strong>
-          <div class="banking-balance__trend">
-            <span>{{
-              formatMoney(totals.incoming - totals.outgoing, true)
-            }}</span>
-            {{ phone.t('Apps.banking.recentPeriod') }}
-          </div>
-        </SkyGlass>
+        <article class="banking-debit-card">
+          <header class="banking-debit-card__top">
+            <div>
+              <span class="banking-debit-card__label">
+                {{ phone.t('Apps.banking.accountNumber') }}
+              </span>
+              <strong class="banking-debit-card__iban">{{
+                accountNumber
+              }}</strong>
+            </div>
+            <svg
+              class="banking-debit-card__wave"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M8 8a6 6 0 0 1 0 8" />
+              <path d="M12 5a9 9 0 0 1 0 14" />
+              <path d="M16 2a12 12 0 0 1 0 20" />
+            </svg>
+          </header>
+
+          <span class="banking-debit-card__chip" aria-hidden="true"></span>
+
+          <p class="banking-debit-card__balance-label">
+            {{ phone.t('Apps.banking.totalBalance') }}
+          </p>
+          <strong class="banking-debit-card__balance">
+            {{ formatMoney(banking.overview.bank) }}
+          </strong>
+
+          <footer class="banking-debit-card__bottom">
+            <div>
+              <span class="banking-debit-card__label">
+                {{ phone.t('Apps.banking.debitCard') }}
+              </span>
+              <span class="banking-debit-card__holder">{{ cardHolder }}</span>
+            </div>
+            <div class="banking-debit-card__cash">
+              <span class="banking-debit-card__label">
+                {{ phone.t('Apps.banking.cash') }}
+              </span>
+              <span class="banking-debit-card__holder">{{
+                formatMoney(banking.overview.cash)
+              }}</span>
+            </div>
+          </footer>
+        </article>
 
         <section
-          class="banking-actions"
-          :aria-label="phone.t('Apps.banking.actions')"
+          class="banking-stats"
+          :aria-label="phone.t('Apps.banking.recentPeriod')"
         >
-          <SkyGlass
-            component="button"
-            type="button"
-            class="banking-action banking-action--primary"
-            @click="openAction('transfer')"
-          >
-            <span class="banking-action__icon"><Send :size="20" /></span>
-            <b>{{ phone.t('Apps.banking.send') }}</b>
-            <ChevronRight :size="16" aria-hidden="true" />
+          <SkyGlass class="banking-stat">
+            <span class="banking-stat__icon"><ArrowDownLeft :size="17" /></span>
+            <span class="banking-stat__label">{{
+              phone.t('Apps.banking.totalIncome')
+            }}</span>
+            <b class="banking-stat__amount is-incoming">{{
+              formatMoney(totals.incoming)
+            }}</b>
+          </SkyGlass>
+          <SkyGlass class="banking-stat">
+            <span class="banking-stat__icon"><ArrowUpRight :size="17" /></span>
+            <span class="banking-stat__label">{{
+              phone.t('Apps.banking.totalExpenses')
+            }}</span>
+            <b class="banking-stat__amount">{{ formatMoney(totals.outgoing) }}</b>
+          </SkyGlass>
+          <SkyGlass class="banking-stat">
+            <span class="banking-stat__icon"
+              ><ArrowLeftRight :size="17"
+            /></span>
+            <span class="banking-stat__label">{{
+              phone.t('Apps.banking.totalTransfers')
+            }}</span>
+            <b class="banking-stat__amount">{{
+              formatMoney(totals.transfers)
+            }}</b>
           </SkyGlass>
         </section>
 
-        <SkyCard class="banking-card banking-accounts">
-          <div class="banking-section-title">
-            <h2>{{ phone.t('Apps.banking.accounts') }}</h2>
-          </div>
-          <SkyList inset strong class="banking-account-list">
-            <SkyListItem
-              :title="phone.t('Apps.banking.bankAccount')"
-              :after="formatMoney(banking.overview.bank)"
-            >
-              <template #media><WalletCards :size="18" /></template>
-            </SkyListItem>
-            <SkyListItem
-              :title="phone.t('Apps.banking.cash')"
-              :after="formatMoney(banking.overview.cash)"
-            >
-              <template #media><CircleDollarSign :size="18" /></template>
-            </SkyListItem>
-          </SkyList>
-        </SkyCard>
+        <SkyGlass
+          component="button"
+          type="button"
+          class="banking-transfer"
+          @click="openAction('transfer')"
+        >
+          <span class="banking-transfer__icon"><Send :size="18" /></span>
+          <span class="banking-transfer__copy">
+            <b>{{ phone.t('Apps.banking.quickTransfer') }}</b>
+            <small>{{ phone.t('Apps.banking.quickTransferBody') }}</small>
+          </span>
+          <ChevronRight :size="17" aria-hidden="true" />
+        </SkyGlass>
 
-        <section class="banking-transactions">
-          <div class="banking-section-title">
+        <section class="banking-panel">
+          <div class="banking-panel__head">
             <h2>{{ phone.t('Apps.banking.latestTransactions') }}</h2>
             <SkyLink
               component="button"
@@ -398,42 +512,38 @@ onBeforeUnmount(() => {
               {{ phone.t('Apps.banking.viewAll') }}
             </SkyLink>
           </div>
-          <SkyCard
-            v-if="banking.overview.transactions.length"
-            :content-wrap="false"
-            class="banking-card banking-transaction-card"
+          <SkyList
+            v-if="transactions.length"
+            inset
+            strong
+            class="banking-transaction-list"
           >
-            <SkyList inset strong class="banking-transaction-list">
-              <SkyListItem
-                v-for="transaction in banking.overview.transactions.slice(0, 5)"
-                :key="transaction.id"
-                :subtitle="formatDate(transaction.createdAt)"
-                :title="transactionTitle(transaction)"
-                link
-                link-component="button"
-                @click="openTransaction(transaction)"
-              >
-                <template #media>
-                  <component
-                    :is="transactionIcons[transaction.kind]"
-                    :size="17"
-                  />
-                </template>
-                <template #after>
-                  <b :class="{ 'is-incoming': isIncoming(transaction.kind) }">
-                    {{
-                      formatMoney(
-                        isIncoming(transaction.kind)
-                          ? transaction.amount
-                          : -transaction.amount,
-                        true,
-                      )
-                    }}
-                  </b>
-                </template>
-              </SkyListItem>
-            </SkyList>
-          </SkyCard>
+            <SkyListItem
+              v-for="transaction in transactions.slice(0, 5)"
+              :key="transaction.id"
+              :subtitle="formatDate(transaction.createdAt)"
+              :title="transactionTitle(transaction)"
+              link
+              link-component="button"
+              @click="openTransaction(transaction)"
+            >
+              <template #media>
+                <component :is="transactionIcons[transaction.kind]" :size="17" />
+              </template>
+              <template #after>
+                <b :class="{ 'is-incoming': isIncoming(transaction.kind) }">
+                  {{
+                    formatMoney(
+                      isIncoming(transaction.kind)
+                        ? transaction.amount
+                        : -transaction.amount,
+                      true,
+                    )
+                  }}
+                </b>
+              </template>
+            </SkyListItem>
+          </SkyList>
           <p v-else class="banking-no-transactions">
             {{ phone.t('Apps.banking.noTransactions') }}
           </p>
@@ -441,16 +551,14 @@ onBeforeUnmount(() => {
       </template>
 
       <template v-else>
-        <section class="banking-activity-hero">
-          <span>{{ phone.t('Apps.banking.activity') }}</span>
-          <strong>{{
-            formatMoney(totals.incoming - totals.outgoing, true)
-          }}</strong>
-          <small>{{ phone.t('Apps.banking.recentPeriod') }}</small>
-        </section>
-
-        <SkyCard :content-wrap="false" class="banking-card banking-chart-card">
-          <div class="banking-chart-legend">
+        <SkyCard :content-wrap="false" class="banking-analytics">
+          <div class="banking-analytics__head">
+            <h2>{{ phone.t('Apps.banking.analytics') }}</h2>
+            <span class="banking-analytics__period">{{
+              phone.t('Apps.banking.thisWeek')
+            }}</span>
+          </div>
+          <div class="banking-analytics__legend">
             <span
               ><i class="is-incoming"></i
               >{{ phone.t('Apps.banking.incoming') }}</span
@@ -458,70 +566,115 @@ onBeforeUnmount(() => {
             <span><i></i>{{ phone.t('Apps.banking.outgoing') }}</span>
           </div>
           <div class="banking-chart">
-            <div
-              v-for="day in chart"
-              :key="day.date.getTime()"
-              class="banking-chart__day"
-              role="img"
-              :aria-label="
-                phone.t('Apps.banking.chartDaySummary', {
-                  day: day.label,
-                  incoming: formatMoney(day.incoming),
-                  outgoing: formatMoney(day.outgoing),
-                })
-              "
-            >
-              <div>
-                <i
-                  class="is-incoming"
-                  :style="{ height: `${day.incomingHeight}%` }"
-                ></i>
-                <i :style="{ height: `${day.outgoingHeight}%` }"></i>
+            <div class="banking-chart__axis" aria-hidden="true">
+              <span v-for="step in chartScale" :key="step">{{ step }}</span>
+            </div>
+            <div class="banking-chart__grid" aria-hidden="true">
+              <i v-for="line in 4" :key="line"></i>
+            </div>
+            <div class="banking-chart__days">
+              <div
+                v-for="day in chart"
+                :key="day.date.getTime()"
+                class="banking-chart__day"
+                role="img"
+                :aria-label="
+                  phone.t('Apps.banking.chartDaySummary', {
+                    day: day.label,
+                    incoming: formatMoney(day.incoming),
+                    outgoing: formatMoney(day.outgoing),
+                  })
+                "
+              >
+                <div class="banking-chart__bars">
+                  <i
+                    class="is-incoming"
+                    :style="{ height: `${day.incomingHeight}%` }"
+                  ></i>
+                  <i :style="{ height: `${day.outgoingHeight}%` }"></i>
+                </div>
+                <span>{{ day.label }}</span>
               </div>
-              <span>{{ day.label }}</span>
             </div>
           </div>
         </SkyCard>
 
-        <section class="banking-transactions banking-transactions--all">
-          <div class="banking-section-title">
-            <h2>{{ phone.t('Apps.banking.allTransactions') }}</h2>
-          </div>
-          <SkyCard
-            :content-wrap="false"
-            class="banking-card banking-transaction-card"
+        <label class="banking-search">
+          <Search :size="16" aria-hidden="true" />
+          <input
+            :placeholder="phone.t('Apps.banking.searchPlaceholder')"
+            :value="search"
+            inputmode="search"
+            type="search"
+            @input="updateSearch"
+          />
+        </label>
+
+        <div
+          class="banking-filters"
+          role="tablist"
+          :aria-label="phone.t('Apps.banking.allTransactions')"
+        >
+          <button
+            v-for="filter in ['all', 'income', 'expenses', 'transfers'] as const"
+            :key="filter"
+            class="banking-filter"
+            :class="{ 'is-active': activeFilter === filter }"
+            role="tab"
+            type="button"
+            :aria-selected="activeFilter === filter"
+            @click="selectFilter(filter)"
           >
-            <SkyList inset strong class="banking-transaction-list">
-              <SkyListItem
-                v-for="transaction in banking.overview.transactions"
-                :key="transaction.id"
-                :subtitle="formatDate(transaction.createdAt)"
-                :title="transactionTitle(transaction)"
-                link
-                link-component="button"
-                @click="openTransaction(transaction)"
-              >
-                <template #media>
-                  <component
-                    :is="transactionIcons[transaction.kind]"
-                    :size="17"
-                  />
-                </template>
-                <template #after>
-                  <b :class="{ 'is-incoming': isIncoming(transaction.kind) }">
-                    {{
-                      formatMoney(
-                        isIncoming(transaction.kind)
-                          ? transaction.amount
-                          : -transaction.amount,
-                        true,
-                      )
-                    }}
-                  </b>
-                </template>
-              </SkyListItem>
-            </SkyList>
-          </SkyCard>
+            {{ phone.t(`Apps.banking.filters.${filter}`) }}
+          </button>
+        </div>
+
+        <section class="banking-panel">
+          <div class="banking-panel__head">
+            <h2>{{ phone.t('Apps.banking.allTransactions') }}</h2>
+            <span class="banking-panel__count">{{
+              filteredTransactions.length
+            }}</span>
+          </div>
+          <SkyList
+            v-if="filteredTransactions.length"
+            inset
+            strong
+            class="banking-transaction-list"
+          >
+            <SkyListItem
+              v-for="transaction in filteredTransactions"
+              :key="transaction.id"
+              :subtitle="formatDate(transaction.createdAt)"
+              :title="transactionTitle(transaction)"
+              link
+              link-component="button"
+              @click="openTransaction(transaction)"
+            >
+              <template #media>
+                <component :is="transactionIcons[transaction.kind]" :size="17" />
+              </template>
+              <template #after>
+                <b :class="{ 'is-incoming': isIncoming(transaction.kind) }">
+                  {{
+                    formatMoney(
+                      isIncoming(transaction.kind)
+                        ? transaction.amount
+                        : -transaction.amount,
+                      true,
+                    )
+                  }}
+                </b>
+              </template>
+            </SkyListItem>
+          </SkyList>
+          <p v-else class="banking-no-transactions">
+            {{
+              transactions.length
+                ? phone.t('Apps.banking.noResults')
+                : phone.t('Apps.banking.noTransactions')
+            }}
+          </p>
         </section>
       </template>
     </div>
