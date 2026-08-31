@@ -85,9 +85,15 @@
   transition-duration: 300ms;
 }
 
+/* Les deux proprietes n'ont pas la meme duree : la position suit une sortie
+   rapide, l'opacite doit etre acquise bien avant la fin du deplacement. Avec
+   une duree commune, le panneau passe la moitie de sa course a moins de 20 %
+   d'opacite et le contenu de la page le traverse, ce qui se lit comme un
+   double affichage. L'ordre suit transition-property : opacite, puis
+   transformation. */
 .sky-sheet-rise-enter-active .sky-sheet__panel,
 .sky-sheet-rise-leave-active .sky-sheet__panel {
-  transition-duration: 400ms;
+  transition-duration: 130ms, 400ms;
 }
 
 .sky-action-rise-enter-from .sky-overlay-backdrop,
