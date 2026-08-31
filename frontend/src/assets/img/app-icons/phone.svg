@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Phone">
+  <defs>
+    <!-- Fond aplati sur celui de Messages : vert quasi uniforme, halo discret. -->
+    <linearGradient id="pBg" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#4AD65B"/>
+      <stop offset="0.5" stop-color="#35C548"/>
+      <stop offset="1" stop-color="#21A739"/>
+    </linearGradient>
+    <radialGradient id="pBgLight" cx="0.32" cy="0.12" r="0.85">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.03"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pBgFloor" x1="0" y1="0.55" x2="0" y2="1">
+      <stop offset="0" stop-color="#05461A" stop-opacity="0"/>
+      <stop offset="1" stop-color="#05461A" stop-opacity="0.16"/>
+    </linearGradient>
+
+    <!-- Creme cale sur la bulle de l app Messages, pas du blanc pur. -->
+    <linearGradient id="pGlyph" x1="0.12" y1="0" x2="0.88" y2="1">
+      <stop offset="0" stop-color="#F8F2E6"/>
+      <stop offset="0.42" stop-color="#EFE6D6"/>
+      <stop offset="1" stop-color="#DBCDB4"/>
+    </linearGradient>
+
+    <!-- Ombre de contact, calee sur celle de l app Messages : courte, collee
+         au glyphe, teintee vert sombre. Pas de halo diffus. -->
+    <filter id="pDrop" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="3" dy="8" stdDeviation="9" flood-color="#0B4718" flood-opacity="0.34"/>
+    </filter>
+
+    <filter id="pRelief" x="-30%" y="-30%" width="160%" height="160%">
+      <feOffset in="SourceAlpha" dx="-5" dy="-7" result="sOff"/>
+      <feGaussianBlur in="sOff" stdDeviation="7" result="sBlur"/>
+      <feComposite in="SourceAlpha" in2="sBlur" operator="out" result="sMask"/>
+      <feFlood flood-color="#A8926E" flood-opacity="0.42" result="sCol"/>
+      <feComposite in="sCol" in2="sMask" operator="in" result="innerShadow"/>
+
+      <feOffset in="SourceAlpha" dx="5" dy="7" result="lOff"/>
+      <feGaussianBlur in="lOff" stdDeviation="6" result="lBlur"/>
+      <feComposite in="SourceAlpha" in2="lBlur" operator="out" result="lMask"/>
+      <feFlood flood-color="#FFFDF6" flood-opacity="0.85" result="lCol"/>
+      <feComposite in="lCol" in2="lMask" operator="in" result="innerLight"/>
+
+      <feMerge>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="innerShadow"/>
+        <feMergeNode in="innerLight"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#pBg)"/>
+  <rect width="512" height="512" fill="url(#pBgFloor)"/>
+  <rect width="512" height="512" fill="url(#pBgLight)"/>
+
+  <!-- Glyphe combine de lucide 0.525 (grille 24, deja embarque par le projet),
+       porte a l echelle 14 et epaissi a 2.6 unites soit ~36 px rendus. -->
+  <g filter="url(#pDrop)">
+    <g filter="url(#pRelief)">
+      <g transform="translate(256 256) scale(14) translate(-12 -12)"
+         fill="url(#pGlyph)" stroke="url(#pGlyph)" stroke-width="2.6"
+         stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+      </g>
+    </g>
+  </g>
+</svg>

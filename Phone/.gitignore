@@ -1,0 +1,11 @@
+# Secrets serveur : jamais publies.
+# Copie config/secrets.example.lua en config/secrets.lua et remplis-le.
+config/secrets.lua
+
+# Build du NUI : regenere par `pnpm build` dans le frontend.
+source/html/
+
+# Divers
+*.log
+.DS_Store
+Thumbs.db

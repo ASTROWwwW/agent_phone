@@ -1,0 +1,40 @@
+import { fileURLToPath, URL } from 'node:url'
+
+import tailwindcss from '@tailwindcss/vite'
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  base: './',
+  build: {
+    assetsDir: 'assets',
+    // Keep the published NUI compatible with the Chromium 103 CEF runtime.
+    cssMinify: 'lightningcss',
+    cssTarget: 'chrome103',
+    emptyOutDir: true,
+    outDir: 'dist',
+    target: 'chrome103',
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/agent-[name]-[hash].[ext]',
+        chunkFileNames: 'assets/agent-[name]-[hash].js',
+        entryFileNames: 'assets/agent-[name]-[hash].js',
+      },
+    },
+  },
+  plugins: [tailwindcss(), vue()],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+  server: {
+    fs: {
+      allow: [fileURLToPath(new URL('.', import.meta.url))],
+      strict: false,
+    },
+    // Bind one loopback family so strictPort also rejects a second dev server.
+    // Open the UI through localhost so embeds still receive that page origin.
+    host: '127.0.0.1',
+  },
+})

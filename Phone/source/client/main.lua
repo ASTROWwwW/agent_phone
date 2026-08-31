@@ -1,0 +1,582 @@
+AgentPhoneClient = {}
+
+local is_open = false
+local open_requested = false
+local open_without_focus = false
+local device_payload = nil
+local equipped_phone_number = nil
+local nui_generation = 0
+local live_activity_active = false
+local open_home_requested = false
+local admin_panel_open = false
+local suggested_admin_command = nil
+local suggested_test_data_command = nil
+local active_development_command = nil
+local registered_development_commands = {}
+local phone_key_mapping_registered = false
+local refresh_development_command
+local refresh_phone_key_mapping
+local refresh_test_data_command_suggestion
+
+local function get_equipped_phone_number()
+    if not device_payload or not device_payload.device.sim then
+        return nil
+    end
+
+    return device_payload.device.sim.number
+end
+
+local function set_equipped_phone_number(next_number)
+    if next_number ~= nil and type(next_number) ~= "string" then
+        next_number = nil
+    end
+    if next_number == equipped_phone_number then
+        return
+    end
+
+    equipped_phone_number = next_number
+    TriggerEvent("agent_phone:client:phoneNumberChanged", next_number)
+end
+
+local function update_equipped_phone_number(data)
+    set_equipped_phone_number(type(data) == "table"
+        and type(data.device) == "table"
+        and type(data.device.sim) == "table"
+        and data.device.sim.number
+        or nil)
+end
+
+local function get_authoritative_phone_number()
+    local result = Bridge.Callbacks.Trigger("agent_phone:device:equipped-number", {})
+    if type(result) ~= "table" or not result.success or type(result.data) ~= "table" then
+        return nil
+    end
+
+    local phone_number = result.data.phoneNumber
+    set_equipped_phone_number(phone_number)
+    return phone_number
+end
+
+local function get_phone_state()
+    return {
+        inCall = AgentPhoneCalls.IsActive(),
+        onScreen = is_open,
+        open = is_open,
+        phoneNumber = get_equipped_phone_number(),
+    }
+end
+
+AgentPhoneClient.GetState = get_phone_state
+AgentPhoneClient.GetEquippedPhoneNumber = get_authoritative_phone_number
+
+Bridge.Debug("debug", "[agent_phone] Client script initialized.", { always = true })
+
+local locale, locale_name = AgentPhoneLocales.Resolve(Config.Bridge.Locale)
+
+local function apply_disabled_apps(payload)
+    if type(payload) ~= "table" then
+        return
+    end
+
+    local disabled = {}
+    for app_id, enabled in pairs(Config.Apps or {}) do
+        if type(app_id) == "string" and enabled == false then
+            disabled[#disabled + 1] = app_id
+        end
+    end
+    table.sort(disabled)
+    payload.disabledApps = disabled
+end
+
+local function send_admin_panel_open()
+    SendNUIMessage({
+        type = "admin:open",
+        data = {
+            lang = locale_name,
+            locales = locale.Nui,
+            fallbackLocales = Locales.en.Nui,
+        },
+    })
+end
+
+local function close_admin_panel()
+    if not admin_panel_open then
+        return
+    end
+    admin_panel_open = false
+    AgentPhoneFocus.SetAdminPanel(false)
+    SendNUIMessage({ type = "admin:close" })
+end
+
+local function send_open_message()
+    if not device_payload then
+        return
+    end
+
+    local payload = device_payload
+    payload.lang = locale_name
+    payload.locales = locale.Nui
+    payload.fallbackLocales = Locales.en.Nui
+    AgentPhoneApps.SendCatalog()
+    SendNUIMessage({
+        type = "app:open",
+        data = payload,
+        openHome = open_home_requested,
+    })
+    open_home_requested = false
+end
+
+local function refresh_admin_command_suggestion()
+    if suggested_admin_command then
+        TriggerEvent("chat:removeSuggestion", "/" .. suggested_admin_command)
+        suggested_admin_command = nil
+    end
+    if Config.AdminPanel.Enabled then
+        suggested_admin_command = Config.AdminPanel.Command
+        TriggerEvent(
+            "chat:addSuggestion",
+            "/" .. suggested_admin_command,
+            locale.AdminCommand.CommandDescription
+        )
+    end
+end
+
+AddEventHandler("agent_phone:configurator:updated", function()
+    locale, locale_name = AgentPhoneLocales.Resolve(Config.Bridge.Locale)
+    refresh_development_command()
+    refresh_phone_key_mapping()
+    refresh_test_data_command_suggestion()
+    refresh_admin_command_suggestion()
+    AgentPhoneApps.SendCatalog()
+    if is_open and device_payload then
+        apply_disabled_apps(device_payload)
+        device_payload.lang = locale_name
+        device_payload.locales = locale.Nui
+        device_payload.fallbackLocales = Locales.en.Nui
+        SendNUIMessage({ type = "device:updated", data = device_payload })
+    end
+    if admin_panel_open then
+        send_admin_panel_open()
+    end
+end)
+
+local function open_phone()
+    if is_open or not device_payload then
+        return
+    end
+
+    send_open_message()
+end
+
+local function close_phone(close_device_session)
+    local was_requested = open_requested
+    local was_open = is_open
+    open_requested = false
+    open_without_focus = false
+    TriggerEvent("agent_phone:animation:phone", false)
+    is_open = false
+    if was_open then
+        AgentPhoneApps.SetPhoneOpen(false)
+        TriggerEvent("agent_phone:nuiClosed")
+        TriggerEvent("agent_phone:client:phoneToggled", false)
+    end
+    AgentPhoneFocus.SetPhone(false)
+    if was_requested or was_open then
+        SendNUIMessage({ type = "app:close" })
+        if close_device_session ~= false then
+            Bridge.Callbacks.Trigger("agent_phone:device:close", {})
+        end
+    end
+end
+
+local function request_phone_open(callback_name)
+    if is_open or open_requested then
+        return true
+    end
+
+    open_requested = true
+    local result = Bridge.Callbacks.Trigger(callback_name, {})
+    if type(result) == "table" and result.success == true then
+        return true
+    end
+
+    open_requested = false
+    open_without_focus = false
+    return false
+end
+
+local function toggle_phone(open, no_focus)
+    if open ~= nil and type(open) ~= "boolean" then
+        Bridge.Debug("error", "[agent_phone] Rejected invalid phone toggle state.")
+        return false
+    end
+    if no_focus ~= nil and type(no_focus) ~= "boolean" then
+        Bridge.Debug("error", "[agent_phone] Rejected invalid phone toggle focus state.")
+        return false
+    end
+
+    local should_open = open
+    if should_open == nil then
+        should_open = not (is_open or open_requested)
+    end
+    if not should_open then
+        if open == nil and open_requested and not is_open then
+            return true
+        end
+        close_phone()
+        return true
+    end
+
+    open_without_focus = no_focus == true
+    if is_open or open_requested then
+        if is_open then
+            AgentPhoneFocus.SetPhone(true, open_without_focus)
+        end
+        return true
+    end
+
+    return request_phone_open("agent_phone:device:open-request")
+end
+
+AgentPhoneClient.Toggle = toggle_phone
+
+AddEventHandler("agent_phone:client:forceClose", function()
+    close_phone()
+end)
+
+local function run_development_command()
+    if is_open then
+        close_phone()
+        return
+    end
+    if open_requested then
+        return
+    end
+
+    open_without_focus = false
+    request_phone_open("agent_phone:device:development-open")
+end
+
+refresh_development_command = function()
+    local command_name = Config.Phone.DevelopmentCommand and Config.Command or nil
+    if command_name ~= nil and (type(command_name) ~= "string" or command_name == "") then
+        error("[agent_phone] Config.Command must be a non-empty command name.")
+    end
+
+    if active_development_command then
+        TriggerEvent("chat:removeSuggestion", "/" .. active_development_command)
+    end
+
+    active_development_command = command_name
+    if not command_name then
+        return
+    end
+
+    if not registered_development_commands[command_name] then
+        registered_development_commands[command_name] = true
+        RegisterCommand(command_name, function()
+            if active_development_command == command_name and Config.Phone.DevelopmentCommand then
+                run_development_command()
+            end
+        end, false)
+    end
+
+    TriggerEvent("chat:addSuggestion", "/" .. command_name, locale.CommandDescription)
+end
+
+refresh_development_command()
+
+local function run_phone_toggle()
+    if is_open then
+        close_phone()
+        return
+    end
+    if open_requested then
+        return
+    end
+
+    open_without_focus = false
+    request_phone_open("agent_phone:device:open-request")
+end
+
+RegisterCommand("agent_phone_live_activity_open", function()
+    if not live_activity_active or is_open or open_requested then
+        return
+    end
+
+    open_home_requested = true
+    if not request_phone_open("agent_phone:device:open-request") then
+        open_home_requested = false
+    end
+end, false)
+
+RegisterCommand("agent_phone_toggle", function()
+    if not Config.Phone.Keybind then
+        return
+    end
+    run_phone_toggle()
+end, false)
+
+refresh_phone_key_mapping = function()
+    local key_name = Config.Phone.Keybind
+    if key_name ~= false and key_name ~= nil and (type(key_name) ~= "string" or key_name == "") then
+        error("[agent_phone] Config.Phone.Keybind must be a non-empty keyboard key name or false.")
+    end
+    if phone_key_mapping_registered or not key_name then
+        return
+    end
+
+    -- FiveM persists player rebindings by command name, so this identifier must remain stable.
+    phone_key_mapping_registered = true
+    RegisterKeyMapping(
+        "agent_phone_toggle",
+        locale.Controls.OpenPhone,
+        "keyboard",
+        key_name
+    )
+end
+
+refresh_phone_key_mapping()
+
+RegisterKeyMapping(
+    "agent_phone_live_activity_open",
+    locale.Controls.OpenPhone,
+    "keyboard",
+    "SPACE"
+)
+
+refresh_test_data_command_suggestion = function()
+    if suggested_test_data_command then
+        TriggerEvent("chat:removeSuggestion", "/" .. suggested_test_data_command)
+        suggested_test_data_command = nil
+    end
+    if Config.TestData.Enabled then
+        suggested_test_data_command = Config.TestData.Command
+        TriggerEvent("chat:addSuggestion", "/" .. suggested_test_data_command, locale.TestData.CommandDescription)
+    end
+end
+
+refresh_test_data_command_suggestion()
+
+RegisterNetEvent("agent_phone:testdata:feedback", function(success, detail)
+    local test_data_locale = locale.TestData
+    local message = success and test_data_locale.Success or test_data_locale.Failed
+    if success and type(detail) == "string" and detail ~= "" then
+        message = message:gsub("{email}", detail)
+    end
+    Bridge.Framework.Notify("iFruit", message, success and "success" or "error", 7000)
+end)
+
+RegisterNUICallback("ui:ready", function(data, cb)
+    if type(data) ~= "table" or data.protocolVersion ~= 1 then
+        cb({ success = false, error = "unsupported_protocol" })
+        return
+
+    end
+    nui_generation = nui_generation + 1
+    -- Browser state is recreated on a CEF reload. Browser-owned focus claims
+    -- cannot survive unless their UI is replayed as part of this handshake.
+    AgentPhoneFocus.BeginNuiHydration()
+    Bridge.Debug("debug", "[agent_phone] NUI reported ready.", { always = true })
+    AgentPhoneApps.SendCatalog()
+    if open_requested and device_payload then
+        send_open_message()
+    end
+    if admin_panel_open then
+        send_admin_panel_open()
+    end
+    AgentPhoneCalls.ReplayNui()
+    AgentPhoneSimPicker.ReplayNui()
+    AgentPhoneFocus.Reapply()
+    TriggerEvent("agent_phone:client:nuiReady", {
+        generation = nui_generation,
+        protocolVersion = 1,
+    })
+
+    cb({
+        success = true,
+        data = {
+            generation = nui_generation,
+            protocolVersion = 1,
+        },
+    })
+end)
+
+RegisterNUICallback("ui:opened", function(data, cb)
+    if type(data) ~= "table" then
+        cb({ success = false, error = "invalid_request" })
+        return
+    end
+    if not open_requested or not device_payload then
+        Bridge.Debug(
+            "warn",
+            "[agent_phone] Ignored a NUI open confirmation without a pending device open.",
+            { always = true }
+        )
+        SendNUIMessage({ type = "app:close" })
+        AgentPhoneFocus.Reapply()
+        cb({ success = false, error = "open_not_requested" })
+        return
+    end
+
+    local was_open = is_open
+    is_open = true
+    AgentPhoneApps.SetPhoneOpen(true)
+    if not was_open then
+        TriggerEvent("agent_phone:client:phoneToggled", true)
+    end
+    AgentPhoneFocus.SetPhone(true, open_without_focus)
+    TriggerEvent("agent_phone:animation:phone", true)
+    cb({ success = true })
+end)
+
+RegisterNetEvent("agent_phone:admin:launch", function()
+    if is_open or open_requested then
+        close_phone()
+    end
+    admin_panel_open = true
+    AgentPhoneFocus.SetAdminPanel(true)
+    send_admin_panel_open()
+end)
+
+RegisterNetEvent("agent_phone:admin:command-error", function(error_code)
+    local messages = locale.AdminCommand.Errors
+    Bridge.Framework.Notify(
+        "iFruit",
+        messages[error_code] or messages.default,
+        "error",
+        5000
+    )
+end)
+
+RegisterNUICallback("admin:close", function(data, cb)
+    if type(data) ~= "table" then
+        cb({ success = false, error = "invalid_request" })
+        return
+    end
+    close_admin_panel()
+    cb({ success = true })
+end)
+
+RegisterNUICallback("ui:input-focus", function(data, cb)
+    if type(data) ~= "table" or type(data.active) ~= "boolean" then
+        cb({ success = false, error = "invalid_request" })
+        return
+    end
+    AgentPhoneFocus.SetTextInputFocused(
+        data.active and (is_open or open_requested or admin_panel_open)
+    )
+    cb({ success = true })
+end)
+
+RegisterNUICallback("ui:live-activity", function(data, cb)
+    if type(data) ~= "table" or type(data.active) ~= "boolean" then
+        cb({ success = false, error = "invalid_request" })
+        return
+    end
+    live_activity_active = data.active
+    cb({ success = true })
+end)
+
+RegisterNUICallback("close", function(data, cb)
+    if type(data) ~= "table" then
+        cb({ success = false, error = "invalid_request" })
+        return
+    end
+    close_phone()
+    cb({ success = true })
+end)
+
+RegisterNetEvent("agent_phone:device:open", function(data)
+    if type(data) ~= "table" or type(data.device) ~= "table" or type(data.device.imei) ~= "string" then
+        Bridge.Debug("error", "[agent_phone] Rejected invalid device open data.")
+        if not is_open then
+            open_requested = false
+            open_without_focus = false
+        end
+        return
+    end
+    Bridge.Debug(
+        "debug",
+        "[agent_phone] Client received device open for IMEI %s account_linked=%s.",
+        tostring(data.device.imei),
+        tostring(data.account ~= nil),
+        { always = true }
+    )
+    apply_disabled_apps(data)
+    device_payload = data
+    update_equipped_phone_number(data)
+    open_requested = true
+    if is_open then
+        AgentPhoneApps.SendCatalog()
+        SendNUIMessage({ type = "device:updated", data = data })
+        return
+    end
+    open_phone()
+end)
+
+RegisterNetEvent("agent_phone:device:updated", function(data)
+    if type(data) ~= "table" or type(data.device) ~= "table" or type(data.device.imei) ~= "string" then
+        Bridge.Debug("error", "[agent_phone] Rejected invalid device update data.")
+        return
+    end
+    apply_disabled_apps(data)
+    device_payload = data
+    update_equipped_phone_number(data)
+    SendNUIMessage({ type = "device:updated", data = data })
+end)
+
+RegisterNetEvent("agent_phone:device:invalidated", function()
+    TriggerEvent("agent_phone:animation:reset")
+    close_phone(false)
+    device_payload = nil
+    update_equipped_phone_number(nil)
+    live_activity_active = false
+    open_home_requested = false
+end)
+
+RegisterNetEvent("agent_phone:device:error", function(error_code)
+    if not is_open then
+        open_requested = false
+        open_without_focus = false
+        open_home_requested = false
+    end
+    Bridge.Debug(
+        "debug",
+        "[agent_phone] Client received device error: %s.",
+        tostring(error_code),
+        { always = true }
+    )
+    local message = locale.DeviceErrors[error_code] or locale.DeviceErrors.default
+    Bridge.Framework.Notify("iFruit", message, "error", 5000)
+end)
+
+CreateThread(function()
+    refresh_admin_command_suggestion()
+end)
+
+AddEventHandler("onResourceStop", function(resource_name)
+    if resource_name ~= GetCurrentResourceName() then
+        return
+    end
+
+    is_open = false
+    open_requested = false
+    open_without_focus = false
+    admin_panel_open = false
+
+    TriggerEvent("agent_phone:animation:reset")
+    AgentPhoneCalls.Reset()
+    AgentPhoneSimPicker.Reset()
+    AgentPhoneFocus.Reset()
+
+    if active_development_command then
+        TriggerEvent("chat:removeSuggestion", "/" .. active_development_command)
+    end
+    if suggested_test_data_command then
+        TriggerEvent("chat:removeSuggestion", "/" .. suggested_test_data_command)
+    end
+    if suggested_admin_command then
+        TriggerEvent("chat:removeSuggestion", "/" .. suggested_admin_command)
+    end
+end)

@@ -1,0 +1,21 @@
+# Secrets serveur : jamais publies.
+# Copie Phone/config/secrets.example.lua en Phone/config/secrets.lua.
+Phone/config/secrets.lua
+
+# Build du NUI : regenere par `pnpm build` depuis frontend/.
+Phone/source/html/
+
+# Dependances et sorties de build du frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Sauvegardes locales et archives
+_backup_*/
+_backup_*.lua
+*.zip
+
+# Divers
+*.log
+.DS_Store
+Thumbs.db
