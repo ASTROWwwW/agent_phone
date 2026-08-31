@@ -1,4 +1,4 @@
-const { readFileSync } = require('node:fs')
+const { existsSync, readFileSync } = require('node:fs')
 const { resolve } = require('node:path')
 
 class LuaTable {
@@ -724,19 +724,33 @@ function buildSections(scope, payload) {
   return sections
 }
 
+// Le dossier de la ressource porte un nom variable selon les installations.
+// On resout le premier qui contient reellement un fxmanifest, au lieu de coder
+// un nom en dur : un chemin faux faisait tomber le backend simule au demarrage.
+const RESOURCE_CANDIDATES = ['agent_phone', 'Phone', 'sky_phone']
+
+function resolveResourceDir() {
+  const root = resolve(__dirname, '../..')
+  for (const name of RESOURCE_CANDIDATES) {
+    const candidate = resolve(root, name)
+    if (existsSync(resolve(candidate, 'fxmanifest.lua'))) return candidate
+  }
+  throw new Error(
+    'Dossier de ressource introuvable a cote de frontend/. Cherche : ' +
+      RESOURCE_CANDIDATES.join(', '),
+  )
+}
+
 function loadConfiguratorSections() {
-  const resourceRoot = resolve(__dirname, '../..')
+  const resourceDir = resolveResourceDir()
   const config = serializeLuaValue(
     new LuaConfigParser(
-      readFileSync(
-        resolve(resourceRoot, 'agent_phone/config/config.lua'),
-        'utf8',
-      ),
+      readFileSync(resolve(resourceDir, 'config/config.lua'), 'utf8'),
     ).parse(),
   )
   const mediaRoot = serializeLuaValue(
     new LuaConfigParser(
-      readFileSync(resolve(resourceRoot, 'agent_phone/config/media.lua'), 'utf8'),
+      readFileSync(resolve(resourceDir, 'config/media.lua'), 'utf8'),
     ).parse(),
   )
   const media = mediaRoot.Media
