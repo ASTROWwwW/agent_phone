@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../testing/resource'
 
 const source = readFileSync(
   new URL('./AdminPanel.vue', import.meta.url),
@@ -17,41 +18,35 @@ const store = readFileSync(
   'utf8',
 )
 const server = readFileSync(
-  new URL('../../../agent_phone/source/server/admin.lua', import.meta.url),
+  resourceUrl('source/server/admin.lua'),
   'utf8',
 )
 const phoneServer = readFileSync(
-  new URL('../../../agent_phone/source/server/phone.lua', import.meta.url),
+  resourceUrl('source/server/phone.lua'),
   'utf8',
 )
 const persistenceServer = readFileSync(
-  new URL(
-    '../../../agent_phone/source/server/phone_persistence.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/phone_persistence.lua'),
   'utf8',
 )
 const simServer = readFileSync(
-  new URL('../../../agent_phone/source/server/sim.lua', import.meta.url),
+  resourceUrl('source/server/sim.lua'),
   'utf8',
 )
 const phoneClient = readFileSync(
-  new URL('../../../agent_phone/source/client/main.lua', import.meta.url),
+  resourceUrl('source/client/main.lua'),
   'utf8',
 )
 const focusClient = readFileSync(
-  new URL('../../../agent_phone/source/client/focus.lua', import.meta.url),
+  resourceUrl('source/client/focus.lua'),
   'utf8',
 )
 const bridge = readFileSync(
-  new URL(
-    '../../../agent_phone/source/client/nui_server_bridge.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/client/nui_server_bridge.lua'),
   'utf8',
 )
 const config = readFileSync(
-  new URL('../../../agent_phone/config/config.lua', import.meta.url),
+  resourceUrl('config/config.lua'),
   'utf8',
 )
 const configDefaultsSource = config.replace(
@@ -59,29 +54,23 @@ const configDefaultsSource = config.replace(
   '\n',
 )
 const mediaConfig = readFileSync(
-  new URL('../../../agent_phone/config/media.lua', import.meta.url),
+  resourceUrl('config/media.lua'),
   'utf8',
 )
 const schema = readFileSync(
-  new URL('../../../agent_phone/sql/install.sql', import.meta.url),
+  resourceUrl('sql/install.sql'),
   'utf8',
 )
 const manifest = readFileSync(
-  new URL('../../../agent_phone/fxmanifest.lua', import.meta.url),
+  resourceUrl('fxmanifest.lua'),
   'utf8',
 )
 const configuratorServer = readFileSync(
-  new URL(
-    '../../../agent_phone/source/server/phone_configurator.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/phone_configurator.lua'),
   'utf8',
 )
 const configDefault = readFileSync(
-  new URL(
-    '../../../agent_phone/source/shared/config_default.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/shared/config_default.lua'),
   'utf8',
 )
 const frontendBuild = readFileSync(
@@ -89,14 +78,11 @@ const frontendBuild = readFileSync(
   'utf8',
 )
 const configuratorClient = readFileSync(
-  new URL(
-    '../../../agent_phone/source/client/phone_configurator.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/client/phone_configurator.lua'),
   'utf8',
 )
 const mediaImportServer = readFileSync(
-  new URL('../../../agent_phone/source/server/media_import.lua', import.meta.url),
+  resourceUrl('source/server/media_import.lua'),
   'utf8',
 )
 const configuratorValueEditor = readFileSync(
@@ -298,9 +284,11 @@ describe('standalone admin panel contracts', () => {
   })
 
   it('loads the SQL phone configurator before framework-owned configuration is read', () => {
-    expect(agentInstructions).toContain('Phone Configurator parity (mandatory)')
     expect(agentInstructions).toContain(
-      'changes without matching Configurator support are incomplete',
+      'Parité avec le Phone Configurator (obligatoire)',
+    )
+    expect(agentInstructions).toContain(
+      'une modification de configuration sans support correspondant',
     )
     expect(config).toMatch(
       /Config\.PhoneConfigurator\s*=\s*\{[\s\S]*?Enabled\s*=\s*true[\s\S]*?Config\.Bridge\s*=/,

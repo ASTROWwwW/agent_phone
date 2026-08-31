@@ -1,25 +1,26 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const manifest = readFileSync(
-  new URL('../../agent_phone/fxmanifest.lua', import.meta.url),
+  resourceUrl('fxmanifest.lua'),
   'utf8',
 )
 const config = readFileSync(
-  new URL('../../agent_phone/config/config.lua', import.meta.url),
+  resourceUrl('config/config.lua'),
   'utf8',
 )
 const sharedBridge = readFileSync(
-  new URL('../../agent_phone/source/bridge/shared.lua', import.meta.url),
+  resourceUrl('source/bridge/shared.lua'),
   'utf8',
 )
 const clientCalls = readFileSync(
-  new URL('../../agent_phone/source/bridge/client/calls.lua', import.meta.url),
+  resourceUrl('source/bridge/client/calls.lua'),
   'utf8',
 )
 const clientNuiBridge = readFileSync(
-  new URL('../../agent_phone/source/client/nui_server_bridge.lua', import.meta.url),
+  resourceUrl('source/client/nui_server_bridge.lua'),
   'utf8',
 )
 const phoneApp = readFileSync(
@@ -27,23 +28,23 @@ const phoneApp = readFileSync(
   'utf8',
 )
 const clientRadio = readFileSync(
-  new URL('../../agent_phone/source/bridge/client/radio.lua', import.meta.url),
+  resourceUrl('source/bridge/client/radio.lua'),
   'utf8',
 )
 const radioNui = readFileSync(
-  new URL('../../agent_phone/source/client/radio.lua', import.meta.url),
+  resourceUrl('source/client/radio.lua'),
   'utf8',
 )
 const serverCalls = readFileSync(
-  new URL('../../agent_phone/source/server/calls.lua', import.meta.url),
+  resourceUrl('source/server/calls.lua'),
   'utf8',
 )
 const serverRadio = readFileSync(
-  new URL('../../agent_phone/source/server/radio.lua', import.meta.url),
+  resourceUrl('source/server/radio.lua'),
   'utf8',
 )
 const serverVoice = readFileSync(
-  new URL('../../agent_phone/source/bridge/server/voice.lua', import.meta.url),
+  resourceUrl('source/bridge/server/voice.lua'),
   'utf8',
 )
 

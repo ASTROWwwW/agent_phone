@@ -1,28 +1,26 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const companiesServer = readFileSync(
-  new URL('../../agent_phone/source/server/companies.lua', import.meta.url),
+  resourceUrl('source/server/companies.lua'),
   'utf8',
 ).replace(/\r\n/g, '\n')
 const configuratorServer = readFileSync(
-  new URL(
-    '../../agent_phone/source/server/phone_configurator.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/phone_configurator.lua'),
   'utf8',
 ).replace(/\r\n/g, '\n')
 const englishLocale = readFileSync(
-  new URL('../../agent_phone/config/locales/en.lua', import.meta.url),
+  resourceUrl('config/locales/en.lua'),
   'utf8',
 )
 const germanLocale = readFileSync(
-  new URL('../../agent_phone/config/locales/de.lua', import.meta.url),
+  resourceUrl('config/locales/de.lua'),
   'utf8',
 )
 const spanishLocale = readFileSync(
-  new URL('../../agent_phone/config/locales/es.lua', import.meta.url),
+  resourceUrl('config/locales/es.lua'),
   'utf8',
 )
 

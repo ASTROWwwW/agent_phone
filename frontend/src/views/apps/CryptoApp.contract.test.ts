@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const source = readFileSync(new URL('./CryptoApp.vue', import.meta.url), 'utf8')
 const logoSource = readFileSync(
@@ -8,18 +9,15 @@ const logoSource = readFileSync(
   'utf8',
 )
 const server = readFileSync(
-  new URL('../../../../agent_phone/source/server/crypto.lua', import.meta.url),
+  resourceUrl('source/server/crypto.lua'),
   'utf8',
 )
 const passwordProvider = readFileSync(
-  new URL(
-    '../../../../agent_phone/source/server/crypto_password.js',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/crypto_password.js'),
   'utf8',
 )
 const config = readFileSync(
-  new URL('../../../../agent_phone/config/config.lua', import.meta.url),
+  resourceUrl('config/config.lua'),
   'utf8',
 )
 const testServer = readFileSync(

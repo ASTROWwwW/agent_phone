@@ -1,9 +1,14 @@
 import { readFileSync } from 'node:fs'
 
+import { resourceUrl } from './testing/resource'
+
 import { describe, expect, it } from 'vitest'
 
-function source(path: string): string {
-  return readFileSync(new URL(path, import.meta.url), 'utf8').replace(
+function source(path: string | URL): string {
+  return readFileSync(
+    typeof path === 'string' ? new URL(path, import.meta.url) : path,
+    'utf8',
+  ).replace(
     /\r\n/g,
     '\n',
   )
@@ -22,16 +27,16 @@ function sourceBlock(
   return value.slice(start, end)
 }
 
-const companiesServer = source('../../agent_phone/source/server/companies.lua')
-const messagesServer = source('../../agent_phone/source/server/messages.lua')
-const databaseMigration = source('../../agent_phone/source/server/db_migrate.lua')
+const companiesServer = source(resourceUrl('source/server/companies.lua'))
+const messagesServer = source(resourceUrl('source/server/messages.lua'))
+const databaseMigration = source(resourceUrl('source/server/db_migrate.lua'))
 const configDefaults = source(
-  '../../agent_phone/source/shared/config_default.lua',
+  resourceUrl('source/shared/config_default.lua'),
 )
 const messagesApp = source('./views/apps/MessagesApp.vue')
 const phoneFallbacks = source('./stores/phone.ts')
 const locales = ['en', 'de', 'es'].map((locale) =>
-  source(`../../agent_phone/config/locales/${locale}.lua`),
+  source(resourceUrl(`config/locales/${locale}.lua`)),
 )
 
 describe('Companies service-line message routing contract', () => {

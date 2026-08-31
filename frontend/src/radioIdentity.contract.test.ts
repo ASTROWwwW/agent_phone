@@ -1,30 +1,22 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const qbSource = readFileSync(
-  new URL(
-    '../../agent_phone/source/bridge/server/frameworks/qb.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/bridge/server/frameworks/qb.lua'),
   'utf8',
 )
 const qboxSource = readFileSync(
-  new URL(
-    '../../agent_phone/source/bridge/server/frameworks/qbox.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/bridge/server/frameworks/qbox.lua'),
   'utf8',
 )
 const esxSource = readFileSync(
-  new URL(
-    '../../agent_phone/source/bridge/server/frameworks/esx.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/bridge/server/frameworks/esx.lua'),
   'utf8',
 )
 const radioSource = readFileSync(
-  new URL('../../agent_phone/source/server/radio.lua', import.meta.url),
+  resourceUrl('source/server/radio.lua'),
   'utf8',
 )
 

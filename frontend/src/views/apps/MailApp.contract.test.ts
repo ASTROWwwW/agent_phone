@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const source = readFileSync(new URL('./MailApp.vue', import.meta.url), 'utf8')
 const editorSource = readFileSync(
@@ -8,18 +9,15 @@ const editorSource = readFileSync(
   'utf8',
 )
 const mailServerSource = readFileSync(
-  new URL('../../../../agent_phone/source/server/mail.lua', import.meta.url),
+  resourceUrl('source/server/mail.lua'),
   'utf8',
 )
 const migrationSource = readFileSync(
-  new URL(
-    '../../../../agent_phone/source/server/db_migrate.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/db_migrate.lua'),
   'utf8',
 )
 const clientSource = readFileSync(
-  new URL('../../../../agent_phone/source/client/nui_server_bridge.lua', import.meta.url),
+  resourceUrl('source/client/nui_server_bridge.lua'),
   'utf8',
 )
 

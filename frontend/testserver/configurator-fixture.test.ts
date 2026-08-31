@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../src/testing/resource'
 
 type ConfiguratorField = {
   label: string
@@ -34,7 +35,7 @@ const { loadConfiguratorSections } = require('./configurator-fixture.cjs') as {
 }
 
 const configSource = readFileSync(
-  new URL('../../agent_phone/config/config.lua', import.meta.url),
+  resourceUrl('config/config.lua'),
   'utf8',
 )
 

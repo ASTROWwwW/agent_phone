@@ -1,27 +1,22 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const source = readFileSync(
   new URL('./FlipTokApp.vue', import.meta.url),
   'utf8',
 )
 const serverSource = readFileSync(
-  new URL('../../../../agent_phone/source/server/fliptok.lua', import.meta.url),
+  resourceUrl('source/server/fliptok.lua'),
   'utf8',
 )
 const migrationSource = readFileSync(
-  new URL(
-    '../../../../agent_phone/source/server/db_migrate.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/db_migrate.lua'),
   'utf8',
 )
 const youtubeSource = readFileSync(
-  new URL(
-    '../../../../agent_phone/source/server/media_metadata.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/media_metadata.lua'),
   'utf8',
 )
 const mockServerSource = readFileSync(

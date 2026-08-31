@@ -1,33 +1,21 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const readResourceFile = (path: string) =>
   readFileSync(
-    new URL(`../../agent_phone/${path}`, import.meta.url),
+    resourceUrl(`${path}`),
     'utf8',
   ).replace(/\r\n/g, '\n')
 const readFrontendFile = (path: string) =>
   readFileSync(new URL(path, import.meta.url), 'utf8')
 
+// La base Agent tourne sur ox_inventory. Les 16 autres adaptateurs ont ete
+// retires : un adaptateur dont le fichier n'existe plus resterait
+// selectionnable par la detection automatique, donc la table suit.
 const inventoryAdapters = [
-  ['jaksam', 'source/bridge/server/inventory/jaksam.lua'],
   ['ox', 'source/bridge/server/inventory/ox.lua'],
-  ['qb', 'source/bridge/server/inventory/qb.lua'],
-  ['lj', 'source/bridge/server/inventory/qb.lua'],
-  ['qs', 'source/bridge/server/inventory/qs.lua'],
-  ['ps', 'source/bridge/server/inventory/ps.lua'],
-  ['codem', 'source/bridge/server/inventory/codem.lua'],
-  ['tgiann', 'source/bridge/server/inventory/tgiann.lua'],
-  ['core', 'source/bridge/server/inventory/core.lua'],
-  ['jpr', 'source/bridge/server/inventory/jpr.lua'],
-  ['origen', 'source/bridge/server/inventory/origen.lua'],
-  ['ak47', 'source/bridge/server/inventory/ak47.lua'],
-  ['one', 'source/bridge/server/inventory/one.lua'],
-  ['mf', 'source/bridge/server/inventory/mf.lua'],
-  ['smx', 'source/bridge/server/inventory/smx.lua'],
-  ['hex', 'source/bridge/server/inventory/esx.lua'],
-  ['esx', 'source/bridge/server/inventory/esx.lua'],
 ] as const
 
 describe('phone inventory contracts', () => {
@@ -52,21 +40,6 @@ describe('phone inventory contracts', () => {
     )
   })
 
-  it('uses One Inventory slot ids and authoritative slot reads', () => {
-    const adapter = readResourceFile(
-      'source/bridge/server/inventory/one.lua',
-    )
-
-    expect(adapter).toContain('inventory:GetSlotIdsWithItem(')
-    expect(adapter).toContain(
-      'local normalized = Bridge.Inventory.GetSlot(source, slot_id)',
-    )
-    expect(adapter).not.toContain('inventory:SearchInventory(')
-    expect(adapter).toContain(
-      'inventory:SetItemMetadata(source, slot.slot, requested_metadata) == false',
-    )
-  })
-
   it('serializes and rate-limits phone bootstrap requests on both sides', () => {
     const phoneClient = readResourceFile('source/client/main.lua')
     const phoneServer = readResourceFile('source/server/phone.lua')
@@ -87,13 +60,13 @@ describe('phone inventory contracts', () => {
     )
   })
 
-  it('auto-detects registered inventories and forces metadata-free adapters into compatible modes', () => {
+  it('auto-detects ox_inventory and keeps the metadata downgrade path intact', () => {
     const inventoryBridge = readResourceFile(
       'source/bridge/server/inventory.lua',
     )
 
     expect(inventoryBridge).toContain(
-      '{ name = "hex", resource = "hex_4_inventory", framework = "esx", metadata = false },',
+      '{ name = "ox", resource = "ox_inventory" },',
     )
     expect(inventoryBridge).toContain(
       'GetResourceState(adapter.resource) == "started"',
@@ -113,29 +86,10 @@ describe('phone inventory contracts', () => {
     )
   })
 
-  it('provides the LB IsOpen export alias from the authoritative client state', () => {
-    const phoneClient = readResourceFile('source/client/main.lua')
-    const phoneBridge = readResourceFile('source/bridge/phones/client/lb.lua')
-
-    expect(phoneBridge).toContain(
-      'AgentPhoneCompatibility.RegisterExportAlias("lb-phone", "IsOpen"',
-    )
-    expect(phoneClient).toContain('open = is_open')
-    expect(phoneBridge).toContain('return get_phone_state_value("open")')
-  })
-
-  it('provides the LB equipped phone number exports from authoritative device state', () => {
+  it('exposes the equipped phone number from authoritative device state', () => {
     const phoneClient = readResourceFile('source/client/main.lua')
     const phoneServer = readResourceFile('source/server/phone.lua')
-    const clientBridge = readResourceFile('source/bridge/phones/client/lb.lua')
-    const serverBridge = readResourceFile('source/bridge/phones/server/lb.lua')
-    const serverLifecycle = readResourceFile(
-      'source/bridge/phones/server/lifecycle.lua',
-    )
 
-    expect(clientBridge).toMatch(
-      /"GetEquippedPhoneNumber",\s+phone\.GetEquippedPhoneNumber/,
-    )
     expect(phoneClient).toContain('return device_payload.device.sim.number')
     expect(phoneClient).toContain(
       'Bridge.Callbacks.Trigger("agent_phone:device:equipped-number", {})',
@@ -176,44 +130,19 @@ describe('phone inventory contracts', () => {
     expect(phoneServer).toContain(
       'player_source and resolve_equipped_phone_number(player_source) == normalized',
     )
-    expect(serverBridge).toMatch(
-      /"GetEquippedPhoneNumber",\s+phone\.GetEquippedPhoneNumber/,
-    )
-    expect(serverBridge).toMatch(
-      /"GetSourceFromNumber",\s+phone\.GetSourceFromNumber/,
-    )
     expect(phoneServer).toContain(
       'TriggerEvent("agent_phone:server:phoneNumberChanged", source, phone_number)',
     )
-    expect(serverLifecycle).toContain(
-      'AgentPhoneCompatibility.EmitServerProviderStop(LB_PROVIDER_NAME)',
-    )
-    expect(serverLifecycle).toContain(
-      'AgentPhoneCompatibility.EmitServerProviderStart(LB_PROVIDER_NAME)',
-    )
   })
 
-  it('maps LB client lifecycle and state contracts', () => {
+  it('announces client lifecycle and state changes on the phone event bus', () => {
     const phoneClient = readResourceFile('source/client/main.lua')
-    const phoneBridge = readResourceFile('source/bridge/phones/client/lb.lua')
 
-    expect(phoneBridge).toContain(
-      'AgentPhoneCompatibility.RegisterExportAlias("lb-phone", "ToggleOpen"',
-    )
     expect(phoneClient).toContain(
       'local result = Bridge.Callbacks.Trigger(callback_name, {})',
     )
     expect(phoneClient).toMatch(
       /result\.success == true[\s\S]*open_requested = false[\s\S]*open_without_focus = false[\s\S]*return false/,
-    )
-    expect(phoneBridge).toContain(
-      'AgentPhoneCompatibility.RegisterExportAlias("lb-phone", "IsPhoneOnScreen"',
-    )
-    expect(phoneBridge).toContain(
-      'AgentPhoneCompatibility.RegisterExportAlias("lb-phone", "IsInCall"',
-    )
-    expect(phoneBridge).toContain(
-      'AgentPhoneCompatibility.RegisterExportAlias("lb-phone", "FormatNumber", client_bridge.FormatNumber)',
     )
     expect(phoneClient).toContain(
       'TriggerEvent("agent_phone:client:phoneNumberChanged", next_number)',
@@ -224,10 +153,6 @@ describe('phone inventory contracts', () => {
     expect(phoneClient).toContain(
       'TriggerEvent("agent_phone:client:phoneToggled", false)',
     )
-    expect(phoneBridge).toContain(
-      'TriggerEvent("lb-phone:numberChanged", phone_number)',
-    )
-    expect(phoneBridge).toContain('TriggerEvent("lb-phone:phoneToggled", open)')
   })
 
   it('keeps vendor contracts outside the phone business core', () => {
@@ -247,17 +172,15 @@ describe('phone inventory contracts', () => {
     }
   })
 
-  it('maps the LB custom-app delete lifecycle from the App Store to Lua', () => {
+  it('maps the custom-app delete lifecycle from the App Store to Lua', () => {
     const appStore = readFrontendFile('stores/app-store.ts')
     const customApps = readResourceFile('source/client/custom_apps.lua')
-    const compatibility = readResourceFile('source/bridge/phones/shared/lb.lua')
 
     expect(appStore).toContain("event: 'delete'")
     expect(customApps).toContain('and lifecycle_event ~= "delete"')
     expect(customApps).toContain(
       'invoke_or_defer_hook(app, "onDelete", lifecycle_payload, deferred_hooks)',
     )
-    expect(compatibility).toContain('onDelete = app_data.onDelete')
   })
 
   it('emits exact LB observer events after authoritative state changes', () => {

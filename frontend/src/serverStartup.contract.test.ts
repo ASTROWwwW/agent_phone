@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const manifest = readFileSync(
-  new URL('../../agent_phone/fxmanifest.lua', import.meta.url),
+  resourceUrl('fxmanifest.lua'),
   'utf8',
 )
 const phoneServer = readFileSync(
-  new URL('../../agent_phone/source/server/phone.lua', import.meta.url),
+  resourceUrl('source/server/phone.lua'),
   'utf8',
 )
 

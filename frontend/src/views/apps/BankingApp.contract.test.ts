@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const source = readFileSync(
   new URL('./BankingApp.vue', import.meta.url),
@@ -15,11 +16,11 @@ const appSource = readFileSync(
   'utf8',
 )
 const clientSource = readFileSync(
-  new URL('../../../../agent_phone/source/client/nui_events.lua', import.meta.url),
+  resourceUrl('source/client/nui_events.lua'),
   'utf8',
 )
 const serverSource = readFileSync(
-  new URL('../../../../agent_phone/source/server/banking.lua', import.meta.url),
+  resourceUrl('source/server/banking.lua'),
   'utf8',
 )
 

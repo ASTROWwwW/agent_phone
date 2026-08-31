@@ -1,18 +1,19 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const source = readFileSync(new URL('./FlareApp.vue', import.meta.url), 'utf8')
 const clientSource = readFileSync(
-  new URL('../../../../agent_phone/source/client/nui_server_bridge.lua', import.meta.url),
+  resourceUrl('source/client/nui_server_bridge.lua'),
   'utf8',
 )
 const serverSource = readFileSync(
-  new URL('../../../../agent_phone/source/server/flare.lua', import.meta.url),
+  resourceUrl('source/server/flare.lua'),
   'utf8',
 )
 const localeSource = readFileSync(
-  new URL('../../../../agent_phone/config/locales/en.lua', import.meta.url),
+  resourceUrl('config/locales/en.lua'),
   'utf8',
 )
 

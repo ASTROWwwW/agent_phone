@@ -1,21 +1,22 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const client = readFileSync(
-  new URL('../../agent_phone/source/client/nui_server_bridge.lua', import.meta.url),
+  resourceUrl('source/client/nui_server_bridge.lua'),
   'utf8',
 ).replace(/\r\n/g, '\n')
 const companiesServer = readFileSync(
-  new URL('../../agent_phone/source/server/companies.lua', import.meta.url),
+  resourceUrl('source/server/companies.lua'),
   'utf8',
 ).replace(/\r\n/g, '\n')
 const callsServer = readFileSync(
-  new URL('../../agent_phone/source/server/calls.lua', import.meta.url),
+  resourceUrl('source/server/calls.lua'),
   'utf8',
 ).replace(/\r\n/g, '\n')
 const phoneServer = readFileSync(
-  new URL('../../agent_phone/source/server/phone.lua', import.meta.url),
+  resourceUrl('source/server/phone.lua'),
   'utf8',
 ).replace(/\r\n/g, '\n')
 const companiesStore = readFileSync(

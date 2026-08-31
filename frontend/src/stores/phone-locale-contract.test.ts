@@ -3,6 +3,7 @@ import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../testing/resource'
 
 type LuaToken = {
   kind: string
@@ -11,7 +12,7 @@ type LuaToken = {
 
 const frontendSourceDirectory = fileURLToPath(new URL('../', import.meta.url))
 const localeDirectory = fileURLToPath(
-  new URL('../../../agent_phone/config/locales/', import.meta.url),
+  resourceUrl('config/locales/'),
 )
 const localeSources = new Map(
   readdirSync(localeDirectory, { withFileTypes: true })

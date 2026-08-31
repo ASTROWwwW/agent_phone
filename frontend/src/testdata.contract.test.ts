@@ -1,9 +1,10 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const readResourceFile = (path: string) =>
-  readFileSync(new URL(`../../agent_phone/${path}`, import.meta.url), 'utf8')
+  readFileSync(resourceUrl(`${path}`), 'utf8')
 
 const config = readResourceFile('config/config.lua')
 const testData = readResourceFile('source/server/testdata.lua')

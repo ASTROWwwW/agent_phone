@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../testing/resource'
 
 const source = readFileSync(
   new URL('./PhoneDynamicIsland.vue', import.meta.url),
@@ -27,7 +28,7 @@ const clockSource = readFileSync(
   'utf8',
 )
 const serverMemosSource = readFileSync(
-  new URL('../../../agent_phone/source/server/memos.lua', import.meta.url),
+  resourceUrl('source/server/memos.lua'),
   'utf8',
 )
 

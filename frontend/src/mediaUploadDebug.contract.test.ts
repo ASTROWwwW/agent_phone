@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const mediaCapture = readFileSync(
   new URL('./components/PhoneMediaCapture.vue', import.meta.url),
   'utf8',
 )
 const mediaServer = readFileSync(
-  new URL('../../agent_phone/source/server/media.lua', import.meta.url),
+  resourceUrl('source/server/media.lua'),
   'utf8',
 )
 

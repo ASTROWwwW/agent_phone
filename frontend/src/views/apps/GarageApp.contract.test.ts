@@ -1,14 +1,15 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const source = readFileSync(new URL('./GarageApp.vue', import.meta.url), 'utf8')
 const garageServer = readFileSync(
-  new URL('../../../../agent_phone/source/server/garage.lua', import.meta.url),
+  resourceUrl('source/server/garage.lua'),
   'utf8',
 )
 const phoneConfig = readFileSync(
-  new URL('../../../../agent_phone/config/config.lua', import.meta.url),
+  resourceUrl('config/config.lua'),
   'utf8',
 )
 

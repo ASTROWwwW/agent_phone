@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const cameraView = readFileSync(
   new URL('./CameraApp.vue', import.meta.url),
@@ -20,22 +21,19 @@ const mediaCapture = readFileSync(
   'utf8',
 )
 const cameraClient = readFileSync(
-  new URL('../../../../agent_phone/source/client/camera.lua', import.meta.url),
+  resourceUrl('source/client/camera.lua'),
   'utf8',
 )
 const focusClient = readFileSync(
-  new URL('../../../../agent_phone/source/client/focus.lua', import.meta.url),
+  resourceUrl('source/client/focus.lua'),
   'utf8',
 )
 const cameraConfig = readFileSync(
-  new URL('../../../../agent_phone/config/config.lua', import.meta.url),
+  resourceUrl('config/config.lua'),
   'utf8',
 )
 const cameraAnimations = readFileSync(
-  new URL(
-    '../../../../agent_phone/source/client/animations.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/client/animations.lua'),
   'utf8',
 )
 

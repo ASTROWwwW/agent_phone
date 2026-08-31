@@ -1,17 +1,22 @@
 import { readFileSync } from 'node:fs'
 
+import { resourceUrl } from './testing/resource'
+
 import { describe, expect, it } from 'vitest'
 
-function source(path: string): string {
-  return readFileSync(new URL(path, import.meta.url), 'utf8')
+function source(path: string | URL): string {
+  return readFileSync(
+    typeof path === 'string' ? new URL(path, import.meta.url) : path,
+    'utf8',
+  )
 }
 
-const config = source('../../agent_phone/config/config.lua')
-const configDefault = source('../../agent_phone/source/shared/config_default.lua')
-const framework = source('../../agent_phone/source/bridge/server/framework.lua')
-const qbox = source('../../agent_phone/source/bridge/server/frameworks/qbox.lua')
+const config = source(resourceUrl('config/config.lua'))
+const configDefault = source(resourceUrl('source/shared/config_default.lua'))
+const framework = source(resourceUrl('source/bridge/server/framework.lua'))
+const esx = source(resourceUrl('source/bridge/server/frameworks/esx.lua'))
 const configurator = source(
-  '../../agent_phone/source/server/phone_configurator.lua',
+  resourceUrl('source/server/phone_configurator.lua'),
 )
 const configuratorFixture = source('../testserver/configurator-fixture.cjs')
 
@@ -59,25 +64,24 @@ describe('fixed server permissions', () => {
     )
   })
 
-  it('authorizes Qbox through ACE before retaining framework group support', () => {
+  it('resolves permissions through the configured ESX groups only', () => {
     expect(framework).toContain(
       'local groups = Config.CommandPermissions[permission]',
     )
-    expect(qbox).toContain(
-      'if IsPlayerAceAllowed(tostring(source), group) then',
+    expect(framework).toContain(
+      'return Bridge.Framework.HasAdminGroup(source, groups)',
     )
-    expect(qbox.indexOf('IsPlayerAceAllowed')).toBeLessThan(
-      qbox.indexOf('exports.qbx_core:HasGroup'),
-    )
+    expect(esx).toContain('local player_group = player.getGroup()')
+    expect(esx).toContain('if player_group == group then')
   })
 
   it('uses stable permission identifiers for every protected operation', () => {
     const expectations = [
-      ['../../agent_phone/source/server/admin.lua', 'phonepanel'],
-      ['../../agent_phone/source/server/testdata.lua', 'phonetestdata'],
-      ['../../agent_phone/source/server/fliptok.lua', 'fliptokverify'],
-      ['../../agent_phone/source/server/picstagram.lua', 'picstagramverify'],
-      ['../../agent_phone/source/server/picstagram.lua', 'picstagramadmin'],
+      [resourceUrl('source/server/admin.lua'), 'phonepanel'],
+      [resourceUrl('source/server/testdata.lua'), 'phonetestdata'],
+      [resourceUrl('source/server/fliptok.lua'), 'fliptokverify'],
+      [resourceUrl('source/server/picstagram.lua'), 'picstagramverify'],
+      [resourceUrl('source/server/picstagram.lua'), 'picstagramadmin'],
     ] as const
 
     for (const [path, permission] of expectations) {

@@ -9,6 +9,7 @@ import {
   getAppStorePreviewVisual,
   PREVIEWABLE_BUILTIN_APP_IDS,
 } from '@/utils/appStorePreviews'
+import { resourceUrl } from '../testing/resource'
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -43,7 +44,7 @@ describe('App Store preview catalog', () => {
 
   it('localizes every specialized preview in the fallback and every configured locale', () => {
     const localeDirectory = fileURLToPath(
-      new URL('../../../agent_phone/config/locales/', import.meta.url),
+      resourceUrl('config/locales/'),
     )
     const localeSources = [
       readFileSync(

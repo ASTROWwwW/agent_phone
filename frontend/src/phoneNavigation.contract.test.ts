@@ -1,12 +1,14 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { resourceUrl } from './testing/resource'
+
 import { describe, expect, it } from 'vitest'
 
 const rootDirectory = join(import.meta.dirname, '..')
 const appSource = readFileSync(join(rootDirectory, 'src/App.vue'), 'utf8')
 const navigationSource = readFileSync(
-  join(rootDirectory, '../agent_phone/source/client/navigation.lua'),
+  resourceUrl('source/client/navigation.lua'),
   'utf8',
 )
 

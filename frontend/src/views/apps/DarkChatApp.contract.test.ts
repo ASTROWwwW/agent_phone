@@ -1,17 +1,18 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from '../../testing/resource'
 
 const source = readFileSync(
   new URL('./DarkChatApp.vue', import.meta.url),
   'utf8',
 )
 const server = readFileSync(
-  new URL('../../../../agent_phone/source/server/darkchat.lua', import.meta.url),
+  resourceUrl('source/server/darkchat.lua'),
   'utf8',
 )
 const config = readFileSync(
-  new URL('../../../../agent_phone/config/config.lua', import.meta.url),
+  resourceUrl('config/config.lua'),
   'utf8',
 )
 

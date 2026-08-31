@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const flareServer = readFileSync(
-  new URL('../../agent_phone/source/server/flare.lua', import.meta.url),
+  resourceUrl('source/server/flare.lua'),
   'utf8',
 )
 const mediaServer = readFileSync(
-  new URL('../../agent_phone/source/server/media.lua', import.meta.url),
+  resourceUrl('source/server/media.lua'),
   'utf8',
 )
 

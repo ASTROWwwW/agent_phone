@@ -1090,8 +1090,15 @@ if IsDuplicityVersion() then
     -- Server secrets
     -- -------------------------------------------------------------------------
 
+    -- Les peppers vivent dans config/secrets.lua, charge uniquement en
+    -- server_scripts et exclu du depot. Ils ne peuvent pas rester ici : ce
+    -- fichier est aussi declare en client_scripts, donc telecharge dans le
+    -- cache de chaque joueur et lisible tel quel. IsDuplicityVersion() empeche
+    -- l affectation cote client, pas la distribution du fichier.
+    --
+    -- Pour creer le tien : copie config/secrets.example.lua en
+    -- config/secrets.lua et remplis les quatre valeurs.
     Config.Server = {
-        -- Keep these values private and stable. Changing a pepper invalidates existing app passwords.
         PasscodePepper = "",
         CrewLinkPasswordPepper = "",
         FlipTokPasswordPepper = "",

@@ -1,35 +1,30 @@
 import { readFileSync } from 'node:fs'
 
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const mediaConfig = readFileSync(
-  new URL('../../agent_phone/config/media.lua', import.meta.url),
+  resourceUrl('config/media.lua'),
   'utf8',
 )
 const manifest = readFileSync(
-  new URL('../../agent_phone/fxmanifest.lua', import.meta.url),
+  resourceUrl('fxmanifest.lua'),
   'utf8',
 )
 const mediaProviderConfig = readFileSync(
-  new URL(
-    '../../agent_phone/source/server/media_provider_config.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/media_provider_config.lua'),
   'utf8',
 )
 const mediaImportAdapter = readFileSync(
-  new URL(
-    '../../agent_phone/source/server/media_import/fivemanage.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/server/media_import/fivemanage.lua'),
   'utf8',
 )
 const mediaServer = readFileSync(
-  new URL('../../agent_phone/source/server/media.lua', import.meta.url),
+  resourceUrl('source/server/media.lua'),
   'utf8',
 )
 const memoServer = readFileSync(
-  new URL('../../agent_phone/source/server/memos.lua', import.meta.url),
+  resourceUrl('source/server/memos.lua'),
   'utf8',
 )
 const mediaCapture = readFileSync(

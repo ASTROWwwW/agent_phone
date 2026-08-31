@@ -1,27 +1,25 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
+import { resourceUrl } from './testing/resource'
 
 const callsServer = readFileSync(
-  new URL('../../agent_phone/source/server/calls.lua', import.meta.url),
+  resourceUrl('source/server/calls.lua'),
   'utf8',
 )
 const messagesServer = readFileSync(
-  new URL('../../agent_phone/source/server/messages.lua', import.meta.url),
+  resourceUrl('source/server/messages.lua'),
   'utf8',
 )
 const migration = readFileSync(
-  new URL('../../agent_phone/source/server/db_migrate.lua', import.meta.url),
+  resourceUrl('source/server/db_migrate.lua'),
   'utf8',
 )
 const migrationFramework = readFileSync(
-  new URL(
-    '../../agent_phone/source/bridge/server/migrations.lua',
-    import.meta.url,
-  ),
+  resourceUrl('source/bridge/server/migrations.lua'),
   'utf8',
 )
 const install = readFileSync(
-  new URL('../../agent_phone/sql/install.sql', import.meta.url),
+  resourceUrl('sql/install.sql'),
   'utf8',
 )
 
