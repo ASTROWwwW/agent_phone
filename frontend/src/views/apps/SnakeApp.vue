@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import {
-  ChevronLeft,
-  Pause,
-  Play,
-} from 'lucide-vue-next'
-import { computed, onBeforeUnmount, onMounted, watch } from 'vue'
+import { ChevronLeft, Pause, Play, Trophy } from 'lucide-vue-next'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import {
   SNAKE_BOARD_HEIGHT,
@@ -23,74 +19,283 @@ const phone = usePhoneStore()
 const snake = useSnakeStore()
 const speedOptions: SnakeSpeed[] = ['relaxed', 'normal', 'fast']
 const game = computed(() => snake.game)
-const boardMotionStyle = computed(() => ({
-  '--snake-motion-duration': `${Math.min(
-    110,
-    Math.round(snake.tickMilliseconds * 0.7),
-  )}ms`,
-}))
-let gameTimer: ReturnType<typeof setInterval> | undefined
+const board = ref<HTMLCanvasElement | null>(null)
 
-function cellStyle(point: SnakePoint): Record<string, string> {
-  return {
-    height: `${100 / SNAKE_BOARD_HEIGHT}%`,
-    left: `${(point.x / SNAKE_BOARD_WIDTH) * 100}%`,
-    top: `${(point.y / SNAKE_BOARD_HEIGHT) * 100}%`,
-    width: `${100 / SNAKE_BOARD_WIDTH}%`,
+/*
+ * Le plateau etait un empilement de <span> absolus dont chaque segment animait
+ * left/top/width/height. Chaque image declenchait donc une passe de layout par
+ * segment, et le jeu s'effondrait des que le serpent s'allongeait. Tout passe
+ * maintenant par une seule surface canvas : une boucle requestAnimationFrame
+ * avance la logique a pas fixe et interpole l'affichage entre deux pas, ce qui
+ * donne un deplacement continu quelle que soit la vitesse choisie.
+ */
+const PALETTE = {
+  body: '#3FE07A',
+  bodyDeep: '#0E9B45',
+  fruit: '#FF5C50',
+  fruitStem: '#8ADB67',
+  grid: 'rgba(173, 233, 160, 0.055)',
+  head: '#8CF0A8',
+  ink: '#0B2417',
+} as const
+
+let context: CanvasRenderingContext2D | null = null
+let frameHandle = 0
+let lastFrameAt = 0
+let tickAccumulator = 0
+let previousBody: SnakePoint[] = []
+let boardWidth = 0
+let boardHeight = 0
+let boardObserver: ResizeObserver | undefined
+let swipeOrigin: { x: number; y: number } | null = null
+let bodyGradient: CanvasGradient | null = null
+let bodyGradientHeight = 0
+
+function resizeBoard(): void {
+  const canvas = board.value
+  if (!canvas) return
+
+  const rect = canvas.getBoundingClientRect()
+  if (rect.width === 0 || rect.height === 0) return
+
+  // Le CEF embarque tourne souvent en ratio > 1 : plafonner a 2 garde le
+  // remplissage raisonnable sans que le trait paraisse cranele.
+  const ratio = Math.min(2, window.devicePixelRatio || 1)
+  boardWidth = rect.width
+  boardHeight = rect.height
+  canvas.width = Math.round(rect.width * ratio)
+  canvas.height = Math.round(rect.height * ratio)
+  bodyGradient = null
+  context = canvas.getContext('2d')
+  context?.setTransform(ratio, 0, 0, ratio, 0, 0)
+}
+
+function drawGrid(cell: number, originX: number, originY: number): void {
+  const ctx = context
+  if (!ctx) return
+
+  ctx.strokeStyle = PALETTE.grid
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  for (let column = 1; column < SNAKE_BOARD_WIDTH; column += 1) {
+    const x = Math.round(originX + column * cell) + 0.5
+    ctx.moveTo(x, originY)
+    ctx.lineTo(x, originY + SNAKE_BOARD_HEIGHT * cell)
+  }
+  for (let row = 1; row < SNAKE_BOARD_HEIGHT; row += 1) {
+    const y = Math.round(originY + row * cell) + 0.5
+    ctx.moveTo(originX, y)
+    ctx.lineTo(originX + SNAKE_BOARD_WIDTH * cell, y)
+  }
+  ctx.stroke()
+}
+
+function drawFruit(
+  fruit: SnakePoint,
+  cell: number,
+  originX: number,
+  originY: number,
+  now: number,
+): void {
+  const ctx = context
+  if (!ctx) return
+
+  const x = originX + (fruit.x + 0.5) * cell
+  const y = originY + (fruit.y + 0.5) * cell
+  const radius = cell * 0.3 * (1 + Math.sin(now / 260) * 0.08)
+
+  ctx.fillStyle = PALETTE.fruit
+  ctx.beginPath()
+  ctx.arc(x, y, radius, 0, Math.PI * 2)
+  ctx.fill()
+
+  ctx.strokeStyle = PALETTE.fruitStem
+  ctx.lineCap = 'round'
+  ctx.lineWidth = Math.max(1.5, cell * 0.09)
+  ctx.beginPath()
+  ctx.moveTo(x, y - radius * 0.85)
+  ctx.lineTo(x + radius * 0.5, y - radius * 1.6)
+  ctx.stroke()
+}
+
+function drawSnake(
+  points: SnakePoint[],
+  cell: number,
+  direction: SnakeDirection,
+): void {
+  const ctx = context
+  if (!ctx || points.length === 0) return
+
+  if (!bodyGradient || bodyGradientHeight !== boardHeight) {
+    bodyGradient = ctx.createLinearGradient(0, 0, 0, boardHeight)
+    bodyGradient.addColorStop(0, PALETTE.body)
+    bodyGradient.addColorStop(1, PALETTE.bodyDeep)
+    bodyGradientHeight = boardHeight
+  }
+
+  ctx.strokeStyle = bodyGradient
+  ctx.lineCap = 'round'
+  ctx.lineJoin = 'round'
+  ctx.lineWidth = cell * 0.74
+  ctx.beginPath()
+  ctx.moveTo(points[0].x, points[0].y)
+  for (let index = 1; index < points.length; index += 1) {
+    ctx.lineTo(points[index].x, points[index].y)
+  }
+  ctx.stroke()
+
+  // Tete : une pastille un peu plus claire et plus large, avec deux yeux
+  // decales perpendiculairement au sens de deplacement.
+  const head = points[0]
+  ctx.fillStyle = PALETTE.head
+  ctx.beginPath()
+  ctx.arc(head.x, head.y, cell * 0.42, 0, Math.PI * 2)
+  ctx.fill()
+
+  const forward =
+    direction === 'left'
+      ? { x: -1, y: 0 }
+      : direction === 'right'
+        ? { x: 1, y: 0 }
+        : direction === 'up'
+          ? { x: 0, y: -1 }
+          : { x: 0, y: 1 }
+  const side = { x: -forward.y, y: forward.x }
+  const eyeRadius = Math.max(1.4, cell * 0.09)
+  ctx.fillStyle = PALETTE.ink
+  for (const offset of [1, -1]) {
+    ctx.beginPath()
+    ctx.arc(
+      head.x + forward.x * cell * 0.14 + side.x * offset * cell * 0.17,
+      head.y + forward.y * cell * 0.14 + side.y * offset * cell * 0.17,
+      eyeRadius,
+      0,
+      Math.PI * 2,
+    )
+    ctx.fill()
   }
 }
 
-function bodySegmentStyle(point: SnakePoint): Record<string, string> {
-  return {
-    height: `${(0.72 / SNAKE_BOARD_HEIGHT) * 100}%`,
-    left: `${((point.x + 0.14) / SNAKE_BOARD_WIDTH) * 100}%`,
-    top: `${((point.y + 0.14) / SNAKE_BOARD_HEIGHT) * 100}%`,
-    width: `${(0.72 / SNAKE_BOARD_WIDTH) * 100}%`,
-  }
-}
+function renderBoard(alpha: number, now: number): void {
+  const ctx = context
+  const state = snake.game
+  if (!ctx || !state || boardWidth === 0) return
 
-function connectorStyle(
-  first: SnakePoint,
-  second: SnakePoint,
-): Record<string, string> {
-  if (first.y === second.y) {
+  const cell = Math.min(
+    boardWidth / SNAKE_BOARD_WIDTH,
+    boardHeight / SNAKE_BOARD_HEIGHT,
+  )
+  const originX = (boardWidth - cell * SNAKE_BOARD_WIDTH) / 2
+  const originY = (boardHeight - cell * SNAKE_BOARD_HEIGHT) / 2
+
+  ctx.clearRect(0, 0, boardWidth, boardHeight)
+  drawGrid(cell, originX, originY)
+  drawFruit(state.fruit, cell, originX, originY, now)
+
+  // Apres un pas, body[i] vaut previousBody[i - 1] : chaque anneau glisse vers
+  // la place de celui qui le precede, ce qui suffit a animer tout le corps.
+  const points = state.body.map((segment, index) => {
+    const previous =
+      previousBody[index] ??
+      previousBody[previousBody.length - 1] ??
+      segment
     return {
-      height: `${(0.62 / SNAKE_BOARD_HEIGHT) * 100}%`,
-      left: `${((Math.min(first.x, second.x) + 0.5) / SNAKE_BOARD_WIDTH) * 100}%`,
-      top: `${((first.y + 0.19) / SNAKE_BOARD_HEIGHT) * 100}%`,
-      width: `${(Math.abs(first.x - second.x) / SNAKE_BOARD_WIDTH) * 100}%`,
+      x: originX + (previous.x + (segment.x - previous.x) * alpha + 0.5) * cell,
+      y: originY + (previous.y + (segment.y - previous.y) * alpha + 0.5) * cell,
     }
-  }
-
-  return {
-    height: `${(Math.abs(first.y - second.y) / SNAKE_BOARD_HEIGHT) * 100}%`,
-    left: `${((first.x + 0.19) / SNAKE_BOARD_WIDTH) * 100}%`,
-    top: `${((Math.min(first.y, second.y) + 0.5) / SNAKE_BOARD_HEIGHT) * 100}%`,
-    width: `${(0.62 / SNAKE_BOARD_WIDTH) * 100}%`,
-  }
+  })
+  drawSnake(points, cell, state.direction)
 }
 
-function stopGameTimer(): void {
-  if (gameTimer) clearInterval(gameTimer)
-  gameTimer = undefined
-}
+function loop(timestamp: number): void {
+  frameHandle = window.requestAnimationFrame(loop)
+  const state = snake.game
+  if (!state) return
 
-function syncGameTimer(): void {
-  stopGameTimer()
-  if (snake.game?.status === 'playing') {
-    gameTimer = setInterval(() => {
+  // Un onglet revenu au premier plan peut rendre delta enorme : le plafond
+  // evite que le serpent traverse le plateau d'un coup.
+  const delta = lastFrameAt === 0 ? 0 : Math.min(240, timestamp - lastFrameAt)
+  lastFrameAt = timestamp
+
+  if (state.status === 'playing') {
+    tickAccumulator += delta
+    while (tickAccumulator >= snake.tickMilliseconds) {
+      tickAccumulator -= snake.tickMilliseconds
+      previousBody = snake.game?.body ?? []
       snake.tick()
-    }, snake.tickMilliseconds)
+      if (snake.game?.status !== 'playing') {
+        tickAccumulator = 0
+        break
+      }
+    }
+  } else {
+    tickAccumulator = 0
   }
+
+  const alpha =
+    snake.game?.status === 'playing'
+      ? Math.min(1, tickAccumulator / snake.tickMilliseconds)
+      : 1
+  renderBoard(alpha, timestamp)
+}
+
+function startLoop(): void {
+  if (frameHandle !== 0) return
+  lastFrameAt = 0
+  tickAccumulator = 0
+  frameHandle = window.requestAnimationFrame(loop)
+}
+
+function stopLoop(): void {
+  if (frameHandle === 0) return
+  window.cancelAnimationFrame(frameHandle)
+  frameHandle = 0
 }
 
 function returnToMenu(): void {
-  stopGameTimer()
   snake.showMenu()
 }
 
 function startGame(): void {
+  previousBody = []
+  tickAccumulator = 0
+  lastFrameAt = 0
   snake.start()
+  previousBody = snake.game?.body ?? []
+}
+
+function turn(direction: SnakeDirection): void {
+  snake.turn(direction)
+}
+
+function onBoardPointerDown(event: PointerEvent): void {
+  swipeOrigin = { x: event.clientX, y: event.clientY }
+}
+
+function onBoardPointerMove(event: PointerEvent): void {
+  if (!swipeOrigin) return
+
+  const distanceX = event.clientX - swipeOrigin.x
+  const distanceY = event.clientY - swipeOrigin.y
+  const threshold = 14
+  if (Math.abs(distanceX) < threshold && Math.abs(distanceY) < threshold) return
+
+  turn(
+    Math.abs(distanceX) > Math.abs(distanceY)
+      ? distanceX > 0
+        ? 'right'
+        : 'left'
+      : distanceY > 0
+        ? 'down'
+        : 'up',
+  )
+  // On repart de la position courante : un long balayage peut ainsi enchainer
+  // plusieurs virages sans relever le doigt.
+  swipeOrigin = { x: event.clientX, y: event.clientY }
+}
+
+function onBoardPointerUp(): void {
+  swipeOrigin = null
 }
 
 function handleKeydown(event: KeyboardEvent): void {
@@ -99,31 +304,62 @@ function handleKeydown(event: KeyboardEvent): void {
     ArrowLeft: 'left',
     ArrowRight: 'right',
     ArrowUp: 'up',
+    a: 'left',
+    d: 'right',
+    s: 'down',
+    w: 'up',
   }
-  const direction = directionByKey[event.key]
+  const direction = directionByKey[event.key.toLowerCase()] ?? directionByKey[event.key]
 
   if (direction) {
     event.preventDefault()
-    snake.turn(direction)
-  } else if (event.key === ' ' && snake.game) {
+    turn(direction)
+    return
+  }
+
+  if (event.key === ' ' && snake.game) {
     event.preventDefault()
-    if (snake.game.status === 'paused') {
-      snake.resume()
-    } else {
-      snake.pause()
-    }
+    if (snake.game.status === 'paused') snake.resume()
+    else snake.pause()
   }
 }
 
 snake.hydrate()
+
 watch(
-  () => [snake.game?.status, snake.tickMilliseconds],
-  syncGameTimer,
+  () => Boolean(snake.game),
+  async (playing) => {
+    if (!playing) {
+      stopLoop()
+      return
+    }
+    await Promise.resolve()
+    resizeBoard()
+    startLoop()
+  },
   { immediate: true },
 )
-onMounted(() => window.addEventListener('keydown', handleKeydown))
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+  if (typeof ResizeObserver !== 'undefined') {
+    boardObserver = new ResizeObserver(() => resizeBoard())
+  }
+  watch(
+    board,
+    (canvas) => {
+      boardObserver?.disconnect()
+      if (!canvas) return
+      boardObserver?.observe(canvas)
+      resizeBoard()
+    },
+    { immediate: true },
+  )
+})
+
 onBeforeUnmount(() => {
-  stopGameTimer()
+  stopLoop()
+  boardObserver?.disconnect()
   snake.pause()
   window.removeEventListener('keydown', handleKeydown)
 })
@@ -135,89 +371,91 @@ onBeforeUnmount(() => {
     :class="{ 'snake-app--playing': game }"
     :aria-label="phone.t('Apps.snake.name')"
   >
-    <header v-if="!game" class="snake-header">
-      <span class="snake-brand">{{ phone.t('Apps.snake.name') }}</span>
-      <div class="snake-score-card">
+    <section v-if="!game" class="snake-menu">
+      <div class="snake-mark" aria-hidden="true">
+        <svg viewBox="0 0 512 512" role="presentation">
+          <defs>
+            <linearGradient
+              id="snakeMenuBody"
+              x1="90"
+              y1="360"
+              x2="380"
+              y2="150"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0" stop-color="#DFF6E5" />
+              <stop offset="1" stop-color="#FFFFFF" />
+            </linearGradient>
+          </defs>
+          <path
+            class="snake-mark__body"
+            d="M140 340c56 0 56-88 112-88s56-88 112-88"
+            fill="none"
+            stroke="url(#snakeMenuBody)"
+            stroke-linecap="round"
+            stroke-width="46"
+          />
+          <circle cx="364" cy="164" r="33" fill="#FFFFFF" />
+          <circle cx="376" cy="152" r="10" fill="#0E9B45" />
+          <circle class="snake-mark__fruit" cx="152" cy="176" r="24" fill="#FF5C50" />
+        </svg>
+      </div>
+
+      <div class="snake-menu__copy">
+        <h1 class="sky-type-display">{{ phone.t('Apps.snake.readyTitle') }}</h1>
+        <p>{{ phone.t('Apps.snake.readyBody') }}</p>
+      </div>
+
+      <div class="snake-best">
+        <Trophy :size="15" :stroke-width="2.2" aria-hidden="true" />
         <span>{{ phone.t('Apps.snake.highScore') }}</span>
         <strong>{{ snake.highScore }}</strong>
       </div>
-    </header>
 
-    <section v-if="!game" class="snake-menu">
-      <div class="snake-mark" aria-hidden="true">
-        <svg viewBox="0 0 150 128" role="presentation">
-          <defs>
-            <linearGradient id="snake-menu-body" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#58b957" />
-              <stop offset="0.55" stop-color="#72d267" />
-              <stop offset="1" stop-color="#94e879" />
-            </linearGradient>
-            <filter id="snake-menu-shadow" x="-30%" y="-30%" width="160%" height="170%">
-              <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#000" flood-opacity="0.28" />
-            </filter>
-          </defs>
-          <g filter="url(#snake-menu-shadow)">
-            <path
-              class="snake-mark__body"
-              d="M25 96 C17 70 35 55 58 61 C78 67 89 79 108 68 C123 59 122 42 112 31"
-              fill="none"
-              stroke="url(#snake-menu-body)"
-              stroke-linecap="round"
-              stroke-width="22"
-            />
-            <circle cx="25" cy="96" r="7" fill="#4fae51" />
-            <g class="snake-mark__head" transform="translate(111 29) rotate(-35)">
-              <rect x="-13" y="-13" width="34" height="27" rx="13" fill="#91e678" />
-              <circle cx="12" cy="-6" r="3.3" fill="#f4ffe9" />
-              <circle cx="12" cy="7" r="3.3" fill="#f4ffe9" />
-              <circle cx="13" cy="-6" r="1.7" fill="#10241e" />
-              <circle cx="13" cy="7" r="1.7" fill="#10241e" />
-            </g>
-          </g>
-          <g class="snake-mark__fruit" transform="translate(126 87)">
-            <circle r="12" fill="#ff6256" />
-            <path d="M0 -11 C1 -17 5 -19 8 -20" fill="none" stroke="#6fbe58" stroke-linecap="round" stroke-width="3" />
-            <ellipse cx="8" cy="-17" rx="6" ry="3" fill="#8adb67" transform="rotate(-22 8 -17)" />
-            <circle cx="-4" cy="-4" r="2.5" fill="#ff9b8f" opacity="0.72" />
-          </g>
-        </svg>
-      </div>
-      <div>
-        <h1>{{ phone.t('Apps.snake.readyTitle') }}</h1>
-        <p>{{ phone.t('Apps.snake.readyBody') }}</p>
-      </div>
       <fieldset class="snake-speed-picker">
         <legend>{{ phone.t('Apps.snake.speed') }}</legend>
+        <span
+          class="snake-speed-picker__thumb"
+          :style="{
+            transform: `translate3d(${speedOptions.indexOf(snake.speed) * 100}%, 0, 0)`,
+          }"
+          aria-hidden="true"
+        ></span>
         <button
           v-for="speed in speedOptions"
           :key="speed"
           type="button"
           :class="{ active: snake.speed === speed }"
+          :aria-pressed="snake.speed === speed"
           @click="snake.setSpeed(speed)"
         >
           {{ phone.t(`Apps.snake.speeds.${speed}`) }}
         </button>
       </fieldset>
+
       <button type="button" class="snake-primary" @click="startGame">
-        <Play :size="18" fill="currentColor" />
+        <Play :size="17" fill="currentColor" aria-hidden="true" />
         {{ phone.t('Apps.snake.start') }}
       </button>
     </section>
 
     <section v-else class="snake-game">
       <div class="snake-game__meta">
-        <SkyButton glass icon-only rounded
+        <SkyButton
+          glass
+          icon-only
+          rounded
           type="button"
-          class="snake-game__back"
+          class="snake-game__control snake-game__back"
           :aria-label="phone.t('Apps.snake.backToMenu')"
           :title="phone.t('Apps.snake.backToMenu')"
           @click="returnToMenu"
         >
           <ChevronLeft :size="18" :stroke-width="2.7" aria-hidden="true" />
         </SkyButton>
-        <div>
-          <span>{{ phone.t('Apps.snake.score') }}</span>
-          <strong>{{ game.score }}</strong>
+        <div class="snake-game__score">
+          <span class="sky-type-eyebrow">{{ phone.t('Apps.snake.score') }}</span>
+          <strong class="sky-type-display">{{ game.score }}</strong>
         </div>
         <SkyButton
           v-if="game.status !== 'game-over'"
@@ -225,7 +463,7 @@ onBeforeUnmount(() => {
           icon-only
           rounded
           type="button"
-          class="snake-game__pause"
+          class="snake-game__control snake-game__pause"
           :aria-label="
             phone.t(
               game.status === 'paused'
@@ -235,60 +473,62 @@ onBeforeUnmount(() => {
           "
           @click="game.status === 'paused' ? snake.resume() : snake.pause()"
         >
-          <Play v-if="game.status === 'paused'" :size="18" fill="currentColor" />
-          <Pause v-else :size="18" fill="currentColor" />
+          <Play
+            v-if="game.status === 'paused'"
+            :size="17"
+            fill="currentColor"
+          />
+          <Pause v-else :size="17" fill="currentColor" />
         </SkyButton>
       </div>
 
-      <div
-        class="snake-board"
-        :style="boardMotionStyle"
-        :aria-label="phone.t('Apps.snake.board')"
-      >
-        <span
-          v-for="(_, index) in game.body.slice(1)"
-          :key="`connector-${index}`"
-          class="snake-body-connector"
-          :style="connectorStyle(game.body[index], game.body[index + 1])"
-        ></span>
-        <span
-          v-for="(segment, index) in game.body"
-          :key="`body-${index}`"
-          class="snake-body-segment"
-          :class="{ 'snake-body-segment--tail': index === game.body.length - 1 }"
-          :style="bodySegmentStyle(segment)"
-        ></span>
-        <span
-          class="snake-head"
-          :class="`snake-head--${game.direction}`"
-          :style="cellStyle(game.body[0])"
-        >
-          <i class="snake-head__eye snake-head__eye--top"></i>
-          <i class="snake-head__eye snake-head__eye--bottom"></i>
-        </span>
-        <span class="snake-fruit" :style="cellStyle(game.fruit)">
-          <i></i>
-        </span>
+      <div class="snake-board">
+        <canvas
+          ref="board"
+          class="snake-board__canvas"
+          role="img"
+          :aria-label="phone.t('Apps.snake.board')"
+          @pointercancel="onBoardPointerUp"
+          @pointerdown="onBoardPointerDown"
+          @pointerleave="onBoardPointerUp"
+          @pointermove="onBoardPointerMove"
+          @pointerup="onBoardPointerUp"
+        ></canvas>
 
-        <div v-if="game.status !== 'playing'" class="snake-overlay">
-          <template v-if="game.status === 'paused'">
-            <h2>{{ phone.t('Apps.snake.paused') }}</h2>
-            <button type="button" class="snake-primary" @click="snake.resume">
-              <Play :size="17" fill="currentColor" />
-              {{ phone.t('Apps.snake.resume') }}
-            </button>
-          </template>
-          <template v-else>
-            <span class="snake-overline">{{ phone.t('Apps.snake.score') }} {{ game.score }}</span>
-            <h2>{{ phone.t('Apps.snake.gameOver') }}</h2>
-            <button type="button" class="snake-primary" @click="startGame">
-              {{ phone.t('Apps.snake.restart') }}
-            </button>
-            <button type="button" class="snake-secondary" @click="returnToMenu">
-              {{ phone.t('Apps.snake.menu') }}
-            </button>
-          </template>
-        </div>
+        <Transition name="snake-overlay">
+          <div v-if="game.status !== 'playing'" class="snake-overlay">
+            <template v-if="game.status === 'paused'">
+              <h2 class="sky-type-display">
+                {{ phone.t('Apps.snake.paused') }}
+              </h2>
+              <button type="button" class="snake-primary" @click="snake.resume">
+                <Play :size="16" fill="currentColor" aria-hidden="true" />
+                {{ phone.t('Apps.snake.resume') }}
+              </button>
+            </template>
+            <template v-else>
+              <span class="snake-overline sky-type-eyebrow">{{
+                phone.t('Apps.snake.score')
+              }}</span>
+              <strong class="snake-overlay__score sky-type-display">{{
+                game.score
+              }}</strong>
+              <h2 class="sky-type-display">
+                {{ phone.t('Apps.snake.gameOver') }}
+              </h2>
+              <button type="button" class="snake-primary" @click="startGame">
+                {{ phone.t('Apps.snake.restart') }}
+              </button>
+              <button
+                type="button"
+                class="snake-secondary"
+                @click="returnToMenu"
+              >
+                {{ phone.t('Apps.snake.menu') }}
+              </button>
+            </template>
+          </div>
+        </Transition>
       </div>
 
       <p class="snake-hint">{{ phone.t('Apps.snake.swipeHint') }}</p>
@@ -301,11 +541,11 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  padding: 52px 18px 28px;
-  color: #eef7ec;
+  padding: 58px 20px 26px;
+  color: #eaf7ec;
   background:
-    radial-gradient(circle at 85% 8%, rgb(100 211 91 / 22%), transparent 30%),
-    linear-gradient(165deg, #142b25 0%, #0c1715 62%, #08100f 100%);
+    radial-gradient(circle at 78% 6%, rgb(63 224 122 / 20%), transparent 42%),
+    linear-gradient(168deg, #0f2a1c 0%, #0a1712 58%, #060d0b 100%);
   font-family: var(--sky-font-family);
   user-select: none;
   touch-action: none;
@@ -315,119 +555,115 @@ onBeforeUnmount(() => {
   padding: 0;
 }
 
-.snake-header,
-.snake-game__meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.snake-brand {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.7px;
-}
-
-.snake-score-card {
-  display: grid;
-  grid-template-columns: auto auto;
-  align-items: center;
-  gap: 2px 9px;
-  padding: 7px 11px;
-  border: 1px solid rgb(255 255 255 / 9%);
-  border-radius: 13px;
-  background: rgb(255 255 255 / 7%);
-}
-
-.snake-score-card span {
-  grid-row: 1 / 3;
-  max-width: 50px;
-  color: #9db3a8;
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 1.05;
-  text-transform: uppercase;
-}
-
-.snake-score-card strong {
-  font-size: 20px;
-  line-height: 1;
-}
+/* ---------- Menu ---------- */
 
 .snake-menu {
-  height: calc(100% - 56px);
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 25px;
+  gap: 18px;
   text-align: center;
 }
 
 .snake-mark {
-  position: relative;
-  width: 174px;
-  height: 148px;
+  width: 116px;
+  height: 116px;
   display: grid;
+  border-radius: 30px;
+  background: linear-gradient(160deg, #1fc85f, #0e9b45);
+  box-shadow:
+    0 18px 34px rgb(6 60 26 / 42%),
+    inset 0 1px 0 rgb(255 255 255 / 22%);
   place-items: center;
-  border: 1px solid rgb(180 242 164 / 9%);
-  border-radius: 35px;
-  background:
-    radial-gradient(circle at 75% 20%, rgb(138 226 118 / 14%), transparent 34%),
-    rgb(255 255 255 / 4%);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%), 0 18px 32px rgb(0 0 0 / 19%);
 }
 
 .snake-mark svg {
-  width: 157px;
-  height: 134px;
-  overflow: visible;
+  width: 88px;
+  height: 88px;
 }
 
 .snake-mark__body {
-  animation: snake-menu-breathe 2.8s ease-in-out infinite;
-  transform-origin: center;
-}
-
-.snake-mark__fruit {
-  animation: snake-menu-fruit 1.8s ease-in-out infinite;
+  animation: snake-mark-breathe 3.2s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-@keyframes snake-menu-breathe {
-  0%, 100% { opacity: 0.94; transform: scale(0.985); }
-  50% { opacity: 1; transform: scale(1.01); }
+.snake-mark__fruit {
+  animation: snake-mark-fruit 1.9s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
-@keyframes snake-menu-fruit {
-  0%, 100% { transform: translate(126px, 87px) scale(0.94); }
-  50% { transform: translate(126px, 87px) scale(1.05); }
+@keyframes snake-mark-breathe {
+  0%,
+  100% {
+    transform: scale(0.985);
+  }
+
+  50% {
+    transform: scale(1.015);
+  }
 }
 
-.snake-menu h1,
-.snake-overlay h2 {
+@keyframes snake-mark-fruit {
+  0%,
+  100% {
+    transform: scale(0.9);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.snake-menu__copy h1 {
   margin: 0;
-  font-size: 28px;
-  letter-spacing: -0.8px;
+  font-size: 27px;
+  font-weight: 700;
 }
 
-.snake-menu p {
-  max-width: 265px;
-  margin: 7px 0 0;
-  color: #a6bbb0;
+.snake-menu__copy p {
+  max-width: 240px;
+  margin: 6px auto 0;
+  color: #9fbcab;
   font-size: 13px;
   line-height: 1.4;
 }
 
+.snake-best {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: var(--sky-radius-pill);
+  color: #cfe9d6;
+  background: rgb(255 255 255 / 6%);
+}
+
+.snake-best span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+}
+
+.snake-best strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
 .snake-speed-picker {
+  position: relative;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-  padding: 5px;
+  margin: 0;
+  padding: 3px;
   border: 0;
-  border-radius: 14px;
+  border-radius: 13px;
   background: rgb(255 255 255 / 7%);
 }
 
@@ -439,39 +675,58 @@ onBeforeUnmount(() => {
   clip: rect(0, 0, 0, 0);
 }
 
-.snake-speed-picker button,
-.snake-secondary {
-  min-height: 38px;
+/* Un seul curseur translate remplace un fond par bouton : la bascule glisse
+   au lieu de sauter d'un onglet a l'autre. */
+.snake-speed-picker__thumb {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / 3);
+  height: calc(100% - 6px);
+  border-radius: 10px;
+  background: #e4f7dd;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 22%);
+  transition: transform 280ms var(--sky-ease-out);
+}
+
+.snake-speed-picker button {
+  position: relative;
+  z-index: 1;
+  min-height: 34px;
   border: 0;
   border-radius: 10px;
-  color: #9fb3a9;
+  color: #9fbcab;
   background: transparent;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 650;
+  transition: color 200ms ease;
 }
 
 .snake-speed-picker button.active {
-  color: #10241e;
-  background: #dff6d9;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 18%);
+  color: #0b2417;
 }
 
 .snake-primary {
-  min-width: 170px;
-  min-height: 47px;
+  min-width: 168px;
+  min-height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 0 22px;
   border: 0;
-  border-radius: 16px;
-  color: #10241e;
-  background: linear-gradient(135deg, #8ae276, #61c95c);
-  box-shadow: 0 9px 22px rgb(63 176 78 / 25%);
-  font-size: 14px;
-  font-weight: 800;
+  border-radius: 15px;
+  color: #06301a;
+  background: linear-gradient(135deg, #6cec93, #23c866);
+  box-shadow: 0 10px 22px rgb(24 156 74 / 30%);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  transition: transform 160ms var(--sky-ease-out);
 }
+
+/* ---------- Partie ---------- */
 
 .snake-game {
   position: absolute;
@@ -481,172 +736,80 @@ onBeforeUnmount(() => {
 .snake-game__meta {
   position: absolute;
   z-index: 7;
-  top: 66px;
+  top: 64px;
   right: 18px;
   left: 18px;
-  height: 42px;
+  height: 44px;
   display: grid;
-  grid-template-columns: 32px 1fr 32px;
+  box-sizing: border-box;
+  grid-template-columns: 34px 1fr 34px;
   align-items: center;
   gap: 4px;
-  padding: 4px;
+  padding: 5px;
   border: 1px solid rgb(255 255 255 / 9%);
-  border-radius: 21px;
-  background: rgb(8 22 18 / 58%);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+  border-radius: 22px;
+  background: rgb(9 24 18 / 62%);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
   backdrop-filter: blur(14px);
-  box-sizing: border-box;
+  -webkit-backdrop-filter: blur(14px);
 }
 
-.snake-game__meta div {
-  height: 32px;
+.snake-game__score {
   display: grid;
-  grid-template-rows: 10px 20px;
   align-content: center;
   justify-items: center;
 }
 
-.snake-game__meta span {
-  color: #9fb3a9;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 10px;
-  text-transform: uppercase;
+.snake-game__score span {
+  color: #8fae9d;
+  line-height: 12px;
 }
 
-.snake-game__meta strong {
-  display: block;
+.snake-game__score strong {
   font-size: 19px;
-  line-height: 20px;
+  font-weight: 700;
+  line-height: 21px;
+  font-variant-numeric: tabular-nums;
 }
 
-.snake-game__meta button {
-  --sky-touch-target: 32px;
-  width: 32px;
-  height: 32px;
+.snake-game__control {
+  --sky-touch-target: 34px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
-  color: #dff6d9;
 }
 
-.snake-game__meta .snake-game__pause { justify-self: end; }
-.snake-game__meta .snake-game__back { justify-self: start; }
+.snake-game__meta .snake-game__pause {
+  justify-self: end;
+}
+
+.snake-game__meta .snake-game__back {
+  justify-self: start;
+}
 
 .snake-board {
   position: absolute;
-  top: 118px;
+  top: 120px;
   right: 18px;
-  bottom: 62px;
+  bottom: 58px;
   left: 18px;
   overflow: hidden;
-  border: 1px solid rgb(145 228 117 / 24%);
-  border-radius: 18px;
-  background-color: #162d26;
-  background-image:
-    linear-gradient(rgb(173 233 160 / 4%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(173 233 160 / 4%) 1px, transparent 1px),
-    radial-gradient(circle at 50% 42%, rgb(94 191 91 / 8%), transparent 68%);
-  background-size:
-    calc(100% / 16) calc(100% / 30),
-    calc(100% / 16) calc(100% / 30),
-    100% 100%;
+  border: 1px solid rgb(63 224 122 / 22%);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 50% 38%, rgb(63 224 122 / 9%), transparent 66%),
+    #10241b;
   box-shadow:
-    inset 0 0 55px rgb(0 0 0 / 24%),
-    inset 0 0 0 1px rgb(213 255 199 / 3%),
-    0 12px 30px rgb(0 0 0 / 20%),
-    0 0 18px rgb(89 196 82 / 7%);
+    inset 0 0 55px rgb(0 0 0 / 30%),
+    0 14px 34px rgb(0 0 0 / 26%);
 }
 
-.snake-head,
-.snake-fruit {
-  position: absolute;
+.snake-board__canvas {
   display: block;
-}
-
-.snake-body-connector,
-.snake-body-segment {
-  position: absolute;
-  z-index: 1;
-  background: #6dcc62;
-  transition-duration: var(--snake-motion-duration);
-  transition-timing-function: cubic-bezier(0.22, 0.68, 0.3, 1);
-  will-change: left, top, width, height;
-}
-
-.snake-body-connector {
-  border-radius: 999px;
-  transition-property: left, top, width, height;
-}
-
-.snake-body-segment {
-  border-radius: 50%;
-  transition-property: left, top;
-}
-
-.snake-body-segment--tail {
-  background: #62be5c;
-  transform: scale(0.86);
-}
-
-.snake-head {
-  z-index: 3;
-  border: 1px solid #438f48;
-  border-radius: 45% 55% 55% 45%;
-  background: #86dc6b;
-  box-shadow:
-    inset -2px -2px 0 rgb(35 112 51 / 14%),
-    0 2px 3px rgb(2 15 8 / 24%);
-  transform-origin: center;
-  transition-duration: var(--snake-motion-duration);
-  transition-property: left, top;
-  transition-timing-function: cubic-bezier(0.22, 0.68, 0.3, 1);
-  will-change: left, top;
-}
-
-.snake-head--right { transform: scale(0.92) rotate(0deg); }
-.snake-head--down { transform: scale(0.92) rotate(90deg); }
-.snake-head--left { transform: scale(0.92) rotate(180deg); }
-.snake-head--up { transform: scale(0.92) rotate(-90deg); }
-
-.snake-head__eye {
-  position: absolute;
-  right: 18%;
-  width: 4px;
-  height: 4px;
-  border: 1px solid #f5ffe9;
-  border-radius: 50%;
-  background: #10241e;
-}
-
-.snake-head__eye--top { top: 17%; }
-.snake-head__eye--bottom { bottom: 17%; }
-
-.snake-fruit {
-  z-index: 2;
-  padding: 3px;
-  border-radius: 50%;
-  background-color: #ff5c50;
-  box-shadow:
-    inset -2px -3px 0 rgb(130 17 21 / 27%),
-    0 0 0 3px rgb(255 92 80 / 10%),
-    0 3px 5px rgb(0 0 0 / 25%);
-  animation: snake-fruit-pulse 1.35s ease-in-out infinite;
-}
-
-.snake-fruit i {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 2px;
-  height: 5px;
-  border-radius: 2px;
-  background: #9ee07a;
-  transform: rotate(25deg);
-}
-
-@keyframes snake-fruit-pulse {
-  0%, 100% { transform: scale(0.88); }
-  50% { transform: scale(1.06); }
+  width: 100%;
+  height: 100%;
+  touch-action: none;
 }
 
 .snake-overlay {
@@ -657,41 +820,66 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 13px;
-  background: rgb(6 16 13 / 82%);
-  backdrop-filter: blur(4px);
+  gap: 10px;
+  background: rgb(6 16 13 / 84%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.snake-overlay h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.snake-overlay__score {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .snake-overlay .snake-primary {
-  min-height: 43px;
+  min-width: 150px;
+  min-height: 42px;
+  margin-top: 4px;
 }
 
 .snake-overline {
-  color: #91e475;
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
+  color: #6cec93;
 }
 
 .snake-secondary {
-  min-width: 140px;
-  color: #c0d0c8;
-  border: 1px solid rgb(255 255 255 / 10%);
+  min-width: 150px;
+  min-height: 40px;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 13px;
+  color: #b9cfc3;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.snake-overlay-enter-active,
+.snake-overlay-leave-active {
+  transition: opacity 220ms ease;
+}
+
+.snake-overlay-enter-from,
+.snake-overlay-leave-to {
+  opacity: 0;
 }
 
 .snake-hint {
   position: absolute;
   z-index: 6;
-  right: 50px;
-  bottom: 27px;
-  left: 50px;
+  right: 34px;
+  bottom: 22px;
+  left: 34px;
   margin: 0;
-  padding: 7px 10px;
-  border-radius: 999px;
-  color: #9eb2a8;
-  background: rgb(8 22 18 / 48%);
-  backdrop-filter: blur(10px);
+  color: #7f9a8c;
   font-size: 10px;
+  letter-spacing: 0.01em;
   text-align: center;
   pointer-events: none;
 }
@@ -702,6 +890,12 @@ button:active {
 
 @media (prefers-reduced-motion: reduce) {
   .snake-mark__body,
-  .snake-mark__fruit { animation: none; }
+  .snake-mark__fruit {
+    animation: none;
+  }
+
+  .snake-speed-picker__thumb {
+    transition: none;
+  }
 }
 </style>

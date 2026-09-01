@@ -1063,7 +1063,7 @@ Locales["de"] = {
                 readyBody = "Sammle Früchte, werde immer länger und meide Wände.", readyTitle = "Bereit zum Spielen?",
                 restart = "Wieder spielen", resume = "Spiel fortsetzen", score = "Ergebnis", speed = "Geschwindigkeit",
                 speeds = { fast = "Schnell", normal = "Normal", relaxed = "Entspannt" }, start = "Spiel starten",
-                swipeHint = "Wische oder verwende die Pfeiltasten zum Steuern",
+                swipeHint = "Wische über das Feld oder nutze die Pfeiltasten / WASD",
             },
             numberMerge = {
                 name = "2048", backToMenu = "Zurück zum Spielmenü", best = "Bestwert", board = "2048-Spielfeld",

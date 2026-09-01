@@ -2816,7 +2816,7 @@ const defaultLocales: LocaleTree = {
       speed: 'Speed',
       speeds: { fast: 'Fast', normal: 'Normal', relaxed: 'Relaxed' },
       start: 'Start Game',
-      swipeHint: 'Swipe, tap the controls, or use arrow keys / WASD',
+      swipeHint: 'Swipe the board or use the arrow keys / WASD',
     },
     numberMerge: {
       name: '2048',
