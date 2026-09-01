@@ -3076,19 +3076,38 @@ button {
   padding-bottom: 25px;
   display: flex;
   flex-direction: column;
+  font-feature-settings: var(--sky-font-display-features);
+  font-optical-sizing: auto;
+  letter-spacing: var(--sky-font-display-tracking);
 }
 .app-library-search,
 .app-search {
-  height: 36px;
+  height: 38px;
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 0 10px;
-  border-radius: 11px;
+  padding: 0 12px;
+  border-radius: 12px;
   background: #ffffff25;
   color: #ffffffb0;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+}
+.app-library-search {
+  position: relative;
+  font-size: 16px;
+}
+/* Au repos, le gabarit loupe + libelle est centre comme sur iOS ; le champ
+   reel reste pleine largeur dessous pour rester cliquable partout. */
+.app-library-search__hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #ffffffa8;
+  pointer-events: none;
 }
 .app-library-search input,
 .app-search input {
@@ -3097,6 +3116,11 @@ button {
   outline: 0;
   background: transparent;
   color: inherit;
+  font-size: 16px;
+  letter-spacing: inherit;
+}
+.app-library-search input::-webkit-search-cancel-button {
+  display: none;
 }
 .app-library-search button {
   border: 0;
@@ -3151,8 +3175,9 @@ button {
   border-radius: 13px;
 }
 .app-library-group > span {
-  font-size: 11px;
-  font-weight: 400;
+  font-size: 12px;
+  font-weight: 450;
+  letter-spacing: -0.1px;
   text-align: center;
   text-shadow: 0 1px 4px #000c;
 }
@@ -3188,11 +3213,14 @@ button {
   -webkit-backdrop-filter: blur(24px) saturate(145%);
 }
 .app-library-letter h2 {
-  margin: 8px 0 1px;
-  font-size: 16px;
+  margin: 14px 0 2px;
+  color: #ffffff8c;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 .app-library-row {
-  height: 62px;
+  height: 58px;
   display: flex;
   align-items: center;
   gap: 13px;
@@ -3203,7 +3231,9 @@ button {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #ffffff1c;
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.43px;
 }
 .app-library-row .app-icon {
   width: 46px;

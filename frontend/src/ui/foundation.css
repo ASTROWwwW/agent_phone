@@ -936,6 +936,28 @@
   outline-offset: -2px;
 }
 
+/* Reglage typographique « display » : meme famille Inter, mais avec l'axe
+   optique actif, le G a ergot et les virgules rondes, plus l'approche serree
+   qu'Apple applique a ses libelles. Sert aux surfaces systeme (Control Center,
+   bibliotheque d'apps) ou la typo doit se rapprocher d'SF Pro. */
+.sky-type-display {
+  font-family: var(--sky-font-family);
+  font-feature-settings: var(--sky-font-display-features);
+  font-optical-sizing: auto;
+  font-variant-numeric: proportional-nums;
+  letter-spacing: var(--sky-font-display-tracking);
+}
+
+.sky-type-eyebrow {
+  font-family: var(--sky-font-family);
+  font-feature-settings: var(--sky-font-display-features);
+  font-optical-sizing: auto;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sky-scroll-rail {
     scroll-behavior: auto !important;
