@@ -130,4 +130,14 @@ describe('Agent is the only supported base', () => {
     expect(phoneServer).toContain('player = player_identity(source)')
     expect(phoneServer).toContain('Bridge.Framework.GetJob(source)')
   })
+  it('delegates admin rights to the base instead of naming foreign groups', () => {
+    // La base declare fondateur, responsable, resp_illegal, resp_legal, admin,
+    // moderateur et helper. Le telephone attendait god, superadmin et admin :
+    // seul admin existait des deux cotes, tout le reste de l encadrement se
+    // voyait refuser le panneau. L etoile delegue au statut que la base calcule.
+    expect(config).not.toMatch(/"(god|superadmin)"/)
+    expect(esx).toContain('if group == "*" then')
+    expect(esx).toContain('player.admin == true')
+    expect(esx).toContain('function Bridge.Framework.IsAdmin(source)')
+  })
 })

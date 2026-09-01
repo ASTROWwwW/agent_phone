@@ -105,4 +105,19 @@ describe('Lua sources', () => {
     expect(output).not.toContain('ECHEC')
     expect(output).not.toContain('MANQUE')
   })
+  it('resolves permissions against the base admin status', () => {
+    try {
+      execFileSync('lua', ['-v'], { stdio: 'ignore' })
+    } catch {
+      expect(sources.length).toBeGreaterThan(0)
+      return
+    }
+
+    const harness = fileURLToPath(new URL('../testserver/permissionResolution.lua', import.meta.url))
+    const posixRoot = resourceRoot.split(String.fromCharCode(92)).join('/')
+    const output = execFileSync('lua', [harness, posixRoot], { encoding: 'utf8' })
+
+    expect(output).toContain('toutes les resolutions sont correctes')
+    expect(output).not.toContain('ECHEC')
+  })
 })

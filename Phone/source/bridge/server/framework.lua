@@ -60,6 +60,14 @@ function Bridge.Framework.GetIdentifier(source)
     return player and player.identifier or nil
 end
 
+function Bridge.Framework.IsAdmin(source)
+    local player = get_player(source)
+    if not player then
+        return false
+    end
+    return player.admin == true
+end
+
 function Bridge.Framework.HasAdminGroup(source, groups)
     local player = get_player(source)
     if not player then
@@ -67,7 +75,11 @@ function Bridge.Framework.HasAdminGroup(source, groups)
     end
     local player_group = player.getGroup()
     for _, group in ipairs(groups) do
-        if player_group == group then
+        if group == "*" then
+            if player.admin == true then
+                return true
+            end
+        elseif player_group == group then
             return true
         end
     end

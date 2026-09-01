@@ -4,12 +4,15 @@ Config.PhoneConfigurator = {
     Enabled = true,
 }
 
+-- "*" delegue la decision a la base : elle pose sur chaque joueur un statut
+-- d administrateur, calcule depuis ses propres groupes et ses principals ACE.
+-- Un nom de groupe exact reste accepte pour restreindre plus finement.
 Config.CommandPermissions = {
-    phonepanel = { "god", "superadmin", "admin" },
-    phonetestdata = { "god", "superadmin", "admin" },
-    fliptokverify = { "god", "superadmin", "admin" },
-    picstagramverify = { "god", "superadmin", "admin" },
-    picstagramadmin = { "god", "superadmin", "admin" },
+    phonepanel = { "*" },
+    phonetestdata = { "*" },
+    fliptokverify = { "*" },
+    picstagramverify = { "*" },
+    picstagramadmin = { "*" },
 }
 -- CONFIG_DEFAULT_EXCLUDE_END
 Config.Bridge = {
