@@ -1167,6 +1167,8 @@ Locales["en"] = {
                 loginBody = "Sign in to use your shared iFruit mailbox.", registerBody = "Choose your new @ifruit.com address.",
                 localPart = "Email address", email = "Email", password = "Password", confirmPassword = "Confirm password",
                 accountEyebrow = "Your Agent Cloud account", emailPlaceholder = "name@ifruit.com", passwordPlaceholder = "Enter password",
+                showPassword = "Show password", hidePassword = "Hide password",
+                localPartPlaceholder = "yourname",
                 passwordWarning = "Use an in-character password. Do not reuse a real-world password.",
                 mailboxes = "Mailboxes", editMailboxes = "Edit", newMailbox = "New Mailbox",
                 mailboxName = "Name", mailboxNamePlaceholder = "Mailbox name", mailboxLocation = "Mailbox Location",

@@ -3394,7 +3394,10 @@ const defaultLocales: LocaleTree = {
       confirmPassword: 'Confirm password',
       accountEyebrow: 'Your Agent Cloud account',
       emailPlaceholder: 'name@ifruit.com',
+      localPartPlaceholder: 'yourname',
       passwordPlaceholder: 'Enter password',
+      showPassword: 'Show password',
+      hidePassword: 'Hide password',
       passwordWarning:
         'Use an in-character password. Do not reuse a real-world password.',
       mailboxes: 'Mailboxes',

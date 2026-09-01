@@ -17,15 +17,19 @@ import {
   SkyToolbarPane,
 } from '@/ui'
 import {
+  AtSign,
   CalendarDays,
   Check,
   ChevronDown,
   ChevronRight,
+  Eye,
+  EyeOff,
   FileText,
   Folder,
   Forward,
   Inbox,
   ListFilter,
+  Lock,
   LogOut,
   Mail,
   MailCheck,
@@ -114,6 +118,7 @@ const authMode = ref<AuthMode>('login')
 const authEmail = ref('')
 const authPassword = ref('')
 const authConfirm = ref('')
+const authPasswordVisible = ref(false)
 const submitting = ref(false)
 const screen = ref<MailScreen>('folders')
 const selectedMessage = ref<MailMessage | null>(null)
@@ -1008,110 +1013,149 @@ onBeforeUnmount(() => {
     :aria-label="phone.t('Apps.mail.loginTitle')"
   >
     <div class="mail-auth">
-      <header class="mail-auth__hero">
-        <img :src="mailIcon" alt="" class="mail-auth__icon" />
-        <span>{{ phone.t('Apps.mail.accountEyebrow') }}</span>
-        <h1>{{ phone.t('Apps.mail.loginTitle') }}</h1>
-        <p>
-          {{
-            phone.t(
-              authMode === 'login'
-                ? 'Apps.mail.loginBody'
-                : 'Apps.mail.registerBody',
-            )
-          }}
-        </p>
-      </header>
-
-      <div class="mail-auth__segment" role="tablist">
-        <button
-          type="button"
-          role="tab"
-          :aria-selected="authMode === 'login'"
-          :class="{ 'is-active': authMode === 'login' }"
-          @click="authMode = 'login'"
-        >
-          {{ phone.t('Apps.mail.login') }}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          :aria-selected="authMode === 'register'"
-          :class="{ 'is-active': authMode === 'register' }"
-          @click="authMode = 'register'"
-        >
-          {{ phone.t('Apps.mail.registerLink') }}
-        </button>
-      </div>
-
-      <form class="mail-auth__form" @submit.prevent="submitAuth">
-        <label class="mail-auth__field">
-          <span>{{
-            phone.t(
-              authMode === 'login' ? 'Apps.mail.email' : 'Apps.mail.localPart',
-            )
-          }}</span>
-          <div>
-            <Mail :size="18" />
-            <input
-              :value="authEmail"
-              autocomplete="username"
-              autocapitalize="none"
-              autocorrect="off"
-              inputmode="email"
-              :maxlength="MAIL_ADDRESS_INPUT_MAX_LENGTH"
-              pattern="[A-Za-z0-9@._-]*"
-              spellcheck="false"
-              :placeholder="phone.t('Apps.mail.emailPlaceholder')"
-              @input="updateAuthEmail"
-            />
-            <small v-if="authMode === 'register'">@ifruit.com</small>
-          </div>
-        </label>
-        <label class="mail-auth__field">
-          <span>{{ phone.t('Apps.mail.password') }}</span>
-          <div>
-            <ShieldCheck :size="18" />
-            <input
-              type="password"
-              :value="authPassword"
-              :autocomplete="
-                authMode === 'login' ? 'current-password' : 'new-password'
-              "
-              :placeholder="phone.t('Apps.mail.passwordPlaceholder')"
-              @input="authPassword = eventValue($event)"
-            />
-          </div>
-        </label>
-        <label v-if="authMode === 'register'" class="mail-auth__field">
-          <span>{{ phone.t('Apps.mail.confirmPassword') }}</span>
-          <div>
-            <ShieldCheck :size="18" />
-            <input
-              type="password"
-              :value="authConfirm"
-              autocomplete="new-password"
-              :placeholder="phone.t('Apps.mail.passwordPlaceholder')"
-              @input="authConfirm = eventValue($event)"
-            />
-          </div>
-        </label>
-
-        <button class="mail-auth__submit" type="submit" :disabled="submitting">
-          <sky-spinner v-if="submitting" />
-          <template v-else>
+      <div class="mail-auth__inner">
+        <header class="mail-auth__hero">
+          <span class="mail-auth__badge">
+            <img :src="mailIcon" alt="" />
+          </span>
+          <h1 class="sky-type-display">
+            {{ phone.t('Apps.mail.loginTitle') }}
+          </h1>
+          <p>
             {{
               phone.t(
-                authMode === 'login' ? 'Apps.mail.login' : 'Apps.mail.register',
+                authMode === 'login'
+                  ? 'Apps.mail.loginBody'
+                  : 'Apps.mail.registerBody',
               )
             }}
-          </template>
-        </button>
-        <p v-if="authMode === 'register'" class="mail-auth__warning">
-          <ShieldCheck :size="17" />
-          {{ phone.t('Apps.mail.passwordWarning') }}
-        </p>
-      </form>
+          </p>
+        </header>
+
+        <div class="mail-auth__segment" role="tablist">
+          <span
+            class="mail-auth__segment-thumb"
+            :class="{ 'is-register': authMode === 'register' }"
+            aria-hidden="true"
+          ></span>
+          <button
+            type="button"
+            role="tab"
+            :aria-selected="authMode === 'login'"
+            :class="{ 'is-active': authMode === 'login' }"
+            @click="authMode = 'login'"
+          >
+            {{ phone.t('Apps.mail.login') }}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            :aria-selected="authMode === 'register'"
+            :class="{ 'is-active': authMode === 'register' }"
+            @click="authMode = 'register'"
+          >
+            {{ phone.t('Apps.mail.registerLink') }}
+          </button>
+        </div>
+
+        <form class="mail-auth__form" @submit.prevent="submitAuth">
+          <div class="mail-auth__group">
+            <div class="mail-auth__row">
+              <AtSign :size="17" aria-hidden="true" />
+              <input
+                :value="authEmail"
+                :aria-label="
+                  phone.t(
+                    authMode === 'login'
+                      ? 'Apps.mail.email'
+                      : 'Apps.mail.localPart',
+                  )
+                "
+                autocomplete="username"
+                autocapitalize="none"
+                autocorrect="off"
+                inputmode="email"
+                :maxlength="MAIL_ADDRESS_INPUT_MAX_LENGTH"
+                pattern="[A-Za-z0-9@._-]*"
+                spellcheck="false"
+                :placeholder="
+                  phone.t(
+                    authMode === 'login'
+                      ? 'Apps.mail.emailPlaceholder'
+                      : 'Apps.mail.localPartPlaceholder',
+                  )
+                "
+                @input="updateAuthEmail"
+              />
+              <small v-if="authMode === 'register'">@ifruit.com</small>
+            </div>
+
+            <div class="mail-auth__row">
+              <Lock :size="17" aria-hidden="true" />
+              <input
+                :type="authPasswordVisible ? 'text' : 'password'"
+                :value="authPassword"
+                :aria-label="phone.t('Apps.mail.password')"
+                :autocomplete="
+                  authMode === 'login' ? 'current-password' : 'new-password'
+                "
+                :placeholder="phone.t('Apps.mail.passwordPlaceholder')"
+                @input="authPassword = eventValue($event)"
+              />
+              <button
+                class="mail-auth__reveal"
+                type="button"
+                :aria-label="
+                  phone.t(
+                    authPasswordVisible
+                      ? 'Apps.mail.hidePassword'
+                      : 'Apps.mail.showPassword',
+                  )
+                "
+                :aria-pressed="authPasswordVisible"
+                @click="authPasswordVisible = !authPasswordVisible"
+              >
+                <EyeOff v-if="authPasswordVisible" :size="17" />
+                <Eye v-else :size="17" />
+              </button>
+            </div>
+
+            <div v-if="authMode === 'register'" class="mail-auth__row">
+              <ShieldCheck :size="17" aria-hidden="true" />
+              <input
+                :type="authPasswordVisible ? 'text' : 'password'"
+                :value="authConfirm"
+                :aria-label="phone.t('Apps.mail.confirmPassword')"
+                autocomplete="new-password"
+                :placeholder="phone.t('Apps.mail.confirmPassword')"
+                @input="authConfirm = eventValue($event)"
+              />
+            </div>
+          </div>
+
+          <button
+            class="mail-auth__submit"
+            type="submit"
+            :disabled="submitting"
+          >
+            <sky-spinner v-if="submitting" />
+            <template v-else>
+              {{
+                phone.t(
+                  authMode === 'login'
+                    ? 'Apps.mail.login'
+                    : 'Apps.mail.register',
+                )
+              }}
+            </template>
+          </button>
+
+          <p v-if="authMode === 'register'" class="mail-auth__note">
+            <ShieldCheck :size="17" />
+            <span>{{ phone.t('Apps.mail.passwordWarning') }}</span>
+          </p>
+        </form>
+      </div>
     </div>
   </sky-app-page>
 
@@ -3065,13 +3109,20 @@ button {
 }
 
 .mail-auth {
-  position: relative;
-  height: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow-y: auto;
-  padding: 70px 22px 40px;
+  padding: 44px 22px 34px;
   background:
-    radial-gradient(circle at 50% 11%, #0a84ff2e, transparent 31%),
+    radial-gradient(circle at 50% 4%, rgb(10 132 255 / 22%), transparent 46%),
     var(--sky-bg);
+}
+
+.mail-auth__inner {
+  width: 100%;
+  max-width: 340px;
 }
 
 .mail-auth__hero {
@@ -3081,147 +3132,199 @@ button {
   text-align: center;
 }
 
-.mail-auth__icon {
-  width: 72px;
-  height: 72px;
-  margin-bottom: 13px;
-  border-radius: 17px;
-  box-shadow: 0 12px 35px #0a84ff4a;
+/* La pastille porte l'ombre coloree : l'icone reste nette meme si le fichier
+   source change de format. */
+.mail-auth__badge {
+  display: grid;
+  width: 74px;
+  height: 74px;
+  margin-bottom: 16px;
+  border-radius: 18px;
+  box-shadow: 0 14px 32px rgb(10 132 255 / 34%);
+  place-items: center;
 }
 
-.mail-auth__hero span {
-  color: var(--mail-blue);
-  font-size: 10px;
-  font-weight: 760;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+.mail-auth__badge img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
 }
 
 .mail-auth__hero h1 {
-  margin: 5px 0 7px;
-  font-size: 30px;
-  line-height: 1;
-  letter-spacing: -1px;
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
 }
 
 .mail-auth__hero p {
-  max-width: 280px;
-  min-height: 36px;
-  margin: 0;
+  max-width: 268px;
+  min-height: 34px;
+  margin: 7px 0 0;
   color: var(--mail-muted);
-  font-size: 12px;
-  line-height: 1.45;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
+/* Segment iOS : un seul curseur qui glisse, pas un fond par onglet. */
 .mail-auth__segment {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3px;
-  margin: 24px 0 14px;
-  padding: 3px;
-  border-radius: 11px;
+  margin: 22px 0 16px;
+  padding: 2px;
+  border-radius: 9px;
   background: var(--sky-surface-muted);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 5%);
+}
+
+.mail-auth__segment-thumb {
+  position: absolute;
+  z-index: 0;
+  top: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  height: calc(100% - 4px);
+  border-radius: 7px;
+  background: var(--sky-surface-tint);
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 14%),
+    0 0 0 0.5px rgb(0 0 0 / 4%);
+  transition: transform 260ms var(--sky-ease-out);
+}
+
+.mail-auth__segment-thumb.is-register {
+  transform: translate3d(100%, 0, 0);
 }
 
 .mail-auth__segment button {
+  position: relative;
+  z-index: 1;
   height: 30px;
   border: 0;
-  border-radius: 8px;
-  background: transparent;
+  border-radius: 7px;
   color: var(--mail-muted);
-  font-size: 12px;
+  background: transparent;
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: -0.1px;
+  transition: color 200ms ease;
 }
 
 .mail-auth__segment button.is-active {
-  background: var(--sky-surface-tint);
   color: var(--sky-text);
-  box-shadow: 0 1px 4px rgb(0 0 0 / 18%);
 }
 
 .mail-auth__form {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 16px;
 }
 
-.mail-auth__field > span {
-  display: block;
-  margin: 0 0 5px 3px;
-  color: var(--mail-muted);
-  font-size: 10px;
-  font-weight: 650;
-  letter-spacing: 0.45px;
-  text-transform: uppercase;
+/* Liste groupee facon Reglages : une carte, des filets internes, pas de
+   libelle flottant au-dessus de chaque champ. */
+.mail-auth__group {
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--sky-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 6%);
 }
 
-.mail-auth__field > div {
-  height: 48px;
+.mail-auth__row {
+  position: relative;
+  height: 50px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 13px;
-  border: 1px solid var(--sky-hairline);
-  border-radius: 13px;
-  background: var(--sky-surface);
-  color: var(--sky-muted);
+  gap: 11px;
+  padding: 0 14px;
+  color: var(--mail-muted);
 }
 
-.mail-auth__field:focus-within > div {
-  border-color: #0a84ff88;
-  box-shadow: 0 0 0 3px #0a84ff1f;
+.mail-auth__row + .mail-auth__row::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 44px;
+  height: 1px;
+  background: var(--sky-hairline);
+  content: '';
+  transform: scaleY(var(--sky-hairline-scale));
+  transform-origin: top;
 }
 
-.mail-auth__field input {
+.mail-auth__row input {
   min-width: 0;
   flex: 1;
   border: 0;
   outline: 0;
   background: transparent;
   color: var(--sky-text);
-  font-size: 14px;
+  font-size: 16px;
+  letter-spacing: -0.3px;
 }
 
-.mail-auth__field input::placeholder {
+.mail-auth__row input::placeholder {
   color: var(--mail-muted);
   opacity: 0.72;
 }
 
-.mail-auth__field small {
+.mail-auth__row small {
   color: var(--mail-muted);
-  font-size: 11px;
+  font-size: 13px;
+}
+
+.mail-auth__reveal {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  color: var(--mail-muted);
+  background: transparent;
+  place-items: center;
+}
+
+.mail-auth__reveal:active {
+  background: var(--sky-pressed);
 }
 
 .mail-auth__submit {
-  height: 48px;
+  height: 50px;
   display: grid;
-  place-items: center;
-  margin-top: 5px;
   border: 0;
   border-radius: 14px;
-  background: var(--mail-blue);
   color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  box-shadow: 0 9px 24px #0a84ff3f;
+  background: var(--mail-blue);
+  box-shadow: 0 10px 24px rgb(10 132 255 / 30%);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  place-items: center;
+  transition:
+    transform 160ms var(--sky-ease-out),
+    opacity 160ms ease;
+}
+
+.mail-auth__submit:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .mail-auth__submit:disabled {
   opacity: 0.55;
 }
 
-.mail-auth__warning {
+.mail-auth__note {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin: 6px 3px 0;
+  margin: 0 4px;
   color: var(--sky-text);
   font-size: 14px;
   font-weight: 500;
   line-height: 19px;
 }
 
-.mail-auth__warning svg {
+.mail-auth__note svg {
   flex: 0 0 auto;
   margin-top: 1px;
 }
