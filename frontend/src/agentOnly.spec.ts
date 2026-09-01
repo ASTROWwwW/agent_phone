@@ -17,6 +17,7 @@ const config = read('config/config.lua')
 const sim = read('source/server/sim.lua')
 const oxInventory = read('source/bridge/server/inventory/ox.lua')
 const esx = read('source/bridge/server/frameworks/esx.lua')
+const phoneServer = read('source/server/phone.lua')
 
 describe('Agent is the only supported base', () => {
   it('targets the Agent resource on both sides', () => {
@@ -143,5 +144,13 @@ describe('Agent is the only supported base', () => {
     const jobs = [...config.matchAll(/Job = "([a-z_0-9]+)"/g)].map(([, name]) => name)
 
     expect(jobs.sort()).toEqual(['ambulance', 'mechanic', 'police', 'taxi'])
+  })
+  it('sends the character identity and job to the interface', () => {
+    // Le telephone connaissait le prenom et le nom mais pas le metier, pourtant
+    // present dans la base et deja lu cote serveur par Companies. La section A
+    // propos ne montrait ni proprietaire ni metier.
+    expect(phoneServer).toContain('local function player_identity(source)')
+    expect(phoneServer).toContain('player = player_identity(source)')
+    expect(phoneServer).toContain('Bridge.Framework.GetJob(source)')
   })
 })

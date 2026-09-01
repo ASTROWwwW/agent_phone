@@ -7756,7 +7756,9 @@ app.post('/api/:endpoint', (request, response) => {
         notes: mockNotes,
         player: {
           firstName: 'Alex',
+          job: { grade: 2, gradeLabel: 'Sergent', label: 'LSPD', name: 'police', onDuty: true },
           lastName: 'Morgan',
+          secondJob: { grade: 0, gradeLabel: '', label: '', name: '' },
         },
         security: mockSecurity,
         token: 'development',

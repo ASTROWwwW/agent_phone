@@ -129,6 +129,22 @@ type PasscodeFlow =
 const FACTORY_RESET_DURATION_MS = 8_000
 
 const phone = usePhoneStore()
+
+// Le personnage et son metier viennent de la base : les afficher ici evite que
+// la section A propos ne parle que de l appareil.
+const ownerName = computed(() =>
+  [phone.player.firstName, phone.player.lastName]
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join(String.fromCharCode(32)),
+)
+
+const jobLabel = computed(() => {
+  const job = phone.player.job
+  if (!job || !job.name) return ''
+  const name = job.label || job.name
+  return job.gradeLabel ? name + ' · ' + job.gradeLabel : name
+})
 const mediaPicker = useMessageMediaStore()
 const route = useRoute()
 const router = useRouter()
@@ -1373,6 +1389,16 @@ onBeforeUnmount(() => {
         </AgentSettingsGroup>
 
         <AgentSettingsGroup :title="phone.t('Apps.settings.about')">
+          <AgentSettingsRow
+            v-if="ownerName"
+            :title="phone.t('Apps.settings.phoneOwner')"
+            :value="ownerName"
+          />
+          <AgentSettingsRow
+            v-if="jobLabel"
+            :title="phone.t('Apps.settings.occupation')"
+            :value="jobLabel"
+          />
           <AgentSettingsRow
             :title="phone.t('Apps.settings.deviceName')"
             :value="phone.t('Apps.settings.deviceNameValue')"

@@ -1645,7 +1645,7 @@ Locales["de"] = {
                 screenBrightness = "Bildschirmhelligkeit",
                 development = "Entwicklung", agentUiKitchenSink = "Agent-UI-Komponentenkatalog",
                 agentUiKitchenSinkDescription = "Interaktiver Katalog der offiziellen Agent-UI-Komponenten",
-                about = "Info", deviceName = "Gerätename", deviceNameValue = "Agent Phone", softwareVersion = "Softwareversion",
+                about = "Info", phoneOwner = "Besitzer", occupation = "Beruf", deviceName = "Gerätename", deviceNameValue = "Agent Phone", softwareVersion = "Softwareversion",
                 language = "Sprache", languageValue = "Deutsch", localStorage = "Lokaler Speicher", localStorageValue = "Auf dem Gerät",
                 back = "Einstellungen", wallpaperPicker = "Hintergrundbilder", deviceInformation = "Geräteinformationen",
                 wallpaperFromPhotos = "Wähle aus Fotos", wallpaperFromPhotosDescription = "Wende eines deiner Fotos an.",

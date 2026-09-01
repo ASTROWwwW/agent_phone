@@ -14,9 +14,19 @@ export type PhoneDevice = {
   sim: PhoneSim | null
 }
 
+export type PhonePlayerJob = {
+  grade: number
+  gradeLabel: string
+  label: string
+  name: string
+  onDuty?: boolean
+}
+
 export type PhonePlayerIdentity = {
   firstName: string
+  job?: PhonePlayerJob
   lastName: string
+  secondJob?: PhonePlayerJob
 }
 
 export type PhoneNotificationDevicePayload = {

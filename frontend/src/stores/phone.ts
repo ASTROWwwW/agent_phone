@@ -3874,6 +3874,8 @@ const defaultLocales: LocaleTree = {
       agentUiKitchenSinkDescription:
         'Interactive catalog of first-party Agent UI components',
       about: 'About',
+      occupation: 'Occupation',
+      phoneOwner: 'Phone Owner',
       deviceName: 'Device Name',
       deviceNameValue: 'Agent Phone',
       softwareVersion: 'Software Version',
@@ -4403,7 +4405,9 @@ export const usePhoneStore = defineStore('phone', {
     persistenceSession: ++nextPersistenceSession,
     player: {
       firstName: '',
+      job: { grade: 0, gradeLabel: '', label: '', name: '', onDuty: false },
       lastName: '',
+      secondJob: { grade: 0, gradeLabel: '', label: '', name: '' },
     } as DeviceBootstrap['player'],
     security: {
       enabled: false,
@@ -4457,7 +4461,12 @@ export const usePhoneStore = defineStore('phone', {
     },
     endDeviceSession(): void {
       this.close()
-      this.player = { firstName: '', lastName: '' }
+      this.player = {
+        firstName: '',
+        job: { grade: 0, gradeLabel: '', label: '', name: '', onDuty: false },
+        lastName: '',
+        secondJob: { grade: 0, gradeLabel: '', label: '', name: '' },
+      }
       if (this.deviceSessionToken !== null) {
         this.deviceSessionToken = null
         this.persistenceGeneration += 1

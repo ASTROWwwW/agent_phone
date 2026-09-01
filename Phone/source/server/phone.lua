@@ -541,6 +541,31 @@ local function load_device_data(imei)
     return data
 end
 
+-- Identite du personnage telle que la base la connait. Le metier vient du meme
+-- endroit que celui dont Companies verifie les droits, ce qui evite deux
+-- sources de verite pour la meme information.
+local function player_identity(source)
+    local job = Bridge.Framework.GetJob(source) or {}
+    local job2 = Bridge.Framework.GetJob2 and Bridge.Framework.GetJob2(source) or {}
+    return {
+        firstName = trim(Bridge.Framework.GetFirstname(source)) or "",
+        lastName = trim(Bridge.Framework.GetLastname(source)) or "",
+        job = {
+            name = job.name or "",
+            label = job.label or "",
+            grade = tonumber(job.grade) or 0,
+            gradeLabel = job.gradeLabel or "",
+            onDuty = job.onDuty == true,
+        },
+        secondJob = {
+            name = job2.name or "",
+            label = job2.label or "",
+            grade = tonumber(job2.grade) or 0,
+            gradeLabel = job2.gradeLabel or "",
+        },
+    }
+end
+
 local function bootstrap(source, security, security_loaded)
     local session, error_response = AgentPhone.RequireDeviceSession(source)
     if not session then
@@ -585,10 +610,7 @@ local function bootstrap(source, security, security_loaded)
         } or nil,
         notes = AgentPhoneNotes.List(device.account_id, device.imei),
         memos = AgentPhoneMemos.List(device.account_id, device.imei),
-        player = {
-            firstName = trim(Bridge.Framework.GetFirstname(source)) or "",
-            lastName = trim(Bridge.Framework.GetLastname(source)) or "",
-        },
+        player = player_identity(source),
     }
 end
 
