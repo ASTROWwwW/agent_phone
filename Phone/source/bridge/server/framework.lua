@@ -33,7 +33,7 @@ end
 
 local Agent = exports[FRAMEWORK_RESOURCE]:getSharedObject()
 
-if type(Agent) ~= "table" or type(Agent.GetPlayerFromId) ~= "function" then
+if type(Agent) ~= "table" or Agent.GetPlayerFromId == nil then
     error(("[agent_phone] La ressource '%s' a renvoye un objet partage inutilisable. Un proxy en lecture seule ne survit pas a la frontiere des exports FiveM : le fournisseur doit renvoyer la table brute."):format(FRAMEWORK_RESOURCE))
 end
 

@@ -116,6 +116,28 @@ local ok3, err3 = boot({ Agent = true, ox_inventory = true }, { GetPlayerFromId 
 check("un objet partage inutilisable est refuse", not ok3)
 check("et le message vise la ressource Agent", ok3 == false and tostring(err3):find("Agent", 1, true) ~= nil, err3)
 
+-- 3 bis. La frontiere d'export FiveM ne rend pas les methodes d'ESX sous le
+-- type "function" : elles arrivent en references appelables. La garde doit
+-- tester leur presence, jamais leur type, sans quoi le pont refuse un objet
+-- parfaitement valide et laisse GetPlayers a nil.
+local function reference(fn)
+  return setmetatable({}, { __call = function(_, ...) return fn(...) end })
+end
+
+local across_the_boundary = {
+  GetPlayerFromId = reference(function() return nil end),
+  GetExtendedPlayers = reference(function() return {} end),
+  RegisterUsableItem = reference(function() end),
+}
+
+local ok5, err5 = boot({ Agent = true, ox_inventory = true }, across_the_boundary)
+check("un objet partage passe par la frontiere d'export est accepte", ok5, err5)
+check(
+  "et GetPlayers existe alors vraiment",
+  ok5 and type(Bridge.Framework.GetPlayers) == "function",
+  ok5 and type(Bridge.Framework.GetPlayers) or err5
+)
+
 -- 4. La garde de base mord.
 local ok4 = boot({ ox_inventory = true }, make_shared_object())
 check("sans Agent, le pont refuse de demarrer", not ok4)
