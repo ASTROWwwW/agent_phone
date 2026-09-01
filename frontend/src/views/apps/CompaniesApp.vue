@@ -367,6 +367,40 @@ function companyInitials(company: CompanySummary): string {
   return company.name.trim().charAt(0).toUpperCase()
 }
 
+/*
+ * Un logo dont l'URL repond en erreur laissait un <img> casse : le navigateur
+ * affichait alors le texte alternatif, tronque, sur la tuile bleue. On retient
+ * les entreprises dont l'image a echoue pour repasser au monogramme.
+ */
+const failedLogoIds = ref<Record<string, true>>({})
+
+function companyLogoUrl(company: CompanySummary): string | null {
+  if (failedLogoIds.value[company.id]) return null
+  return company.logoUrl ?? null
+}
+
+function markLogoFailed(company: CompanySummary): void {
+  failedLogoIds.value = { ...failedLogoIds.value, [company.id]: true }
+}
+
+/*
+ * La banniere porte un degrade de marque en CSS. Le poser en style en ligne
+ * avec la seule image ecrasait ce degrade : si l'URL echouait, il ne restait
+ * qu'une bande blanche. Le degrade est donc reempile sous la photo.
+ */
+const COMPANY_COVER_FALLBACK =
+  'linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.48)),' +
+  ' linear-gradient(135deg, #1d4ed8, #38bdf8 58%, #67e8f9)'
+
+function companyCoverStyle(
+  company: Company,
+): Record<string, string> | undefined {
+  if (!company.coverUrl) return undefined
+  return {
+    backgroundImage: `url(${company.coverUrl}), ${COMPANY_COVER_FALLBACK}`,
+  }
+}
+
 function companySubtitle(company: CompanySummary): string {
   return [
     company.location?.district,
@@ -1220,9 +1254,10 @@ onBeforeUnmount(() => {
             <template #media>
               <span class="company-logo">
                 <img
-                  v-if="company.logoUrl"
-                  :src="company.logoUrl"
+                  v-if="companyLogoUrl(company)"
+                  :src="companyLogoUrl(company) ?? undefined"
                   :alt="company.name"
+                  @error="markLogoFailed(company)"
                 />
                 <span v-else>{{ companyInitials(company) }}</span>
               </span>
@@ -1401,9 +1436,10 @@ onBeforeUnmount(() => {
         <SkyCard class="work-identity-card">
           <span class="company-logo company-logo--large">
             <img
-              v-if="workCompany.logoUrl"
-              :src="workCompany.logoUrl"
+              v-if="companyLogoUrl(workCompany)"
+              :src="companyLogoUrl(workCompany) ?? undefined"
               :alt="workCompany.name"
+              @error="markLogoFailed(workCompany)"
             />
             <span v-else>{{ companyInitials(workCompany) }}</span>
           </span>
@@ -1549,17 +1585,14 @@ onBeforeUnmount(() => {
       <template v-else>
         <div
           class="company-cover"
-          :style="
-            activeCompany.coverUrl
-              ? { backgroundImage: `url(${activeCompany.coverUrl})` }
-              : undefined
-          "
+          :style="companyCoverStyle(activeCompany)"
         >
           <span class="company-logo company-logo--hero">
             <img
-              v-if="activeCompany.logoUrl"
-              :src="activeCompany.logoUrl"
+              v-if="companyLogoUrl(activeCompany)"
+              :src="companyLogoUrl(activeCompany) ?? undefined"
               :alt="activeCompany.name"
+              @error="markLogoFailed(activeCompany)"
             />
             <span v-else>{{ companyInitials(activeCompany) }}</span>
           </span>
@@ -2686,6 +2719,8 @@ onBeforeUnmount(() => {
   line-height: 20px;
 }
 
+/* Le monogramme est le repli quand l'image manque ou echoue : degrade doux
+   plutot qu'aplat, pour qu'une liste de replis ne fasse pas un mur bleu. */
 .company-logo {
   width: 44px;
   height: 44px;
@@ -2694,11 +2729,12 @@ onBeforeUnmount(() => {
   place-items: center;
   overflow: hidden;
   border-radius: 12px;
-  color: white;
-  background: var(--company-blue);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
-  font-size: 13px;
-  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(150deg, #5aa2ff, var(--company-blue));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%);
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.3px;
 }
 
 .company-logo img {
@@ -2717,6 +2753,54 @@ onBeforeUnmount(() => {
   width: 54px;
   height: 54px;
   border-radius: 17px;
+  font-size: 21px;
+}
+
+/* Lignes du repertoire : titre sur une ligne, resume sur deux au plus, et un
+   filet decale sous la vignette au lieu d'un trait pleine largeur. */
+.companies-directory :deep(.sky-list-item__title) {
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.companies-directory :deep(.sky-list-item__subtitle) {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 17px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* SkyListCard separe ses lignes par une bordure haute pleine largeur : on la
+   remplace par un filet decale sous la vignette, comme les listes groupees
+   d'iOS. */
+.companies-directory :deep(.sky-list-card > li + li) {
+  position: relative;
+  border-top: 0;
+}
+
+.companies-directory :deep(.sky-list-card > li + li::before) {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 60px;
+  height: 1px;
+  background: var(--sky-hairline);
+  content: '';
+  transform: scaleY(var(--sky-hairline-scale));
+  transform-origin: top;
+}
+
+.companies-directory :deep(.company-row-after .sky-badge) {
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: -0.1px;
 }
 
 .company-row-after,
