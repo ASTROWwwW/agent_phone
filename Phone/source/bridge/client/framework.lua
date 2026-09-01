@@ -4,7 +4,7 @@ local core
 
 local function refresh_framework()
     if GetResourceState(FRAMEWORK_RESOURCE) ~= "started" then
-        error(("[agent_phone] The %s resource is not started. This build targets the Agent base only."):format(FRAMEWORK_RESOURCE))
+        error(("[agent_phone] La ressource %s n'est pas demarree. Cette version ne fonctionne qu'avec la base Agent."):format(FRAMEWORK_RESOURCE))
     end
     core = nil
 end

@@ -1,7 +1,7 @@
 local FRAMEWORK_RESOURCE = "Agent"
 
 if GetResourceState(FRAMEWORK_RESOURCE) ~= "started" then
-    error(("[agent_phone] The %s resource is not started. This build targets the Agent base only."):format(FRAMEWORK_RESOURCE))
+    error(("[agent_phone] La ressource %s n'est pas demarree. Cette version ne fonctionne qu'avec la base Agent."):format(FRAMEWORK_RESOURCE))
 end
 
 Bridge.Framework.Name = "agent"
@@ -31,25 +31,19 @@ function Bridge.Framework.HasPermission(source, permission)
     return Bridge.Framework.HasAdminGroup(source, groups)
 end
 
-local ESX_RESOURCE = Bridge.Framework.Resource
+local Agent = exports[FRAMEWORK_RESOURCE]:getSharedObject()
 
-if not ESX_RESOURCE or GetResourceState(ESX_RESOURCE) ~= "started" then
-    error(("[agent_phone] ESX is configured, but resource '%s' is not started."):format(tostring(ESX_RESOURCE)))
-end
-
-local ESX = exports[ESX_RESOURCE]:getSharedObject()
-
-if type(ESX) ~= "table" or type(ESX.GetPlayerFromId) == "nil" then
-    error(("[agent_phone] Resource '%s' returned an unusable ESX object. A read-only metatable proxy does not survive the FiveM export boundary; the provider must return the raw table."):format(ESX_RESOURCE))
+if type(Agent) ~= "table" or type(Agent.GetPlayerFromId) ~= "function" then
+    error(("[agent_phone] La ressource '%s' a renvoye un objet partage inutilisable. Un proxy en lecture seule ne survit pas a la frontiere des exports FiveM : le fournisseur doit renvoyer la table brute."):format(FRAMEWORK_RESOURCE))
 end
 
 local function get_player(source)
-    return ESX.GetPlayerFromId(source)
+    return Agent.GetPlayerFromId(source)
 end
 
 function Bridge.Framework.GetPlayers()
     local players = {}
-    for _, player in pairs(ESX.GetExtendedPlayers()) do
+    for _, player in pairs(Agent.GetExtendedPlayers()) do
         players[#players + 1] = player.source
     end
     return players
@@ -204,6 +198,6 @@ function Bridge.Framework.GetJob(source)
 end
 
 function Bridge.Framework.RegisterUsableItem(item_name, callback)
-    ESX.RegisterUsableItem(item_name, callback)
+    Agent.RegisterUsableItem(item_name, callback)
     return true
 end

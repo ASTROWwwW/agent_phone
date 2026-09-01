@@ -136,6 +136,22 @@ describe('Lua sources', () => {
     expect(output).not.toContain('ECHEC')
   })
 
+  it('boots the bridge against Agent and ox_inventory', () => {
+    try {
+      execFileSync('lua', ['-v'], { stdio: 'ignore' })
+    } catch {
+      expect(sources.length).toBeGreaterThan(0)
+      return
+    }
+
+    const harness = fileURLToPath(new URL('../testserver/bridgeBoot.lua', import.meta.url))
+    const posixRoot = resourceRoot.split(String.fromCharCode(92)).join('/')
+    const output = execFileSync('lua', [harness, posixRoot], { encoding: 'utf8' })
+
+    expect(output).toContain('pont degraisse : demarre, et refuse les trois cas invalides')
+    expect(output).not.toContain('ECHEC')
+  })
+
   it('routes every console write through the single channel', () => {
     const offenders = sources
       .filter((file) => !file.endsWith('shared.lua'))

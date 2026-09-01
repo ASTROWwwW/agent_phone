@@ -16,7 +16,6 @@ Config.CommandPermissions = {
 }
 -- CONFIG_DEFAULT_EXCLUDE_END
 Config.Bridge = {
-    Inventory = "auto",
     Locale = "fr",
     CallbackTimeout = 15000,
     Debug = false,

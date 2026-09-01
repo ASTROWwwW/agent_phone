@@ -57,30 +57,33 @@ describe('phone inventory contracts', () => {
     )
   })
 
-  it('auto-detects ox_inventory and keeps the metadata downgrade path intact', () => {
+  it('binds ox_inventory directly and demands it be running', () => {
     const inventoryBridge = readResourceFile(
       'source/bridge/server/inventory.lua',
     )
 
     expect(inventoryBridge).toContain(
-      '{ name = "ox", resource = "ox_inventory" },',
+      'local INVENTORY_RESOURCE = "ox_inventory"',
     )
     expect(inventoryBridge).toContain(
-      'GetResourceState(adapter.resource) == "started"',
+      'if GetResourceState(INVENTORY_RESOURCE) ~= "started" then',
     )
-    expect(inventoryBridge).toContain('configured_inventory = adapter.name')
-    expect(inventoryBridge).toContain('selected_adapter.metadata == false')
-    expect(inventoryBridge).toContain('Config.Phone.Unique = false')
-    expect(inventoryBridge).toContain('Config.Sim.Enabled = false')
-    expect(inventoryBridge).toContain(
-      'does not support item metadata; unique phones and physical SIM cards were disabled automatically',
+    expect(inventoryBridge).toContain('local inventory = exports.ox_inventory')
+  })
+
+  it('keeps unique phones and physical SIMs enabled, because ox carries metadata', () => {
+    const inventoryBridge = readResourceFile(
+      'source/bridge/server/inventory.lua',
     )
-    expect(inventoryBridge).toContain(
-      'AddEventHandler("agent_phone:configurator:serverUpdated"',
-    )
-    expect(inventoryBridge).not.toContain(
-      'cannot store unique phone or physical SIM metadata',
-    )
+
+    // La retrogradation ne servait qu-aux inventaires sans metadonnees.
+    // ox_inventory en a, et il est desormais le seul : le chemin etait mort.
+    expect(inventoryBridge).not.toContain('Config.Phone.Unique = false')
+    expect(inventoryBridge).not.toContain('Config.Sim.Enabled = false')
+    expect(inventoryBridge).not.toContain('metadata_free_inventory')
+
+    expect(inventoryBridge).toContain('function Bridge.Inventory.SetSlotMetadata(source, slot_id, metadata)')
+    expect(inventoryBridge).toContain('inventory:SetMetadata(source, tonumber(slot_id), requested_metadata)')
   })
 
   it('exposes the equipped phone number from authoritative device state', () => {

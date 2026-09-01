@@ -5,7 +5,6 @@ Config = {}
 
 
 Config.Bridge = {
-    Inventory = "auto",
     Locale = "fr",
     CallbackTimeout = 15000,
     Debug = false,

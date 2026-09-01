@@ -1,66 +1,11 @@
-local inventory_adapters = {
-    { name = "ox", resource = "ox_inventory" },
-}
+local INVENTORY_RESOURCE = "ox_inventory"
 
-local inventory_aliases = {}
-local supported_inventories = {}
-for _, adapter in ipairs(inventory_adapters) do
-    inventory_aliases[adapter.resource] = adapter.name
-    supported_inventories[adapter.name] = adapter
+if GetResourceState(INVENTORY_RESOURCE) ~= "started" then
+    error(("[agent_phone] La ressource %s n'est pas demarree. Cette version ne fonctionne qu'avec ox_inventory."):format(INVENTORY_RESOURCE))
 end
 
-local configured_inventory = Config.Bridge.Inventory
-configured_inventory = inventory_aliases[configured_inventory] or configured_inventory
-local framework_name = Bridge.Framework.GetName()
-
-if configured_inventory == "auto" then
-    for _, adapter in ipairs(inventory_adapters) do
-        local compatible_framework = not adapter.framework or adapter.framework == framework_name
-        if compatible_framework and GetResourceState(adapter.resource) == "started" then
-            configured_inventory = adapter.name
-            break
-        end
-    end
-end
-
-local selected_adapter = supported_inventories[configured_inventory]
-if not selected_adapter then
-    error(("[agent_phone] Unsupported or unavailable inventory '%s'. Configure a supported inventory adapter."):format(tostring(configured_inventory)))
-end
-if GetResourceState(selected_adapter.resource) ~= "started" then
-    error(("[agent_phone] Inventory '%s' is configured, but resource '%s' is not started.")
-        :format(tostring(configured_inventory), selected_adapter.resource))
-end
-if selected_adapter.framework and selected_adapter.framework ~= framework_name then
-    error(("[agent_phone] Inventory '%s' is only supported with framework '%s'.")
-        :format(tostring(configured_inventory), selected_adapter.framework))
-end
-
-Bridge.Inventory.Name = configured_inventory
-
-local metadata_free_inventory = selected_adapter.metadata == false
-
-local function enforce_metadata_compatibility()
-    if not metadata_free_inventory then
-        return
-    end
-
-    local modes_changed = Config.Phone.Unique ~= false or Config.Sim.Enabled ~= false
-    Config.Phone.Unique = false
-    Config.Sim.Enabled = false
-
-    if modes_changed then
-        Bridge.Debug(
-            "warn",
-            "[agent_phone] Inventory '%s' does not support item metadata; unique phones and physical SIM cards were disabled automatically.",
-            configured_inventory
-        )
-    end
-end
-
-enforce_metadata_compatibility()
-
-AddEventHandler("agent_phone:configurator:serverUpdated", enforce_metadata_compatibility)
+Bridge.Inventory.Name = "ox"
+Bridge.Inventory.Resource = INVENTORY_RESOURCE
 
 function Bridge.Inventory.NormalizeItem(item, metadata_field, fallback_slot)
     if type(item) ~= "table" then

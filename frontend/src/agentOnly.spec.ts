@@ -51,6 +51,35 @@ describe('Agent is the only supported base', () => {
     expect(esx).not.toMatch(/Bridge\.Framework\.Name ~= /)
   })
 
+  it('arbitrates between nothing: one base, one inventory', () => {
+    expect(
+      inventory,
+      'ox_inventory is the only option left, so nothing remains to detect',
+    ).toContain('local INVENTORY_RESOURCE = "ox_inventory"')
+    expect(inventory).not.toContain('inventory_adapters')
+    expect(inventory).not.toContain('configured_inventory')
+    expect(inventory, 'no auto-detection loop').not.toContain('== "auto"')
+
+    expect(
+      config,
+      'a setting nothing reads is a lie told to the server owner',
+    ).not.toMatch(/^\s*Inventory\s*=/m)
+  })
+
+  it('drops the ESX vocabulary the merge left behind', () => {
+    for (const [label, source] of [
+      ['server framework', serverFramework],
+      ['inventory', inventory],
+    ] as const) {
+      expect(source, label + ': ESX is not the name of this base').not.toMatch(/\bESX\b/)
+    }
+
+    expect(
+      serverFramework,
+      'the resource state is already checked at the top of the file',
+    ).toContain('local Agent = exports[FRAMEWORK_RESOURCE]:getSharedObject()')
+  })
+
   it('reads vehicles from the Agent schema only', () => {
     const systems = garage.match(/local supported_systems = \{([\s\S]*?)\}/)
     expect(systems, 'supported_systems is missing').not.toBeNull()
