@@ -22,9 +22,9 @@ compatibilité téléphone et la migration lb-phone ont été retirés — 51 fi
 Les tables d'adaptateurs ont été purgées en conséquence, sinon la détection
 automatique pouvait sélectionner un adaptateur dont le fichier n'existe plus.
 
-**Applications retirées.** Onze applications ont été supprimées : Radio,
-CrewLink, CityWarn, Weazel News, Santé, Pages Locales, VaultX (crypto) et les
-quatre jeux Memory, Démineur, Tower Stack et Neon Drop.
+**Applications retirées.** Douze applications ont été supprimées : Radio,
+CrewLink, CityWarn, Weazel News, Santé, Pages Locales, VaultX (crypto), House
+(immobilier) et les quatre jeux Memory, Démineur, Tower Stack et Neon Drop.
 
 La suppression va jusqu'au bout : vues, stores, types, aperçus de l'App Store,
 fichiers Lua client et serveur, entrées du `fxmanifest`, sections de
@@ -36,7 +36,8 @@ Les tables déjà créées en base ne sont pas supprimées : le schéma se conte
 de ne plus les créer. Pour récupérer la place, un `DROP TABLE` manuel sur les
 préfixes `agent_phone_radio_`, `agent_phone_crewlink_`,
 `agent_phone_citywarn_`, `agent_phone_weazel_`, `agent_phone_health_`,
-`agent_phone_pages_` et `agent_phone_crypto_` suffit.
+`agent_phone_pages_` et `agent_phone_crypto_` suffit. House ne stockait rien en
+base : il lisait la ressource de logement via un pont, retiré avec l'app.
 
 **Renommage complet.** L'identité technique et les marques visibles par les
 joueurs sont passées de « Sky » à « Agent » : événements, tables, globals Lua,

@@ -26,7 +26,6 @@ local valid_apps = {
     feather = true,
     flare = true,
     fliptok = true,
-    house = true,
     mail = true,
     map = true,
     messages = true,
@@ -415,8 +414,6 @@ local function canonical_document(source, device, app_id, id)
                 link = "agentphone://mail/message/" .. id,
             }
         end
-    elseif app_id == "house" then
-        return AgentPhoneHousing.ResolveShare(source, id)
     end
     return nil
 end

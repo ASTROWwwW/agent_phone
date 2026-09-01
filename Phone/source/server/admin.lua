@@ -13,7 +13,6 @@ local BUILTIN_APPS = {
     flare = true,
     fliptok = true,
     garage = true,
-    house = true,
     ["app-store"] = true,
     mail = true,
     map = true,

@@ -19,7 +19,6 @@ const APP_STORE_PREVIEW_STYLES = {
   messages: { accent: '#42d66d', surface: '#082117' },
   darkchat: { accent: '#845eff', surface: '#120c27' },
   garage: { accent: '#4d9dff', surface: '#0a1828' },
-  house: { accent: '#d4a25c', surface: '#21170c' },
   map: { accent: '#46c97c', surface: '#091f16' },
   agentride: { accent: '#f6c43d', surface: '#211a08' },
   banking: { accent: '#3dcc8b', surface: '#092019' },

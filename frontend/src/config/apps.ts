@@ -23,7 +23,6 @@ import {
   Wind,
   Tag,
   Flame,
-  House,
   Music2,
   Feather,
   ReceiptText,
@@ -52,7 +51,6 @@ import weatherIcon from '@/assets/img/app-icons/weather.webp'
 import bankingIcon from '@/assets/img/app-icons/banking.webp'
 import billingIcon from '@/assets/img/app-icons/billing.webp'
 import garageIcon from '@/assets/img/app-icons/garage.webp'
-import houseIcon from '@/assets/img/app-icons/house.webp'
 import citymarktIcon from '@/assets/img/app-icons/citymarkt.webp'
 import flareIcon from '@/assets/img/app-icons/flare.webp'
 import flipTokIcon from '@/assets/img/app-icons/fliptok.webp'
@@ -225,20 +223,6 @@ export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
     id: 'garage',
     labelKey: 'Apps.garage.name',
     route: '/apps/garage',
-  },
-  {
-    category: 'utilities',
-    component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/HouseApp.vue')),
-    ),
-    dockOrder: null,
-    gridOrder: 25,
-    icon: markRaw(House),
-    iconClass: 'app-icon--house',
-    iconImage: houseIcon,
-    id: 'house',
-    labelKey: 'Apps.house.name',
-    route: '/apps/house',
   },
   {
     category: 'utilities',

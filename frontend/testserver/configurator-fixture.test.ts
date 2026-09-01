@@ -77,7 +77,7 @@ describe('admin configurator fixture', () => {
           root !== 'CommandPermissions',
       )
 
-    expect(sections).toHaveLength(39)
+    expect(sections).toHaveLength(38)
     expect(
       fields.reduce(
         (total, field) => total + countStructure(field.structure),

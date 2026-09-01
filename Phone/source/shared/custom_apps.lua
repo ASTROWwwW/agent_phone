@@ -50,7 +50,6 @@ local RESERVED_APP_IDS = {
     flare = true,
     fliptok = true,
     garage = true,
-    house = true,
     mail = true,
     map = true,
     messages = true,
