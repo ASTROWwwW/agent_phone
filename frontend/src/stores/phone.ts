@@ -2453,6 +2453,7 @@ const defaultLocales: LocaleTree = {
       name: 'Garage',
       subtitle: 'Your vehicle collection',
       myVehicles: 'My Vehicles',
+      fleet: 'Your Fleet',
       searchPlaceholder: 'Search name, plate or garage',
       tryAgain: 'Try Again',
       unavailable: 'Garage unavailable',

@@ -903,7 +903,7 @@ Locales["de"] = {
                 },
             },
             garage = {
-                name = "Garage", subtitle = "Deine Fahrzeugsammlung", myVehicles = "Meine Fahrzeuge",
+                name = "Garage", subtitle = "Deine Fahrzeugsammlung", myVehicles = "Meine Fahrzeuge", fleet = "Dein Fuhrpark",
                 searchPlaceholder = "Name, Schild oder Garage suchen",
                 tryAgain = "Erneut versuchen", unavailable = "Garage nicht verfügbar",
                 noVehicles = "Keine Fahrzeuge", noVehiclesBody = "Fahrzeuge, die diesem Charakter gehören, werden hier erscheinen.",
