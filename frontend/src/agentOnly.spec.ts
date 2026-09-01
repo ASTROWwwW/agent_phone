@@ -14,6 +14,9 @@ const clientFramework = read('source/bridge/client/framework.lua')
 const inventory = read('source/bridge/server/inventory.lua')
 const garage = read('source/server/garage.lua')
 const config = read('config/config.lua')
+const sim = read('source/server/sim.lua')
+const oxInventory = read('source/bridge/server/inventory/ox.lua')
+const esx = read('source/bridge/server/frameworks/esx.lua')
 
 describe('Agent is the only supported base', () => {
   it('targets the Agent resource on both sides', () => {
@@ -97,12 +100,39 @@ describe('Agent is the only supported base', () => {
   })
 
   it('pays from an account the base declares', () => {
-    // Config.Accounts de la base : bank, black_money, money. Aucun compte cash.
+    // Config.Accounts de la base : bank, black_money, money. Le pont traduit
+    // bien cash en money, mais nommer directement le compte reel evite une
+    // indirection et signale toute valeur que la base ne connaitrait pas.
     const accounts = new Set(['bank', 'black_money', 'money'])
     const used = [...config.matchAll(/(?:PaymentAccount|Account)\s*=\s*"([a-z_]+)"/g)]
       .map(([, name]) => name)
 
     expect(used.length).toBeGreaterThan(0)
     expect(used.filter((name) => !accounts.has(name))).toEqual([])
+  })
+  it('warns when a required inventory item is missing', () => {
+    // Les deux cartes SIM peuvent manquer dans ox_inventory alors que
+    // Config.Sim.Enabled vaut true : le joueur n obtient alors aucun numero,
+    // donc ni appel ni message, et rien ne le signalait au demarrage.
+    expect(oxInventory).toContain('function Bridge.Inventory.ItemExists(item_name)')
+    expect(sim).toContain('Config.Sim.RegisteredItem')
+    expect(sim).toContain('Config.Sim.AnonymousItem')
+    expect(sim).toContain(String.fromCharCode(77) + 'issing %s item')
+  })
+
+  it('exposes the second job the base carries', () => {
+    // owned_vehicles porte job et job2 : sans getJob2 le telephone ne pouvait
+    // pas reconnaitre un vehicule de groupe.
+    expect(esx).toContain('function Bridge.Framework.GetJob2(source)')
+    expect(garage).toContain('Bridge.Framework.GetJob2')
+  })
+
+  it('lists service vehicles, not only personal ones', () => {
+    // La base range un vehicule de service sous owner = "job:<metier>" avec la
+    // colonne du metier renseignee. Filtrer sur le seul identifiant les rendait
+    // invisibles.
+    expect(garage).toContain('local function ownership_clause(source, identifier)')
+    expect(garage).toMatch(/"job:" .. job.name/)
+    expect(garage).toContain('ownership = ownership_scope')
   })
 })

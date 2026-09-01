@@ -908,7 +908,7 @@ Locales["fr"] = {
                 tryAgain = "Réessayer", unavailable = "Garage indisponible",
                 noVehicles = "Aucun véhicule", noVehiclesBody = "Les véhicules de ce personnage apparaîtront ici.",
                 noResults = "Aucun résultat", noResultsBody = "Essaie un autre véhicule, une autre plaque ou un autre lieu.",
-                unknownVehicle = "Véhicule inconnu", unknownLocation = "Lieu indisponible",
+                unknownVehicle = "Véhicule inconnu", serviceVehicle = "Véhicule de service", unknownLocation = "Lieu indisponible",
                 location = "Position actuelle", fuel = "Carburant", engine = "Moteur", body = "Carrosserie",
                 vin = "Numéro d'identification du véhicule", notAvailable = "—",
                 filtersLabel = "Filtrer les véhicules",

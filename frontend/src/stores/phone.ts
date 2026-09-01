@@ -2462,6 +2462,7 @@ const defaultLocales: LocaleTree = {
       noResults: 'No Results',
       noResultsBody: 'Try another vehicle, plate or location.',
       unknownVehicle: 'Unknown Vehicle',
+      serviceVehicle: 'Service vehicle',
       unknownLocation: 'Location unavailable',
       location: 'Current location',
       fuel: 'Fuel',

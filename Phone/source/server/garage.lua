@@ -117,7 +117,21 @@ local function vehicle_image_url(model)
     return (template:gsub("{model}", model_name))
 end
 
-local function vehicle_dto(row)
+local function ownership_of(row, scopes)
+    local owner = tostring(row.owner or "")
+    if owner == scopes.personal then
+        return "personal", ""
+    end
+    if scopes.job and row.job == scopes.job.name then
+        return "job", scopes.job.label
+    end
+    if scopes.group and row.job2 == scopes.group.name then
+        return "group", scopes.group.label
+    end
+    return "personal", ""
+end
+
+local function vehicle_dto(row, scopes)
     local mods = vehicle_properties(row)
     local vehicle_value = row.vehicle
 
@@ -132,11 +146,17 @@ local function vehicle_dto(row)
         model = numeric_model
     end
 
+    local ownership_scope, owner_label = "personal", ""
+    if scopes then
+        ownership_scope, owner_label = ownership_of(row, scopes)
+    end
     local location = row.garage
     local plate = tostring(first_value(row.plate, mods.plate) or ""):match("^%s*(.-)%s*$")
     return {
         id = plate,
         plate = plate,
+        ownership = ownership_scope,
+        ownerLabel = owner_label,
         vin = "",
         nickname = "",
         model = model,
@@ -180,13 +200,44 @@ local function normalized_plate(value)
     return plate
 end
 
-local function owned_vehicle_row(identifier, plate)
+-- Reproduit la portee de propriete de la base : personnel quand owner porte
+-- l'identifiant, de service quand il porte job:<metier> et que la colonne du
+-- metier correspond a celui du joueur.
+local function ownership_clause(source, identifier)
+    local clauses = { "`owner` = ?" }
+    local parameters = { identifier }
+    local scopes = { personal = identifier }
+
+    local job = Bridge.Framework.GetJob(source)
+    if job and job.name ~= "" then
+        clauses[#clauses + 1] = "(`job` = ? AND (`owner` = ? OR `owner` = ?))"
+        parameters[#parameters + 1] = job.name
+        parameters[#parameters + 1] = "job:" .. job.name
+        parameters[#parameters + 1] = job.name
+        scopes.job = job
+    end
+
+    local job2 = Bridge.Framework.GetJob2 and Bridge.Framework.GetJob2(source)
+    if job2 and job2.name ~= "" then
+        clauses[#clauses + 1] = "(`job2` = ? AND (`owner` = ? OR `owner` = ?))"
+        parameters[#parameters + 1] = job2.name
+        parameters[#parameters + 1] = "job:" .. job2.name
+        parameters[#parameters + 1] = job2.name
+        scopes.group = job2
+    end
+
+    return "(" .. table.concat(clauses, " OR ") .. ")", parameters, scopes
+end
+
+local function owned_vehicle_row(source, identifier, plate)
     local table_name, owner_column = storage_config()
+    local clause, parameters, scopes = ownership_clause(source, identifier)
+    parameters[#parameters + 1] = plate
     local rows = Bridge.Database.Query(
-        ("SELECT * FROM %s WHERE %s = ? AND TRIM(plate) = ? LIMIT 1"):format(table_name, owner_column),
-        { identifier, plate }
+        ("SELECT * FROM %s WHERE %s AND TRIM(plate) = ? LIMIT 1"):format(table_name, clause),
+        parameters
     )
-    return rows[1], table_name, owner_column
+    return rows[1], table_name, owner_column, scopes
 end
 
 local function status_snapshot(row)
@@ -268,11 +319,11 @@ Bridge.Callbacks.Register("agent_phone:garage:valet-request", function(source, d
     if type(identifier) ~= "string" or identifier == "" then
         return { success = false, error = "garage_unavailable" }
     end
-    local row, table_name, owner_column = owned_vehicle_row(identifier, plate)
+    local row, table_name, owner_column, scopes = owned_vehicle_row(source, identifier, plate)
     if not row then
         return { success = false, error = "vehicle_not_owned" }
     end
-    local vehicle = vehicle_dto(row)
+    local vehicle = vehicle_dto(row, scopes)
     if vehicle.status ~= "garaged" then
         return { success = false, error = "vehicle_not_garaged" }
     end
@@ -394,14 +445,16 @@ Bridge.Callbacks.Register("agent_phone:garage:vehicles", function(source)
     if type(identifier) ~= "string" or identifier == "" then
         return { success = false, error = "garage_unavailable" }
     end
-    local table_name, owner_column = storage_config()
+    local table_name = storage_config()
+    local clause, parameters, scopes = ownership_clause(source, identifier)
+    parameters[#parameters + 1] = Config.Garage.MaximumVehicles
     local rows = Bridge.Database.Query(
-        ("SELECT * FROM `%s` WHERE `%s` = ? LIMIT ?"):format(table_name, owner_column),
-        { identifier, Config.Garage.MaximumVehicles }
+        ("SELECT * FROM `%s` WHERE %s LIMIT ?"):format(table_name, clause),
+        parameters
     )
     local vehicles = {}
     for _, row in ipairs(rows) do
-        local vehicle = vehicle_dto(row)
+        local vehicle = vehicle_dto(row, scopes)
         if vehicle.plate ~= "" then
             vehicles[#vehicles + 1] = vehicle
         end

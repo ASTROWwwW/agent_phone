@@ -129,6 +129,24 @@ function Bridge.Framework.GetBirthdate(source)
     return player and (player.get("dateofbirth") or player.get("dob")) or nil
 end
 
+local function job_payload(job)
+    if not job then
+        return { name = "", label = "", grade = 0, gradeLabel = "", onDuty = false }
+    end
+    return {
+        name = job.name or "",
+        label = job.label or "",
+        grade = tonumber(job.grade) or 0,
+        gradeLabel = job.grade_label or job.label or "",
+        onDuty = job.onDuty == true,
+    }
+end
+
+function Bridge.Framework.GetJob2(source)
+    local player = get_player(source)
+    return job_payload(player and player.getJob2 and player.getJob2())
+end
+
 function Bridge.Framework.GetJob(source)
     local player = get_player(source)
     local job = player and player.getJob()

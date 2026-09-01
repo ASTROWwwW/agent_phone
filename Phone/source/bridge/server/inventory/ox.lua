@@ -26,6 +26,16 @@ AddEventHandler("ox_inventory:usedItem", function(source, item_name, slot_id)
     callback(source, slot)
 end)
 
+function Bridge.Inventory.ItemExists(item_name)
+    if type(item_name) ~= "string" or item_name == "" then
+        return false
+    end
+    local ok, definition = pcall(function()
+        return inventory:Items(item_name)
+    end)
+    return ok and definition ~= nil
+end
+
 function Bridge.Inventory.GetResourceName()
     return "ox_inventory"
 end

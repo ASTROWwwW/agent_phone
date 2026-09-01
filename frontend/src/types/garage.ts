@@ -9,6 +9,8 @@ export type GarageValetStatus =
   | 'cancelled'
   | 'failed'
 
+export type GarageVehicleOwnership = 'personal' | 'job' | 'group'
+
 export type GarageVehicle = {
   body: number | null
   engine: number | null
@@ -20,6 +22,8 @@ export type GarageVehicle = {
   model: number | string | null
   name?: string
   nickname: string
+  ownerLabel?: string
+  ownership?: GarageVehicleOwnership
   plate: string
   status: GarageVehicleStatus
   vin: string

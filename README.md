@@ -25,12 +25,14 @@ réels : il ne lit plus que celui d'Agent, `owned_vehicles` et sa colonne
 
 **Aligné sur le schéma réel.** La table ne porte que dix colonnes ; le
 téléphone en interrogeait vingt-cinq, héritées des systèmes retirés, et les
-absentes valaient `nil` en silence. Deux écarts avec la base sont corrigés :
-la fourrière, que le module de garage marque `garage = 'fourriere_auto'` et
-que le téléphone cherchait sous les seuls mots `impound` et `pound`, si bien
-qu'un véhicule saisi s'affichait dehors ; et le compte de paiement des
-cabines, réglé sur `cash` alors que `Config.Accounts` déclare `bank`,
-`black_money` et `money`. Un contrat verrouille ces trois points.
+absentes valaient `nil` en silence. Un écart avec la base est corrigé : la
+fourrière, que le module de garage marque `garage = 'fourriere_auto'` et que
+le téléphone cherchait sous les seuls mots `impound` et `pound`, si bien
+qu'un véhicule saisi s'affichait dehors. Les comptes de paiement nomment
+désormais ceux que déclare `Config.Accounts` — `bank`, `black_money`,
+`money` — plutôt que de s'appuyer sur l'alias `cash` que le pont traduit ;
+ce n'était pas un défaut, seulement une indirection de moins. Un contrat
+verrouille ces points.
 Les tables d'adaptateurs ont été purgées en conséquence, sinon la détection
 automatique pouvait sélectionner un adaptateur dont le fichier n'existe plus.
 
@@ -64,14 +66,19 @@ ciel météo, la sonnerie Skyline et l'attribution de licence ci-dessous.
 détectée automatiquement parmi `pma-voice`,
 `yaca-voice` et `saltychat`.
 
-L'item du téléphone doit exister dans `ox_inventory` :
+Trois objets doivent exister dans `ox_inventory` : le téléphone, et les
+deux cartes SIM tant que `Config.Sim.Enabled` vaut `true`.
 
 ```lua
 ['phone'] = { label = 'Téléphone', weight = 190, stack = false, consume = 0 },
+['agent_phone_sim_registered'] = { label = 'Carte SIM', weight = 5, stack = false, consume = 0 },
+['agent_phone_sim_anonymous'] = { label = 'Carte SIM anonyme', weight = 5, stack = false, consume = 0 },
 ```
 
 `stack = false` est obligatoire en mode unique, `consume = 0` pour que
-l'utilisation déclenche l'ouverture sans consommer l'objet.
+l'utilisation déclenche l'ouverture sans consommer l'objet. Sans les deux
+cartes SIM, aucun joueur n'obtient de numéro, donc ni appel ni message : le
+démarrage écrit désormais en rouge la liste des objets absents.
 
 ## Installation
 

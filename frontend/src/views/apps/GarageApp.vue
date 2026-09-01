@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   Clock3,
   CircleDollarSign,
+  Briefcase,
   Fuel,
   Gauge,
   MapPin,
@@ -387,6 +388,10 @@ onBeforeUnmount(() => {
               <span>
                 <MapPin :size="12" aria-hidden="true" />
                 {{ vehicle.location || phone.t('Apps.garage.unknownLocation') }}
+              </span>
+              <span v-if="vehicle.ownership && vehicle.ownership !== 'personal'">
+                <Briefcase :size="12" aria-hidden="true" />
+                {{ vehicle.ownerLabel || phone.t('Apps.garage.serviceVehicle') }}
               </span>
               <span v-if="conditionValue(vehicle) !== null">
                 <Gauge :size="12" aria-hidden="true" />

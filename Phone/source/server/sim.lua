@@ -2,6 +2,34 @@ Bridge.Database.AfterMigration("agent_phone", function()
 
 AgentPhoneSim = {}
 
+-- Le systeme de carte SIM peut etre actif alors que ses objets n existent pas
+-- dans l inventaire : le joueur n obtient alors aucun numero, donc ni appel ni
+-- message, et rien ne le signale. Le demarrage l annonce en clair.
+CreateThread(function()
+    Wait(2000)
+    if type(Bridge.Inventory.ItemExists) ~= "function" then
+        return
+    end
+
+    local required = { Config.Phone.Item }
+    if Config.Sim.Enabled then
+        required[#required + 1] = Config.Sim.RegisteredItem
+        required[#required + 1] = Config.Sim.AnonymousItem
+    end
+
+    local missing = {}
+    for _, item_name in ipairs(required) do
+        if type(item_name) == "string" and item_name ~= "" and not Bridge.Inventory.ItemExists(item_name) then
+            missing[#missing + 1] = item_name
+        end
+    end
+
+    if #missing > 0 then
+        print(("^1[agent_phone] Missing %s item(s): %s. Declare them in ox_inventory or players cannot use the phone.^0")
+            :format(Bridge.Inventory.GetResourceName(), table.concat(missing, ", ")))
+    end
+end)
+
 local pending_insertions = {}
 local operation_locks = {}
 local sim_types = {}
