@@ -83,7 +83,9 @@ describe('admin configurator fixture', () => {
         (total, field) => total + countStructure(field.structure),
         0,
       ),
-    ).toBeGreaterThan(650)
+      // Seuil abaisse avec le retrait de l entreprise fire, dont le metier
+      // n existe sur aucun module ni aucun SQL du serveur.
+    ).toBeGreaterThan(620)
     for (const root of new Set(roots)) {
       expect(
         sections.some(

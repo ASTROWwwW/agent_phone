@@ -80,6 +80,13 @@ l'utilisation déclenche l'ouverture sans consommer l'objet. Sans les deux
 cartes SIM, aucun joueur n'obtient de numéro, donc ni appel ni message : le
 démarrage écrit désormais en rouge la liste des objets absents.
 
+**Entreprises alignées sur les métiers du serveur.** Les quatre entreprises
+livrées visent `police`, `ambulance`, `mechanic` et `taxi`, tous employés
+par les modules du serveur. Une cinquième visait `fire`, un métier qu'aucun
+module ni fichier SQL ne connaît — ses seules occurrences étaient l'action de
+licenciement — donc une entreprise à laquelle personne ne pouvait appartenir.
+Elle est retirée.
+
 ## Installation
 
 Place la ressource dans `resources/[script]/agent_phone`, puis démarre-la.

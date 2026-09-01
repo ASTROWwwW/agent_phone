@@ -135,4 +135,13 @@ describe('Agent is the only supported base', () => {
     expect(garage).toMatch(/"job:" .. job.name/)
     expect(garage).toContain('ownership = ownership_scope')
   })
+  it('ships only companies whose job exists on the server', () => {
+    // Verifie contre les modules du serveur : police y figure dix-neuf fois,
+    // ambulance dix-sept, mechanic quarante, taxi cinq. Le metier fire ne s y
+    // trouvait pas, ses seules occurrences etant l action de licenciement, et
+    // son entreprise ne pouvait donc appartenir a personne : elle est retiree.
+    const jobs = [...config.matchAll(/Job = "([a-z_0-9]+)"/g)].map(([, name]) => name)
+
+    expect(jobs.sort()).toEqual(['ambulance', 'mechanic', 'police', 'taxi'])
+  })
 })
