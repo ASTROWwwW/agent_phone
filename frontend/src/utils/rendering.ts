@@ -14,6 +14,6 @@ export function getHairlinePixelStyle(
 
   return {
     '--k-device-pixel-ratio': effectivePixelRatio,
-    '--sky-hairline-scale': 1 / effectivePixelRatio,
+    '--agent-hairline-scale': 1 / effectivePixelRatio,
   }
 }

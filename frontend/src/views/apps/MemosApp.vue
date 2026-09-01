@@ -16,27 +16,27 @@ import { useNotificationsStore } from '@/stores/notifications'
 import { usePhoneStore } from '@/stores/phone'
 import type { MemoDto, MemoRecorderState } from '@/types/memos'
 import {
-  SkyActionButton,
-  SkyActionGroup,
-  SkyActionSheet,
-  SkyAppPage,
-  SkyButton,
-  SkyDialog,
-  SkyDialogButton,
-  SkyEmptyState,
-  SkyFab,
-  SkyField,
-  SkyGlass,
-  SkyLink,
-  SkyList,
-  SkyListItem,
-  SkyNavbar,
-  SkyRange,
-  SkyScrollArea,
-  SkySearchbar,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySpinner,
+  AgentActionButton,
+  AgentActionGroup,
+  AgentActionSheet,
+  AgentAppPage,
+  AgentButton,
+  AgentDialog,
+  AgentDialogButton,
+  AgentEmptyState,
+  AgentFab,
+  AgentField,
+  AgentGlass,
+  AgentLink,
+  AgentList,
+  AgentListItem,
+  AgentNavbar,
+  AgentRange,
+  AgentScrollArea,
+  AgentSearchbar,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSpinner,
 } from '@/ui'
 import { isTrustedRootMessageSource } from '@/utils/windowMessages'
 
@@ -443,7 +443,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     v-if="view !== 'detail'"
     class="memos-page"
     :dark="phone.isDarkMode"
@@ -451,24 +451,24 @@ onBeforeUnmount(() => {
     accent-soft="rgb(255 59 48 / 15%)"
     :label="phone.t('Apps.memos.name')"
   >
-    <SkyNavbar
+    <AgentNavbar
       variant="large"
       transparent
       :title="phone.t('Apps.memos.name')"
     />
 
-    <SkyScrollArea padded class="memos-page__content">
+    <AgentScrollArea padded class="memos-page__content">
       <div v-if="memos.loading" class="memos-loading">
-        <SkySpinner :label="phone.t('Common.loading')" :size="24" />
+        <AgentSpinner :label="phone.t('Common.loading')" :size="24" />
       </div>
 
-      <SkyGlass
+      <AgentGlass
         v-else-if="visibleMemos.length"
         class="memos-list-glass"
         :highlight="false"
       >
-        <SkyList nested class="memos-list">
-          <SkyListItem
+        <AgentList nested class="memos-list">
+          <AgentListItem
             v-for="memo in visibleMemos"
             :key="memo.id"
             link
@@ -481,7 +481,7 @@ onBeforeUnmount(() => {
             @click="openMemo(memo)"
           >
             <template #media>
-              <SkyLink
+              <AgentLink
                 icon-only
                 class="memo-row__play"
                 :aria-label="
@@ -499,7 +499,7 @@ onBeforeUnmount(() => {
                   fill="currentColor"
                 />
                 <Play v-else :size="17" fill="currentColor" />
-              </SkyLink>
+              </AgentLink>
             </template>
             <template #text>
               <div class="memo-row__waveform" aria-hidden="true">
@@ -516,11 +516,11 @@ onBeforeUnmount(() => {
                 />
               </div>
             </template>
-          </SkyListItem>
-        </SkyList>
-      </SkyGlass>
+          </AgentListItem>
+        </AgentList>
+      </AgentGlass>
 
-      <SkyEmptyState
+      <AgentEmptyState
         v-else
         class="memos-empty"
         :title="
@@ -535,28 +535,28 @@ onBeforeUnmount(() => {
         "
       >
         <template #icon><MicOff :size="24" aria-hidden="true" /></template>
-      </SkyEmptyState>
-    </SkyScrollArea>
+      </AgentEmptyState>
+    </AgentScrollArea>
 
     <footer class="memos-composer">
-      <SkySearchbar
+      <AgentSearchbar
         v-model="searchQuery"
         class="memos-search"
         :clear-label="phone.t('Common.clear')"
         :label="phone.t('Apps.memos.searchPlaceholder')"
         :placeholder="phone.t('Apps.memos.searchPlaceholder')"
       />
-      <SkyFab
+      <AgentFab
         class="memos-record-fab"
         :aria-label="phone.t('Apps.memos.newMemo')"
         @click="startRecording"
       >
         <template #icon><Mic :size="23" aria-hidden="true" /></template>
-      </SkyFab>
+      </AgentFab>
     </footer>
-  </SkyAppPage>
+  </AgentAppPage>
 
-  <SkyAppPage
+  <AgentAppPage
     v-else-if="selectedMemo"
     class="memo-detail-page"
     :dark="phone.isDarkMode"
@@ -564,33 +564,33 @@ onBeforeUnmount(() => {
     accent-soft="rgb(255 59 48 / 15%)"
     :label="selectedMemo.title"
   >
-    <SkyNavbar
+    <AgentNavbar
       show-back
       :back-label="phone.t('Apps.memos.back')"
       :title="phone.t('Apps.memos.memo')"
       @back="closeDetail"
     >
       <template #right>
-        <SkyLink
+        <AgentLink
           icon-only
           :aria-label="phone.t('Apps.memos.actions')"
           @click="openMenu"
         >
           <Ellipsis :size="22" aria-hidden="true" />
-        </SkyLink>
+        </AgentLink>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
-    <SkyScrollArea padded class="memo-detail-scroll">
-      <SkyGlass class="memo-fields-glass" :highlight="false">
-        <SkyList nested :dividers="false">
-          <SkyField
+    <AgentScrollArea padded class="memo-detail-scroll">
+      <AgentGlass class="memo-fields-glass" :highlight="false">
+        <AgentList nested :dividers="false">
+          <AgentField
             v-model="draftTitle"
             :label="phone.t('Apps.memos.title')"
             :placeholder="phone.t('Apps.memos.titlePlaceholder')"
             :maxlength="120"
           />
-          <SkyField
+          <AgentField
             v-model="draftNote"
             type="textarea"
             :label="phone.t('Apps.memos.note')"
@@ -598,10 +598,10 @@ onBeforeUnmount(() => {
             :maxlength="2000"
             :rows="3"
           />
-        </SkyList>
-      </SkyGlass>
+        </AgentList>
+      </AgentGlass>
 
-      <SkyGlass component="section" class="memo-player" :highlight="false">
+      <AgentGlass component="section" class="memo-player" :highlight="false">
         <div class="memo-player__meta">
           <span>{{ memoDate(selectedMemo.createdAt) }}</span>
           <span>{{ formatDuration(selectedMemo.durationMs) }}</span>
@@ -618,7 +618,7 @@ onBeforeUnmount(() => {
             :style="{ height: `${Math.max(4, sample * 96)}px` }"
           />
         </div>
-        <SkyRange
+        <AgentRange
           class="memo-player__range"
           :value="audioCurrentTime"
           :min="0"
@@ -637,10 +637,10 @@ onBeforeUnmount(() => {
             }}</span
           >
         </div>
-      </SkyGlass>
+      </AgentGlass>
 
-      <SkyGlass class="memo-player-controls" :highlight="false">
-        <SkyButton
+      <AgentGlass class="memo-player-controls" :highlight="false">
+        <AgentButton
           rounded
           icon-only
           variant="secondary"
@@ -652,8 +652,8 @@ onBeforeUnmount(() => {
             <RotateCcw :size="24" />
             <small>15</small>
           </span>
-        </SkyButton>
-        <SkyButton
+        </AgentButton>
+        <AgentButton
           rounded
           icon-only
           class="memo-player-control memo-player-control--main"
@@ -671,8 +671,8 @@ onBeforeUnmount(() => {
             aria-hidden="true"
           />
           <Play v-else :size="28" fill="currentColor" aria-hidden="true" />
-        </SkyButton>
-        <SkyButton
+        </AgentButton>
+        <AgentButton
           rounded
           icon-only
           variant="secondary"
@@ -684,47 +684,47 @@ onBeforeUnmount(() => {
             <RotateCw :size="24" />
             <small>15</small>
           </span>
-        </SkyButton>
-      </SkyGlass>
+        </AgentButton>
+      </AgentGlass>
 
       <h2 class="memo-section-title">
         {{ phone.t('Apps.memos.playbackSpeed') }}
       </h2>
-      <SkyGlass class="memo-speed-block" :highlight="false">
-        <SkySegmented
+      <AgentGlass class="memo-speed-block" :highlight="false">
+        <AgentSegmented
           strong
           rounded
           :item-count="4"
           :active-index="[0.75, 1, 1.25, 1.5].indexOf(playbackRate)"
         >
-          <SkySegmentedButton
+          <AgentSegmentedButton
             v-for="rate in [0.75, 1, 1.25, 1.5]"
             :key="rate"
             :active="playbackRate === rate"
             @click="setPlaybackRate(rate)"
           >
             <span class="memo-speed-label">{{ rate }}×</span>
-          </SkySegmentedButton>
-        </SkySegmented>
-      </SkyGlass>
-    </SkyScrollArea>
-  </SkyAppPage>
+          </AgentSegmentedButton>
+        </AgentSegmented>
+      </AgentGlass>
+    </AgentScrollArea>
+  </AgentAppPage>
 
-  <SkyActionSheet
-    class="memos-overlay-theme sky-ui-provider"
-    :class="{ 'sky-ui-provider--dark': phone.isDarkMode }"
+  <AgentActionSheet
+    class="memos-overlay-theme agent-ui-provider"
+    :class="{ 'agent-ui-provider--dark': phone.isDarkMode }"
     :opened="menuOpened"
     :aria-label="phone.t('Apps.memos.actions')"
     @backdropclick="menuOpened = false"
     @escape="menuOpened = false"
   >
-    <SkyActionGroup>
-      <SkyActionButton class="memo-delete-action" @click="requestDelete">
+    <AgentActionGroup>
+      <AgentActionButton class="memo-delete-action" @click="requestDelete">
         <Trash2 :size="18" aria-hidden="true" />
         <span>{{ phone.t('Apps.memos.delete') }}</span>
-      </SkyActionButton>
-    </SkyActionGroup>
-  </SkyActionSheet>
+      </AgentActionButton>
+    </AgentActionGroup>
+  </AgentActionSheet>
 
   <audio
     ref="audio"
@@ -737,23 +737,23 @@ onBeforeUnmount(() => {
     @error="failPlayback"
   />
 
-  <SkyDialog
-    class="memo-recording-dialog memos-overlay-theme sky-ui-provider"
-    :class="{ 'sky-ui-provider--dark': phone.isDarkMode }"
+  <AgentDialog
+    class="memo-recording-dialog memos-overlay-theme agent-ui-provider"
+    :class="{ 'agent-ui-provider--dark': phone.isDarkMode }"
     :opened="view === 'recording' && !discardDialogOpened"
     :title="phone.t('Apps.memos.newMemo')"
     @backdropclick="requestCancelRecording"
     @escape="requestCancelRecording"
   >
-    <SkyList class="memo-recording-fields" nested :dividers="false">
-      <SkyField
+    <AgentList class="memo-recording-fields" nested :dividers="false">
+      <AgentField
         v-model="draftTitle"
         :aria-label="phone.t('Apps.memos.title')"
         :placeholder="phone.t('Apps.memos.titlePlaceholder')"
         :maxlength="120"
         :disabled="recordingBusy"
       />
-    </SkyList>
+    </AgentList>
 
     <section class="memo-recorder-stage">
       <div class="memo-recorder-stage__status">
@@ -790,12 +790,12 @@ onBeforeUnmount(() => {
       }}</strong>
 
       <div class="memo-recorder-controls">
-        <SkySpinner
+        <AgentSpinner
           v-if="recordingBusy"
           :label="phone.t('Apps.memos.saving')"
           :size="24"
         />
-        <SkyButton
+        <AgentButton
           v-else-if="recordingControllable"
           rounded
           icon-only
@@ -817,8 +817,8 @@ onBeforeUnmount(() => {
             aria-hidden="true"
           />
           <Pause v-else :size="20" fill="currentColor" aria-hidden="true" />
-        </SkyButton>
-        <SkyButton
+        </AgentButton>
+        <AgentButton
           v-else
           rounded
           tonal
@@ -827,27 +827,27 @@ onBeforeUnmount(() => {
         >
           <Mic :size="17" aria-hidden="true" />
           <span>{{ phone.t('Apps.memos.newMemo') }}</span>
-        </SkyButton>
+        </AgentButton>
       </div>
     </section>
 
     <template #buttons>
-      <SkyDialogButton @click="requestCancelRecording">
+      <AgentDialogButton @click="requestCancelRecording">
         {{ phone.t('Apps.memos.cancel') }}
-      </SkyDialogButton>
-      <SkyDialogButton
+      </AgentDialogButton>
+      <AgentDialogButton
         strong
         :disabled="recordingBusy || !recordingControllable"
         @click="stopRecording"
       >
         {{ phone.t('Apps.memos.done') }}
-      </SkyDialogButton>
+      </AgentDialogButton>
     </template>
-  </SkyDialog>
+  </AgentDialog>
 
-  <SkyDialog
-    class="memos-overlay-theme sky-ui-provider"
-    :class="{ 'sky-ui-provider--dark': phone.isDarkMode }"
+  <AgentDialog
+    class="memos-overlay-theme agent-ui-provider"
+    :class="{ 'agent-ui-provider--dark': phone.isDarkMode }"
     :opened="discardDialogOpened"
     :title="phone.t('Apps.memos.discardTitle')"
     :content="phone.t('Apps.memos.discardBody')"
@@ -856,18 +856,18 @@ onBeforeUnmount(() => {
     @escape="discardDialogOpened = false"
   >
     <template #buttons>
-      <SkyDialogButton @click="discardDialogOpened = false">
+      <AgentDialogButton @click="discardDialogOpened = false">
         {{ phone.t('Apps.memos.keepRecording') }}
-      </SkyDialogButton>
-      <SkyDialogButton strong class="memo-danger" @click="discardRecording">
+      </AgentDialogButton>
+      <AgentDialogButton strong class="memo-danger" @click="discardRecording">
         {{ phone.t('Apps.memos.discard') }}
-      </SkyDialogButton>
+      </AgentDialogButton>
     </template>
-  </SkyDialog>
+  </AgentDialog>
 
-  <SkyDialog
-    class="memos-overlay-theme sky-ui-provider"
-    :class="{ 'sky-ui-provider--dark': phone.isDarkMode }"
+  <AgentDialog
+    class="memos-overlay-theme agent-ui-provider"
+    :class="{ 'agent-ui-provider--dark': phone.isDarkMode }"
     :opened="deleteDialogOpened"
     :title="phone.t('Apps.memos.deleteTitle')"
     :content="phone.t('Apps.memos.deleteBody')"
@@ -876,34 +876,34 @@ onBeforeUnmount(() => {
     @escape="deleteDialogOpened = false"
   >
     <template #buttons>
-      <SkyDialogButton @click="deleteDialogOpened = false">
+      <AgentDialogButton @click="deleteDialogOpened = false">
         {{ phone.t('Common.cancel') }}
-      </SkyDialogButton>
-      <SkyDialogButton strong class="memo-danger" @click="deleteSelected">
+      </AgentDialogButton>
+      <AgentDialogButton strong class="memo-danger" @click="deleteSelected">
         {{ phone.t('Common.delete') }}
-      </SkyDialogButton>
+      </AgentDialogButton>
     </template>
-  </SkyDialog>
+  </AgentDialog>
 </template>
 
 <style scoped>
 .memos-page,
 .memo-detail-page,
 .memos-overlay-theme {
-  --sky-app-accent: #ff3b30;
-  --sky-app-accent-soft: rgb(255 59 48 / 15%);
+  --agent-app-accent: #ff3b30;
+  --agent-app-accent-soft: rgb(255 59 48 / 15%);
 }
 
 .memos-page__content {
   padding-top: 4px;
-  padding-bottom: calc(var(--sky-safe-area-bottom) + 86px);
+  padding-bottom: calc(var(--agent-safe-area-bottom) + 86px);
 }
 
 .memos-loading {
   min-height: 180px;
   display: grid;
   place-items: center;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 .memos-list-glass,
@@ -912,7 +912,7 @@ onBeforeUnmount(() => {
 .memo-player-controls,
 .memo-speed-block {
   overflow: hidden;
-  border-radius: var(--sky-radius-card);
+  border-radius: var(--agent-radius-card);
 }
 
 .memos-list-glass {
@@ -928,9 +928,9 @@ onBeforeUnmount(() => {
   justify-content: center;
 }
 
-.memos-empty :deep(.sky-empty-state__icon) {
-  color: var(--sky-app-accent);
-  background: var(--sky-app-accent-soft);
+.memos-empty :deep(.agent-empty-state__icon) {
+  color: var(--agent-app-accent);
+  background: var(--agent-app-accent-soft);
 }
 
 .memos-composer {
@@ -940,14 +940,14 @@ onBeforeUnmount(() => {
   bottom: 0;
   left: 0;
   min-width: 0;
-  padding: 8px calc(var(--sky-page-gutter) + var(--sky-safe-area-right))
-    calc(var(--sky-safe-area-bottom) + 8px)
-    calc(var(--sky-page-gutter) + var(--sky-safe-area-left));
+  padding: 8px calc(var(--agent-page-gutter) + var(--agent-safe-area-right))
+    calc(var(--agent-safe-area-bottom) + 8px)
+    calc(var(--agent-page-gutter) + var(--agent-safe-area-left));
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--sky-touch-target);
+  grid-template-columns: minmax(0, 1fr) var(--agent-touch-target);
   align-items: center;
   gap: 10px;
-  background: linear-gradient(to top, var(--sky-bg) 72%, transparent);
+  background: linear-gradient(to top, var(--agent-bg) 72%, transparent);
 }
 
 .memos-search {
@@ -955,11 +955,11 @@ onBeforeUnmount(() => {
 }
 
 .memos-record-fab {
-  width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
+  width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
 }
 
-.memo-row :deep(.sky-list-item__media) {
+.memo-row :deep(.agent-list-item__media) {
   align-self: center;
 }
 
@@ -968,8 +968,8 @@ onBeforeUnmount(() => {
   height: 38px;
   display: grid;
   border-radius: 50%;
-  color: var(--sky-app-accent);
-  background: var(--sky-app-accent-soft);
+  color: var(--agent-app-accent);
+  background: var(--agent-app-accent-soft);
   place-items: center;
 }
 
@@ -988,11 +988,11 @@ onBeforeUnmount(() => {
 .memo-recorder-waveform i {
   display: block;
   min-width: 2px;
-  border-radius: var(--sky-radius-pill);
-  background: var(--sky-subtle);
+  border-radius: var(--agent-radius-pill);
+  background: var(--agent-subtle);
   transition:
     height 90ms linear,
-    background-color var(--sky-transition-normal) ease;
+    background-color var(--agent-transition-normal) ease;
 }
 
 .memo-row__waveform i {
@@ -1001,7 +1001,7 @@ onBeforeUnmount(() => {
 
 .memo-row__waveform i.active,
 .memo-player__waveform i.active {
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
 }
 
 .memo-detail-scroll {
@@ -1011,11 +1011,11 @@ onBeforeUnmount(() => {
   gap: 12px;
 }
 
-.memo-fields-glass :deep(.sky-list) {
+.memo-fields-glass :deep(.agent-list) {
   margin: 0;
 }
 
-.memo-fields-glass :deep(.sky-field__textarea) {
+.memo-fields-glass :deep(.agent-field__textarea) {
   min-height: 76px;
   resize: none;
 }
@@ -1028,7 +1028,7 @@ onBeforeUnmount(() => {
 .memo-player__times {
   display: flex;
   justify-content: space-between;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
@@ -1095,7 +1095,7 @@ onBeforeUnmount(() => {
 
 .memo-section-title {
   margin: 2px 8px -4px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 13px;
   font-weight: 650;
 }
@@ -1105,7 +1105,7 @@ onBeforeUnmount(() => {
   padding: 4px;
 }
 
-.memo-speed-block :deep(.sky-segmented) {
+.memo-speed-block :deep(.agent-segmented) {
   background: transparent;
 }
 
@@ -1116,16 +1116,16 @@ onBeforeUnmount(() => {
 .memo-delete-action {
   min-height: 48px;
   gap: 8px;
-  color: var(--sky-danger);
+  color: var(--agent-danger);
 }
 
 .memo-recording-fields {
   margin: 0 0 14px;
-  border-radius: var(--sky-radius-control);
-  background: var(--sky-surface-muted);
+  border-radius: var(--agent-radius-control);
+  background: var(--agent-surface-muted);
 }
 
-.memo-recording-fields :deep(.sky-field) {
+.memo-recording-fields :deep(.agent-field) {
   min-height: 44px;
 }
 
@@ -1139,7 +1139,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 12px;
   font-weight: 650;
   text-align: center;
@@ -1149,7 +1149,7 @@ onBeforeUnmount(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
   animation: memo-pulse 1.2s ease-in-out infinite;
 }
 
@@ -1167,11 +1167,11 @@ onBeforeUnmount(() => {
 .memo-recorder-waveform i {
   max-width: 3px;
   flex: 1 1 2px;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
 }
 
 .memo-recorder-time {
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 28px;
   font-variant-numeric: tabular-nums;
   letter-spacing: -1px;
@@ -1197,8 +1197,8 @@ onBeforeUnmount(() => {
 }
 
 .memo-danger {
-  color: var(--sky-danger);
-  background: var(--sky-danger-soft);
+  color: var(--agent-danger);
+  background: var(--agent-danger-soft);
 }
 
 audio {

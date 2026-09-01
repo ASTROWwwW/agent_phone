@@ -5,7 +5,7 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import AppIcon from '@/components/AppIcon.vue'
 import { usePhoneStore } from '@/stores/phone'
 import type { PhoneAppDefinition } from '@/types/apps'
-import { SkyField, SkyLink } from '@/ui'
+import { AgentField, AgentLink } from '@/ui'
 import {
   HOME_FOLDER_NAME_MAX_LENGTH,
   HOME_FOLDER_PAGE_SIZE,
@@ -102,7 +102,7 @@ watch(
     await nextTick()
     document
       .querySelector<HTMLInputElement>(
-        '.home-folder-rename-field .sky-field__input',
+        '.home-folder-rename-field .agent-field__input',
       )
       ?.select()
   },
@@ -115,7 +115,7 @@ function openRename(): void {
   void nextTick(() => {
     document
       .querySelector<HTMLInputElement>(
-        '.home-folder-rename-field .sky-field__input',
+        '.home-folder-rename-field .agent-field__input',
       )
       ?.select()
   })
@@ -289,7 +289,7 @@ onBeforeUnmount(() => {
         >
           {{ folderName }}
         </button>
-        <SkyLink
+        <AgentLink
           class="home-folder-edit"
           component="button"
           icon-only
@@ -298,7 +298,7 @@ onBeforeUnmount(() => {
           @click="openRename"
         >
           <Pencil :size="18" :stroke-width="2.2" />
-        </SkyLink>
+        </AgentLink>
       </div>
       <form
         v-else
@@ -306,7 +306,7 @@ onBeforeUnmount(() => {
         @keydown.esc.prevent="renameOpened = false"
         @submit.prevent="saveRename"
       >
-        <SkyLink
+        <AgentLink
           class="home-folder-rename-action"
           component="button"
           icon-only
@@ -315,8 +315,8 @@ onBeforeUnmount(() => {
           @click="renameOpened = false"
         >
           <X :size="19" :stroke-width="2.3" />
-        </SkyLink>
-        <SkyField
+        </AgentLink>
+        <AgentField
           v-model="renameDraft"
           class="home-folder-rename-field"
           :aria-label="phone.t('Home.folders.name')"
@@ -328,7 +328,7 @@ onBeforeUnmount(() => {
           :maxlength="HOME_FOLDER_NAME_MAX_LENGTH"
           :placeholder="phone.t('Home.folders.defaultName')"
         />
-        <SkyLink
+        <AgentLink
           class="home-folder-rename-action"
           component="button"
           icon-only
@@ -336,7 +336,7 @@ onBeforeUnmount(() => {
           type="submit"
         >
           <Check :size="20" :stroke-width="2.5" />
-        </SkyLink>
+        </AgentLink>
       </form>
       <div
         ref="panelElement"
@@ -386,18 +386,18 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .home-folder-layer {
-  --sky-app-accent: #0a84ff;
-  --sky-bg: #08080a;
-  --sky-surface: #1c1c1e;
-  --sky-surface-muted: #2c2c2e;
-  --sky-text: #f5f5f7;
-  --sky-muted: #98989f;
-  --sky-hairline: rgb(255 255 255 / 12%);
+  --agent-app-accent: #0a84ff;
+  --agent-bg: #08080a;
+  --agent-surface: #1c1c1e;
+  --agent-surface-muted: #2c2c2e;
+  --agent-text: #f5f5f7;
+  --agent-muted: #98989f;
+  --agent-hairline: rgb(255 255 255 / 12%);
   position: absolute;
   z-index: 70;
   inset: 0;
   color: #fff;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
 }
 
 .home-folder-backdrop {
@@ -629,11 +629,11 @@ onBeforeUnmount(() => {
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 12%);
 }
 
-.home-folder-rename-field :deep(.sky-field__inner) {
+.home-folder-rename-field :deep(.agent-field__inner) {
   padding: 2px 12px;
 }
 
-.home-folder-rename-field :deep(.sky-field__input) {
+.home-folder-rename-field :deep(.agent-field__input) {
   height: 46px;
   min-height: 46px;
   color: #fff;
@@ -642,11 +642,11 @@ onBeforeUnmount(() => {
   text-align: center;
 }
 
-.home-folder-rename-field :deep(.sky-field__input::placeholder) {
+.home-folder-rename-field :deep(.agent-field__input::placeholder) {
   color: rgb(255 255 255 / 48%);
 }
 
-.home-folder-rename-field :deep(.sky-field__clear) {
+.home-folder-rename-field :deep(.agent-field__clear) {
   color: #fff;
 }
 

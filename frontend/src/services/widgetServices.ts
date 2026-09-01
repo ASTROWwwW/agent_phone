@@ -137,7 +137,7 @@ export function useBankService(enabled: MaybeRefOrGetter<boolean> = true) {
         cash: 1_240,
         currency: '$',
         playerId: 0,
-        playerName: 'Sky Citizen',
+        playerName: 'Agent Citizen',
         transactions: [
           {
             amount: 1800,
@@ -179,8 +179,6 @@ export function useBankService(enabled: MaybeRefOrGetter<boolean> = true) {
 
 const DAY_MS = 86_400_000
 
-// Les rendez-vous du jour, tries, sans ceux qui sont deja termines. Le magasin
-// du Calendrier demande une plage : on lui donne la journee en cours.
 export function useCalendarService(enabled: MaybeRefOrGetter<boolean> = true) {
   const calendar = useCalendarStore()
 

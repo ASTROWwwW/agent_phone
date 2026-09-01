@@ -17,7 +17,6 @@ const props = withDefaults(
   },
 )
 
-// Piste interieure de la batterie, en unites du viewBox : de x = 2 a x = 23.
 const TRACK_X = 2
 const TRACK_WIDTH = 21
 const FILL_RADIUS = 2.3
@@ -28,8 +27,6 @@ const clampedLevel = computed(() =>
 
 const fillWidth = computed(() => {
   if (clampedLevel.value === 0) return 0
-  // Sous un diametre de coin, un rectangle arrondi degenere en trait
-  // illisible : on garde une pastille minimale pour que 1 % reste visible.
   return Math.max(FILL_RADIUS * 2, (TRACK_WIDTH * clampedLevel.value) / 100)
 })
 
@@ -131,19 +128,15 @@ const isLow = computed(() => clampedLevel.value <= 20)
   fill: currentColor;
 }
 
-/* Coque et embout restent en retrait : seul le niveau est a pleine opacite,
-   comme dans la barre d'etat d'iOS. */
 .phone-status-indicators__battery rect:first-child {
   fill: none;
   stroke: currentColor;
   stroke-width: 1;
   opacity: 0.38;
 }
-
 .phone-status-indicators__battery-cap {
   opacity: 0.42;
 }
-
 .phone-status-indicators__battery--low .phone-status-indicators__battery-level {
   fill: #ff453a;
 }

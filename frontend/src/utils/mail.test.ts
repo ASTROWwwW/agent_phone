@@ -29,8 +29,8 @@ describe('mail addresses', () => {
     expect(filterMailAddressInput('Al+ex! ä@ifruit.com<script>')).toBe(
       'Alex@ifruit.comscript',
     )
-    expect(filterMailAddressInput('sky.user_name-2@ifruit.com')).toBe(
-      'sky.user_name-2@ifruit.com',
+    expect(filterMailAddressInput('agent.user_name-2@ifruit.com')).toBe(
+      'agent.user_name-2@ifruit.com',
     )
   })
 
@@ -43,9 +43,9 @@ describe('mail addresses', () => {
   })
 
   it('normalizes local parts and the iFruit domain', () => {
-    expect(normalizeMailAddress(' Sky.User ')).toBe('sky.user@ifruit.com')
-    expect(normalizeMailAddress('sky.user@ifruit.com')).toBe(
-      'sky.user@ifruit.com',
+    expect(normalizeMailAddress(' agent.user ')).toBe('agent.user@ifruit.com')
+    expect(normalizeMailAddress('agent.user@ifruit.com')).toBe(
+      'agent.user@ifruit.com',
     )
   })
 

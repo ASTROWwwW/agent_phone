@@ -63,9 +63,9 @@ const musicServerTracks = [
     id: 'city-after-dark',
     source: 'server',
     title: 'City After Dark',
-    artist: 'Sky Records',
+    artist: 'Agent Records',
     url: 'https://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga',
-    artwork: 'https://picsum.photos/seed/sky-music-city/600/600',
+    artwork: 'https://picsum.photos/seed/agent-music-city/600/600',
   },
   {
     id: 'pacific-drive',
@@ -73,7 +73,7 @@ const musicServerTracks = [
     title: 'Pacific Drive',
     artist: 'Vespucci FM',
     url: 'https://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga',
-    artwork: 'https://picsum.photos/seed/sky-music-pacific/600/600',
+    artwork: 'https://picsum.photos/seed/agent-music-pacific/600/600',
   },
   {
     id: 'neon-rain',
@@ -81,7 +81,7 @@ const musicServerTracks = [
     title: 'Neon Rain',
     artist: 'Mirror Park',
     url: 'https://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga',
-    artwork: 'https://picsum.photos/seed/sky-music-neon/600/600',
+    artwork: 'https://picsum.photos/seed/agent-music-neon/600/600',
   },
 ]
 let musicYoutubeTracks = [
@@ -744,8 +744,8 @@ let mockBillingInvoices = [
 const mockGarageVehicles = [
   {
     id: 'vehicle-1',
-    plate: 'SKY 204',
-    vin: '1S9SKY204LS000001',
+    plate: 'AGT 204',
+    vin: '1S9AGT204LS000001',
     nickname: 'Midnight',
     model: 'sultanrs',
     name: 'Karin Sultan RS',
@@ -802,7 +802,7 @@ const mockGarageVehicles = [
 
 let mockGarageValet = null
 
-const skyRideProfile = {
+const agentRideProfile = {
   acceptanceRate: 96,
   avatarMediaId: 1,
   avatarUrl:
@@ -817,7 +817,7 @@ const skyRideProfile = {
   name: 'Alex Morgan',
   rating: 4.92,
 }
-const skyRideDriver = {
+const agentRideDriver = {
   avatarUrl:
     'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=240&q=80',
   id: 'agentride-driver-nova',
@@ -832,16 +832,16 @@ const skyRideDriver = {
     plate: 'RIDE 01',
   },
 }
-const skyRidePassenger = {
-  avatarUrl: skyRideProfile.avatarUrl,
-  id: skyRideProfile.id,
-  name: skyRideProfile.name,
+const agentRidePassenger = {
+  avatarUrl: agentRideProfile.avatarUrl,
+  id: agentRideProfile.id,
+  name: agentRideProfile.name,
   phoneNumber: '5550142',
-  rating: skyRideProfile.rating,
-  trips: skyRideProfile.completedRides,
+  rating: agentRideProfile.rating,
+  trips: agentRideProfile.completedRides,
 }
 
-function skyRideWithoutLiveContact(ride) {
+function agentRideWithoutLiveContact(ride) {
   const passenger = { ...ride.passenger }
   delete passenger.phoneNumber
   let driver = null
@@ -853,7 +853,7 @@ function skyRideWithoutLiveContact(ride) {
   return { ...ride, driver, passenger }
 }
 
-const skyRideQuickLocations = [
+const agentRideQuickLocations = [
   {
     coords: { x: -265.1, y: -960.2, z: 31.2 },
     id: 'legion-square',
@@ -875,15 +875,15 @@ const skyRideQuickLocations = [
     label: 'Vinewood',
   },
 ]
-let skyRideSequence = 4
-let skyRideDriverOnline = false
-let skyRideActiveRide = null
-let skyRidePendingRating = null
-let skyRideAvailableRequests = [
+let agentRideSequence = 4
+let agentRideDriverOnline = false
+let agentRideActiveRide = null
+let agentRidePendingRating = null
+let agentRideAvailableRequests = [
   {
     createdAt: unixTime(-90),
     currency: '$',
-    destination: skyRideQuickLocations[1],
+    destination: agentRideQuickLocations[1],
     distanceMeters: 4200,
     driver: null,
     durationSeconds: 480,
@@ -896,65 +896,65 @@ let skyRideAvailableRequests = [
       rating: 4.84,
       trips: 38,
     },
-    pickup: skyRideQuickLocations[0],
+    pickup: agentRideQuickLocations[0],
     price: 42,
     serviceClass: 'comfort',
     status: 'searching',
     updatedAt: unixTime(-90),
   },
 ]
-let skyRideHistory = [
-  skyRideWithoutLiveContact({
+let agentRideHistory = [
+  agentRideWithoutLiveContact({
     createdAt: unixTime(-22 * 60 * 60),
     currency: '$',
-    destination: skyRideQuickLocations[3],
+    destination: agentRideQuickLocations[3],
     distanceMeters: 4800,
-    driver: skyRideDriver,
+    driver: agentRideDriver,
     durationSeconds: 620,
     finalPrice: 31,
     id: 'agentride-history-1',
-    passenger: skyRidePassenger,
-    pickup: skyRideQuickLocations[0],
+    passenger: agentRidePassenger,
+    pickup: agentRideQuickLocations[0],
     price: 31,
     serviceClass: 'taxi',
     status: 'completed',
     updatedAt: unixTime(-21 * 60 * 60),
   }),
-  skyRideWithoutLiveContact({
+  agentRideWithoutLiveContact({
     createdAt: unixTime(-3 * 24 * 60 * 60),
     currency: '$',
-    destination: skyRideQuickLocations[2],
+    destination: agentRideQuickLocations[2],
     distanceMeters: 18700,
-    driver: skyRideDriver,
+    driver: agentRideDriver,
     durationSeconds: 1380,
     finalPrice: 68,
     id: 'agentride-history-2',
-    passenger: skyRidePassenger,
-    pickup: skyRideQuickLocations[1],
+    passenger: agentRidePassenger,
+    pickup: agentRideQuickLocations[1],
     price: 68,
     serviceClass: 'premium',
     status: 'completed',
     updatedAt: unixTime(-3 * 24 * 60 * 60 + 18 * 60),
   }),
 ]
-const skyRideQuotes = new Map()
+const agentRideQuotes = new Map()
 
-function skyRideBootstrap() {
+function agentRideBootstrap() {
   return {
-    activeRide: skyRideActiveRide,
-    availableRequests: skyRideAvailableRequests,
+    activeRide: agentRideActiveRide,
+    availableRequests: agentRideAvailableRequests,
     driverEligible: true,
-    driverOnline: skyRideDriverOnline,
-    history: skyRideHistory,
-    pendingRating: skyRidePendingRating,
-    profile: skyRideProfile,
-    quickLocations: skyRideQuickLocations,
+    driverOnline: agentRideDriverOnline,
+    history: agentRideHistory,
+    pendingRating: agentRidePendingRating,
+    profile: agentRideProfile,
+    quickLocations: agentRideQuickLocations,
   }
 }
 
-function skyRideUpdate(fields) {
+function agentRideUpdate(fields) {
   return Object.fromEntries(
-    fields.map((field) => [field, skyRideBootstrap()[field]]),
+    fields.map((field) => [field, agentRideBootstrap()[field]]),
   )
 }
 
@@ -963,7 +963,7 @@ let smsSequence = 1
 const contacts = [
   {
     avatar_media_id: 1,
-    avatar_url: 'https://picsum.photos/seed/sky-phone-1/600/800',
+    avatar_url: 'https://picsum.photos/seed/agent-phone-1/600/800',
     created_at: isoTime(-42 * 86_400_000),
     favorite: true,
     email: 'alex.rivera@ifruit.com',
@@ -1000,7 +1000,7 @@ const contacts = [
   },
   {
     avatar_media_id: 3,
-    avatar_url: 'https://picsum.photos/seed/sky-phone-3/800/600',
+    avatar_url: 'https://picsum.photos/seed/agent-phone-3/800/600',
     created_at: isoTime(-18 * 86_400_000),
     id: 'contact-bryce',
     name: 'Bryce Walker',
@@ -1083,7 +1083,7 @@ const contacts = [
   },
   {
     avatar_media_id: 4,
-    avatar_url: 'https://picsum.photos/seed/sky-phone-4/800/600',
+    avatar_url: 'https://picsum.photos/seed/agent-phone-4/800/600',
     created_at: isoTime(-3 * 86_400_000),
     favorite: true,
     id: 'contact-taxi',
@@ -1285,8 +1285,6 @@ const accountDevices = [
 const messages = [
   {
     body: '## Welcome to iFruit Mail\n\nYour shared mailbox is **ready to use**.\n\n- Send formatted messages\n- Keep drafts on every linked device\n- Reply without losing the conversation\n\n> Tip: use the small formatting bar while composing.',
-    // Database dates may cross the NUI boundary as Unix timestamps.
-    // Keep one received message numeric so the browser preview covers that contract.
     created_at: Date.parse('2026-08-04T11:30:00'),
     folder: 'inbox',
     id: 1,
@@ -2272,7 +2270,7 @@ let recentCalls = [
   },
 ]
 function mockGalleryImage(title, sky, landscape, accent) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${sky}"/><stop offset="1" stop-color="${accent}"/></linearGradient><linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${landscape}"/><stop offset="1" stop-color="#101114"/></linearGradient></defs><rect width="900" height="1200" fill="url(#sky)"/><circle cx="690" cy="260" r="105" fill="#fff" opacity=".72"/><path d="M0 690 210 440 390 650 585 360 900 720V1200H0Z" fill="${landscape}" opacity=".84"/><path d="M0 790 230 620 410 765 650 525 900 770V1200H0Z" fill="url(#land)"/><path d="M360 1200 475 690 560 690 690 1200Z" fill="${accent}" opacity=".48"/><text x="54" y="1100" fill="#fff" font-family="system-ui,sans-serif" font-size="62" font-weight="700">${title}</text><text x="57" y="1160" fill="#fff" opacity=".72" font-family="system-ui,sans-serif" font-size="30">Agent Phone test media</text></svg>`
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200"><defs><linearGradient id="agent" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${sky}"/><stop offset="1" stop-color="${accent}"/></linearGradient><linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${landscape}"/><stop offset="1" stop-color="#101114"/></linearGradient></defs><rect width="900" height="1200" fill="url(#sky)"/><circle cx="690" cy="260" r="105" fill="#fff" opacity=".72"/><path d="M0 690 210 440 390 650 585 360 900 720V1200H0Z" fill="${landscape}" opacity=".84"/><path d="M0 790 230 620 410 765 650 525 900 770V1200H0Z" fill="url(#land)"/><path d="M360 1200 475 690 560 690 690 1200Z" fill="${accent}" opacity=".48"/><text x="54" y="1100" fill="#fff" font-family="system-ui,sans-serif" font-size="62" font-weight="700">${title}</text><text x="57" y="1160" fill="#fff" opacity=".72" font-family="system-ui,sans-serif" font-size="30">Agent Phone test media</text></svg>`
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`
 }
 
@@ -2449,7 +2447,7 @@ const mockImportMedia = [
     mediaType: 'photo',
     size: 2_481_152,
     sourceId: 'media_archive',
-    url: 'https://picsum.photos/seed/sky-import-1/900/1200',
+    url: 'https://picsum.photos/seed/agent-import-1/900/1200',
   },
   {
     externalId: 'archive-photo-2',
@@ -2458,7 +2456,7 @@ const mockImportMedia = [
     mediaType: 'photo',
     size: 3_114_205,
     sourceId: 'media_archive',
-    url: 'https://picsum.photos/seed/sky-import-2/1200/900',
+    url: 'https://picsum.photos/seed/agent-import-2/1200/900',
   },
   {
     externalId: 'archive-video-1',
@@ -2476,7 +2474,7 @@ const mockImportMedia = [
     mediaType: 'photo',
     size: 1_824_331,
     sourceId: 'event_cdn',
-    url: 'https://picsum.photos/seed/sky-event-1/900/1200',
+    url: 'https://picsum.photos/seed/agent-event-1/900/1200',
   },
 ]
 const marketplaceInquiries = [
@@ -3111,11 +3109,11 @@ let companyRequests = [
     media: [
       {
         id: 3,
-        url: 'https://picsum.photos/seed/sky-phone-3/800/600',
+        url: 'https://picsum.photos/seed/agent-phone-3/800/600',
       },
       {
         id: 4,
-        url: 'https://picsum.photos/seed/sky-phone-4/800/600',
+        url: 'https://picsum.photos/seed/agent-phone-4/800/600',
       },
     ],
     messages: [
@@ -4379,7 +4377,7 @@ const easyShareHistory = [
       appId: 'map',
       copyText: 'Legion Square',
       kind: 'location',
-      link: 'https://maps.sky/legion-square',
+      link: 'https://maps.agent/legion-square',
       title: 'Legion Square',
     },
     progress: 100,
@@ -6587,11 +6585,11 @@ app.post('/api/:endpoint', (request, response) => {
     return
   }
   if (endpoint === 'agentride:bootstrap') {
-    response.json({ success: true, data: skyRideBootstrap() })
+    response.json({ success: true, data: agentRideBootstrap() })
     return
   }
   if (endpoint === 'agentride:history') {
-    response.json({ success: true, data: { items: skyRideHistory } })
+    response.json({ success: true, data: { items: agentRideHistory } })
     return
   }
   if (endpoint === 'agentride:update-profile') {
@@ -6612,12 +6610,12 @@ app.post('/api/:endpoint', (request, response) => {
       response.json({ success: false, error: 'invalid_profile' })
       return
     }
-    skyRideProfile.name = name
-    skyRideProfile.avatarMediaId = avatarMediaId || null
-    skyRideProfile.avatarUrl = avatar?.url ?? null
+    agentRideProfile.name = name
+    agentRideProfile.avatarMediaId = avatarMediaId || null
+    agentRideProfile.avatarUrl = avatar?.url ?? null
     response.json({
       success: true,
-      data: skyRideUpdate(['profile']),
+      data: agentRideUpdate(['profile']),
     })
     return
   }
@@ -6740,7 +6738,7 @@ app.post('/api/:endpoint', (request, response) => {
         seats: definition.seats,
         serviceClass: definition.serviceClass,
       }
-      skyRideQuotes.set(option.quoteId, {
+      agentRideQuotes.set(option.quoteId, {
         destination,
         expiresAt,
         option,
@@ -6769,7 +6767,7 @@ app.post('/api/:endpoint', (request, response) => {
     return
   }
   if (endpoint === 'agentride:request') {
-    const quote = skyRideQuotes.get(String(request.body.quoteId ?? ''))
+    const quote = agentRideQuotes.get(String(request.body.quoteId ?? ''))
     if (!quote) {
       response.json({ success: false, error: 'quote_not_found' })
       return
@@ -6778,7 +6776,7 @@ app.post('/api/:endpoint', (request, response) => {
       response.json({ success: false, error: 'quote_expired' })
       return
     }
-    if (skyRideActiveRide) {
+    if (agentRideActiveRide) {
       response.json({ success: false, error: 'active_ride_exists' })
       return
     }
@@ -6791,22 +6789,22 @@ app.post('/api/:endpoint', (request, response) => {
       distanceMeters: quote.distanceMeters,
       driver: null,
       durationSeconds: quote.durationSeconds,
-      id: `agentride-ride-${skyRideSequence++}`,
-      passenger: skyRidePassenger,
+      id: `agentride-ride-${agentRideSequence++}`,
+      passenger: agentRidePassenger,
       pickup: quote.pickup,
       price: quote.option.price,
       serviceClass: quote.option.serviceClass,
       status: 'searching',
       updatedAt: now,
     }
-    skyRideActiveRide = ride
-    skyRideAvailableRequests = [
-      skyRideWithoutLiveContact(ride),
-      ...skyRideAvailableRequests,
+    agentRideActiveRide = ride
+    agentRideAvailableRequests = [
+      agentRideWithoutLiveContact(ride),
+      ...agentRideAvailableRequests,
     ]
     response.json({
       success: true,
-      data: skyRideUpdate(['activeRide']),
+      data: agentRideUpdate(['activeRide']),
     })
     return
   }
@@ -6815,42 +6813,42 @@ app.post('/api/:endpoint', (request, response) => {
       response.json({ success: false, error: 'invalid_driver_status' })
       return
     }
-    skyRideDriverOnline = request.body.online
+    agentRideDriverOnline = request.body.online
     response.json({
       success: true,
-      data: skyRideUpdate(['driverOnline', 'availableRequests']),
+      data: agentRideUpdate(['driverOnline', 'availableRequests']),
     })
     return
   }
   if (endpoint === 'agentride:accept') {
-    if (!skyRideDriverOnline) {
+    if (!agentRideDriverOnline) {
       response.json({ success: false, error: 'driver_offline' })
       return
     }
-    const ride = skyRideAvailableRequests.find(
+    const ride = agentRideAvailableRequests.find(
       (item) => item.id === request.body.rideId,
     )
     if (!ride) {
       response.json({ success: false, error: 'ride_not_found' })
       return
     }
-    if (skyRideActiveRide && skyRideActiveRide.id !== ride.id) {
+    if (agentRideActiveRide && agentRideActiveRide.id !== ride.id) {
       response.json({ success: false, error: 'active_ride_exists' })
       return
     }
 
-    skyRideActiveRide = {
+    agentRideActiveRide = {
       ...ride,
-      driver: skyRideDriver,
+      driver: agentRideDriver,
       status: 'accepted',
       updatedAt: unixTime(),
     }
-    skyRideAvailableRequests = skyRideAvailableRequests.filter(
+    agentRideAvailableRequests = agentRideAvailableRequests.filter(
       (item) => item.id !== ride.id,
     )
     response.json({
       success: true,
-      data: skyRideUpdate(['activeRide', 'availableRequests']),
+      data: agentRideUpdate(['activeRide', 'availableRequests']),
     })
     return
   }
@@ -6859,7 +6857,7 @@ app.post('/api/:endpoint', (request, response) => {
     endpoint === 'agentride:start' ||
     endpoint === 'agentride:complete'
   ) {
-    if (!skyRideActiveRide || skyRideActiveRide.id !== request.body.rideId) {
+    if (!agentRideActiveRide || agentRideActiveRide.id !== request.body.rideId) {
       response.json({ success: false, error: 'ride_not_found' })
       return
     }
@@ -6872,34 +6870,34 @@ app.post('/api/:endpoint', (request, response) => {
       'agentride:start': { from: ['arrived'], to: 'in_progress' },
       'agentride:complete': { from: ['in_progress'], to: 'completed' },
     }[endpoint]
-    if (!transition.from.includes(skyRideActiveRide.status)) {
+    if (!transition.from.includes(agentRideActiveRide.status)) {
       response.json({ success: false, error: 'invalid_ride_status' })
       return
     }
 
     const updatedRide = {
-      ...skyRideActiveRide,
+      ...agentRideActiveRide,
       ...(transition.to === 'completed'
-        ? { finalPrice: skyRideActiveRide.price }
+        ? { finalPrice: agentRideActiveRide.price }
         : {}),
       status: transition.to,
       updatedAt: unixTime(),
     }
     if (transition.to === 'completed') {
-      const passengerRide = updatedRide.passenger?.id === skyRideProfile.id
-      skyRideProfile.completedRides += 1
+      const passengerRide = updatedRide.passenger?.id === agentRideProfile.id
+      agentRideProfile.completedRides += 1
       if (!passengerRide) {
-        skyRideProfile.earningsToday += Math.round(
+        agentRideProfile.earningsToday += Math.round(
           updatedRide.finalPrice * 0.85,
         )
       }
-      const historyRide = skyRideWithoutLiveContact(updatedRide)
-      skyRideHistory = [historyRide, ...skyRideHistory]
-      skyRidePendingRating = passengerRide ? historyRide : null
-      skyRideActiveRide = null
+      const historyRide = agentRideWithoutLiveContact(updatedRide)
+      agentRideHistory = [historyRide, ...agentRideHistory]
+      agentRidePendingRating = passengerRide ? historyRide : null
+      agentRideActiveRide = null
       response.json({
         success: true,
-        data: skyRideUpdate([
+        data: agentRideUpdate([
           'activeRide',
           'history',
           'pendingRating',
@@ -6909,18 +6907,18 @@ app.post('/api/:endpoint', (request, response) => {
       return
     }
 
-    skyRideActiveRide = updatedRide
+    agentRideActiveRide = updatedRide
     response.json({
       success: true,
-      data: skyRideUpdate(['activeRide']),
+      data: agentRideUpdate(['activeRide']),
     })
     return
   }
   if (endpoint === 'agentride:cancel') {
     const ride =
-      skyRideActiveRide?.id === request.body.rideId
-        ? skyRideActiveRide
-        : skyRideAvailableRequests.find(
+      agentRideActiveRide?.id === request.body.rideId
+        ? agentRideActiveRide
+        : agentRideAvailableRequests.find(
             (item) => item.id === request.body.rideId,
           )
     if (!ride) {
@@ -6933,18 +6931,18 @@ app.post('/api/:endpoint', (request, response) => {
       status: 'cancelled',
       updatedAt: unixTime(),
     }
-    skyRideAvailableRequests = skyRideAvailableRequests.filter(
+    agentRideAvailableRequests = agentRideAvailableRequests.filter(
       (item) => item.id !== ride.id,
     )
-    if (skyRideActiveRide?.id === ride.id) skyRideActiveRide = null
-    skyRidePendingRating = null
-    skyRideHistory = [
-      skyRideWithoutLiveContact(cancelledRide),
-      ...skyRideHistory,
+    if (agentRideActiveRide?.id === ride.id) agentRideActiveRide = null
+    agentRidePendingRating = null
+    agentRideHistory = [
+      agentRideWithoutLiveContact(cancelledRide),
+      ...agentRideHistory,
     ]
     response.json({
       success: true,
-      data: skyRideUpdate([
+      data: agentRideUpdate([
         'activeRide',
         'availableRequests',
         'history',
@@ -6957,8 +6955,8 @@ app.post('/api/:endpoint', (request, response) => {
     const rating = Number(request.body.rating)
     const tip = Number(request.body.tip)
     if (
-      !skyRidePendingRating ||
-      skyRidePendingRating.id !== request.body.rideId
+      !agentRidePendingRating ||
+      agentRidePendingRating.id !== request.body.rideId
     ) {
       response.json({ success: false, error: 'ride_not_found' })
       return
@@ -6972,10 +6970,10 @@ app.post('/api/:endpoint', (request, response) => {
       return
     }
 
-    skyRidePendingRating = null
+    agentRidePendingRating = null
     response.json({
       success: true,
-      data: skyRideUpdate(['history', 'pendingRating']),
+      data: agentRideUpdate(['history', 'pendingRating']),
     })
     return
   }
@@ -7182,8 +7180,6 @@ app.post('/api/:endpoint', (request, response) => {
       'weather-night-rain': 'rain',
       'weather-night-snow': 'snow',
     }[testScenario]
-    // Une heure creuse fait basculer l'application sur ses decors de nuit :
-    // etoiles, voile sombre et icones nocturnes.
     const nightScenario = String(testScenario).startsWith('weather-night')
     response.json({
       success: true,
@@ -8030,7 +8026,7 @@ app.post('/api/:endpoint', (request, response) => {
       mediaType,
       url:
         mediaType === 'photo'
-          ? `https://picsum.photos/seed/sky-camera-${id}/900/1600`
+          ? `https://picsum.photos/seed/agent-camera-${id}/900/1600`
           : fallbackVideo?.url,
     }
     if (!media.url) {

@@ -21,14 +21,14 @@ import type {
   WidgetSize,
 } from '@/types/widgets'
 import {
-  SkyButton,
-  SkyEmptyState,
-  SkyList,
-  SkyListItem,
-  SkyProvider,
-  SkyScrollArea,
-  SkySearchbar,
-  SkySheet,
+  AgentButton,
+  AgentEmptyState,
+  AgentList,
+  AgentListItem,
+  AgentProvider,
+  AgentScrollArea,
+  AgentSearchbar,
+  AgentSheet,
 } from '@/ui'
 
 const props = defineProps<{ opened: boolean }>()
@@ -164,12 +164,12 @@ watch(
 </script>
 
 <template>
-  <SkyProvider
+  <AgentProvider
     class="widget-picker-provider"
     :dark="phone.isDarkMode"
     safe-areas
   >
-    <SkySheet
+    <AgentSheet
       class="widget-picker-sheet"
       :opened="opened"
       :aria-label="phone.t('Home.widgetSystem.galleryTitle')"
@@ -183,7 +183,7 @@ watch(
     >
       <section class="widget-picker-surface">
         <header class="widget-picker-navbar">
-          <SkyButton
+          <AgentButton
             v-if="pickerView === 'preview'"
             class="widget-picker-nav-button widget-picker-nav-button--icon"
             icon-only
@@ -195,7 +195,7 @@ watch(
             @click="showGallery"
           >
             <ChevronLeft :size="21" :stroke-width="2.4" />
-          </SkyButton>
+          </AgentButton>
           <span v-else aria-hidden="true"></span>
 
           <h2>
@@ -206,7 +206,7 @@ watch(
             }}
           </h2>
 
-          <SkyButton
+          <AgentButton
             class="widget-picker-nav-button widget-picker-done"
             inline
             rounded
@@ -215,12 +215,12 @@ watch(
             @click="closePicker"
           >
             {{ phone.t('Common.done') }}
-          </SkyButton>
+          </AgentButton>
         </header>
 
-        <SkyScrollArea class="widget-picker-scroll">
+        <AgentScrollArea class="widget-picker-scroll">
           <template v-if="pickerView === 'gallery'">
-            <SkySearchbar
+            <AgentSearchbar
               v-model="query"
               class="widget-picker-search"
               :clear-label="phone.t('Common.clear')"
@@ -234,8 +234,8 @@ watch(
               class="widget-picker-category"
             >
               <h3>{{ phone.t(category.key) }}</h3>
-              <SkyList flush strong class="widget-picker-list">
-                <SkyListItem
+              <AgentList flush strong class="widget-picker-list">
+                <AgentListItem
                   v-for="definition in category.widgets"
                   :key="definition.kind"
                   chevron
@@ -253,11 +253,11 @@ watch(
                       <component :is="icons[definition.kind]" :size="21" />
                     </span>
                   </template>
-                </SkyListItem>
-              </SkyList>
+                </AgentListItem>
+              </AgentList>
             </section>
 
-            <SkyEmptyState
+            <AgentEmptyState
               v-if="filteredWidgets.length === 0"
               compact
               class="widget-picker-empty"
@@ -313,7 +313,7 @@ watch(
             <h3>{{ phone.t(selectedDefinition.labelKey) }}</h3>
             <p>{{ phone.t(selectedDefinition.descriptionKey) }}</p>
 
-            <SkyButton
+            <AgentButton
               block
               large
               rounded
@@ -321,12 +321,12 @@ watch(
               @click="addWidget"
             >
               {{ phone.t('Home.widgetSystem.addWidget') }}
-            </SkyButton>
+            </AgentButton>
           </section>
-        </SkyScrollArea>
+        </AgentScrollArea>
       </section>
-    </SkySheet>
-  </SkyProvider>
+    </AgentSheet>
+  </AgentProvider>
 </template>
 
 <style scoped>
@@ -338,18 +338,18 @@ watch(
 }
 
 .widget-picker-sheet {
-  --sky-overlay-layer: 110;
+  --agent-overlay-layer: 110;
 }
 
-.widget-picker-sheet :deep(.sky-overlay-backdrop) {
+.widget-picker-sheet :deep(.agent-overlay-backdrop) {
   background: rgb(0 0 0 / 58%);
 }
 
-.widget-picker-sheet :deep(.sky-sheet__panel) {
-  height: calc(100% - var(--sky-space-3));
-  max-height: calc(100% - var(--sky-space-3));
+.widget-picker-sheet :deep(.agent-sheet__panel) {
+  height: calc(100% - var(--agent-space-3));
+  max-height: calc(100% - var(--agent-space-3));
   overflow: hidden;
-  background: var(--sky-bg);
+  background: var(--agent-bg);
 }
 
 .widget-picker-surface {
@@ -357,8 +357,8 @@ watch(
   min-height: 0;
   display: flex;
   flex-direction: column;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
 
 .widget-picker-navbar {
@@ -366,16 +366,16 @@ watch(
   display: grid;
   grid-template-columns: minmax(72px, 1fr) minmax(0, 2fr) minmax(72px, 1fr);
   align-items: center;
-  gap: var(--sky-space-2);
-  padding: 0 var(--sky-space-3);
-  border-bottom: 1px solid var(--sky-hairline);
+  gap: var(--agent-space-2);
+  padding: 0 var(--agent-space-3);
+  border-bottom: 1px solid var(--agent-hairline);
 }
 
 .widget-picker-navbar h2 {
   overflow: hidden;
   margin: 0;
-  color: var(--sky-text);
-  font-size: var(--sky-font-title);
+  color: var(--agent-text);
+  font-size: var(--agent-font-title);
   font-weight: 650;
   text-align: center;
   text-overflow: ellipsis;
@@ -390,19 +390,19 @@ watch(
   justify-self: end;
 }
 
-.widget-picker-navbar :deep(.widget-picker-nav-button.sky-button) {
-  min-height: var(--sky-touch-target);
-  padding: 0 var(--sky-space-4);
+.widget-picker-navbar :deep(.widget-picker-nav-button.agent-button) {
+  min-height: var(--agent-touch-target);
+  padding: 0 var(--agent-space-4);
   border: 1px solid rgb(255 255 255 / 12%);
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
 }
 
-.widget-picker-navbar :deep(.widget-picker-nav-button--icon.sky-button) {
-  width: var(--sky-touch-target);
-  min-width: var(--sky-touch-target);
+.widget-picker-navbar :deep(.widget-picker-nav-button--icon.agent-button) {
+  width: var(--agent-touch-target);
+  min-width: var(--agent-touch-target);
   padding: 0;
 }
 
@@ -410,18 +410,18 @@ watch(
   min-height: 0;
   flex: 1;
   overflow-y: auto;
-  padding: var(--sky-space-3) var(--sky-page-gutter)
-    calc(var(--sky-space-6) + var(--sky-safe-area-bottom));
+  padding: var(--agent-space-3) var(--agent-page-gutter)
+    calc(var(--agent-space-6) + var(--agent-safe-area-bottom));
 }
 
 .widget-picker-search {
-  margin-bottom: var(--sky-space-5);
+  margin-bottom: var(--agent-space-5);
 }
 
 .widget-picker-preview {
   display: flex;
   min-height: 100%;
-  padding: var(--sky-space-4) 0 0;
+  padding: var(--agent-space-4) 0 0;
   align-items: center;
   flex-direction: column;
   text-align: center;
@@ -439,31 +439,31 @@ watch(
 }
 
 .widget-picker-preview-stage:focus-visible {
-  border-radius: var(--sky-radius-card);
-  box-shadow: inset 0 0 0 2px var(--sky-app-accent);
+  border-radius: var(--agent-radius-card);
+  box-shadow: inset 0 0 0 2px var(--agent-app-accent);
 }
 
 .widget-picker-size-copy {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: var(--sky-space-2);
-  color: var(--sky-muted);
-  font-size: var(--sky-font-caption);
+  gap: var(--agent-space-2);
+  color: var(--agent-muted);
+  font-size: var(--agent-font-caption);
 }
 
 .widget-picker-size-copy strong {
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 14px;
   font-weight: 600;
 }
 
 .widget-picker-size-dots {
-  min-height: var(--sky-touch-target);
+  min-height: var(--agent-touch-target);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
 .widget-picker-size-dots button {
@@ -473,8 +473,8 @@ watch(
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--sky-subtle);
-  transition: background-color var(--sky-transition-fast) ease;
+  background: var(--agent-subtle);
+  transition: background-color var(--agent-transition-fast) ease;
 }
 
 .widget-picker-size-dots button::before {
@@ -484,12 +484,12 @@ watch(
 }
 
 .widget-picker-size-dots .widget-picker-size-dot--active {
-  background: var(--sky-text);
+  background: var(--agent-text);
 }
 
 .widget-picker-preview h3 {
   margin: 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 21px;
   font-weight: 650;
   letter-spacing: -0.35px;
@@ -497,8 +497,8 @@ watch(
 
 .widget-picker-preview p {
   max-width: 290px;
-  margin: var(--sky-space-1) 0 var(--sky-space-5);
-  color: var(--sky-muted);
+  margin: var(--agent-space-1) 0 var(--agent-space-5);
+  color: var(--agent-muted);
   font-size: 14px;
   line-height: 19px;
 }
@@ -508,9 +508,9 @@ watch(
 }
 
 .widget-picker-category h3 {
-  margin: var(--sky-space-5) var(--sky-space-3) var(--sky-space-2);
-  color: var(--sky-muted);
-  font-size: var(--sky-font-caption);
+  margin: var(--agent-space-5) var(--agent-space-3) var(--agent-space-2);
+  color: var(--agent-muted);
+  font-size: var(--agent-font-caption);
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -522,15 +522,15 @@ watch(
 .widget-picker-list {
   overflow: hidden;
   margin: 0;
-  border-radius: var(--sky-radius-card);
+  border-radius: var(--agent-radius-card);
 }
 
-.widget-picker-list :deep(.sky-list-item__content) {
+.widget-picker-list :deep(.agent-list-item__content) {
   min-height: 58px;
 }
 
-.widget-picker-list :deep(.sky-list-item__text) {
-  color: var(--sky-muted);
+.widget-picker-list :deep(.agent-list-item__text) {
+  color: var(--agent-muted);
 }
 
 .widget-picker-icon {

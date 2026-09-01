@@ -8,13 +8,13 @@ import {
   UserRound,
 } from 'lucide-vue-next'
 import {
-  SkyButton,
-  SkyField,
-  SkyGlass,
-  SkyList,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySpinner,
+  AgentButton,
+  AgentField,
+  AgentGlass,
+  AgentList,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSpinner,
 } from '@/ui'
 import { computed } from 'vue'
 
@@ -117,15 +117,15 @@ const canSubmit = computed(() => {
       <p>{{ body }}</p>
     </header>
 
-    <SkyGlass class="app-profile-auth__card">
-      <SkySegmented
+    <AgentGlass class="app-profile-auth__card">
+      <AgentSegmented
         raised
         class="app-profile-auth__mode"
         :class="{
           'app-profile-auth__mode--register': mode === 'register',
         }"
       >
-        <SkySegmentedButton
+        <AgentSegmentedButton
           class="app-profile-auth__mode-button app-profile-auth__mode-button--login"
           :class="{
             'app-profile-auth__mode-button--active': mode === 'login',
@@ -134,8 +134,8 @@ const canSubmit = computed(() => {
           @click="emit('update:mode', 'login')"
         >
           {{ loginLabel }}
-        </SkySegmentedButton>
-        <SkySegmentedButton
+        </AgentSegmentedButton>
+        <AgentSegmentedButton
           class="app-profile-auth__mode-button app-profile-auth__mode-button--register"
           :class="{
             'app-profile-auth__mode-button--active': mode === 'register',
@@ -144,8 +144,8 @@ const canSubmit = computed(() => {
           @click="emit('update:mode', 'register')"
         >
           {{ registerLabel }}
-        </SkySegmentedButton>
-      </SkySegmented>
+        </AgentSegmentedButton>
+      </AgentSegmented>
 
       <div v-if="mode === 'register'" class="app-profile-auth__photo">
         <span class="app-profile-auth__avatar">
@@ -154,12 +154,12 @@ const canSubmit = computed(() => {
           <i><Camera :size="11" /></i>
         </span>
         <div>
-          <SkyButton rounded outline @click="emit('gallery')">
+          <AgentButton rounded outline @click="emit('gallery')">
             <Images :size="15" />{{ galleryLabel }}
-          </SkyButton>
-          <SkyButton rounded outline @click="emit('camera')">
+          </AgentButton>
+          <AgentButton rounded outline @click="emit('camera')">
             <Camera :size="15" />{{ cameraLabel }}
-          </SkyButton>
+          </AgentButton>
         </div>
       </div>
 
@@ -172,8 +172,8 @@ const canSubmit = computed(() => {
         <LockKeyhole :size="15" />
       </div>
 
-      <SkyList inset strong class="app-profile-auth__fields">
-        <SkyField
+      <AgentList inset strong class="app-profile-auth__fields">
+        <AgentField
           v-if="emailAsField"
           class="app-profile-auth__email-field"
           input-id="app-profile-auth-email"
@@ -187,8 +187,8 @@ const canSubmit = computed(() => {
         >
           <template #leading><Mail :size="17" /></template>
           <template #trailing><LockKeyhole :size="15" /></template>
-        </SkyField>
-        <SkyField
+        </AgentField>
+        <AgentField
           v-if="variant !== 'centered' || mode === 'register' || !requirePassword"
           class="app-profile-auth__credential-field"
           input-id="app-profile-auth-username"
@@ -212,8 +212,8 @@ const canSubmit = computed(() => {
           <template v-if="usernameInputType === 'password'" #leading>
             <LockKeyhole :size="17" />
           </template>
-        </SkyField>
-        <SkyField
+        </AgentField>
+        <AgentField
           v-if="requirePassword"
           class="app-profile-auth__credential-field"
           input-id="app-profile-auth-password"
@@ -236,8 +236,8 @@ const canSubmit = computed(() => {
           @keydown.enter="emit('submit')"
         >
           <template #leading><LockKeyhole :size="17" /></template>
-        </SkyField>
-        <SkyField
+        </AgentField>
+        <AgentField
           v-if="showConfirmPassword"
           class="app-profile-auth__credential-field"
           input-id="app-profile-auth-confirm-password"
@@ -262,26 +262,26 @@ const canSubmit = computed(() => {
           @keydown.enter="emit('submit')"
         >
           <template #leading><LockKeyhole :size="17" /></template>
-        </SkyField>
-      </SkyList>
+        </AgentField>
+      </AgentList>
 
       <div v-if="error" class="app-profile-auth__error" role="alert">
         {{ error }}
       </div>
-      <SkyButton
+      <AgentButton
         large
         rounded
         class="app-profile-auth__submit"
         :disabled="!canSubmit || pending"
         @click="emit('submit')"
       >
-        <SkySpinner v-if="pending" />
+        <AgentSpinner v-if="pending" />
         <template v-else>
           <span>{{ mode === 'login' ? loginLabel : registerLabel }}</span>
           <ArrowRight :size="18" />
         </template>
-      </SkyButton>
-    </SkyGlass>
+      </AgentButton>
+    </AgentGlass>
   </section>
 </template>
 
@@ -455,7 +455,7 @@ const canSubmit = computed(() => {
   flex: 1;
   gap: 6px;
 }
-.app-profile-auth__photo :deep(.sky-button) {
+.app-profile-auth__photo :deep(.agent-button) {
   min-height: 32px;
   justify-content: flex-start;
   gap: 6px;
@@ -633,8 +633,8 @@ const canSubmit = computed(() => {
   font-size: 11px;
 }
 .app-profile-auth__submit {
-  --sky-app-accent: var(--auth-accent, var(--yellow, #ffd63e));
-  --sky-button-text: #fff;
+  --agent-app-accent: var(--auth-accent, var(--yellow, #ffd63e));
+  --agent-button-text: #fff;
   width: 100%;
   min-height: 44px;
   display: flex;

@@ -385,8 +385,8 @@ local function normalize_manifest(folder, definition)
         return nil, background_error
     end
 
-    local bridge_mode = definition.bridgeMode or "sky"
-    if bridge_mode ~= "sky" and bridge_mode ~= "legacy" then
+    local bridge_mode = definition.bridgeMode or "agent"
+    if bridge_mode ~= "agent" and bridge_mode ~= "legacy" then
         return nil, "invalid_bridge_mode"
     end
 
@@ -412,8 +412,6 @@ local function normalize_manifest(folder, definition)
     }
 end
 
----@param folder string App folder relative to custom_apps.
----@param definition table Declarative bundled app manifest.
 function AgentPhoneApps.RegisterManifest(folder, definition)
     local manifest, error_code = normalize_manifest(folder, definition)
     if not manifest then

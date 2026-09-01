@@ -1,6 +1,3 @@
--- ESX Legacy est parfois publie sous un autre nom de ressource. On resout le
--- nom reel plutot que de coder 'es_extended' en dur, sinon la detection echoue
--- sur une base renommee et la ressource s arrete au chargement.
 local ESX_RESOURCES = { "es_extended", "Agent" }
 
 local function resolve_esx_resource()

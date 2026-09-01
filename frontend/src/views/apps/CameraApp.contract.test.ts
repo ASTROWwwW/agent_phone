@@ -41,26 +41,26 @@ describe('Camera app controls', () => {
   it('uses shared liquid glass for camera interaction buttons', () => {
     expect(cameraView.match(/variant="glass"/g)).toHaveLength(5)
     expect(cameraView).toMatch(
-      /<sky-glass\s+component="button"\s+class="camera-latest"/,
+      /<agent-glass\s+component="button"\s+class="camera-latest"/,
     )
     expect(cameraView).not.toContain('variant="neutral"')
   })
 
   it('uses the Agent UI moving segment for photo and video modes', () => {
-    expect(cameraView).toContain('SkySegmented')
+    expect(cameraView).toContain('AgentSegmented')
     expect(cameraView).toContain(':active-index="mode === \'photo\' ? 0 : 1"')
-    expect(cameraView).not.toContain('SkyPillNavigation')
+    expect(cameraView).not.toContain('AgentPillNavigation')
     expect(cameraView).not.toContain('k-segmented')
     expect(cameraView).not.toContain('k-navbar')
   })
 
   it('stays dark when the global phone appearance is light', () => {
-    const cameraPageTag = cameraView.match(/<sky-app-page\b[^>]*>/s)?.[0]
+    const cameraPageTag = cameraView.match(/<agent-app-page\b[^>]*>/s)?.[0]
 
     expect(cameraPageTag).toBeDefined()
     expect(cameraPageTag).toMatch(/\bdark\b/)
     expect(cameraView).toMatch(
-      /\.camera-page\s*\{[^}]*--sky-bg:\s*#000;[^}]*--sky-text:\s*#fff;[^}]*background:\s*var\(--sky-bg\);[^}]*color:\s*var\(--sky-text\);/s,
+      /\.camera-page\s*\{[^}]*--agent-bg:\s*#000;[^}]*--agent-text:\s*#fff;[^}]*background:\s*var\(--agent-bg\);[^}]*color:\s*var\(--agent-text\);/s,
     )
   })
 
@@ -70,7 +70,7 @@ describe('Camera app controls', () => {
     )?.[1]
 
     expect(cameraView).toMatch(
-      /\.camera-page--landscape\s*\{[^}]*--sky-bg:\s*rgba\(0, 0, 0, 0\.42\);/s,
+      /\.camera-page--landscape\s*\{[^}]*--agent-bg:\s*rgba\(0, 0, 0, 0\.42\);/s,
     )
     expect(landscapeViewport).toBeDefined()
     expect(landscapeViewport).toContain('top: 50%')
@@ -140,7 +140,7 @@ describe('Camera app controls', () => {
       /\.camera-zoom-pill\s*\{[^}]*width:\s*36px;[^}]*min-width:\s*36px;[^}]*height:\s*36px;[^}]*min-height:\s*36px;[^}]*padding:\s*0;/s,
     )
     expect(cameraView).toMatch(
-      /\.camera-zoom-pill::before\s*\{[^}]*width:\s*var\(--sky-touch-target, 44px\);[^}]*inset-block:\s*-4px;/s,
+      /\.camera-zoom-pill::before\s*\{[^}]*width:\s*var\(--agent-touch-target, 44px\);[^}]*inset-block:\s*-4px;/s,
     )
     expect(cameraView).toMatch(
       /\.camera-zoom-pill\.active\s*\{[^}]*color:\s*#ffd60a;[^}]*background:\s*rgba\(28, 28, 30, 0\.78\);/s,

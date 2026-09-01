@@ -35,12 +35,12 @@ describe('Inter font contract', () => {
     ).toBe(true)
     expect(tokensSource.match(/@font-face/g)).toHaveLength(2)
     expect(tokensSource.match(/font-weight:\s*100 900;/g)).toHaveLength(2)
-    expect(tokensSource).toContain("--sky-font-family: 'Inter', Arial, sans-serif;")
+    expect(tokensSource).toContain("--agent-font-family: 'Inter', Arial, sans-serif;")
   })
 
   it('applies the shared font to the document and native form controls', () => {
     expect(mainCssSource).toMatch(
-      /:root\s*\{[\s\S]*?font-family:\s*var\(--sky-font-family\);/,
+      /:root\s*\{[\s\S]*?font-family:\s*var\(--agent-font-family\);/,
     )
     expect(mainCssSource).toMatch(
       /button,\s*input,\s*textarea,\s*select\s*\{\s*font:\s*inherit;/,

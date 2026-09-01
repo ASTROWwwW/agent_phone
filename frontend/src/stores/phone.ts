@@ -1007,7 +1007,7 @@ const defaultLocales: LocaleTree = {
         'Sign in to continue with your photos, stories, follows, and saved posts.',
       registerBody: 'Create a private Picstagram login for your photo profile.',
       registrationHint:
-        'A Agent Cloud account is required once to create and own a Picstagram profile.',
+        'An Agent Cloud account is required once to create and own a Picstagram profile.',
       displayName: 'Name',
       username: 'Username',
       password: 'Password',
@@ -1563,7 +1563,7 @@ const defaultLocales: LocaleTree = {
       passwordPlaceholder: 'At least 8 characters',
       confirmPasswordPlaceholder: 'Enter password again',
       registrationHint:
-        'A Agent Cloud account is required once to create and own a FlipTok profile.',
+        'An Agent Cloud account is required once to create and own a FlipTok profile.',
       accountDetails: 'Account details',
       profileDetails: 'Profile details',
       account: 'Account',
@@ -2987,7 +2987,7 @@ const defaultLocales: LocaleTree = {
       authConfirmPlaceholder: 'Repeat your iFruit password',
       passwordsMismatch: 'The passwords do not match.',
       authErrors: {
-        no_ifruit_account: 'Connect a Agent Cloud account in Settings first.',
+        no_ifruit_account: 'Connect an Agent Cloud account in Settings first.',
         invalid_password: 'Password must be 6–64 characters.',
         invalid_credentials: 'The iFruit email or password is incorrect.',
         invalid_profile_image: 'Choose a valid photo from this phone.',
@@ -3822,7 +3822,7 @@ const defaultLocales: LocaleTree = {
       accountLocalDetail: 'Not signed in',
       accountCloudDetail: 'Important data syncs through Agent Cloud',
       accountLoginBody:
-        'Sign in to keep your important data safe. Without a Agent Cloud account, it will be lost with the phone.',
+        'Sign in to keep your important data safe. Without an Agent Cloud account, it will be lost with the phone.',
       accountInformation: 'Account Information',
       accountStatus: 'Account Status',
       accountStatusValue: 'Active',

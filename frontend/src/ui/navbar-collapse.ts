@@ -1,14 +1,14 @@
-export interface SkyNavbarCollapseState {
+export interface AgentNavbarCollapseState {
   compactTitleOpacity: number
   extendedTitleOpacity: number
   offset: number
 }
 
-export function getSkyNavbarCollapseState(
+export function getAgentNavbarCollapseState(
   scrollTop: number,
   titleHeight: number,
   collapseLayout = true,
-): SkyNavbarCollapseState {
+): AgentNavbarCollapseState {
   const safeScrollTop = Number.isFinite(scrollTop) ? Math.max(0, scrollTop) : 0
   const safeTitleHeight = Number.isFinite(titleHeight)
     ? Math.max(0, titleHeight)

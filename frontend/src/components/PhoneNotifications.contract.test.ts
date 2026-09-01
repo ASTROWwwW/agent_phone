@@ -19,10 +19,10 @@ describe('Phone popup notification contract', () => {
   it('uses the shared Agent popup for every central phone notification', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).toContain(
-      "import { SkyNotification, SkyProvider } from '@/ui'",
+      "import { AgentNotification, AgentProvider } from '@/ui'",
     )
-    expect(source).toContain('<SkyProvider')
-    expect(source).toContain('<SkyNotification')
+    expect(source).toContain('<AgentProvider')
+    expect(source).toContain('<AgentNotification')
     expect(source).toContain(':title="notification?.title"')
     expect(source).toContain(':text="notification?.text"')
     expect(source).toContain(':title-right-text="notificationTime"')
@@ -51,7 +51,7 @@ describe('Phone popup notification contract', () => {
       /\.phone-notification-provider\s*\{[^}]*--phone-notification-background:\s*rgb\(247 247 248 \/ 94%\);[^}]*position:\s*absolute;[^}]*pointer-events:\s*none;/s,
     )
     expect(styles).toMatch(
-      /\.phone-notification-provider\.sky-ui-provider--dark\s*\{[^}]*--phone-notification-background:\s*rgb\(36 36 39 \/ 94%\);/s,
+      /\.phone-notification-provider\.agent-ui-provider--dark\s*\{[^}]*--phone-notification-background:\s*rgb\(36 36 39 \/ 94%\);/s,
     )
     expect(styles).toMatch(
       /\.phone-notification\s*\{[^}]*top:\s*51px !important;[^}]*right:\s*10px !important;[^}]*left:\s*10px !important;[^}]*transform:\s*translate3d\(0, var\(--phone-notification-drag-y\), 0\);/s,

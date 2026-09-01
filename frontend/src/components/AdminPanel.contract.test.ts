@@ -100,7 +100,7 @@ describe('standalone admin panel contracts', () => {
     expect(app).toContain("event.data?.type === 'admin:open'")
     expect(app).toContain('v-if="adminPanelOpen"')
     expect(app).toContain('<AdminPanel')
-    expect(source).toContain("import { SkyButton } from '@/ui'")
+    expect(source).toContain("import { AgentButton } from '@/ui'")
     expect(source).toContain('class="admin-panel-overlay"')
     expect(source).toContain('class="admin-panel-rail"')
     expect(source).toContain('class="admin-panel-directory"')

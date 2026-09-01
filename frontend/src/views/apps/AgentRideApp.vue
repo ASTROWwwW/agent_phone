@@ -49,34 +49,34 @@ import type {
 } from '@/types/agentride'
 import { isTrustedRootMessageSource } from '@/utils/windowMessages'
 import {
-  SkyAppPage as kPage,
-  SkyBadge as kBadge,
-  SkyBlock as kBlock,
-  SkyBlockHeader as kBlockHeader,
-  SkyBlockTitle as kBlockTitle,
-  SkyButton,
-  SkyButton as kButton,
-  SkyCard as kCard,
-  SkyChip as kChip,
-  SkyDialog as kDialog,
-  SkyDialogButton as kDialogButton,
-  SkyField,
-  SkyField as kListInput,
-  SkyLink as kLink,
-  SkyList as kList,
-  SkyListItem as kListItem,
-  SkyNavbar as kNavbar,
-  SkySegmented as kSegmented,
-  SkySegmentedButton as kSegmentedButton,
-  SkySettingsGroup,
-  SkySettingsRow,
-  SkySheet,
-  SkySheet as kSheet,
-  SkySpinner as kPreloader,
-  SkyTabBar as kTabbar,
-  SkyTabButton as kTabbarLink,
-  SkyNotification as kNotification,
-  SkyToggle as kToggle,
+  AgentAppPage as kPage,
+  AgentBadge as kBadge,
+  AgentBlock as kBlock,
+  AgentBlockHeader as kBlockHeader,
+  AgentBlockTitle as kBlockTitle,
+  AgentButton,
+  AgentButton as kButton,
+  AgentCard as kCard,
+  AgentChip as kChip,
+  AgentDialog as kDialog,
+  AgentDialogButton as kDialogButton,
+  AgentField,
+  AgentField as kListInput,
+  AgentLink as kLink,
+  AgentList as kList,
+  AgentListItem as kListItem,
+  AgentNavbar as kNavbar,
+  AgentSegmented as kSegmented,
+  AgentSegmentedButton as kSegmentedButton,
+  AgentSettingsGroup,
+  AgentSettingsRow,
+  AgentSheet,
+  AgentSheet as kSheet,
+  AgentSpinner as kPreloader,
+  AgentTabBar as kTabbar,
+  AgentTabButton as kTabbarLink,
+  AgentNotification as kNotification,
+  AgentToggle as kToggle,
 } from '@/ui'
 
 type AgentRideTab = 'home' | 'rides' | 'activity' | 'messages' | 'profile'
@@ -1510,7 +1510,7 @@ onBeforeUnmount(() => {
       </k-tabbar>
     </template>
 
-    <SkySheet
+    <AgentSheet
       class="agentride-profile-sheet"
       :opened="profileEditorOpened"
       :aria-label="phone.t('Apps.agentride.editProfile')"
@@ -1525,14 +1525,14 @@ onBeforeUnmount(() => {
             <span>{{ phone.t('Apps.agentride.profile') }}</span>
             <h2>{{ phone.t('Apps.agentride.editProfile') }}</h2>
           </div>
-          <SkyButton
+          <AgentButton
             icon-only
             variant="plain"
             :aria-label="phone.t('Common.close')"
             @click="closeProfileEditor"
           >
             <X :size="20" />
-          </SkyButton>
+          </AgentButton>
         </div>
 
         <div class="agentride-profile-editor__avatar">
@@ -1542,25 +1542,25 @@ onBeforeUnmount(() => {
           </div>
           <strong>{{ phone.t('Apps.agentride.profilePhoto') }}</strong>
           <div>
-            <SkyButton
+            <AgentButton
               rounded
               class="agentride-profile-media-button"
               @click="openProfileMedia('photos')"
             >
               <Images :size="17" /> {{ phone.t('Apps.agentride.gallery') }}
-            </SkyButton>
-            <SkyButton
+            </AgentButton>
+            <AgentButton
               rounded
               class="agentride-profile-media-button"
               @click="openProfileMedia('camera')"
             >
               <Camera :size="17" /> {{ phone.t('Apps.agentride.camera') }}
-            </SkyButton>
+            </AgentButton>
           </div>
         </div>
 
-        <SkySettingsGroup :title="phone.t('Apps.agentride.profileDetails')">
-          <SkyField
+        <AgentSettingsGroup :title="phone.t('Apps.agentride.profileDetails')">
+          <AgentField
             v-model="profileName"
             layout="inline"
             :label="phone.t('Apps.agentride.profileName')"
@@ -1568,7 +1568,7 @@ onBeforeUnmount(() => {
             :placeholder="phone.t('Apps.agentride.profileNamePlaceholder')"
             autocomplete="name"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             v-if="profileAvatarUrl"
             kind="action"
             tone="danger"
@@ -1576,11 +1576,11 @@ onBeforeUnmount(() => {
             @activate="removeProfileAvatar"
           >
             <template #leading><Trash2 :size="18" /></template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
 
         <div class="agentride-profile-editor__actions">
-          <SkyButton
+          <AgentButton
             block
             large
             rounded
@@ -1588,8 +1588,8 @@ onBeforeUnmount(() => {
             @click="closeProfileEditor"
           >
             {{ phone.t('Common.cancel') }}
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             block
             large
             rounded
@@ -1600,10 +1600,10 @@ onBeforeUnmount(() => {
             <template v-else>{{
               phone.t('Apps.agentride.saveProfile')
             }}</template>
-          </SkyButton>
+          </AgentButton>
         </div>
       </section>
-    </SkySheet>
+    </AgentSheet>
 
     <k-sheet
       :opened="Boolean(locationTarget)"
@@ -1771,13 +1771,13 @@ onBeforeUnmount(() => {
   --ride-muted: #707078;
   --ride-map: #07131f;
   --ride-profile-media-bg: #725600;
-  --sky-bg: var(--ride-bg);
-  --sky-surface: var(--ride-card-strong);
-  --sky-surface-muted: #e6e6eb;
-  --sky-text: var(--ride-text);
-  --sky-muted: var(--ride-muted);
-  --sky-hairline: var(--ride-border);
-  --sky-danger: #d70015;
+  --agent-bg: var(--ride-bg);
+  --agent-surface: var(--ride-card-strong);
+  --agent-surface-muted: #e6e6eb;
+  --agent-text: var(--ride-text);
+  --agent-muted: var(--ride-muted);
+  --agent-hairline: var(--ride-border);
+  --agent-danger: #d70015;
   position: relative;
   height: 100%;
   overflow: hidden;
@@ -1796,8 +1796,8 @@ onBeforeUnmount(() => {
   --ride-muted: #a2a2aa;
   --ride-map: #050a10;
   --ride-profile-media-bg: #9b7600;
-  --sky-surface-muted: #2c2c2e;
-  --sky-danger: #ff453a;
+  --agent-surface-muted: #2c2c2e;
+  --agent-danger: #ff453a;
 }
 
 .agentride-ambient {
@@ -1820,12 +1820,12 @@ onBeforeUnmount(() => {
   color: var(--ride-text);
 }
 
-.agentride-navbar :deep(.sky-navbar__blur),
-.agentride-navbar :deep(.sky-navbar__background) {
+.agentride-navbar :deep(.agent-navbar__blur),
+.agentride-navbar :deep(.agent-navbar__background) {
   display: none;
 }
 
-.agentride-navbar :deep(.sky-navbar__title) {
+.agentride-navbar :deep(.agent-navbar__title) {
   color: var(--ride-text);
   font-size: 18px;
   font-weight: 700;
@@ -1833,7 +1833,7 @@ onBeforeUnmount(() => {
   letter-spacing: -0.25px;
 }
 
-.agentride-navbar :deep(.sky-navbar__subtitle) {
+.agentride-navbar :deep(.agent-navbar__subtitle) {
   margin-top: 1px;
   color: var(--ride-muted);
   font-size: 12px;
@@ -1853,14 +1853,10 @@ onBeforeUnmount(() => {
   width: 100%;
 }
 
-/* Variante « strong » du segment partage : piste neutre et pouce blanc
-   glissant. L'or reste la couleur des actions plutot que celle d'un onglet, ou
-   il ecrasait tout le haut de l'ecran. */
-.agentride-mode :deep(.sky-segmented) {
+.agentride-mode :deep(.agent-segmented) {
   padding: 2px;
-  background: var(--sky-surface-muted);
+  background: var(--agent-surface-muted);
 }
-
 .agentride-mode :deep(button) {
   min-height: 34px;
   color: var(--ride-muted);
@@ -1868,16 +1864,13 @@ onBeforeUnmount(() => {
   font-weight: 600;
   letter-spacing: -0.2px;
 }
-
-.agentride-mode :deep(button.sky-segmented-button--active) {
+.agentride-mode :deep(button.agent-segmented-button--active) {
   color: var(--ride-text);
 }
-
-.agentride-mode :deep(.sky-segmented__highlight) {
+.agentride-mode :deep(.agent-segmented__highlight) {
   background: var(--ride-card-strong);
   box-shadow: 0 1px 3px rgb(0 0 0 / 14%);
 }
-
 .agentride-scroll {
   position: absolute;
   z-index: 2;
@@ -1889,11 +1882,9 @@ onBeforeUnmount(() => {
   overscroll-behavior: contain;
   scrollbar-width: none;
 }
-
 .agentride-scroll::-webkit-scrollbar {
   display: none;
 }
-
 .agentride-loading,
 .agentride-unavailable {
   position: absolute;
@@ -1907,35 +1898,29 @@ onBeforeUnmount(() => {
   margin: 0;
   text-align: center;
 }
-
 .agentride-unavailable {
   padding: 24px;
   border: 1px solid var(--ride-border);
   border-radius: 22px;
   background: var(--ride-card);
 }
-
 .agentride-loading span,
 .agentride-unavailable p {
   color: var(--ride-muted);
 }
-
 .agentride-unavailable strong {
   font-size: 20px;
 }
-
 .agentride-unavailable p {
   margin: 0;
   font-size: 13px;
 }
-
 .agentride-home-panel,
 .agentride-section-screen {
   position: relative;
   z-index: 4;
   padding: 18px 14px 24px;
 }
-
 .agentride-home-panel {
   min-height: 320px;
   margin-top: 0;
@@ -1946,7 +1931,6 @@ onBeforeUnmount(() => {
     var(--ride-bg) 112px
   );
 }
-
 .agentride-heading,
 .agentride-screen-title {
   display: flex;
@@ -1956,7 +1940,6 @@ onBeforeUnmount(() => {
   margin: 0;
   padding: 0 4px 12px;
 }
-
 .agentride-heading span,
 .agentride-screen-title p,
 .agentride-ride-status-card p {
@@ -1965,7 +1948,6 @@ onBeforeUnmount(() => {
   font-size: 13px;
   line-height: 18px;
 }
-
 .agentride-heading h1,
 .agentride-ride-status-card h1,
 .agentride-screen-title h1 {
@@ -1976,9 +1958,6 @@ onBeforeUnmount(() => {
   line-height: 28px;
   letter-spacing: -0.55px;
 }
-
-/* Cette pastille est decorative : la remplir d'or plein la faisait passer pour
-   un bouton. Fond teinte, glyphe accentue, elle redevient une illustration. */
 .agentride-heading__icon,
 .agentride-status-icon {
   display: grid;
@@ -1991,32 +1970,27 @@ onBeforeUnmount(() => {
   background: rgb(245 197 24 / 18%);
   box-shadow: none;
 }
-
 .agentride-heading__icon > svg {
   display: block;
   width: 20px;
   height: 20px;
 }
-
 .agentride-status-icon.is-searching {
   color: var(--ride-accent-strong);
   background: rgba(245, 197, 24, 0.14);
   box-shadow: none;
 }
-
 .agentride-location-list,
 .agentride-service-list,
 .agentride-activity-list,
-.agentride-sheet__content :deep(.sky-list),
-.agentride-profile :deep(.sky-list) {
+.agentride-sheet__content :deep(.agent-list),
+.agentride-profile :deep(.agent-list) {
   margin-block: 0 14px;
 }
-
 .agentride-location-list,
 .agentride-activity-list {
   margin-inline: 2px !important;
 }
-
 .agentride-location-list :deep(li),
 .agentride-service-list :deep(li),
 .agentride-activity-list :deep(li),
@@ -2024,7 +1998,6 @@ onBeforeUnmount(() => {
 .agentride-sheet__content :deep(li) {
   background: var(--ride-card-strong);
 }
-
 .agentride-dot {
   display: block;
   width: 11px;
@@ -2033,26 +2006,21 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   background: #171719;
 }
-
-/* Raccourcis en liste d'une colonne : en deux colonnes, « Los Santos Airport »
-   et « Diamond Casino » etaient systematiquement tronques. */
 .agentride-quick-list {
   margin: 0 2px 16px !important;
 }
-
 .agentride-quick-list :deep(li) {
   background: var(--ride-card-strong);
 }
 
-.agentride-quick-list :deep(.sky-list-item__media) {
+.agentride-quick-list :deep(.agent-list-item__media) {
   color: var(--ride-accent-strong);
 }
 
-.agentride-quick-list :deep(.sky-list-item__title) {
+.agentride-quick-list :deep(.agent-list-item__title) {
   font-size: 16px;
   font-weight: 550;
 }
-
 .agentride-driver-metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2060,7 +2028,6 @@ onBeforeUnmount(() => {
   margin: 0 2px 16px;
   padding: 0;
 }
-
 .agentride-custom-block-title {
   height: auto !important;
   margin: 20px 4px 10px !important;
@@ -2070,9 +2037,8 @@ onBeforeUnmount(() => {
   font-weight: 650 !important;
   line-height: 20px !important;
 }
-
 .agentride-quick-card,
-.agentride-driver-metrics :deep(.sky-card),
+.agentride-driver-metrics :deep(.agent-card),
 .agentride-person-card,
 .agentride-trip-card,
 .agentride-driver-status,
@@ -2090,7 +2056,6 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
-
 .agentride-ride-status-card {
   display: flex;
   align-items: center;
@@ -2101,7 +2066,6 @@ onBeforeUnmount(() => {
     linear-gradient(135deg, rgba(245, 197, 24, 0.12), transparent 58%),
     var(--ride-card);
 }
-
 .agentride-ride-status-card > div {
   min-width: 0;
 }
@@ -2113,19 +2077,15 @@ onBeforeUnmount(() => {
   text-transform: uppercase;
   letter-spacing: 0.9px;
 }
-
 .agentride-ride-status-card h1 {
   margin: 2px 0;
   font-size: 20px;
   line-height: 1.05;
 }
-
 .agentride-ride-status-card p {
   line-height: 1.3;
 }
 
-/* Une seule ligne par raccourci : le clamp sur deux lignes donnait des cartes
-   de hauteurs differentes des qu'un nom depassait. */
 .agentride-quick-card {
   display: flex;
   width: 100%;
@@ -2136,19 +2096,16 @@ onBeforeUnmount(() => {
   padding: 10px 13px;
   color: inherit;
   text-align: left;
-  transition: transform 160ms var(--sky-ease-out);
+  transition: transform 160ms var(--agent-ease-out);
 }
-
 .agentride-quick-card:active {
   transform: scale(0.97);
 }
-
 .agentride-quick-card svg,
 .agentride-driver-metrics svg {
   flex: none;
   color: var(--ride-accent-strong);
 }
-
 .agentride-quick-card span {
   min-width: 0;
   overflow: hidden;
@@ -2159,7 +2116,6 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .agentride-primary {
   width: calc(100% - 4px);
   min-height: 50px;
@@ -2167,32 +2123,26 @@ onBeforeUnmount(() => {
   gap: 5px;
   font-size: 16px;
   font-weight: 650;
-  transition: transform 160ms var(--sky-ease-out);
+  transition: transform 160ms var(--agent-ease-out);
 }
-
 .agentride-primary:active:not(:disabled) {
   transform: scale(0.985);
 }
 
-/* Desactive, le bouton restait or delave : il donnait l'impression d'un
-   composant casse plutot que d'une action indisponible. */
 .agentride-primary:disabled {
   color: var(--ride-muted) !important;
-  background: var(--sky-surface-muted) !important;
+  background: var(--agent-surface-muted) !important;
   opacity: 1;
 }
-
 .agentride-player-driver-notice {
   margin: 2px 7px 8px;
   color: var(--ride-muted);
   font-size: 12px;
   line-height: 17px;
 }
-
 .agentride-primary :deep(svg) {
   margin-left: 4px;
 }
-
 .agentride-quote-summary {
   display: flex;
   align-items: center;
@@ -2201,39 +2151,32 @@ onBeforeUnmount(() => {
   color: var(--ride-muted);
   font-size: 12px;
 }
-
 .agentride-quote-chip {
   min-width: 0;
   padding-inline: 8px;
   color: var(--ride-muted);
   font-size: 10px;
 }
-
 .agentride-quote-summary :deep(button) {
   margin-left: auto;
 }
-
 .agentride-service-list :deep(li.is-selected) {
   box-shadow: inset 3px 0 var(--ride-accent);
 }
-
 .agentride-service-list :deep(li.is-unavailable) {
   cursor: default;
   opacity: 0.45;
 }
-
-.agentride-service-list :deep(.sky-list-item__after) {
+.agentride-service-list :deep(.agent-list-item__after) {
   display: flex;
   align-items: center;
   gap: 6px;
   color: var(--ride-text);
 }
-
 .agentride-fare-card {
   margin: 0 0 13px;
   padding: 14px;
 }
-
 .agentride-fare-card__heading {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -2241,7 +2184,6 @@ onBeforeUnmount(() => {
   gap: 10px;
   margin-bottom: 11px;
 }
-
 .agentride-fare-card__icon {
   display: grid;
   width: 36px;
@@ -2251,7 +2193,6 @@ onBeforeUnmount(() => {
   color: #151515;
   background: var(--ride-accent);
 }
-
 .agentride-fare-card__heading > div {
   display: flex;
   min-width: 0;
@@ -2264,20 +2205,16 @@ onBeforeUnmount(() => {
   color: var(--ride-muted);
   font-size: 10px;
 }
-
 .agentride-fare-card__heading strong {
   font-size: 17px;
 }
-
 .agentride-fare-card__heading > span:last-child {
   max-width: 96px;
   text-align: right;
 }
-
-.agentride-fare-card > :deep(.sky-segmented) {
+.agentride-fare-card > :deep(.agent-segmented) {
   width: 100%;
 }
-
 .agentride-fare-breakdown {
   display: flex;
   align-items: center;
@@ -2288,21 +2225,18 @@ onBeforeUnmount(() => {
   border-radius: 12px;
   background: var(--ride-border);
 }
-
 .agentride-custom-fare {
   display: grid;
   gap: 8px;
   margin-top: 10px;
 }
 
-.agentride-custom-fare :deep(.sky-list) {
+.agentride-custom-fare :deep(.agent-list) {
   margin: 0;
 }
-
 .agentride-custom-fare > :deep(button) {
   width: 100%;
 }
-
 .agentride-service-icon,
 .agentride-activity-icon {
   display: grid;
@@ -2313,7 +2247,6 @@ onBeforeUnmount(() => {
   color: #151515;
   background: var(--ride-accent);
 }
-
 .agentride-person-card,
 .agentride-message-contact {
   display: flex;
@@ -2322,11 +2255,9 @@ onBeforeUnmount(() => {
   margin-bottom: 10px;
   padding: 16px;
 }
-
 .agentride-person-card {
   margin-bottom: 12px;
 }
-
 .agentride-avatar,
 .agentride-profile-avatar {
   display: grid;
@@ -2340,14 +2271,12 @@ onBeforeUnmount(() => {
   color: var(--ride-muted);
   background: var(--ride-bg);
 }
-
 .agentride-avatar img,
 .agentride-profile-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .agentride-person-card__body,
 .agentride-message-contact > div:nth-child(2) {
   display: flex;
@@ -2356,7 +2285,6 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 2px;
 }
-
 .agentride-person-card__body > span,
 .agentride-message-contact > div:nth-child(2) span {
   display: flex;
@@ -2365,7 +2293,6 @@ onBeforeUnmount(() => {
   color: var(--ride-muted);
   font-size: 12px;
 }
-
 .agentride-person-card__body b {
   width: fit-content;
   margin-top: 2px;
@@ -2376,7 +2303,6 @@ onBeforeUnmount(() => {
   font-size: 10px;
   letter-spacing: 0.8px;
 }
-
 .agentride-contact-actions,
 .agentride-active-actions,
 .agentride-driver-actions,
@@ -2384,35 +2310,29 @@ onBeforeUnmount(() => {
   display: flex;
   gap: 8px;
 }
-
 .agentride-contact-actions {
   flex: 0 0 auto;
   margin-left: auto;
 }
-
 .agentride-contact-actions :deep(button) {
   width: 36px;
   min-width: 36px;
   flex: 0 0 36px;
   padding-inline: 0;
 }
-
 .agentride-trip-card {
   margin-bottom: 12px;
   padding: 16px;
 }
-
 .agentride-route-stop {
   display: grid;
   grid-template-columns: 18px minmax(0, 1fr);
   align-items: center;
   column-gap: 11px;
 }
-
 .agentride-route-stop > .agentride-dot {
   justify-self: center;
 }
-
 .agentride-route-stop > svg {
   width: 18px;
   height: 18px;
@@ -2426,7 +2346,6 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 1px;
 }
-
 .agentride-route-stop small,
 .agentride-person-card small {
   color: var(--ride-muted);
@@ -2434,14 +2353,12 @@ onBeforeUnmount(() => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
 .agentride-route-stop strong {
   overflow: hidden;
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .agentride-trip-card > i {
   display: block;
   width: 1px;
@@ -2449,7 +2366,6 @@ onBeforeUnmount(() => {
   margin: 1px 0 1px 8px;
   border-left: 1px dashed var(--ride-muted);
 }
-
 .agentride-trip-meta {
   display: flex;
   justify-content: space-between;
@@ -2459,12 +2375,10 @@ onBeforeUnmount(() => {
   color: var(--ride-muted);
   font-size: 12px;
 }
-
 .agentride-trip-meta strong {
   color: var(--ride-text);
   font-size: 14px;
 }
-
 .agentride-active-actions > *,
 .agentride-driver-actions > *,
 .agentride-contact-buttons > * {
@@ -2487,7 +2401,6 @@ onBeforeUnmount(() => {
   font-size: 11px;
   line-height: 1.35;
 }
-
 .agentride-safety-note svg,
 .agentride-member-note svg {
   flex: 0 0 auto;
@@ -2502,7 +2415,6 @@ onBeforeUnmount(() => {
   margin-bottom: 14px;
   padding: 16px;
 }
-
 .agentride-driver-status__icon {
   display: grid;
   width: 42px;
@@ -2512,19 +2424,16 @@ onBeforeUnmount(() => {
   color: var(--ride-muted);
   background: var(--ride-border);
 }
-
 .agentride-driver-status__icon.is-online {
   color: #151515;
   background: var(--ride-accent);
 }
-
 .agentride-driver-status > div:nth-child(2) {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 2px;
 }
-
 .agentride-driver-status span,
 .agentride-driver-metrics span,
 .agentride-request-card span,
@@ -2533,19 +2442,16 @@ onBeforeUnmount(() => {
   font-size: 12px;
   line-height: 16px;
 }
-
-.agentride-driver-metrics :deep(.sky-card) {
+.agentride-driver-metrics :deep(.agent-card) {
   display: flex;
   flex-direction: column;
   gap: 3px;
   padding: 16px;
 }
-
 .agentride-driver-metrics strong {
   margin-top: 3px;
   font-size: 19px;
 }
-
 .agentride-request-list,
 .agentride-history-list {
   display: grid;
@@ -2556,14 +2462,12 @@ onBeforeUnmount(() => {
   margin: 0;
   padding: 0;
 }
-
 .agentride-request-card__top,
 .agentride-history-card__header {
   display: flex;
   align-items: center;
   gap: 9px;
 }
-
 .agentride-request-card__top > div,
 .agentride-history-card__header > div {
   display: flex;
@@ -2571,15 +2475,12 @@ onBeforeUnmount(() => {
   flex: 1;
   flex-direction: column;
 }
-
 .agentride-request-card__top > div > span,
 .agentride-history-card__header > div > span {
   font-size: 11px;
   line-height: 15px;
 }
 
-/* Le trajet etait enferme dans une pastille grise qui decoupait la carte en
-   bandes ; il redevient une simple ligne, avec la fleche en couleur d'accent. */
 .agentride-request-route,
 .agentride-history-route {
   display: grid;
@@ -2591,12 +2492,10 @@ onBeforeUnmount(() => {
   border-radius: 0;
   background: transparent;
 }
-
 .agentride-request-route > svg,
 .agentride-history-route > svg {
   color: var(--ride-accent-strong);
 }
-
 .agentride-request-route span,
 .agentride-history-route span {
   overflow: hidden;
@@ -2607,12 +2506,9 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-/* Pastille d'etat teintee plutot qu'or plein : elle informe sans concurrencer
-   le prix, seule valeur que la carte met en avant. */
 .agentride-status-badge {
   padding: 3px 9px;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   color: var(--ride-accent-strong) !important;
   background: rgb(245 197 24 / 20%) !important;
   font-size: 11px;
@@ -2620,12 +2516,10 @@ onBeforeUnmount(() => {
   letter-spacing: -0.1px;
   text-transform: none;
 }
-
 .agentride-request-route span:last-child,
 .agentride-history-route span:last-child {
   text-align: right;
 }
-
 .agentride-empty-card {
   display: flex;
   align-items: center;
@@ -2634,11 +2528,9 @@ onBeforeUnmount(() => {
   padding: 27px 16px;
   text-align: center;
 }
-
 .agentride-empty-card svg {
   color: var(--ride-accent-strong);
 }
-
 .agentride-empty-card p {
   max-width: 250px;
   margin: 0;
@@ -2651,11 +2543,9 @@ onBeforeUnmount(() => {
   justify-content: flex-start;
   margin: 0 0 8px;
 }
-
 .agentride-screen-title > svg {
   color: var(--ride-accent-strong);
 }
-
 .agentride-history-card__footer {
   display: flex;
   align-items: center;
@@ -2670,53 +2560,44 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 2px;
 }
-
 .agentride-history-card__distance {
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
-
 .agentride-history-card__distance > svg {
   flex: 0 0 auto;
   color: var(--ride-accent-strong);
 }
-
 .agentride-message-contact > svg {
   color: var(--ride-muted);
 }
-
 .agentride-contact-buttons {
   margin: 10px 0 0;
   padding: 0;
 }
-
 .agentride-profile-hero {
   display: flex;
   align-items: center;
   flex-direction: column;
   padding: 8px 0 18px;
 }
-
 .agentride-profile-avatar {
   width: 78px;
   height: 78px;
   border-width: 3px;
   box-shadow: 0 0 0 5px rgba(245, 197, 24, 0.13);
 }
-
 button.agentride-profile-avatar--editable {
   position: relative;
   padding: 0;
   cursor: pointer;
   font: inherit;
 }
-
 .agentride-profile-avatar--editable:focus-visible {
   outline: 3px solid var(--ride-accent-strong);
   outline-offset: 5px;
 }
-
 .agentride-profile-avatar--editable > span {
   position: absolute;
   right: -1px;
@@ -2730,12 +2611,10 @@ button.agentride-profile-avatar--editable {
   color: #171719;
   background: var(--ride-accent);
 }
-
 .agentride-profile-hero h1 {
   margin: 12px 0 3px;
   font-size: 22px;
 }
-
 .agentride-profile-hero > span {
   display: flex;
   align-items: center;
@@ -2756,7 +2635,6 @@ button.agentride-profile-avatar--editable {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
-
 .agentride-profile-stats > div {
   display: flex;
   min-width: 0;
@@ -2766,11 +2644,9 @@ button.agentride-profile-avatar--editable {
   padding-inline: 4px;
   text-align: center;
 }
-
 .agentride-profile-stats > div + div {
   border-left: 1px solid var(--ride-border);
 }
-
 .agentride-profile-stats strong {
   font-size: 16px;
 }
@@ -2780,24 +2656,20 @@ button.agentride-profile-avatar--editable {
   font-size: 9px;
   line-height: 1.15;
 }
-
 .agentride-tabbar {
   z-index: 25;
   color: var(--ride-text);
 }
-
-.agentride-tabbar :deep(.sky-tabbar__inner),
-.agentride-tabbar :deep(.sky-tabbar__pane) {
+.agentride-tabbar :deep(.agent-tabbar__inner),
+.agentride-tabbar :deep(.agent-tabbar__pane) {
   width: 100% !important;
   max-width: none !important;
   gap: 0 !important;
 }
-
-.agentride-tabbar :deep(.sky-tabbar__blur),
-.agentride-tabbar :deep(.sky-tabbar__background) {
+.agentride-tabbar :deep(.agent-tabbar__blur),
+.agentride-tabbar :deep(.agent-tabbar__background) {
   display: none;
 }
-
 .agentride-tab-pane {
   width: 100% !important;
   max-width: none !important;
@@ -2806,14 +2678,13 @@ button.agentride-profile-avatar--editable {
   gap: 0 !important;
 }
 
-.agentride-tab-pane :deep(> .sky-tab-button) {
+.agentride-tab-pane :deep(> .agent-tab-button) {
   flex: 1 1 20%;
   min-width: 0 !important;
   padding-inline: 1px !important;
   outline: none;
 }
-
-.agentride-tab-pane :deep(> .sky-tab-button .sky-tab-button__label) {
+.agentride-tab-pane :deep(> .agent-tab-button .agent-tab-button__label) {
   max-width: 100%;
   overflow: hidden;
   font-size: 10px;
@@ -2822,18 +2693,15 @@ button.agentride-profile-avatar--editable {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.agentride-tab-pane :deep(> .sky-tab-button .sky-tab-button__icon) {
+.agentride-tab-pane :deep(> .agent-tab-button .agent-tab-button__icon) {
   width: 24px;
   height: 24px;
 }
-
-.agentride-tab-pane :deep(> .sky-tab-button .sky-tab-button__icon > svg) {
+.agentride-tab-pane :deep(> .agent-tab-button .agent-tab-button__icon > svg) {
   display: block;
   width: 23px;
   height: 23px;
 }
-
 .agentride-sheet__content {
   max-height: 74vh;
   overflow-y: auto;
@@ -2842,21 +2710,18 @@ button.agentride-profile-avatar--editable {
   background: var(--ride-bg);
   border-radius: 26px 26px 0 0;
 }
-
 .agentride-profile-editor {
   box-sizing: border-box;
   min-height: 0;
-  padding: 4px 14px calc(var(--sky-safe-area-bottom) + 12px);
+  padding: 4px 14px calc(var(--agent-safe-area-bottom) + 12px);
   color: var(--ride-text);
   background: var(--ride-bg);
   border-radius: 0 0 28px 28px;
 }
-
-.agentride-profile-sheet :deep(.sky-overlay-backdrop) {
+.agentride-profile-sheet :deep(.agent-overlay-backdrop) {
   background: rgba(0, 0, 0, 0.38);
 }
-
-.agentride-profile-sheet :deep(.sky-sheet__panel) {
+.agentride-profile-sheet :deep(.agent-sheet__panel) {
   top: auto;
   max-height: 78%;
   overflow-x: hidden;
@@ -2866,7 +2731,6 @@ button.agentride-profile-avatar--editable {
   background: var(--ride-bg);
   box-shadow: none;
 }
-
 .agentride-profile-editor__avatar {
   display: flex;
   align-items: center;
@@ -2878,19 +2742,16 @@ button.agentride-profile-avatar--editable {
 .agentride-profile-editor__avatar > strong {
   font-size: 14px;
 }
-
 .agentride-profile-editor__avatar > div:last-child,
 .agentride-profile-editor__actions {
   display: flex;
   width: 100%;
   gap: 9px;
 }
-
 .agentride-profile-editor__avatar > div:last-child {
   justify-content: center;
 }
-
-.agentride-profile-editor__avatar :deep(.sky-button) {
+.agentride-profile-editor__avatar :deep(.agent-button) {
   gap: 6px;
 }
 
@@ -2899,7 +2760,6 @@ button.agentride-profile-avatar--editable {
   background: var(--ride-profile-media-bg);
   color: #fff !important;
 }
-
 .agentride-profile-editor__avatar
   :deep(.agentride-profile-media-button:active:not(:disabled)) {
   border-color: var(--ride-profile-media-bg);
@@ -2911,8 +2771,7 @@ button.agentride-profile-avatar--editable {
 .agentride-profile-editor__actions {
   margin-top: 4px;
 }
-
-.agentride-profile-editor__actions :deep(.sky-button) {
+.agentride-profile-editor__actions :deep(.agent-button) {
   flex: 1 1 0;
 }
 
@@ -2924,14 +2783,12 @@ button.agentride-profile-avatar--editable {
   background: var(--ride-muted);
   opacity: 0.65;
 }
-
 .agentride-sheet__title {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 0 4px 13px;
 }
-
 .agentride-sheet__title span,
 .agentride-rating-label {
   color: var(--ride-muted);
@@ -2941,7 +2798,6 @@ button.agentride-profile-avatar--editable {
   text-transform: uppercase;
   letter-spacing: 0.65px;
 }
-
 .agentride-sheet__title h2,
 .agentride-rating h2 {
   margin: 3px 0 0;
@@ -2951,7 +2807,6 @@ button.agentride-profile-avatar--editable {
   line-height: 27px;
   letter-spacing: -0.35px;
 }
-
 .agentride-sheet__close {
   display: grid;
   flex: 0 0 auto;
@@ -2961,23 +2816,19 @@ button.agentride-profile-avatar--editable {
   place-items: center;
   border-radius: 50%;
 }
-
 .agentride-sheet-list {
   margin-block: 0 !important;
 }
-
 .agentride-sheet-list :deep(.text-\[17px\]) {
   color: var(--ride-text);
   font-size: 16px;
   line-height: 21px;
 }
-
 .agentride-sheet-list :deep(.text-sm) {
   color: var(--ride-muted);
   font-size: 13px;
   line-height: 18px;
 }
-
 .agentride-sheet-section-title {
   height: auto !important;
   margin: 22px 4px 10px !important;
@@ -2987,18 +2838,15 @@ button.agentride-profile-avatar--editable {
   font-weight: 650 !important;
   line-height: 20px !important;
 }
-
 .agentride-saved-list {
   margin-bottom: 4px !important;
 }
-
 .agentride-rating {
   display: flex;
   align-items: center;
   flex-direction: column;
   text-align: center;
 }
-
 .agentride-rating__success {
   display: grid;
   width: 56px;
@@ -3008,20 +2856,17 @@ button.agentride-profile-avatar--editable {
   color: #151515;
   background: var(--ride-accent);
 }
-
 .agentride-rating p {
   max-width: 270px;
   margin: 4px 0 12px;
   color: var(--ride-muted);
   font-size: 12px;
 }
-
 .agentride-rating-stars {
   display: flex;
   gap: 5px;
   margin-bottom: 17px;
 }
-
 .agentride-rating-star {
   width: 34px;
   min-width: 34px;
@@ -3033,53 +2878,44 @@ button.agentride-profile-avatar--editable {
 .agentride-rating-star.is-active {
   color: var(--ride-accent);
 }
-
 .agentride-tip-options {
   display: flex;
   gap: 6px;
   margin: 8px 0 12px;
 }
-
-.agentride-rating :deep(.sky-list) {
+.agentride-rating :deep(.agent-list) {
   width: 100%;
 }
-
 .agentride-rating > :deep(button) {
   width: 100%;
 }
 
 .agentride-rating > :deep(a),
-.agentride-rating > :deep(.sky-link) {
+.agentride-rating > :deep(.agent-link) {
   margin-top: 11px;
 }
-
 .agentride-dialog {
   padding: 20px 20px 8px;
   color: var(--ride-text);
   text-align: center;
 }
-
 .agentride-dialog h2 {
   margin: 0 0 7px;
   font-size: 18px;
 }
-
 .agentride-dialog p {
   margin: 0;
   color: var(--ride-muted);
   font-size: 13px;
   line-height: 1.4;
 }
-
 .agentride-app :deep(.bg-primary) {
   color: #141414;
   background-color: var(--ride-accent);
 }
-
-.agentride-app :deep(.sky-button--primary:not(.sky-button--outline)) {
+.agentride-app :deep(.agent-button--primary:not(.agent-button--outline)) {
   color: #171719;
 }
-
 .agentride-app :deep(.text-primary) {
   color: var(--ride-accent-strong);
 }

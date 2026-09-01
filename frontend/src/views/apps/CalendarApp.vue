@@ -18,7 +18,7 @@ import {
   UserRound,
   X,
 } from 'lucide-vue-next'
-import { SkyGlass, SkySearchbar, SkyToggle } from '@/ui'
+import { AgentGlass, AgentSearchbar, AgentToggle } from '@/ui'
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 
 import { useAccountStore } from '@/stores/account'
@@ -552,14 +552,14 @@ onMounted(async () => {
             ref="searchToolbar"
             class="calendar__search-toolbar"
           >
-            <sky-searchbar
+            <agent-searchbar
               class="calendar__searchbar"
               :placeholder="phone.t('Apps.calendar.searchPlaceholder')"
               :value="searchQuery"
               @clear="searchQuery = ''"
               @input="updateSearch"
             />
-            <sky-glass
+            <agent-glass
               component="button"
               type="button"
               class="calendar__control calendar__control--close"
@@ -567,10 +567,10 @@ onMounted(async () => {
               @click="toggleSearch"
             >
               <X :size="20" />
-            </sky-glass>
+            </agent-glass>
           </div>
           <div v-else class="calendar__toolbar-default">
-            <sky-glass
+            <agent-glass
               v-if="!yearOverviewOpen"
               component="button"
               type="button"
@@ -580,9 +580,9 @@ onMounted(async () => {
             >
               <ChevronLeft :size="20" />
               <span>{{ visibleYear }}</span>
-            </sky-glass>
+            </agent-glass>
             <div class="calendar__toolbar-actions">
-              <sky-glass
+              <agent-glass
                 v-if="!yearOverviewOpen"
                 component="button"
                 class="calendar__control"
@@ -594,8 +594,8 @@ onMounted(async () => {
                   :is="viewModes.find((mode) => mode.id === viewMode)?.icon"
                   :size="19"
                 />
-              </sky-glass>
-              <sky-glass
+              </agent-glass>
+              <agent-glass
                 component="button"
                 class="calendar__control"
                 :aria-label="phone.t('Common.search')"
@@ -603,8 +603,8 @@ onMounted(async () => {
                 @click="toggleSearch"
               >
                 <Search :size="19" />
-              </sky-glass>
-              <sky-glass
+              </agent-glass>
+              <agent-glass
                 v-if="isAuthenticated"
                 component="button"
                 class="calendar__control"
@@ -613,7 +613,7 @@ onMounted(async () => {
                 @click="openCreate"
               >
                 <Plus :size="21" />
-              </sky-glass>
+              </agent-glass>
             </div>
 
             <Transition name="calendar-popover">
@@ -822,14 +822,14 @@ onMounted(async () => {
       </div>
 
       <footer v-if="isAuthenticated" class="calendar__footer">
-        <sky-glass
+        <agent-glass
           component="button"
           type="button"
           class="calendar__control calendar__control--today"
           @click="goToday"
         >
           {{ phone.t('Apps.calendar.today') }}
-        </sky-glass>
+        </agent-glass>
       </footer>
     </template>
 
@@ -893,14 +893,14 @@ onMounted(async () => {
 
     <section v-else class="calendar__form">
       <header class="calendar__sheet-header">
-        <sky-glass
+        <agent-glass
           component="button"
           type="button"
           class="calendar__control calendar__sheet-action"
           @click="closeForm"
         >
           {{ phone.t('Common.cancel') }}
-        </sky-glass>
+        </agent-glass>
         <strong>
           {{
             editingEvent
@@ -908,7 +908,7 @@ onMounted(async () => {
               : phone.t('Apps.calendar.newEvent')
           }}
         </strong>
-        <sky-glass
+        <agent-glass
           component="button"
           type="button"
           class="calendar__control calendar__sheet-action"
@@ -916,7 +916,7 @@ onMounted(async () => {
           @click="saveEvent"
         >
           {{ editingEvent ? phone.t('Common.save') : phone.t('Common.add') }}
-        </sky-glass>
+        </agent-glass>
       </header>
       <form class="calendar__sheet-scroll" @submit.prevent="saveEvent">
         <section class="calendar__group calendar__group--fields">
@@ -944,9 +944,9 @@ onMounted(async () => {
           </button>
           <div class="calendar__all-day-row">
             <span>{{ phone.t('Apps.calendar.allDay') }}</span>
-            <sky-toggle
+            <agent-toggle
               :checked="draft.allDay"
-              style="--sky-app-accent: #ff3b30"
+              style="--agent-app-accent: #ff3b30"
               :aria-label="phone.t('Apps.calendar.allDay')"
               @change="toggleAllDay"
             />
@@ -1031,23 +1031,23 @@ onMounted(async () => {
           </header>
 
           <div class="calendar__date-picker-month">
-            <sky-glass
+            <agent-glass
               component="button"
               type="button"
               :aria-label="phone.t('Apps.calendar.previousMonth')"
               @click="movePickerMonth(-1)"
             >
               <ChevronLeft :size="20" />
-            </sky-glass>
+            </agent-glass>
             <strong>{{ pickerMonthLabel }}</strong>
-            <sky-glass
+            <agent-glass
               component="button"
               type="button"
               :aria-label="phone.t('Apps.calendar.nextMonth')"
               @click="movePickerMonth(1)"
             >
               <ChevronRight :size="20" />
-            </sky-glass>
+            </agent-glass>
           </div>
 
           <div class="calendar__date-picker-weekdays" aria-hidden="true">
@@ -1156,7 +1156,7 @@ onMounted(async () => {
   padding: 47px 0 24px;
   background: var(--bg);
   color: var(--label);
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
 }
 
 .calendar--light {

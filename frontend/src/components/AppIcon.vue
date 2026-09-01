@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SkyBadge as kBadge } from '@/ui'
+import { AgentBadge as kBadge } from '@/ui'
 import { Minus } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'

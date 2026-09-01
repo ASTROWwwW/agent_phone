@@ -30,26 +30,26 @@ describe('Banking app Agent UI migration', () => {
     expect(source).not.toMatch(/<\/?k-/)
 
     for (const component of [
-      'SkyAppPage',
-      'SkyNavbar',
-      'SkyGlass',
-      'SkyCard',
-      'SkyList',
-      'SkyListItem',
-      'SkyField',
-      'SkyTabBar',
-      'SkyTabButton',
-      'SkySheet',
-      'SkyButton',
-      'SkySpinner',
-      'SkyEmptyState',
-      'SkyNotification',
+      'AgentAppPage',
+      'AgentNavbar',
+      'AgentGlass',
+      'AgentCard',
+      'AgentList',
+      'AgentListItem',
+      'AgentField',
+      'AgentTabBar',
+      'AgentTabButton',
+      'AgentSheet',
+      'AgentButton',
+      'AgentSpinner',
+      'AgentEmptyState',
+      'AgentNotification',
     ]) {
       expect(source).toContain(`<${component}`)
     }
   })
 
-  it('delegates sheet focus and escape handling to SkySheet', () => {
+  it('delegates sheet focus and escape handling to AgentSheet', () => {
     expect(source).toContain('@escape="closeAction"')
     expect(source).not.toContain('handleSheetKeydown')
     expect(source).not.toContain('handleWindowKeydown')
@@ -95,7 +95,7 @@ describe('Banking app Agent UI migration', () => {
     )
   })
 
-  it('opens every transaction in an accessible Sky detail sheet', () => {
+  it('opens every transaction in an accessible Agent detail sheet', () => {
     expect(source).toContain(
       'const selectedTransaction = ref<BankingTransaction | null>(null)',
     )

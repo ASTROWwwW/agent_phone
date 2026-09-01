@@ -73,7 +73,7 @@ export type BuiltinPhoneAppDefinition = PhoneAppDefinitionBase & {
   route: `/apps/${BuiltinPhoneAppId}`
 }
 
-export type CustomAppBridgeMode = 'legacy' | 'sky'
+export type CustomAppBridgeMode = 'legacy' | 'agent'
 
 export type ExternalPhoneAppDefinition = PhoneAppDefinitionBase & {
   bridgeMode: CustomAppBridgeMode

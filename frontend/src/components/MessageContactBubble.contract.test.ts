@@ -8,18 +8,18 @@ const source = readFileSync(
 )
 
 describe('MessageContactBubble Agent UI contract', () => {
-  it('uses Sky buttons without direct Konsta markup', () => {
+  it('uses Agent buttons without direct Konsta markup', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyButton')
+    expect(source).toContain('<AgentButton')
   })
 
-  it('inherits light and dark colors from Sky theme tokens', () => {
-    expect(source).toContain('var(--sky-text)')
-    expect(source).toContain('var(--sky-surface)')
-    expect(source).toContain('var(--sky-surface-muted)')
-    expect(source).toContain('var(--sky-muted)')
-    expect(source).toContain('var(--sky-hairline)')
+  it('inherits light and dark colors from Agent theme tokens', () => {
+    expect(source).toContain('var(--agent-text)')
+    expect(source).toContain('var(--agent-surface)')
+    expect(source).toContain('var(--agent-surface-muted)')
+    expect(source).toContain('var(--agent-muted)')
+    expect(source).toContain('var(--agent-hairline)')
     expect(source).not.toContain(':global(.phone-app.dark)')
   })
 })

@@ -12,34 +12,59 @@ local front_camera_target_height = 0.03
 local front_camera_horizontal_limit = 75.0
 local front_camera_vertical_limit = 35.0
 local front_camera_rotate_speed = 5.0
-local camera_passthrough_control = 22 -- INPUT_JUMP (Space by default)
+local INPUT_NEXT_CAMERA = 0
+local INPUT_LOOK_LR = 1
+local INPUT_LOOK_UD = 2
+local INPUT_JUMP = 22
+local INPUT_ATTACK = 24
+local INPUT_AIM = 25
+local INPUT_SELECT_WEAPON = 37
+local INPUT_COVER = 44
+local INPUT_RELOAD = 45
+local INPUT_VEH_AIM = 68
+local INPUT_VEH_ATTACK = 69
+local INPUT_VEH_ATTACK2 = 70
+local INPUT_VEH_PASSENGER_AIM = 91
+local INPUT_VEH_PASSENGER_ATTACK = 92
+local INPUT_MELEE_ATTACK_LIGHT = 140
+local INPUT_MELEE_ATTACK_HEAVY = 141
+local INPUT_MELEE_ATTACK_ALTERNATE = 142
+local INPUT_CURSOR_SCROLL_UP = 241
+local INPUT_CURSOR_SCROLL_DOWN = 242
+local INPUT_ATTACK2 = 257
+local INPUT_PREV_WEAPON = 261
+local INPUT_NEXT_WEAPON = 262
+local INPUT_MELEE_ATTACK1 = 263
+local INPUT_MELEE_ATTACK2 = 264
+
+local camera_passthrough_control = INPUT_JUMP
 local blocked_camera_controls = {
-    0, -- INPUT_NEXT_CAMERA
+    INPUT_NEXT_CAMERA,
     camera_passthrough_control,
-    24, -- INPUT_ATTACK
-    25, -- INPUT_AIM
-    37, -- INPUT_SELECT_WEAPON
-    44, -- INPUT_COVER
-    45, -- INPUT_RELOAD
-    68, -- INPUT_VEH_AIM
-    69, -- INPUT_VEH_ATTACK
-    70, -- INPUT_VEH_ATTACK2
-    91, -- INPUT_VEH_PASSENGER_AIM
-    92, -- INPUT_VEH_PASSENGER_ATTACK
-    140, -- INPUT_MELEE_ATTACK_LIGHT
-    141, -- INPUT_MELEE_ATTACK_HEAVY
-    142, -- INPUT_MELEE_ATTACK_ALTERNATE
-    241, -- INPUT_CURSOR_SCROLL_UP
-    242, -- INPUT_CURSOR_SCROLL_DOWN
-    257, -- INPUT_ATTACK2
-    261, -- INPUT_PREV_WEAPON
-    262, -- INPUT_NEXT_WEAPON
-    263, -- INPUT_MELEE_ATTACK1
-    264, -- INPUT_MELEE_ATTACK2
+    INPUT_ATTACK,
+    INPUT_AIM,
+    INPUT_SELECT_WEAPON,
+    INPUT_COVER,
+    INPUT_RELOAD,
+    INPUT_VEH_AIM,
+    INPUT_VEH_ATTACK,
+    INPUT_VEH_ATTACK2,
+    INPUT_VEH_PASSENGER_AIM,
+    INPUT_VEH_PASSENGER_ATTACK,
+    INPUT_MELEE_ATTACK_LIGHT,
+    INPUT_MELEE_ATTACK_HEAVY,
+    INPUT_MELEE_ATTACK_ALTERNATE,
+    INPUT_CURSOR_SCROLL_UP,
+    INPUT_CURSOR_SCROLL_DOWN,
+    INPUT_ATTACK2,
+    INPUT_PREV_WEAPON,
+    INPUT_NEXT_WEAPON,
+    INPUT_MELEE_ATTACK1,
+    INPUT_MELEE_ATTACK2,
 }
 local camera_look_controls = {
-    1, -- INPUT_LOOK_LR
-    2, -- INPUT_LOOK_UD
+    INPUT_LOOK_LR,
+    INPUT_LOOK_UD,
 }
 local camera_state = {
     active = false,

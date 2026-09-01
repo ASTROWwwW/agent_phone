@@ -25,7 +25,7 @@ function externalApp(
   overrides: Partial<ExternalPhoneAppDefinition> = {},
 ): ExternalPhoneAppDefinition {
   return {
-    bridgeMode: 'sky',
+    bridgeMode: 'agent',
     bundled: true,
     capabilities: ['theme.read'],
     category: 'utilities',

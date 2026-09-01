@@ -1,48 +1,48 @@
 import { describe, expect, it } from 'vitest'
 
 import {
-  createSkyFlappyGame,
+  createAgentFlappyGame,
   FLAPPY_GAP_HEIGHT,
   FLAPPY_MAX_SPEED,
   FLAPPY_MAX_GAP_TOP,
   FLAPPY_MIN_GAP_HEIGHT,
   FLAPPY_MIN_GAP_TOP,
-  flapSkyGlider,
-  getSkyFlappyDifficulty,
-  stepSkyFlappy,
+  flapAgentGlider,
+  getAgentFlappyDifficulty,
+  stepAgentFlappy,
 } from './engine'
 
-describe('sky flappy engine', () => {
+describe('agent flappy engine', () => {
   it('starts in a ready state', () => {
-    expect(createSkyFlappyGame()).toMatchObject({ playerY: 48, score: 0, status: 'ready' })
+    expect(createAgentFlappyGame()).toMatchObject({ playerY: 48, score: 0, status: 'ready' })
   })
 
   it('starts and applies an upward impulse on flap', () => {
-    const state = flapSkyGlider(createSkyFlappyGame())
+    const state = flapAgentGlider(createAgentFlappyGame())
     expect(state.status).toBe('playing')
     expect(state.playerVelocity).toBeLessThan(0)
   })
 
   it('applies deterministic time-based physics', () => {
-    const state = flapSkyGlider(createSkyFlappyGame())
-    expect(stepSkyFlappy(state, 0.1, () => 0.5)).toEqual(
-      stepSkyFlappy(state, 0.1, () => 0.5),
+    const state = flapAgentGlider(createAgentFlappyGame())
+    expect(stepAgentFlappy(state, 0.1, () => 0.5)).toEqual(
+      stepAgentFlappy(state, 0.1, () => 0.5),
     )
   })
 
   it('keeps generated gaps inside playable bounds', () => {
-    const state = flapSkyGlider(createSkyFlappyGame())
-    const low = stepSkyFlappy(state, 0.01, () => 0)
-    const high = stepSkyFlappy(state, 0.01, () => 1)
+    const state = flapAgentGlider(createAgentFlappyGame())
+    const low = stepAgentFlappy(state, 0.01, () => 0)
+    const high = stepAgentFlappy(state, 0.01, () => 1)
     expect(low.obstacles[0].gapTop).toBe(FLAPPY_MIN_GAP_TOP)
     expect(high.obstacles[0].gapTop).toBe(FLAPPY_MAX_GAP_TOP)
     expect(high.obstacles[0].gapTop + FLAPPY_GAP_HEIGHT).toBeLessThan(100)
   })
 
   it('increases speed and narrows the gap as the score rises', () => {
-    const start = getSkyFlappyDifficulty(0)
-    const advanced = getSkyFlappyDifficulty(20)
-    const maximum = getSkyFlappyDifficulty(100)
+    const start = getAgentFlappyDifficulty(0)
+    const advanced = getAgentFlappyDifficulty(20)
+    const maximum = getAgentFlappyDifficulty(100)
 
     expect(advanced.speed).toBeGreaterThan(start.speed)
     expect(advanced.gapHeight).toBeLessThan(start.gapHeight)
@@ -52,28 +52,28 @@ describe('sky flappy engine', () => {
 
   it('scores an obstacle only once', () => {
     const state = {
-      ...flapSkyGlider(createSkyFlappyGame()),
+      ...flapAgentGlider(createAgentFlappyGame()),
       obstacles: [{ gapHeight: FLAPPY_GAP_HEIGHT, gapTop: 30, id: 1, scored: false, x: 7 }],
     }
-    const scored = stepSkyFlappy(state, 0.01, () => 0.5)
+    const scored = stepAgentFlappy(state, 0.01, () => 0.5)
     expect(scored.score).toBe(1)
-    expect(stepSkyFlappy(scored, 0.01, () => 0.5).score).toBe(1)
+    expect(stepAgentFlappy(scored, 0.01, () => 0.5).score).toBe(1)
   })
 
   it('detects collision using the player edges', () => {
     const state = {
-      ...flapSkyGlider(createSkyFlappyGame()),
+      ...flapAgentGlider(createAgentFlappyGame()),
       obstacles: [{ gapHeight: FLAPPY_GAP_HEIGHT, gapTop: 40, id: 1, scored: false, x: 22 }],
       playerY: 41,
       playerVelocity: 0,
     }
-    expect(stepSkyFlappy(state, 0.01).status).toBe('over')
+    expect(stepAgentFlappy(state, 0.01).status).toBe('over')
   })
 
   it('ends at the upper and lower boundaries', () => {
-    const upper = { ...flapSkyGlider(createSkyFlappyGame()), playerY: 1 }
-    const lower = { ...flapSkyGlider(createSkyFlappyGame()), playerY: 99 }
-    expect(stepSkyFlappy(upper, 0.01).status).toBe('over')
-    expect(stepSkyFlappy(lower, 0.01).status).toBe('over')
+    const upper = { ...flapAgentGlider(createAgentFlappyGame()), playerY: 1 }
+    const lower = { ...flapAgentGlider(createAgentFlappyGame()), playerY: 99 }
+    expect(stepAgentFlappy(upper, 0.01).status).toBe('over')
+    expect(stepAgentFlappy(lower, 0.01).status).toBe('over')
   })
 })

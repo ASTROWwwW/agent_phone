@@ -4,7 +4,7 @@ import { computed, ref, watch } from 'vue'
 import { getPhoneApp } from '@/config/apps'
 import type { PhoneNotification } from '@/stores/notifications'
 import { usePhoneStore } from '@/stores/phone'
-import { SkyNotification, SkyProvider } from '@/ui'
+import { AgentNotification, AgentProvider } from '@/ui'
 
 const props = defineProps<{
   dark?: boolean
@@ -127,8 +127,8 @@ function finishDismissGesture(event: PointerEvent): void {
 </script>
 
 <template>
-  <SkyProvider class="phone-notification-provider" :dark="darkMode" safe-areas>
-    <SkyNotification
+  <AgentProvider class="phone-notification-provider" :dark="darkMode" safe-areas>
+    <AgentNotification
       :opened="!!notification"
       :title="notification?.title"
       :subtitle="notification?.subtitle"
@@ -153,6 +153,6 @@ function finishDismissGesture(event: PointerEvent): void {
         @click.stop="openNotification"
         @keydown.esc.stop="emit('close')"
       ></button>
-    </SkyNotification>
-  </SkyProvider>
+    </AgentNotification>
+  </AgentProvider>
 </template>

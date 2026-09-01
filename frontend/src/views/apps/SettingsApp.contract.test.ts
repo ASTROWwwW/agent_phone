@@ -11,19 +11,19 @@ describe('SettingsApp Agent UI contract', () => {
   it('uses the first-party settings surface without direct Konsta markup', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyAppPage')
-    expect(source).toContain('<SkyNavbar')
+    expect(source).toContain('<AgentAppPage')
+    expect(source).toContain('<AgentNavbar')
     expect(source).toContain('class="settings-navbar"')
     expect(source).toContain(
-      '.settings-navbar.sky-navbar--large.sky-navbar--no-navigation',
+      '.settings-navbar.agent-navbar--large.agent-navbar--no-navigation',
     )
     expect(source).toContain(
       ":variant=\"activeView === 'root' ? 'large' : 'compact'\"",
     )
-    expect(source).toContain('<SkyScrollArea')
-    expect(source).toContain('<SkySettingsGroup')
-    expect(source).toContain('<SkySettingsRow')
-    expect(source).toContain('<SkySettingsRangeRow')
+    expect(source).toContain('<AgentScrollArea')
+    expect(source).toContain('<AgentSettingsGroup')
+    expect(source).toContain('<AgentSettingsRow')
+    expect(source).toContain('<AgentSettingsRangeRow')
     expect(source).toContain('<template #leading><Volume1 /></template>')
     expect(source).toContain('<template #trailing><Volume2 /></template>')
     expect(source).toContain(
@@ -36,7 +36,7 @@ describe('SettingsApp Agent UI contract', () => {
       ":class=\"{ 'settings-content--subpage': activeView !== 'root' }\"",
     )
     expect(source).toMatch(
-      /\.settings-content\s*\{[^}]*padding-top:\s*var\(--sky-space-2\)/,
+      /\.settings-content\s*\{[^}]*padding-top:\s*var\(--agent-space-2\)/,
     )
     expect(source).toMatch(
       /\.settings-content--subpage\s*\{[^}]*padding-top:\s*0/,

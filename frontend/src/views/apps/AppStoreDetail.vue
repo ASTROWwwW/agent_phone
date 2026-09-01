@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 import { getPhoneAppLabel, isExternalPhoneApp } from '@/config/apps'
 import { usePhoneStore } from '@/stores/phone'
 import type { LaunchablePhoneAppDefinition } from '@/types/apps'
-import { SkyButton } from '@/ui'
+import { AgentButton } from '@/ui'
 import { getAppStorePreviewImage } from '@/utils/appStorePreviewImages'
 import { getAppStorePreviewVisual } from '@/utils/appStorePreviews'
 
@@ -122,7 +122,7 @@ function updateActivePreview(): void {
 <template>
   <section class="store-detail" :style="detailStyle">
     <header class="store-detail__toolbar">
-      <SkyButton
+      <AgentButton
         glass
         icon-only
         rounded
@@ -132,8 +132,8 @@ function updateActivePreview(): void {
         @click="emit('back')"
       >
         <ChevronLeft :size="26" :stroke-width="2.2" aria-hidden="true" />
-      </SkyButton>
-      <SkyButton
+      </AgentButton>
+      <AgentButton
         glass
         icon-only
         rounded
@@ -143,7 +143,7 @@ function updateActivePreview(): void {
         @click="emit('share')"
       >
         <Share2 :size="21" :stroke-width="2" aria-hidden="true" />
-      </SkyButton>
+      </AgentButton>
     </header>
 
     <section class="store-detail__hero">
@@ -216,7 +216,7 @@ function updateActivePreview(): void {
         <h2>{{ phone.t('Apps.appStore.details.preview') }}</h2>
         <div class="store-detail__preview-navigation">
           <span>{{ activePreviewIndex + 1 }} / {{ previewCount }}</span>
-          <SkyButton
+          <AgentButton
             glass
             icon-only
             rounded
@@ -227,8 +227,8 @@ function updateActivePreview(): void {
             @click="scrollToPreview(activePreviewIndex - 1)"
           >
             <ChevronLeft :size="17" :stroke-width="2.4" aria-hidden="true" />
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             glass
             icon-only
             rounded
@@ -239,7 +239,7 @@ function updateActivePreview(): void {
             @click="scrollToPreview(activePreviewIndex + 1)"
           >
             <ChevronRight :size="17" :stroke-width="2.4" aria-hidden="true" />
-          </SkyButton>
+          </AgentButton>
         </div>
       </header>
       <div
@@ -283,9 +283,9 @@ function updateActivePreview(): void {
   min-width: 0;
   display: grid;
   overflow-x: hidden;
-  gap: var(--sky-space-5);
-  padding: var(--sky-space-3) 0 var(--sky-space-6);
-  color: var(--sky-text);
+  gap: var(--agent-space-5);
+  padding: var(--agent-space-3) 0 var(--agent-space-6);
+  color: var(--agent-text);
 }
 
 .store-detail__preview-section {
@@ -299,13 +299,13 @@ function updateActivePreview(): void {
 }
 
 .store-detail__toolbar-button {
-  width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
+  width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
   display: grid;
   place-items: center;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
-  color: var(--sky-text);
+  color: var(--agent-text);
   transition:
     background-color 100ms ease,
     border-color 100ms ease,
@@ -321,13 +321,13 @@ function updateActivePreview(): void {
   display: grid;
   grid-template-columns: 116px minmax(0, 1fr);
   align-items: center;
-  gap: var(--sky-space-4);
+  gap: var(--agent-space-4);
 }
 
 .store-detail__hero > img {
   width: 116px;
   height: 116px;
-  border-radius: calc(var(--sky-radius-card) + var(--sky-space-1));
+  border-radius: calc(var(--agent-radius-card) + var(--agent-space-1));
   object-fit: cover;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
@@ -339,7 +339,7 @@ function updateActivePreview(): void {
 .store-detail__hero h1 {
   margin: 0;
   overflow: hidden;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 24px;
   line-height: 1.02;
   text-overflow: ellipsis;
@@ -348,7 +348,7 @@ function updateActivePreview(): void {
 .store-detail__hero p {
   margin: 6px 0 12px;
   overflow: hidden;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -356,14 +356,14 @@ function updateActivePreview(): void {
 
 .store-detail__hero button {
   min-width: 72px;
-  min-height: var(--sky-touch-target);
+  min-height: var(--agent-touch-target);
   display: grid;
   place-items: center;
   border: 0;
-  border-radius: var(--sky-radius-pill);
-  padding: 0 var(--sky-space-4);
+  border-radius: var(--agent-radius-pill);
+  padding: 0 var(--agent-space-4);
   color: #fff;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
   font-size: 12px;
   font-weight: 850;
 }
@@ -374,7 +374,7 @@ function updateActivePreview(): void {
   min-height: 30px;
   height: 30px;
   padding: 0;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
   background: transparent;
 }
 
@@ -390,9 +390,9 @@ function updateActivePreview(): void {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
-  border-top: 1px solid var(--sky-hairline);
-  border-bottom: 1px solid var(--sky-hairline);
-  padding: var(--sky-space-3) 0;
+  border-top: 1px solid var(--agent-hairline);
+  border-bottom: 1px solid var(--agent-hairline);
+  padding: var(--agent-space-3) 0;
 }
 
 .store-detail__facts > div {
@@ -400,7 +400,7 @@ function updateActivePreview(): void {
   display: flex;
   align-items: center;
   flex-direction: column;
-  border-right: 1px solid var(--sky-hairline);
+  border-right: 1px solid var(--agent-hairline);
   text-align: center;
 }
 
@@ -410,7 +410,7 @@ function updateActivePreview(): void {
 
 .store-detail__facts dt {
   overflow: hidden;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -421,7 +421,7 @@ function updateActivePreview(): void {
 
 .store-detail__facts dd {
   margin: 5px 0 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 24px;
   font-weight: 700;
 }
@@ -429,7 +429,7 @@ function updateActivePreview(): void {
 .store-detail__facts span {
   max-width: 100%;
   overflow: hidden;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -437,13 +437,13 @@ function updateActivePreview(): void {
 
 .store-detail__facts .store-detail__stars {
   display: flex;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
 .store-detail__whats-new,
 .store-detail__description {
-  border-bottom: 1px solid var(--sky-hairline);
-  padding-bottom: var(--sky-space-5);
+  border-bottom: 1px solid var(--agent-hairline);
+  padding-bottom: var(--agent-space-5);
 }
 
 .store-detail__whats-new header,
@@ -451,29 +451,29 @@ function updateActivePreview(): void {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
 .store-detail__whats-new h2,
 .store-detail__preview-section h2,
 .store-detail__description h2 {
   margin: 0;
-  font-size: var(--sky-font-medium-title);
+  font-size: var(--agent-font-medium-title);
 }
 
 .store-detail__version {
   display: flex;
   justify-content: space-between;
-  gap: var(--sky-space-3);
-  margin-top: var(--sky-space-3);
-  color: var(--sky-muted);
+  gap: var(--agent-space-3);
+  margin-top: var(--agent-space-3);
+  color: var(--agent-muted);
   font-size: 11px;
 }
 
 .store-detail__whats-new p,
 .store-detail__description p {
-  margin: var(--sky-space-3) 0 0;
-  color: var(--sky-text);
+  margin: var(--agent-space-3) 0 0;
+  color: var(--agent-text);
   font-size: 13px;
   line-height: 1.45;
 }
@@ -486,23 +486,23 @@ function updateActivePreview(): void {
 
 .store-detail__preview-navigation > span {
   min-width: 30px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 9px;
   font-weight: 700;
   text-align: center;
 }
 
 .store-detail__preview-control {
-  width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
-  min-width: var(--sky-touch-target);
-  min-height: var(--sky-touch-target);
+  width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
+  min-width: var(--agent-touch-target);
+  min-height: var(--agent-touch-target);
   display: grid;
   place-items: center;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
   padding: 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
   transition:
     background-color 100ms ease,
     color 100ms ease,
@@ -519,10 +519,10 @@ function updateActivePreview(): void {
 
 .store-detail__previews {
   display: flex;
-  gap: var(--sky-space-3);
-  margin-right: calc(0px - var(--sky-page-gutter));
+  gap: var(--agent-space-3);
+  margin-right: calc(0px - var(--agent-page-gutter));
   overflow-x: auto;
-  padding: var(--sky-space-3) var(--sky-page-gutter) var(--sky-space-2) 0;
+  padding: var(--agent-space-3) var(--agent-page-gutter) var(--agent-space-2) 0;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
@@ -539,7 +539,7 @@ function updateActivePreview(): void {
   }
 
   .store-detail__preview-control:hover:not(:disabled) {
-    color: var(--sky-app-accent);
+    color: var(--agent-app-accent);
     transform: translateY(-1px);
   }
 }

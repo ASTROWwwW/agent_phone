@@ -120,7 +120,7 @@ describe('AgentRide store', () => {
       ...bootstrap.profile,
       avatarMediaId: 17,
       avatarUrl: 'https://example.test/avatar.webp',
-      name: 'Jordan Sky',
+      name: 'Jordan Vale',
     }
     mockNuiCall.mockResolvedValueOnce({
       data: { profile: updatedProfile },
@@ -131,14 +131,14 @@ describe('AgentRide store', () => {
 
     const response = await agentride.updateProfile({
       avatarMediaId: 17,
-      name: 'Jordan Sky',
+      name: 'Jordan Vale',
     })
 
     expect(response.success).toBe(true)
     expect(agentride.profile).toEqual(updatedProfile)
     expect(mockNuiCall).toHaveBeenCalledWith('agentride:update-profile', {
       avatarMediaId: 17,
-      name: 'Jordan Sky',
+      name: 'Jordan Vale',
     })
   })
 

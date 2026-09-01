@@ -5,7 +5,7 @@ import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import { useMessagesStore } from '@/stores/messages'
 import { usePhoneStore } from '@/stores/phone'
 import type { SmsMessage } from '@/types/messages'
-import { SkyRange } from '@/ui'
+import { AgentRange } from '@/ui'
 
 const props = defineProps<{ message: SmsMessage }>()
 const phone = usePhoneStore()
@@ -133,7 +133,7 @@ onBeforeUnmount(() => audio.value?.pause())
             :style="{ height: `${Math.max(4, sample * 22)}px` }"
           />
         </div>
-        <SkyRange
+        <AgentRange
           class="voice-message__range"
           :model-value="currentTime"
           :min="0"
@@ -186,7 +186,7 @@ onBeforeUnmount(() => audio.value?.pause())
   cursor: pointer;
 }
 
-.voice-message__range :deep(.sky-range__input) {
+.voice-message__range :deep(.agent-range__input) {
   width: 100%;
   height: 24px;
   opacity: 0;
@@ -194,7 +194,7 @@ onBeforeUnmount(() => audio.value?.pause())
 }
 
 .voice-message__timeline:focus-within {
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }

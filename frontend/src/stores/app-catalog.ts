@@ -176,10 +176,10 @@ export function normalizeExternalPhoneApp(
 
   return {
     bridgeMode:
-      source.bridgeMode === 'sky' || source.bridgeMode === 'legacy'
+      source.bridgeMode === 'agent' || source.bridgeMode === 'legacy'
         ? source.bridgeMode
         : bundled
-          ? 'sky'
+          ? 'agent'
           : 'legacy',
     bundled,
     capabilities: readCapabilities(source.capabilities ?? source.permissions),

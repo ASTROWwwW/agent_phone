@@ -2,8 +2,6 @@ if Bridge.Framework.Name ~= "esx" then
     return
 end
 
--- Nom de ressource resolu par framework.lua : la base peut publier ESX sous un
--- autre nom que 'es_extended'.
 local ESX_RESOURCE = Bridge.Framework.Resource
 
 if not ESX_RESOURCE or GetResourceState(ESX_RESOURCE) ~= "started" then

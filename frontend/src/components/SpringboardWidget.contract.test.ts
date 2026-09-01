@@ -8,8 +8,8 @@ const source = readFileSync(
 )
 
 describe('SpringboardWidget UI contract', () => {
-  it('uses the Sky widget frame without a Konsta surface', () => {
-    expect(source).toContain('<SkyWidgetFrame')
+  it('uses the Agent widget frame without a Konsta surface', () => {
+    expect(source).toContain('<AgentWidgetFrame')
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toContain('<k-glass')
     expect(source).not.toContain('<k-badge')

@@ -4,21 +4,21 @@ import { describe, expect, it } from 'vitest'
 
 const source = readFileSync(new URL('./MusicApp.vue', import.meta.url), 'utf8')
 const navigationSource = source.slice(
-  source.indexOf('<SkyPillNavigation'),
-  source.indexOf('</SkyPillNavigation>') + '</SkyPillNavigation>'.length,
+  source.indexOf('<AgentPillNavigation'),
+  source.indexOf('</AgentPillNavigation>') + '</AgentPillNavigation>'.length,
 )
 
-describe('MusicApp Sky pill navigation contract', () => {
-  it('uses the centered surface back action owned by SkyNavbar for playlists', () => {
-    const navbarTag = source.match(/<sky-navbar\b[^>]*>/is)?.[0]
+describe('MusicApp Agent pill navigation contract', () => {
+  it('uses the centered surface back action owned by AgentNavbar for playlists', () => {
+    const navbarTag = source.match(/<agent-navbar\b[^>]*>/is)?.[0]
 
     expect(navbarTag).toBeDefined()
     expect(navbarTag).toContain(':show-back="Boolean(activePlaylist)"')
     expect(navbarTag).toContain('back-appearance="surface"')
     expect(navbarTag).toContain('Apps.music.tabs.playlists')
     expect(navbarTag).toContain('@back="closePlaylist"')
-    expect(source).not.toContain('SkyNavbarBackLink,')
-    expect(source).not.toContain('<sky-navbar-back-link')
+    expect(source).not.toContain('AgentNavbarBackLink,')
+    expect(source).not.toContain('<agent-navbar-back-link')
   })
 
   it('inherits the central safe areas for the iPhone header', () => {
@@ -28,8 +28,8 @@ describe('MusicApp Sky pill navigation contract', () => {
       source.indexOf('}', appRuleStart) + 1,
     )
 
-    expect(appRule).not.toContain('--sky-safe-area-top:')
-    expect(appRule).not.toContain('--sky-safe-area-bottom:')
+    expect(appRule).not.toContain('--agent-safe-area-top:')
+    expect(appRule).not.toContain('--agent-safe-area-bottom:')
   })
 
   it('uses the full-width sliding Glass navigation outside playlists', () => {
@@ -40,12 +40,12 @@ describe('MusicApp Sky pill navigation contract', () => {
     expect(source).not.toContain('<k-toolbar-pane')
     expect(navigationSource).toContain('v-if="!activePlaylist"')
     expect(navigationSource).toContain('layout="full"')
-    expect(navigationSource).toContain('<SkySegmented')
+    expect(navigationSource).toContain('<AgentSegmented')
     expect(navigationSource).toContain('navigation')
     expect(navigationSource).toContain(':active-index="activeTabIndex"')
     expect(navigationSource).toContain(':data-active-tab="activeTab"')
     expect(navigationSource).toContain(':item-count="tabs.length"')
-    expect(navigationSource).toContain('<SkySegmentedButton')
+    expect(navigationSource).toContain('<AgentSegmentedButton')
     expect(navigationSource).not.toContain('compact')
   })
 
@@ -66,13 +66,13 @@ describe('MusicApp Sky pill navigation contract', () => {
 
   it('reserves the absolute navigation and mini-player without changing playlist space', () => {
     expect(source).toMatch(
-      /\.music-scroll\s*\{[^}]*padding:\s*8px 0\s*calc\(\s*var\(--sky-safe-area-bottom\) \+ var\(--sky-tabbar-height\) \+\s*var\(--sky-space-3\)\s*\)/s,
+      /\.music-scroll\s*\{[^}]*padding:\s*8px 0\s*calc\(\s*var\(--agent-safe-area-bottom\) \+ var\(--agent-tabbar-height\) \+\s*var\(--agent-space-3\)\s*\)/s,
     )
     expect(source).toMatch(
-      /\.music-app--playing \.music-scroll\s*\{[^}]*padding-bottom:\s*calc\(\s*var\(--music-mini-player-bottom\) \+ var\(--music-mini-player-height\) \+\s*var\(--sky-space-3\)\s*\)/s,
+      /\.music-app--playing \.music-scroll\s*\{[^}]*padding-bottom:\s*calc\(\s*var\(--music-mini-player-bottom\) \+ var\(--music-mini-player-height\) \+\s*var\(--agent-space-3\)\s*\)/s,
     )
     expect(source).toContain(
-      'var(--sky-safe-area-bottom) + var(--sky-tabbar-height) + var(--sky-space-2)',
+      'var(--agent-safe-area-bottom) + var(--agent-tabbar-height) + var(--agent-space-2)',
     )
     expect(source).toContain('--music-mini-player-height: 58px')
     const miniPlayerRuleStart = source.indexOf('.music-mini-player {')
@@ -81,10 +81,10 @@ describe('MusicApp Sky pill navigation contract', () => {
       source.indexOf('}', miniPlayerRuleStart) + 1,
     )
     expect(miniPlayerRule).toContain(
-      'right: calc(var(--sky-safe-area-right) + var(--sky-space-4))',
+      'right: calc(var(--agent-safe-area-right) + var(--agent-space-4))',
     )
     expect(miniPlayerRule).toContain(
-      'left: calc(var(--sky-safe-area-left) + var(--sky-space-4))',
+      'left: calc(var(--agent-safe-area-left) + var(--agent-space-4))',
     )
     expect(source).toMatch(
       /\.music-app--playlist \.music-scroll\s*\{[^}]*padding-bottom:\s*42px/s,
@@ -95,9 +95,9 @@ describe('MusicApp Sky pill navigation contract', () => {
   })
 
   it('bridges the Music accent and light-dark theme into Agent UI', () => {
-    expect(source).toContain('class="music-app sky-ui-provider"')
-    expect(source).toContain("'sky-ui-provider--dark': phone.isDarkMode")
-    expect(source).toContain('--sky-app-accent: var(--music-accent)')
+    expect(source).toContain('class="music-app agent-ui-provider"')
+    expect(source).toContain("'agent-ui-provider--dark': phone.isDarkMode")
+    expect(source).toContain('--agent-app-accent: var(--music-accent)')
     expect(source).toContain('class="music-navigation__item"')
     expect(source).toMatch(
       /\.music-navigation__item > span:last-child\s*\{[^}]*text-overflow:\s*ellipsis[^}]*white-space:\s*nowrap/s,

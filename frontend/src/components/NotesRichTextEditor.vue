@@ -19,7 +19,7 @@ import {
 } from 'lucide-vue-next'
 import { onBeforeUnmount, ref, watch } from 'vue'
 
-import { SkyIcon, SkyTabBar, SkyTabButton } from '@/ui'
+import { AgentIcon, AgentTabBar, AgentTabButton } from '@/ui'
 import {
   noteBodyToEditorHtml,
   serializeRichNoteBody,
@@ -263,10 +263,10 @@ onBeforeUnmount(() => editor.value?.destroy())
 
 <template>
   <section
-    class="notes-rich-editor sky-ui-provider"
+    class="notes-rich-editor agent-ui-provider"
     :class="{
       'notes-rich-editor--dark': dark,
-      'sky-ui-provider--dark': dark,
+      'agent-ui-provider--dark': dark,
     }"
   >
     <EditorContent
@@ -275,64 +275,64 @@ onBeforeUnmount(() => editor.value?.destroy())
       :editor="editor"
     />
 
-    <SkyTabBar v-if="editor" :label="labels.toolbar" :labels="false">
+    <AgentTabBar v-if="editor" :label="labels.toolbar" :labels="false">
       <template v-if="!formatMode">
-        <SkyTabButton
+        <AgentTabButton
           :aria-label="labels.undo"
           :disabled="!editor.can().chain().focus().undo().run()"
           @click="editor.chain().focus().undo().run()"
         >
           <template #icon
-            ><SkyIcon :size="20"><Undo2 /></SkyIcon
+            ><AgentIcon :size="20"><Undo2 /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :aria-label="labels.redo"
           :disabled="!editor.can().chain().focus().redo().run()"
           @click="editor.chain().focus().redo().run()"
         >
           <template #icon
-            ><SkyIcon :size="20"><Redo2 /></SkyIcon
+            ><AgentIcon :size="20"><Redo2 /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="hasActiveTextFormat()"
           :aria-label="labels.toolbar"
           @click="formatMode = true"
         >
           <span class="notes-rich-editor__format-tool">Aa</span>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="editor.isActive('bulletList')"
           :aria-label="labels.bulletList"
           @click="editor.chain().focus().toggleBulletList().run()"
         >
           <template #icon
-            ><SkyIcon :size="21"><List /></SkyIcon
+            ><AgentIcon :size="21"><List /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="editor.isActive('orderedList')"
           :aria-label="labels.numberedList"
           @click="editor.chain().focus().toggleOrderedList().run()"
         >
           <template #icon
-            ><SkyIcon :size="21"><ListOrdered /></SkyIcon
+            ><AgentIcon :size="21"><ListOrdered /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :aria-label="labels.quote"
           :disabled="editor.state.selection.empty"
           @pointerdown.prevent="toggleSelectionQuote"
         >
           <template #icon
-            ><SkyIcon :size="20"><Quote /></SkyIcon
+            ><AgentIcon :size="20"><Quote /></AgentIcon
           ></template>
-        </SkyTabButton>
+        </AgentTabButton>
       </template>
 
       <template v-else>
-        <SkyTabButton
+        <AgentTabButton
           :active="
             ['tiny', 'small', 'compact'].includes(
               editor.getAttributes('noteTextSize').size,
@@ -343,8 +343,8 @@ onBeforeUnmount(() => editor.value?.destroy())
           @pointerdown.prevent="adjustTextSize(-1)"
         >
           <span class="notes-rich-editor__text-tool">A−</span>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="
             ['medium', 'large', 'huge'].includes(
               editor.getAttributes('noteTextSize').size,
@@ -358,53 +358,53 @@ onBeforeUnmount(() => editor.value?.destroy())
             class="notes-rich-editor__text-tool notes-rich-editor__text-tool--large"
             >A+</span
           >
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="editor.isActive('bold')"
           :aria-label="labels.bold"
           @click="editor.chain().focus().toggleBold().run()"
         >
           <template #icon
-            ><SkyIcon :size="20"><Bold /></SkyIcon
+            ><AgentIcon :size="20"><Bold /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="editor.isActive('italic')"
           :aria-label="labels.italic"
           @click="editor.chain().focus().toggleItalic().run()"
         >
           <template #icon
-            ><SkyIcon :size="20"><Italic /></SkyIcon
+            ><AgentIcon :size="20"><Italic /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="editor.isActive('underline')"
           :aria-label="labels.underline"
           @click="editor.chain().focus().toggleUnderline().run()"
         >
           <template #icon
-            ><SkyIcon :size="20"><Underline /></SkyIcon
+            ><AgentIcon :size="20"><Underline /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :active="editor.isActive('strike')"
           :aria-label="labels.strike"
           @click="editor.chain().focus().toggleStrike().run()"
         >
           <template #icon
-            ><SkyIcon :size="20"><Strikethrough /></SkyIcon
+            ><AgentIcon :size="20"><Strikethrough /></AgentIcon
           ></template>
-        </SkyTabButton>
-        <SkyTabButton
+        </AgentTabButton>
+        <AgentTabButton
           :aria-label="labels.closeFormatting"
           @click="formatMode = false"
         >
           <template #icon
-            ><SkyIcon :size="20"><X /></SkyIcon
+            ><AgentIcon :size="20"><X /></AgentIcon
           ></template>
-        </SkyTabButton>
+        </AgentTabButton>
       </template>
-    </SkyTabBar>
+    </AgentTabBar>
   </section>
 </template>
 
@@ -438,7 +438,7 @@ onBeforeUnmount(() => editor.value?.destroy())
 
 :deep(.tiptap) {
   min-height: 100%;
-  padding: 13px var(--sky-page-gutter) 90px;
+  padding: 13px var(--agent-page-gutter) 90px;
   outline: none;
   font-size: 17px;
   line-height: 1.48;

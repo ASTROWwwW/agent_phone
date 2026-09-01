@@ -1,201 +1,184 @@
-.sky-sheet,
-.sky-action-sheet,
-.sky-dialog,
-.sky-panel,
-.sky-popup,
-.sky-popover {
+.agent-sheet,
+.agent-action-sheet,
+.agent-dialog,
+.agent-panel,
+.agent-popup,
+.agent-popover {
   position: absolute;
-  z-index: var(--sky-overlay-layer, 80);
+  z-index: var(--agent-overlay-layer, 80);
   inset: 0;
   pointer-events: none;
 }
 
-.sky-overlay-backdrop {
+.agent-overlay-backdrop {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
   padding: 0;
-  background: var(--sky-overlay-backdrop, rgba(0, 0, 0, 0.4));
+  background: var(--agent-overlay-backdrop, rgba(0, 0, 0, 0.4));
   cursor: default;
   pointer-events: auto;
 }
 
-.sky-sheet__panel,
-.sky-action-sheet__panel,
-.sky-dialog__panel,
-.sky-panel__panel,
-.sky-popup__panel,
-.sky-popover__panel {
+.agent-sheet__panel,
+.agent-action-sheet__panel,
+.agent-dialog__panel,
+.agent-panel__panel,
+.agent-popup__panel,
+.agent-popover__panel {
   pointer-events: auto;
 }
 
-.sky-action-rise-enter-active .sky-overlay-backdrop,
-.sky-action-rise-leave-active .sky-overlay-backdrop,
-.sky-sheet-rise-enter-active .sky-overlay-backdrop,
-.sky-sheet-rise-leave-active .sky-overlay-backdrop,
-.sky-popup-rise-enter-active .sky-overlay-backdrop,
-.sky-popup-rise-leave-active .sky-overlay-backdrop,
-.sky-panel-left-enter-active .sky-overlay-backdrop,
-.sky-panel-left-leave-active .sky-overlay-backdrop,
-.sky-panel-right-enter-active .sky-overlay-backdrop,
-.sky-panel-right-leave-active .sky-overlay-backdrop,
-.sky-popover-scale-enter-active .sky-overlay-backdrop,
-.sky-popover-scale-leave-active .sky-overlay-backdrop,
-.sky-dialog-pop-enter-active .sky-overlay-backdrop,
-.sky-dialog-pop-leave-active .sky-overlay-backdrop {
+.agent-action-rise-enter-active .agent-overlay-backdrop,
+.agent-action-rise-leave-active .agent-overlay-backdrop,
+.agent-sheet-rise-enter-active .agent-overlay-backdrop,
+.agent-sheet-rise-leave-active .agent-overlay-backdrop,
+.agent-popup-rise-enter-active .agent-overlay-backdrop,
+.agent-popup-rise-leave-active .agent-overlay-backdrop,
+.agent-panel-left-enter-active .agent-overlay-backdrop,
+.agent-panel-left-leave-active .agent-overlay-backdrop,
+.agent-panel-right-enter-active .agent-overlay-backdrop,
+.agent-panel-right-leave-active .agent-overlay-backdrop,
+.agent-popover-scale-enter-active .agent-overlay-backdrop,
+.agent-popover-scale-leave-active .agent-overlay-backdrop,
+.agent-dialog-pop-enter-active .agent-overlay-backdrop,
+.agent-dialog-pop-leave-active .agent-overlay-backdrop {
   transition-property: opacity;
   transition-timing-function: ease;
 }
 
-.sky-action-rise-enter-active .sky-overlay-backdrop,
-.sky-action-rise-leave-active .sky-overlay-backdrop {
+.agent-action-rise-enter-active .agent-overlay-backdrop,
+.agent-action-rise-leave-active .agent-overlay-backdrop {
   transition-duration: 300ms;
 }
 
-.sky-sheet-rise-enter-active .sky-overlay-backdrop,
-.sky-sheet-rise-leave-active .sky-overlay-backdrop,
-.sky-popup-rise-enter-active .sky-overlay-backdrop,
-.sky-popup-rise-leave-active .sky-overlay-backdrop,
-.sky-panel-left-enter-active .sky-overlay-backdrop,
-.sky-panel-left-leave-active .sky-overlay-backdrop,
-.sky-panel-right-enter-active .sky-overlay-backdrop,
-.sky-panel-right-leave-active .sky-overlay-backdrop,
-.sky-popover-scale-enter-active .sky-overlay-backdrop,
-.sky-popover-scale-leave-active .sky-overlay-backdrop,
-.sky-dialog-pop-enter-active .sky-overlay-backdrop,
-.sky-dialog-pop-leave-active .sky-overlay-backdrop {
+.agent-sheet-rise-enter-active .agent-overlay-backdrop,
+.agent-sheet-rise-leave-active .agent-overlay-backdrop,
+.agent-popup-rise-enter-active .agent-overlay-backdrop,
+.agent-popup-rise-leave-active .agent-overlay-backdrop,
+.agent-panel-left-enter-active .agent-overlay-backdrop,
+.agent-panel-left-leave-active .agent-overlay-backdrop,
+.agent-panel-right-enter-active .agent-overlay-backdrop,
+.agent-panel-right-leave-active .agent-overlay-backdrop,
+.agent-popover-scale-enter-active .agent-overlay-backdrop,
+.agent-popover-scale-leave-active .agent-overlay-backdrop,
+.agent-dialog-pop-enter-active .agent-overlay-backdrop,
+.agent-dialog-pop-leave-active .agent-overlay-backdrop {
   transition-duration: 400ms;
 }
 
-.sky-action-rise-enter-active .sky-action-sheet__panel,
-.sky-action-rise-leave-active .sky-action-sheet__panel,
-.sky-sheet-rise-enter-active .sky-sheet__panel,
-.sky-sheet-rise-leave-active .sky-sheet__panel,
-.sky-sheet-rise-enter-active .sky-action-sheet__panel,
-.sky-sheet-rise-leave-active .sky-action-sheet__panel {
+.agent-action-rise-enter-active .agent-action-sheet__panel,
+.agent-action-rise-leave-active .agent-action-sheet__panel,
+.agent-sheet-rise-enter-active .agent-sheet__panel,
+.agent-sheet-rise-leave-active .agent-sheet__panel,
+.agent-sheet-rise-enter-active .agent-action-sheet__panel,
+.agent-sheet-rise-leave-active .agent-action-sheet__panel {
   transition-property: opacity, transform;
   transition-timing-function: ease, cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
-.sky-action-rise-enter-active .sky-action-sheet__panel,
-.sky-action-rise-leave-active .sky-action-sheet__panel {
+.agent-action-rise-enter-active .agent-action-sheet__panel,
+.agent-action-rise-leave-active .agent-action-sheet__panel {
   transition-duration: 300ms;
 }
 
-/* Les deux proprietes n'ont pas la meme duree : la position suit une sortie
-   rapide, l'opacite doit etre acquise bien avant la fin du deplacement. Avec
-   une duree commune, le panneau passe la moitie de sa course a moins de 20 %
-   d'opacite et le contenu de la page le traverse, ce qui se lit comme un
-   double affichage. L'ordre suit transition-property : opacite, puis
-   transformation. */
-.sky-sheet-rise-enter-active .sky-sheet__panel,
-.sky-sheet-rise-leave-active .sky-sheet__panel {
+.agent-sheet-rise-enter-active .agent-sheet__panel,
+.agent-sheet-rise-leave-active .agent-sheet__panel {
   transition-duration: 130ms, 400ms;
 }
-
-.sky-action-rise-enter-from .sky-overlay-backdrop,
-.sky-action-rise-leave-to .sky-overlay-backdrop,
-.sky-sheet-rise-enter-from .sky-overlay-backdrop,
-.sky-sheet-rise-leave-to .sky-overlay-backdrop,
-.sky-popup-rise-enter-from .sky-overlay-backdrop,
-.sky-popup-rise-leave-to .sky-overlay-backdrop,
-.sky-panel-left-enter-from .sky-overlay-backdrop,
-.sky-panel-left-leave-to .sky-overlay-backdrop,
-.sky-panel-right-enter-from .sky-overlay-backdrop,
-.sky-panel-right-leave-to .sky-overlay-backdrop,
-.sky-popover-scale-enter-from .sky-overlay-backdrop,
-.sky-popover-scale-leave-to .sky-overlay-backdrop,
-.sky-dialog-pop-enter-from .sky-overlay-backdrop,
-.sky-dialog-pop-leave-to .sky-overlay-backdrop {
+.agent-action-rise-enter-from .agent-overlay-backdrop,
+.agent-action-rise-leave-to .agent-overlay-backdrop,
+.agent-sheet-rise-enter-from .agent-overlay-backdrop,
+.agent-sheet-rise-leave-to .agent-overlay-backdrop,
+.agent-popup-rise-enter-from .agent-overlay-backdrop,
+.agent-popup-rise-leave-to .agent-overlay-backdrop,
+.agent-panel-left-enter-from .agent-overlay-backdrop,
+.agent-panel-left-leave-to .agent-overlay-backdrop,
+.agent-panel-right-enter-from .agent-overlay-backdrop,
+.agent-panel-right-leave-to .agent-overlay-backdrop,
+.agent-popover-scale-enter-from .agent-overlay-backdrop,
+.agent-popover-scale-leave-to .agent-overlay-backdrop,
+.agent-dialog-pop-enter-from .agent-overlay-backdrop,
+.agent-dialog-pop-leave-to .agent-overlay-backdrop {
   opacity: 0;
 }
-
-.sky-action-rise-enter-from .sky-action-sheet__panel,
-.sky-action-rise-leave-to .sky-action-sheet__panel,
-.sky-sheet-rise-enter-from .sky-sheet__panel,
-.sky-sheet-rise-leave-to .sky-sheet__panel,
-.sky-sheet-rise-enter-from .sky-action-sheet__panel,
-.sky-sheet-rise-leave-to .sky-action-sheet__panel {
+.agent-action-rise-enter-from .agent-action-sheet__panel,
+.agent-action-rise-leave-to .agent-action-sheet__panel,
+.agent-sheet-rise-enter-from .agent-sheet__panel,
+.agent-sheet-rise-leave-to .agent-sheet__panel,
+.agent-sheet-rise-enter-from .agent-action-sheet__panel,
+.agent-sheet-rise-leave-to .agent-action-sheet__panel {
   opacity: 0;
   transform: translateY(100%);
 }
-
-.sky-dialog-pop-enter-active .sky-dialog__panel,
-.sky-dialog-pop-leave-active .sky-dialog__panel {
+.agent-dialog-pop-enter-active .agent-dialog__panel,
+.agent-dialog-pop-leave-active .agent-dialog__panel {
   transition:
     opacity 400ms ease,
     transform 400ms cubic-bezier(0, 1, 0.2, 1.05);
   will-change: opacity, transform;
 }
-
-.sky-dialog-pop-enter-from .sky-dialog__panel,
-.sky-dialog-pop-leave-to .sky-dialog__panel {
+.agent-dialog-pop-enter-from .agent-dialog__panel,
+.agent-dialog-pop-leave-to .agent-dialog__panel {
   opacity: 0;
   transform: scale(0.86);
 }
-
-.sky-popup-rise-enter-active .sky-popup__panel,
-.sky-popup-rise-leave-active .sky-popup__panel {
+.agent-popup-rise-enter-active .agent-popup__panel,
+.agent-popup-rise-leave-active .agent-popup__panel {
   transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
-
-.sky-popup-rise-enter-from .sky-popup__panel,
-.sky-popup-rise-leave-to .sky-popup__panel {
+.agent-popup-rise-enter-from .agent-popup__panel,
+.agent-popup-rise-leave-to .agent-popup__panel {
   transform: translateY(100%);
 }
 
-.sky-panel-left-enter-active .sky-panel__panel,
-.sky-panel-left-leave-active .sky-panel__panel,
-.sky-panel-right-enter-active .sky-panel__panel,
-.sky-panel-right-leave-active .sky-panel__panel {
+.agent-panel-left-enter-active .agent-panel__panel,
+.agent-panel-left-leave-active .agent-panel__panel,
+.agent-panel-right-enter-active .agent-panel__panel,
+.agent-panel-right-leave-active .agent-panel__panel {
   transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
-
-.sky-panel-left-enter-from .sky-panel__panel,
-.sky-panel-left-leave-to .sky-panel__panel {
+.agent-panel-left-enter-from .agent-panel__panel,
+.agent-panel-left-leave-to .agent-panel__panel {
   transform: translateX(-100%);
 }
 
-.sky-panel-right-enter-from .sky-panel__panel,
-.sky-panel-right-leave-to .sky-panel__panel {
+.agent-panel-right-enter-from .agent-panel__panel,
+.agent-panel-right-leave-to .agent-panel__panel {
   transform: translateX(100%);
 }
 
-.sky-popover-scale-enter-active .sky-popover__panel,
-.sky-popover-scale-leave-active .sky-popover__panel {
+.agent-popover-scale-enter-active .agent-popover__panel,
+.agent-popover-scale-leave-active .agent-popover__panel {
   transition:
     opacity 400ms ease,
     transform 400ms cubic-bezier(0, 1, 0.2, 1.05);
   will-change: opacity, transform;
 }
-
-.sky-popover-scale-enter-from .sky-popover__panel,
-.sky-popover-scale-leave-to .sky-popover__panel {
+.agent-popover-scale-enter-from .agent-popover__panel,
+.agent-popover-scale-leave-to .agent-popover__panel {
   opacity: 0;
   transform: scale(0);
 }
-
-.sky-popover-scale-enter-active .sky-popover__content,
-.sky-popover-scale-leave-active .sky-popover__content {
+.agent-popover-scale-enter-active .agent-popover__content,
+.agent-popover-scale-leave-active .agent-popover__content {
   transition:
     opacity 600ms ease,
     transform 600ms cubic-bezier(0, 1, 0.2, 1.05);
   will-change: opacity, transform;
 }
-
-.sky-popover-scale-enter-from .sky-popover__content,
-.sky-popover-scale-leave-to .sky-popover__content {
+.agent-popover-scale-enter-from .agent-popover__content,
+.agent-popover-scale-leave-to .agent-popover__content {
   opacity: 0;
   transform: translateY(-80px);
 }
-
-.sky-sheet__panel,
-.sky-action-sheet__panel {
+.agent-sheet__panel,
+.agent-action-sheet__panel {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -204,26 +187,23 @@
   overflow: auto;
   border: 0;
   border-bottom: 0;
-  border-radius: var(--sky-radius-sheet) var(--sky-radius-sheet) 0 0;
-  background: var(--sky-sheet-background, var(--sky-surface));
-  color: var(--sky-text);
+  border-radius: var(--agent-radius-sheet) var(--agent-radius-sheet) 0 0;
+  background: var(--agent-sheet-background, var(--agent-surface));
+  color: var(--agent-text);
   box-shadow: none;
 }
-
-.sky-sheet__panel {
-  transform: translateY(var(--sky-sheet-drag-offset, 0));
+.agent-sheet__panel {
+  transform: translateY(var(--agent-sheet-drag-offset, 0));
 }
-
-.sky-sheet__panel--dragging {
+.agent-sheet__panel--dragging {
   transition: none !important;
   user-select: none;
 }
 
-.sky-sheet__panel--settling {
+.agent-sheet__panel--settling {
   transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-.sky-sheet__grabber {
+.agent-sheet__grabber {
   position: sticky;
   z-index: 3;
   top: 0;
@@ -241,39 +221,34 @@
   touch-action: none;
   user-select: none;
 }
-
-.sky-sheet__grabber::after {
+.agent-sheet__grabber::after {
   width: 42px;
   height: 5px;
   border-radius: 999px;
   content: '';
   background: rgba(120, 120, 128, 0.38);
 }
-
-.sky-sheet [data-sky-sheet-drag-handle] {
+.agent-sheet [data-agent-sheet-drag-handle] {
   touch-action: none;
 }
-
-.sky-action-sheet__panel {
+.agent-action-sheet__panel {
   max-width: 448px;
   margin: 0 auto;
-  padding: var(--sky-space-4) var(--sky-page-gutter)
-    calc(var(--sky-safe-area-bottom) + var(--sky-space-4));
+  padding: var(--agent-space-4) var(--agent-page-gutter)
+    calc(var(--agent-safe-area-bottom) + var(--agent-space-4));
   border: 0;
   background: transparent;
   box-shadow: none;
 }
-
-.sky-action-group {
+.agent-action-group {
   overflow: hidden;
-  margin-top: var(--sky-space-2);
+  margin-top: var(--agent-space-2);
   border: 0;
   border-radius: 32px;
-  background: var(--sky-glass-solid, var(--sky-surface));
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass-solid, var(--agent-surface));
+  box-shadow: var(--agent-shadow-glass);
 }
-
-.sky-action-button {
+.agent-action-button {
   box-sizing: border-box;
   width: 100%;
   min-height: 56px;
@@ -282,7 +257,7 @@
   justify-content: center;
   border: 0;
   padding: 10px 16px;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
   background: transparent;
   font: inherit;
   font-size: 20px;
@@ -292,25 +267,21 @@
   cursor: pointer;
   transition: background-color 100ms ease;
 }
-
-.sky-action-group--dividers .sky-action-button--dividers:not(:last-child) {
-  border-bottom: 1px solid var(--sky-hairline);
+.agent-action-group--dividers .agent-action-button--dividers:not(:last-child) {
+  border-bottom: 1px solid var(--agent-hairline);
 }
-
-.sky-action-button:active:not(.sky-action-button--disabled) {
-  background: var(--sky-pressed);
+.agent-action-button:active:not(.agent-action-button--disabled) {
+  background: var(--agent-pressed);
 }
-
-.sky-action-button--bold {
+.agent-action-button--bold {
   font-weight: 700;
 }
-
-.sky-action-button--disabled {
+.agent-action-button--disabled {
   cursor: default;
   pointer-events: none;
 }
 
-.sky-actions-label {
+.agent-actions-label {
   box-sizing: border-box;
   width: 100%;
   min-height: 56px;
@@ -319,189 +290,166 @@
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: var(--sky-surface);
-  color: var(--sky-muted);
+  background: var(--agent-surface);
+  color: var(--agent-muted);
   font-size: 14px;
   line-height: 18px;
   text-align: center;
 }
-
-.sky-actions-label--dividers {
-  border-bottom: 1px solid var(--sky-hairline);
+.agent-actions-label--dividers {
+  border-bottom: 1px solid var(--agent-hairline);
 }
-
-.sky-dialog {
+.agent-dialog {
   display: grid;
   place-items: center;
-  padding: var(--sky-page-gutter);
+  padding: var(--agent-page-gutter);
 }
-
-.sky-dialog__panel {
+.agent-dialog__panel {
   position: relative;
   z-index: 1;
   width: min(300px, 100%);
   overflow: hidden;
   border: 0;
   border-radius: 32px;
-  background: var(--sky-glass-solid, var(--sky-surface));
-  color: var(--sky-text);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass-solid, var(--agent-surface));
+  color: var(--agent-text);
+  box-shadow: var(--agent-shadow-glass);
 }
-
-.sky-sheet__panel:focus,
-.sky-action-sheet__panel:focus,
-.sky-dialog__panel:focus,
-.sky-panel__panel:focus,
-.sky-popup__panel:focus,
-.sky-popover__panel:focus {
+.agent-sheet__panel:focus,
+.agent-action-sheet__panel:focus,
+.agent-dialog__panel:focus,
+.agent-panel__panel:focus,
+.agent-popup__panel:focus,
+.agent-popover__panel:focus {
   outline: none;
 }
-
-.sky-dialog__content {
+.agent-dialog__content {
   padding: 24px;
   text-align: left;
 }
 
-.sky-dialog__content h2 {
+.agent-dialog__content h2 {
   margin: 0 0 12px;
   font-size: 17px;
   line-height: 22px;
 }
-
-.sky-dialog__content p {
+.agent-dialog__content p {
   margin: 0;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 13px;
   line-height: 18px;
 }
-
-.sky-dialog__buttons {
+.agent-dialog__buttons {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 0 14px 14px;
 }
-
-.sky-dialog-button {
+.agent-dialog-button {
   min-width: 0;
   flex: 1 1 0;
 }
 
-.sky-dialog-button.sky-button {
+.agent-dialog-button.agent-button {
   color: #fff;
 }
-
-.sky-dialog-button:disabled {
-  background: var(--sky-pressed);
-  color: var(--sky-subtle);
+.agent-dialog-button:disabled {
+  background: var(--agent-pressed);
+  color: var(--agent-subtle);
   opacity: 1;
 }
-
-.sky-toast {
+.agent-toast {
   box-sizing: border-box;
   position: absolute;
   z-index: 100;
-  right: var(--sky-safe-area-right, 0px);
-  left: var(--sky-safe-area-left, 0px);
+  right: var(--agent-safe-area-right, 0px);
+  left: var(--agent-safe-area-left, 0px);
   display: flex;
   padding: 0 16px;
   pointer-events: none;
 }
-
-.sky-toast--left {
+.agent-toast--left {
   justify-content: flex-start;
 }
-
-.sky-toast--center {
+.agent-toast--center {
   justify-content: center;
 }
-
-.sky-toast--right {
+.agent-toast--right {
   justify-content: flex-end;
 }
-
-.sky-toast--vertical-top {
-  top: calc(var(--sky-safe-area-top) + var(--sky-space-4));
+.agent-toast--vertical-top {
+  top: calc(var(--agent-safe-area-top) + var(--agent-space-4));
 }
-
-.sky-toast--vertical-center {
+.agent-toast--vertical-center {
   top: 50%;
   transform: translateY(-50%);
 }
 
-.sky-toast--vertical-bottom {
-  bottom: calc(var(--sky-safe-area-bottom) + var(--sky-space-4));
+.agent-toast--vertical-bottom {
+  bottom: calc(var(--agent-safe-area-bottom) + var(--agent-space-4));
 }
-
-.sky-toast__inner {
+.agent-toast__inner {
   max-width: min(512px, 100%);
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 16px;
-  color: var(--sky-text);
-  background: var(--sky-glass-solid, var(--sky-surface));
-  box-shadow: var(--sky-shadow-glass);
+  color: var(--agent-text);
+  background: var(--agent-glass-solid, var(--agent-surface));
+  box-shadow: var(--agent-shadow-glass);
   font-size: 14px;
   pointer-events: auto;
 }
-
-.sky-toast__content {
+.agent-toast__content {
   min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 6px 16px;
 }
-
-.sky-toast__text {
+.agent-toast__text {
   min-width: 0;
 }
-
-.sky-toast__button {
+.agent-toast__button {
   flex: none;
   margin: -6px -8px -6px 16px;
 }
 
-.sky-toast-slide-enter-active,
-.sky-toast-slide-leave-active {
+.agent-toast-slide-enter-active,
+.agent-toast-slide-leave-active {
   transition:
     opacity 300ms ease,
-    transform 300ms var(--sky-ease-out, ease-out);
+    transform 300ms var(--agent-ease-out, ease-out);
 }
-
-.sky-toast-slide-enter-from,
-.sky-toast-slide-leave-to {
+.agent-toast-slide-enter-from,
+.agent-toast-slide-leave-to {
   opacity: 0;
   transform: translateY(100%);
 }
-
-.sky-toast--vertical-center.sky-toast-slide-enter-from,
-.sky-toast--vertical-center.sky-toast-slide-leave-to {
+.agent-toast--vertical-center.agent-toast-slide-enter-from,
+.agent-toast--vertical-center.agent-toast-slide-leave-to {
   transform: translateY(calc(-50% + 24px));
 }
 
-.sky-toast--vertical-top.sky-toast-slide-enter-from,
-.sky-toast--vertical-top.sky-toast-slide-leave-to {
+.agent-toast--vertical-top.agent-toast-slide-enter-from,
+.agent-toast--vertical-top.agent-toast-slide-leave-to {
   transform: translateY(-100%);
 }
 
-.sky-messages {
+.agent-messages {
   display: flex;
   flex-direction: column;
   margin-bottom: 48px;
-  padding-right: calc(var(--sky-safe-area-right) + 8px);
-  padding-left: calc(var(--sky-safe-area-left) + 8px);
+  padding-right: calc(var(--agent-safe-area-right) + 8px);
+  padding-left: calc(var(--agent-safe-area-left) + 8px);
 }
-
-.sky-messages-title {
+.agent-messages-title {
   margin: 10px 0 0;
-  color: var(--sky-message-meta);
+  color: var(--agent-message-meta);
   font-size: 12px;
   line-height: 12px;
   text-align: center;
 }
-
-.sky-message {
+.agent-message {
   box-sizing: border-box;
   max-width: 70%;
   position: relative;
@@ -512,21 +460,18 @@
   margin-bottom: 8px;
   transform: translateZ(0);
 }
-
-.sky-message--sent {
+.agent-message--sent {
   align-self: flex-end;
 }
-
-.sky-message__name,
-.sky-message__header {
+.agent-message__name,
+.agent-message__header {
   display: block;
   margin: 0 0 2px 16px;
-  color: var(--sky-message-meta);
+  color: var(--agent-message-meta);
   font-size: 12px;
   line-height: 16px;
 }
-
-.sky-message__avatar {
+.agent-message__avatar {
   width: 32px;
   height: 32px;
   display: block;
@@ -536,14 +481,12 @@
   margin-right: 6px;
   border-radius: 50%;
 }
-
-.sky-message__content {
+.agent-message__content {
   min-width: 0;
   display: flex;
   flex-direction: column;
 }
-
-.sky-message__bubble {
+.agent-message__bubble {
   box-sizing: border-box;
   position: relative;
   display: flex;
@@ -551,21 +494,20 @@
   margin: 0;
   border-radius: 16px;
   padding: 6px 16px;
-  background: var(--sky-message-received-background);
-  color: var(--sky-text);
+  background: var(--agent-message-received-background);
+  color: var(--agent-text);
   font-size: 16px;
   line-height: 20px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-
-.sky-message--sent .sky-message__bubble {
-  background: var(--sky-app-accent);
+.agent-message--sent .agent-message__bubble {
+  background: var(--agent-app-accent);
   color: #ffffff;
 }
 
-.sky-message__text-header,
-.sky-message__text-footer {
+.agent-message__text-header,
+.agent-message__text-footer {
   width: 100%;
   color: currentColor;
   font-size: 14px;
@@ -573,45 +515,40 @@
   text-align: left;
   opacity: 0.8;
 }
-
-.sky-message--sent .sky-message__header,
-.sky-message--sent .sky-message__name {
+.agent-message--sent .agent-message__header,
+.agent-message--sent .agent-message__name {
   text-align: right;
 }
 
-.sky-message__footer {
+.agent-message__footer {
   width: 100%;
   color: currentColor;
   font-size: 12px;
   line-height: 16px;
   opacity: 0.8;
 }
-
-.sky-messagebar {
+.agent-messagebar {
   width: 100%;
   position: fixed;
-  z-index: var(--sky-overlay-layer, 80);
+  z-index: var(--agent-overlay-layer, 80);
   right: 0;
   bottom: 0;
   left: 0;
-  --sky-messagebar-gap: 12px;
+  --agent-messagebar-gap: 12px;
 }
-
-.sky-messagebar .sky-toolbar__background {
+.agent-messagebar .agent-toolbar__background {
   background: linear-gradient(
     to top,
-    var(--sky-messagebar-gradient-start),
+    var(--agent-messagebar-gradient-start),
     transparent
   );
 }
-
-.sky-messagebar__inner {
+.agent-messagebar__inner {
   width: 100%;
   align-items: center;
-  gap: var(--sky-messagebar-gap);
+  gap: var(--agent-messagebar-gap);
 }
-
-.sky-messagebar__area {
+.agent-messagebar__area {
   min-width: 0;
   height: 40px;
   flex: 1;
@@ -619,8 +556,7 @@
   border: 0;
   border-radius: 24px;
 }
-
-.sky-messagebar textarea {
+.agent-messagebar textarea {
   box-sizing: border-box;
   width: 100%;
   height: 40px;
@@ -632,44 +568,41 @@
   border-radius: 24px;
   padding: 12px 16px 4px;
   outline: 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
   background: transparent;
   font: inherit;
   font-size: 16px;
   line-height: 16px;
   touch-action: none;
 }
-
-.sky-messagebar textarea::placeholder {
-  color: var(--sky-messagebar-placeholder);
+.agent-messagebar textarea::placeholder {
+  color: var(--agent-messagebar-placeholder);
   opacity: 1;
 }
 
-.sky-messagebar__left,
-.sky-messagebar__right {
-  min-width: var(--sky-touch-target);
-  min-height: var(--sky-touch-target);
+.agent-messagebar__left,
+.agent-messagebar__right {
+  min-width: var(--agent-touch-target);
+  min-height: var(--agent-touch-target);
   display: grid;
   flex: none;
   place-items: center;
-  color: var(--sky-messagebar-icon);
+  color: var(--agent-messagebar-icon);
 }
-
-.sky-messagebar__left .sky-link,
-.sky-messagebar__right .sky-link {
+.agent-messagebar__left .agent-link,
+.agent-messagebar__right .agent-link {
   color: inherit;
 }
 
-.sky-messagebar .sky-toolbar-pane {
+.agent-messagebar .agent-toolbar-pane {
   height: 40px;
   overflow: visible;
 }
 
-.sky-messagebar__right {
+.agent-messagebar__right {
   margin-right: 0;
 }
-
-.sky-messagebar--embedded {
+.agent-messagebar--embedded {
   min-height: 0;
   position: relative;
   z-index: auto;
@@ -677,19 +610,17 @@
   bottom: auto;
   left: auto;
   padding: 0;
-  --sky-messagebar-gap: 4px;
+  --agent-messagebar-gap: 4px;
 }
-
-.sky-messagebar--embedded .sky-toolbar__blur,
-.sky-messagebar--embedded .sky-toolbar__background {
+.agent-messagebar--embedded .agent-toolbar__blur,
+.agent-messagebar--embedded .agent-toolbar__background {
   display: none;
 }
 
-.sky-messagebar--embedded .sky-messagebar__inner {
+.agent-messagebar--embedded .agent-messagebar__inner {
   min-height: 0;
 }
-
-.sky-messagebar--embedded .sky-messagebar__area {
+.agent-messagebar--embedded .agent-messagebar__area {
   height: auto;
   min-height: 0;
   overflow: visible;
@@ -699,12 +630,11 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-
-.sky-notification {
+.agent-notification {
   box-sizing: border-box;
   position: absolute;
   z-index: 50;
-  top: calc(var(--sky-safe-area-top, 0px) + 6px);
+  top: calc(var(--agent-safe-area-top, 0px) + 6px);
   right: 10px;
   left: 10px;
   min-height: 72px;
@@ -713,51 +643,45 @@
   gap: 10px;
   padding: 10px 12px;
   overflow: hidden;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 18px;
-  color: var(--sky-text);
-  box-shadow: var(--sky-shadow-glass);
+  color: var(--agent-text);
+  box-shadow: var(--agent-shadow-glass);
   touch-action: none;
 }
-
-.sky-notification__icon {
+.agent-notification__icon {
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
 }
-
-.sky-notification__content {
+.agent-notification__content {
   width: 100%;
   min-width: 0;
   flex-shrink: 1;
 }
-
-.sky-notification__header {
+.agent-notification__header {
   position: relative;
   min-width: 0;
   display: flex;
   align-items: center;
 }
-
-.sky-notification__header--with-close {
+.agent-notification__header--with-close {
   padding-inline-end: 24px;
 }
-
-.sky-notification__title,
-.sky-notification__time,
-.sky-notification__subtitle,
-.sky-notification__text {
+.agent-notification__title,
+.agent-notification__time,
+.agent-notification__subtitle,
+.agent-notification__text {
   font-size: 12px;
   line-height: 16px;
 }
-
-.sky-notification__title,
-.sky-notification__subtitle {
+.agent-notification__title,
+.agent-notification__subtitle {
   font-weight: 600;
 }
 
-.sky-notification__title {
+.agent-notification__title {
   min-width: 0;
   overflow: hidden;
   font-size: 13px;
@@ -765,27 +689,24 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.sky-notification__time {
+.agent-notification__time {
   margin-inline-start: auto;
   margin-inline-end: 0;
   flex: none;
-  color: var(--sky-notification-meta);
+  color: var(--agent-notification-meta);
   font-size: 10px;
   line-height: 14px;
 }
-
-.sky-notification__text {
-  color: var(--sky-text);
+.agent-notification__text {
+  color: var(--agent-text);
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
-
-.sky-notification__close {
-  width: var(--sky-touch-target, 44px);
-  height: var(--sky-touch-target, 44px);
+.agent-notification__close {
+  width: var(--agent-touch-target, 44px);
+  height: var(--agent-touch-target, 44px);
   position: absolute;
   top: 50%;
   right: -8px;
@@ -795,66 +716,57 @@
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: var(--sky-notification-close);
+  color: var(--agent-notification-close);
   font: inherit;
   cursor: pointer;
   transform: translateY(-50%);
 }
-
-.sky-notification__close:active {
-  color: var(--sky-notification-close-active);
+.agent-notification__close:active {
+  color: var(--agent-notification-close-active);
 }
-
-.sky-notification__close-icon {
+.agent-notification__close-icon {
   width: 20px;
   height: 20px;
 }
 
-.sky-notification__close:focus-visible {
-  outline: 2px solid var(--sky-app-accent);
+.agent-notification__close:focus-visible {
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: 2px;
 }
 
-.sky-notification-slide-enter-active,
-.sky-notification-slide-leave-active {
+.agent-notification-slide-enter-active,
+.agent-notification-slide-leave-active {
   transition:
     opacity 300ms ease,
-    transform 380ms var(--sky-ease-out, ease-out);
+    transform 380ms var(--agent-ease-out, ease-out);
 }
-
-.sky-notification-slide-enter-from,
-.sky-notification-slide-leave-to {
+.agent-notification-slide-enter-from,
+.agent-notification-slide-leave-to {
   opacity: 0;
   transform: translateY(-32px) scale(0.97);
 }
-
-.sky-panel__panel,
-.sky-popup__panel,
-.sky-popover__panel {
+.agent-panel__panel,
+.agent-popup__panel,
+.agent-popover__panel {
   position: absolute;
   z-index: 1;
   border: 0;
-  color: var(--sky-text);
-  box-shadow: var(--sky-shadow-glass);
+  color: var(--agent-text);
+  box-shadow: var(--agent-shadow-glass);
 }
-
-.sky-popup__panel {
-  background: var(--sky-popup-background, var(--sky-surface));
+.agent-popup__panel {
+  background: var(--agent-popup-background, var(--agent-surface));
 }
-
-.sky-popover__panel {
-  background: var(--sky-glass-solid, var(--sky-surface));
+.agent-popover__panel {
+  background: var(--agent-glass-solid, var(--agent-surface));
 }
-
-.sky-panel__backdrop {
+.agent-panel__backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
-
-.sky-popup__backdrop {
+.agent-popup__backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
-
-.sky-panel__panel {
+.agent-panel__panel {
   top: 0;
   bottom: 0;
   width: 288px;
@@ -862,87 +774,71 @@
   overflow: hidden;
   touch-action: none;
 }
-
-.sky-panel__panel:not(.sky-panel__panel--floating) {
-  background: var(--sky-panel-background, var(--sky-surface));
+.agent-panel__panel:not(.agent-panel__panel--floating) {
+  background: var(--agent-panel-background, var(--agent-surface));
 }
-
-.sky-panel__panel--left {
+.agent-panel__panel--left {
   left: 0;
 }
-
-.sky-panel__panel--right {
+.agent-panel__panel--right {
   right: 0;
 }
-
-.sky-panel__panel--floating {
-  top: calc(var(--sky-safe-area-top, 0px) + 8px);
-  bottom: calc(var(--sky-safe-area-bottom, 0px) + 8px);
+.agent-panel__panel--floating {
+  top: calc(var(--agent-safe-area-top, 0px) + 8px);
+  bottom: calc(var(--agent-safe-area-bottom, 0px) + 8px);
   border-radius: 32px;
 }
-
-.sky-panel__panel--left.sky-panel__panel--floating {
+.agent-panel__panel--left.agent-panel__panel--floating {
   left: 8px;
 }
-
-.sky-panel__panel--right.sky-panel__panel--floating {
+.agent-panel__panel--right.agent-panel__panel--floating {
   right: 8px;
 }
-
-.sky-popup__panel {
+.agent-popup__panel {
   inset: 0;
   overflow: hidden;
   box-shadow: none;
 }
-
-.sky-popover__panel {
+.agent-popover__panel {
   width: 240px;
   max-width: calc(100% - 16px);
   max-height: calc(100% - 16px);
   border-radius: 32px;
-  background: var(--sky-glass-solid, var(--sky-surface));
+  background: var(--agent-glass-solid, var(--agent-surface));
   transform-origin: center;
 }
-
-.sky-popover__panel--top {
+.agent-popover__panel--top {
   transform-origin: center bottom;
 }
-
-.sky-popover__panel--bottom {
+.agent-popover__panel--bottom {
   transform-origin: center top;
 }
-
-.sky-popover__panel--left {
+.agent-popover__panel--left {
   transform-origin: right center;
 }
-
-.sky-popover__panel--right {
+.agent-popover__panel--right {
   transform-origin: left center;
 }
-
-.sky-popover__content {
+.agent-popover__content {
   max-height: inherit;
   overflow: auto;
   border-radius: inherit;
 }
-
-.sky-dropdown .sky-popover__panel {
+.agent-dropdown .agent-popover__panel {
   width: 252px;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 28px;
-  background: var(--sky-glass-solid, var(--sky-surface));
+  background: var(--agent-glass-solid, var(--agent-surface));
   box-shadow:
-    var(--sky-shadow-glass),
+    var(--agent-shadow-glass),
     0 16px 36px rgba(0, 0, 0, 0.28);
 }
-
-.sky-dropdown__menu {
+.agent-dropdown__menu {
   padding: 6px;
 }
-
-.sky-dropdown__item {
+.agent-dropdown__item {
   width: 100%;
-  min-height: var(--sky-touch-target, 44px);
+  min-height: var(--agent-touch-target, 44px);
   position: relative;
   display: grid;
   grid-template-columns: 30px minmax(0, 1fr) 22px;
@@ -952,228 +848,208 @@
   border-radius: 12px;
   padding: 8px 14px 8px 12px;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font: inherit;
   font-size: 17px;
   line-height: 1.25;
   text-align: left;
   cursor: pointer;
   transition:
-    background-color var(--sky-transition-fast, 100ms) ease,
-    box-shadow var(--sky-transition-fast, 100ms) ease;
+    background-color var(--agent-transition-fast, 100ms) ease,
+    box-shadow var(--agent-transition-fast, 100ms) ease;
 }
-
-.sky-dropdown__item--separator {
+.agent-dropdown__item--separator {
   margin-top: 5px;
   padding-top: 13px;
 }
 
-.sky-dropdown__item--separator::before {
+.agent-dropdown__item--separator::before {
   content: '';
   height: 1px;
   position: absolute;
   top: 0;
   right: 14px;
   left: 52px;
-  background: var(--sky-hairline);
-  transform: scaleY(var(--sky-hairline-scale, 1));
+  background: var(--agent-hairline);
+  transform: scaleY(var(--agent-hairline-scale, 1));
   transform-origin: center top;
 }
-
-.sky-dropdown__indicator,
-.sky-dropdown__chevron {
+.agent-dropdown__indicator,
+.agent-dropdown__chevron {
   display: grid;
   place-items: center;
 }
-
-.sky-dropdown__label {
+.agent-dropdown__label {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.sky-dropdown__chevron {
-  color: var(--sky-muted);
+.agent-dropdown__chevron {
+  color: var(--agent-muted);
 }
-
-.sky-dropdown__item--destructive {
-  color: var(--sky-danger);
+.agent-dropdown__item--destructive {
+  color: var(--agent-danger);
 }
-
-.sky-dropdown__item:focus-visible,
-.sky-dropdown__item:active {
-  background: var(--sky-pressed);
+.agent-dropdown__item:focus-visible,
+.agent-dropdown__item:active {
+  background: var(--agent-pressed);
 }
 
 @media (hover: hover) {
-  .sky-dropdown__item:hover:not(:disabled) {
-    background: var(--sky-pressed);
-    box-shadow: inset 0 0 0 1px var(--sky-hairline);
+  .agent-dropdown__item:hover:not(:disabled) {
+    background: var(--agent-pressed);
+    box-shadow: inset 0 0 0 1px var(--agent-hairline);
   }
 }
-
-.sky-dropdown__item:focus-visible {
-  outline: 2px solid var(--sky-app-accent);
+.agent-dropdown__item:focus-visible {
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: -2px;
 }
 
-.sky-dropdown__item:disabled {
+.agent-dropdown__item:disabled {
   opacity: 0.45;
   cursor: default;
 }
 
-.sky-dropdown__item:disabled:hover,
-.sky-dropdown__item:disabled:active {
+.agent-dropdown__item:disabled:hover,
+.agent-dropdown__item:disabled:active {
   background: transparent;
 }
 
-.sky-popover__arrow-wrap {
+.agent-popover__arrow-wrap {
   position: absolute;
   z-index: 2;
   overflow: hidden;
   pointer-events: none;
 }
-
-.sky-popover__arrow-wrap--top,
-.sky-popover__arrow-wrap--bottom {
+.agent-popover__arrow-wrap--top,
+.agent-popover__arrow-wrap--bottom {
   width: 26px;
   height: 13px;
   transform: translateX(-50%);
 }
-
-.sky-popover__arrow-wrap--left,
-.sky-popover__arrow-wrap--right {
+.agent-popover__arrow-wrap--left,
+.agent-popover__arrow-wrap--right {
   width: 13px;
   height: 26px;
   transform: translateY(-50%);
 }
-
-.sky-popover__arrow-wrap--top {
+.agent-popover__arrow-wrap--top {
   bottom: 100%;
 }
-
-.sky-popover__arrow-wrap--bottom {
+.agent-popover__arrow-wrap--bottom {
   top: 100%;
 }
-
-.sky-popover__arrow-wrap--left {
+.agent-popover__arrow-wrap--left {
   right: 100%;
 }
-
-.sky-popover__arrow-wrap--right {
+.agent-popover__arrow-wrap--right {
   left: 100%;
 }
-
-.sky-popover__arrow {
+.agent-popover__arrow {
   width: 19px;
   height: 19px;
   position: absolute;
   display: block;
-  background: var(--sky-glass-solid, var(--sky-surface));
+  background: var(--agent-glass-solid, var(--agent-surface));
   transform: rotate(45deg);
 }
-
-.sky-popover__arrow-wrap--top .sky-popover__arrow {
+.agent-popover__arrow-wrap--top .agent-popover__arrow {
   bottom: -10px;
   left: 4px;
 }
 
-.sky-popover__arrow-wrap--bottom .sky-popover__arrow {
+.agent-popover__arrow-wrap--bottom .agent-popover__arrow {
   top: -10px;
   left: 4px;
 }
 
-.sky-popover__arrow-wrap--left .sky-popover__arrow {
+.agent-popover__arrow-wrap--left .agent-popover__arrow {
   top: 4px;
   right: -10px;
 }
 
-.sky-popover__arrow-wrap--right .sky-popover__arrow {
+.agent-popover__arrow-wrap--right .agent-popover__arrow {
   top: 4px;
   left: -10px;
 }
 
-.sky-panel__panel--left {
+.agent-panel__panel--left {
   transform-origin: left center;
 }
-
-.sky-panel__panel--right {
+.agent-panel__panel--right {
   transform-origin: right center;
 }
-
-.sky-action-button:focus-visible,
-.sky-dialog-button:focus-visible,
-.sky-messagebar textarea:focus-visible,
-.sky-panel__panel:focus-visible,
-.sky-popup__panel:focus-visible,
-.sky-popover__panel:focus-visible {
-  outline: 2px solid var(--sky-app-accent);
+.agent-action-button:focus-visible,
+.agent-dialog-button:focus-visible,
+.agent-messagebar textarea:focus-visible,
+.agent-panel__panel:focus-visible,
+.agent-popup__panel:focus-visible,
+.agent-popover__panel:focus-visible {
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: -2px;
 }
-
-.sky-action-button:disabled,
-.sky-action-button--disabled,
-.sky-messagebar textarea:disabled {
+.agent-action-button:disabled,
+.agent-action-button--disabled,
+.agent-messagebar textarea:disabled {
   opacity: 0.45;
 }
-
 @supports (
   (-webkit-backdrop-filter: blur(16px)) or (backdrop-filter: blur(16px))
 ) {
-  .sky-dropdown .sky-popover__panel {
+  .agent-dropdown .agent-popover__panel {
     background:
       linear-gradient(
         145deg,
-        var(--sky-dropdown-glass-highlight, rgba(255, 255, 255, 0.12)) 0%,
+        var(--agent-dropdown-glass-highlight, rgba(255, 255, 255, 0.12)) 0%,
         transparent 42%
       ),
-      var(--sky-glass);
+      var(--agent-glass);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
   }
-
-  .sky-popover__arrow {
-    background: var(--sky-glass);
+  .agent-popover__arrow {
+    background: var(--agent-glass);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .sky-sheet-rise-enter-active .sky-overlay-backdrop,
-  .sky-sheet-rise-leave-active .sky-overlay-backdrop,
-  .sky-sheet-rise-enter-active .sky-sheet__panel,
-  .sky-sheet-rise-leave-active .sky-sheet__panel,
-  .sky-action-rise-enter-active .sky-overlay-backdrop,
-  .sky-action-rise-leave-active .sky-overlay-backdrop,
-  .sky-action-rise-enter-active .sky-action-sheet__panel,
-  .sky-action-rise-leave-active .sky-action-sheet__panel,
-  .sky-dialog-pop-enter-active .sky-overlay-backdrop,
-  .sky-dialog-pop-leave-active .sky-overlay-backdrop,
-  .sky-dialog-pop-enter-active .sky-dialog__panel,
-  .sky-dialog-pop-leave-active .sky-dialog__panel,
-  .sky-panel-left-enter-active .sky-overlay-backdrop,
-  .sky-panel-left-leave-active .sky-overlay-backdrop,
-  .sky-panel-left-enter-active .sky-panel__panel,
-  .sky-panel-left-leave-active .sky-panel__panel,
-  .sky-panel-right-enter-active .sky-overlay-backdrop,
-  .sky-panel-right-leave-active .sky-overlay-backdrop,
-  .sky-panel-right-enter-active .sky-panel__panel,
-  .sky-panel-right-leave-active .sky-panel__panel,
-  .sky-popup-rise-enter-active .sky-overlay-backdrop,
-  .sky-popup-rise-leave-active .sky-overlay-backdrop,
-  .sky-popup-rise-enter-active .sky-popup__panel,
-  .sky-popup-rise-leave-active .sky-popup__panel,
-  .sky-popover-scale-enter-active .sky-overlay-backdrop,
-  .sky-popover-scale-leave-active .sky-overlay-backdrop,
-  .sky-popover-scale-enter-active .sky-popover__panel,
-  .sky-popover-scale-leave-active .sky-popover__panel,
-  .sky-popover-scale-enter-active .sky-popover__content,
-  .sky-popover-scale-leave-active .sky-popover__content,
-  .sky-toast-slide-enter-active,
-  .sky-toast-slide-leave-active,
-  .sky-notification-slide-enter-active,
-  .sky-notification-slide-leave-active,
-  .sky-sheet__panel--settling {
+  .agent-sheet-rise-enter-active .agent-overlay-backdrop,
+  .agent-sheet-rise-leave-active .agent-overlay-backdrop,
+  .agent-sheet-rise-enter-active .agent-sheet__panel,
+  .agent-sheet-rise-leave-active .agent-sheet__panel,
+  .agent-action-rise-enter-active .agent-overlay-backdrop,
+  .agent-action-rise-leave-active .agent-overlay-backdrop,
+  .agent-action-rise-enter-active .agent-action-sheet__panel,
+  .agent-action-rise-leave-active .agent-action-sheet__panel,
+  .agent-dialog-pop-enter-active .agent-overlay-backdrop,
+  .agent-dialog-pop-leave-active .agent-overlay-backdrop,
+  .agent-dialog-pop-enter-active .agent-dialog__panel,
+  .agent-dialog-pop-leave-active .agent-dialog__panel,
+  .agent-panel-left-enter-active .agent-overlay-backdrop,
+  .agent-panel-left-leave-active .agent-overlay-backdrop,
+  .agent-panel-left-enter-active .agent-panel__panel,
+  .agent-panel-left-leave-active .agent-panel__panel,
+  .agent-panel-right-enter-active .agent-overlay-backdrop,
+  .agent-panel-right-leave-active .agent-overlay-backdrop,
+  .agent-panel-right-enter-active .agent-panel__panel,
+  .agent-panel-right-leave-active .agent-panel__panel,
+  .agent-popup-rise-enter-active .agent-overlay-backdrop,
+  .agent-popup-rise-leave-active .agent-overlay-backdrop,
+  .agent-popup-rise-enter-active .agent-popup__panel,
+  .agent-popup-rise-leave-active .agent-popup__panel,
+  .agent-popover-scale-enter-active .agent-overlay-backdrop,
+  .agent-popover-scale-leave-active .agent-overlay-backdrop,
+  .agent-popover-scale-enter-active .agent-popover__panel,
+  .agent-popover-scale-leave-active .agent-popover__panel,
+  .agent-popover-scale-enter-active .agent-popover__content,
+  .agent-popover-scale-leave-active .agent-popover__content,
+  .agent-toast-slide-enter-active,
+  .agent-toast-slide-leave-active,
+  .agent-notification-slide-enter-active,
+  .agent-notification-slide-leave-active,
+  .agent-sheet__panel--settling {
     transition-duration: 0.01ms !important;
   }
 }

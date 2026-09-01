@@ -14,7 +14,7 @@ import type {
   NumberMergeTile,
 } from '@/features/games/number-merge/types'
 import { usePhoneStore } from '@/stores/phone'
-import { SkyButton } from '@/ui'
+import { AgentButton } from '@/ui'
 
 const phone = usePhoneStore()
 const numberMerge = useNumberMergeStore()
@@ -136,7 +136,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
         <span>{{ phone.t('Apps.numberMerge.eyebrow') }}</span>
         <h1>{{ phone.t('Apps.numberMerge.name') }}</h1>
       </div>
-      <SkyButton glass icon-only rounded
+      <AgentButton glass icon-only rounded
         type="button"
         :aria-label="
           phone.t(
@@ -156,7 +156,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
       >
         <Volume2 v-if="numberMerge.soundEnabled" :size="18" aria-hidden="true" />
         <VolumeX v-else :size="18" aria-hidden="true" />
-      </SkyButton>
+      </AgentButton>
     </header>
 
     <section v-if="numberMerge.menuOpen" class="number-merge-menu">
@@ -211,7 +211,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
 
     <section v-else-if="game" class="number-merge-game">
       <div class="number-merge-toolbar">
-        <SkyButton glass icon-only rounded
+        <AgentButton glass icon-only rounded
           type="button"
           class="number-merge-toolbar__icon"
           :aria-label="phone.t('Apps.numberMerge.backToMenu')"
@@ -219,7 +219,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
           @click="numberMerge.showMenu"
         >
           <ChevronLeft :size="19" :stroke-width="2.7" aria-hidden="true" />
-        </SkyButton>
+        </AgentButton>
         <div>
           <span>{{ phone.t('Apps.numberMerge.score') }}</span>
           <strong>{{ formatScore(game.score) }}</strong>
@@ -228,7 +228,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
           <span>{{ phone.t('Apps.numberMerge.best') }}</span>
           <strong>{{ formatScore(numberMerge.bestScore) }}</strong>
         </div>
-        <SkyButton glass icon-only rounded
+        <AgentButton glass icon-only rounded
           type="button"
           class="number-merge-toolbar__icon number-merge-toolbar__restart"
           :aria-label="phone.t('Apps.numberMerge.newGame')"
@@ -236,7 +236,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
           @click="requestNewGame"
         >
           <RotateCcw :size="17" :stroke-width="2.5" aria-hidden="true" />
-        </SkyButton>
+        </AgentButton>
       </div>
 
       <div
@@ -335,7 +335,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
   background:
     radial-gradient(circle at 86% 8%, rgb(255 192 94 / 28%), transparent 29%),
     linear-gradient(155deg, #fff3dc 0%, #f3d8b7 55%, #e8b98d 100%);
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   touch-action: none;
   user-select: none;
 }
@@ -374,8 +374,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
   overflow-wrap: anywhere;
 }
 
-.number-merge-header button:not(.sky-button--glass),
-.number-merge-toolbar__icon:not(.sky-button--glass) {
+.number-merge-header button:not(.agent-button--glass),
+.number-merge-toolbar__icon:not(.agent-button--glass) {
   width: 36px;
   height: 36px;
   display: grid;
@@ -389,8 +389,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
   cursor: pointer;
 }
 
-.number-merge-header .sky-button--glass { color: #784c3c; }
-.number-merge-toolbar .sky-button--glass { --sky-touch-target: 32px; width: 32px; height: 32px; color: #784c3c; }
+.number-merge-header .agent-button--glass { color: #784c3c; }
+.number-merge-toolbar .agent-button--glass { --agent-touch-target: 32px; width: 32px; height: 32px; color: #784c3c; }
 
 .number-merge-menu {
   height: calc(100% - 55px);

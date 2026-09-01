@@ -26,13 +26,13 @@ const overview: GarageOverview = {
       body: 91,
       engine: 84,
       fuel: 67,
-      id: 'SKY 204',
+      id: 'AGT 204',
       kind: 'car',
       location: 'Legion Square',
       model: 'sultan',
       name: 'Karin Sultan',
       nickname: '',
-      plate: 'SKY 204',
+      plate: 'AGT 204',
       status: 'garaged',
       vin: '',
     },
@@ -74,17 +74,17 @@ describe('garage store', () => {
       distance: 1000,
       etaSeconds: 50,
       orderId: 'valet-1',
-      plate: 'SKY 204',
+      plate: 'AGT 204',
       status: 'en_route' as const,
       vehicleName: 'Karin Sultan',
     }
     mockNuiCall.mockResolvedValueOnce({ data: valet, success: true })
     const garage = useGarageStore()
 
-    expect(await garage.requestValet('SKY 204')).toBe(true)
+    expect(await garage.requestValet('AGT 204')).toBe(true)
     expect(garage.valet).toEqual(valet)
     expect(mockNuiCall).toHaveBeenCalledWith('garage:valet-request', {
-      plate: 'SKY 204',
+      plate: 'AGT 204',
     })
   })
 

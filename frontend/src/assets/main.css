@@ -211,7 +211,7 @@
   }
 }
 :root {
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   font-feature-settings:
     'liga' 1,
     'calt' 1;
@@ -497,29 +497,27 @@ button {
   display: contents;
 }
 
-/* FiveM CEF blur-free glass fallback. Ultimate keeps the native effects. */
 .phone-app--performance {
   --phone-performance-glass: rgb(28 28 31 / 96%);
 }
 .phone-app--performance.phone-app--light {
   --phone-performance-glass: rgb(245 245 248 / 97%);
 }
-.phone-app--performance .sky-ui-provider,
-.phone-app--performance .sky-app,
-.phone-app--performance .sky-app-page {
-  /* Resolve Glass from the nearest Sky theme instead of the outer phone theme. */
-  --sky-glass: var(--sky-glass-solid);
-  --sky-navbar-glass: var(--sky-bg);
-  --sky-shadow-glass: none;
-  --sky-shadow-glass-fab: none;
-  --sky-shadow-glass-fab-outer: none;
-  --sky-hold-thumb-scale: 1;
-  --sky-range-hold-background: #ffffff;
-  --sky-range-hold-shadow: var(--sky-shadow-thumb);
-  --sky-toggle-hold-background: #ffffff;
-  --sky-toggle-hold-glass-opacity: 0;
-  --sky-toggle-hold-glow-opacity: 0;
-  --sky-toggle-hold-track-scale: 1;
+.phone-app--performance .agent-ui-provider,
+.phone-app--performance .agent-app,
+.phone-app--performance .agent-app-page {
+  --agent-glass: var(--agent-glass-solid);
+  --agent-navbar-glass: var(--agent-bg);
+  --agent-shadow-glass: none;
+  --agent-shadow-glass-fab: none;
+  --agent-shadow-glass-fab-outer: none;
+  --agent-hold-thumb-scale: 1;
+  --agent-range-hold-background: #ffffff;
+  --agent-range-hold-shadow: var(--agent-shadow-thumb);
+  --agent-toggle-hold-background: #ffffff;
+  --agent-toggle-hold-glass-opacity: 0;
+  --agent-toggle-hold-glow-opacity: 0;
+  --agent-toggle-hold-track-scale: 1;
 }
 .phone-device.phone-app--performance {
   filter: none;
@@ -546,8 +544,6 @@ button {
 .phone-app--performance .k-glass {
   box-shadow: none !important;
 }
-/* Konsta's default background utility is the solid-surface opt-in marker.
-   Custom color utilities replace it, so semantic Glass colors stay intact. */
 .phone-app--performance .k-glass:where([class~='bg-ios-light-glass']) {
   background: var(--phone-performance-glass) !important;
 }
@@ -567,26 +563,26 @@ button {
 .phone-app--performance .k-toggle [class~='group-active:opacity-100'] {
   opacity: 0 !important;
 }
-.phone-app--performance .sky-glass--highlight-visible::after {
+.phone-app--performance .agent-glass--highlight-visible::after {
   opacity: 0;
 }
-.phone-app--performance .sky-glass--touch-highlight {
+.phone-app--performance .agent-glass--touch-highlight {
   transform: none;
 }
-.phone-app--performance .sky-glass,
-.phone-app--performance .sky-navbar__back--surface {
+.phone-app--performance .agent-glass,
+.phone-app--performance .agent-navbar__back--surface {
   box-shadow: none !important;
 }
-.phone-app--performance .sky-segmented--navigation {
-  background: var(--sky-glass-solid);
+.phone-app--performance .agent-segmented--navigation {
+  background: var(--agent-glass-solid);
   box-shadow: none;
 }
-.phone-app--performance .sky-segmented--navbar {
-  background: var(--sky-glass-solid);
+.phone-app--performance .agent-segmented--navbar {
+  background: var(--agent-glass-solid);
   box-shadow: none;
 }
-.phone-app--performance .sky-tabbar__pane {
-  background: var(--sky-glass-solid);
+.phone-app--performance .agent-tabbar__pane {
+  background: var(--agent-glass-solid);
   box-shadow: none;
 }
 .phone-app--performance .control-center__backdrop {
@@ -644,18 +640,15 @@ button {
   box-shadow: none !important;
 }
 
-/* Chromium 103 cannot resolve color-mix() when the mixed color is a variable. */
 @supports not (color: color-mix(in srgb, white, black)) {
   .flappy-menu__tower,
   .flappy-obstacle span {
     background: var(--tower);
   }
-
   .flappy-menu__tower::after {
     border: 3px solid var(--tower);
     background: var(--tower);
   }
-
   .flappy-obstacle span::after {
     background: var(--tower);
   }
@@ -690,7 +683,7 @@ button {
   inset: 0;
   pointer-events: none;
 }
-.phone-notification-provider.sky-ui-provider--dark {
+.phone-notification-provider.agent-ui-provider--dark {
   --phone-notification-background: rgb(36 36 39 / 94%);
   --phone-notification-shadow:
     0 12px 34px rgb(0 0 0 / 36%), inset 0 0.5px 0 rgb(255 255 255 / 16%);
@@ -707,7 +700,7 @@ button {
   background: var(--phone-notification-background) !important;
   box-shadow: var(--phone-notification-shadow) !important;
   transform: translate3d(0, var(--phone-notification-drag-y), 0);
-  transition: transform 280ms var(--sky-ease-out, ease-out);
+  transition: transform 280ms var(--agent-ease-out, ease-out);
   will-change: transform;
 }
 .phone-device--island-expanded .phone-notification {
@@ -731,10 +724,10 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 .phone-notification__open:active {
-  background: var(--sky-pressed);
+  background: var(--agent-pressed);
 }
 .phone-notification__open:focus-visible {
-  outline: 2px solid var(--sky-app-accent);
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: -3px;
 }
 .phone-notification.phone-notification--dragging {
@@ -1037,17 +1030,16 @@ button {
   letter-spacing: -0.2px;
 }
 .lock-screen__time {
-  margin-top: -5px;
-  color: #ffffffaa;
-  font-size: 110px;
-  font-weight: 300;
-  line-height: 1.04;
-  letter-spacing: -7px;
+  margin-top: -2px;
+  color: #fff;
+  font-size: 96px;
+  font-weight: 560;
+  line-height: 1;
+  letter-spacing: -3.5px;
   font-variant-numeric: tabular-nums;
-  text-shadow:
-    0 0 12px #ffffff38,
-    0 2px 16px #0006;
-  filter: blur(0.24px);
+  font-optical-sizing: auto;
+  font-variation-settings: 'opsz' 32;
+  text-shadow: 0 2px 18px rgb(0 0 0 / 34%);
 }
 .lock-screen__status-time {
   color: #fff;
@@ -1300,7 +1292,6 @@ button {
     transition-duration: 0.18s;
   }
 }
-
 .app-icon--darkchat {
   background: #050507;
 }
@@ -1318,7 +1309,7 @@ button {
   overflow: hidden;
   background: #000;
   color: #f5f5f7;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
 }
 .darkchat-page button,
 .darkchat-page input,
@@ -2625,7 +2616,6 @@ button {
   filter: blur(6px) brightness(0.72) saturate(0.88);
   pointer-events: none;
 }
-
 .home-folder-enter-active,
 .home-folder-leave-active {
   transition:
@@ -2633,7 +2623,6 @@ button {
     transform 0.24s cubic-bezier(0.22, 0.75, 0.18, 1);
   transform-origin: 50% 42%;
 }
-
 .home-folder-enter-from,
 .home-folder-leave-to {
   opacity: 0;
@@ -3076,9 +3065,9 @@ button {
   padding-bottom: 25px;
   display: flex;
   flex-direction: column;
-  font-feature-settings: var(--sky-font-display-features);
+  font-feature-settings: var(--agent-font-display-features);
   font-optical-sizing: auto;
-  letter-spacing: var(--sky-font-display-tracking);
+  letter-spacing: var(--agent-font-display-tracking);
 }
 .app-library-search,
 .app-search {
@@ -3097,8 +3086,6 @@ button {
   position: relative;
   font-size: 16px;
 }
-/* Au repos, le gabarit loupe + libelle est centre comme sur iOS ; le champ
-   reel reste pleine largeur dessous pour rester cliquable partout. */
 .app-library-search__hint {
   position: absolute;
   inset: 0;
@@ -3348,10 +3335,9 @@ button {
   padding-top: 46px;
   padding-bottom: 25px;
   overflow: hidden;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
-
 .weather-app {
   --weather-accent-cyan: #7fd4ff;
   --weather-accent-gold: #ffd479;
@@ -3373,10 +3359,6 @@ button {
   background: #08090f;
   color: #fff;
 }
-
-/* Chaque condition est un decor a part entiere : des halos radiaux poses sur
-   une base profonde, comme le degrade de la banque. Tous restent sombres, ce
-   qui garantit le contraste des tuiles translucides quel que soit le temps. */
 .weather-app__backdrop {
   position: absolute;
   z-index: -2;
@@ -3388,9 +3370,6 @@ button {
     linear-gradient(180deg, #2c3566 0%, #1e2650 28%, #11162e 62%, #08090f 100%);
   transition: background 0.55s ease;
 }
-
-/* La nuit n'est pas une neuvieme variante : c'est un voile pose sur celle de
-   la condition, ce qui evite de decliner chaque decor en deux versions. */
 .weather-app--night .weather-app__backdrop::before {
   position: absolute;
   inset: 0;
@@ -3401,9 +3380,6 @@ button {
   );
   content: '';
 }
-
-/* Voile clair sous la barre d'etat, puis assombrissement du pied : le premier
-   porte le texte blanc du bandeau, le second assied la liste horaire. */
 .weather-app__backdrop::after {
   position: absolute;
   inset: 0;
@@ -3412,11 +3388,9 @@ button {
     linear-gradient(180deg, transparent 46%, rgb(4 6 14 / 52%) 100%);
   content: '';
 }
-
-.weather-app > .sky-app-page__backdrop {
+.weather-app > .agent-app-page__backdrop {
   background: transparent;
 }
-
 .weather-app--sunny .weather-app__backdrop {
   background:
     radial-gradient(132% 74% at 50% -12%, rgb(255 172 58 / 50%), transparent 62%),
@@ -3424,7 +3398,6 @@ button {
     radial-gradient(94% 46% at 6% 96%, rgb(255 98 96 / 22%), transparent 62%),
     linear-gradient(180deg, #472a58 0%, #32204a 28%, #191530 62%, #0a0912 100%);
 }
-
 .weather-app--clear .weather-app__backdrop {
   background:
     radial-gradient(136% 76% at 50% -10%, rgb(92 132 255 / 48%), transparent 64%),
@@ -3432,7 +3405,6 @@ button {
     radial-gradient(92% 44% at 4% 96%, rgb(60 200 255 / 18%), transparent 62%),
     linear-gradient(180deg, #1f2358 0%, #171b46 28%, #0e1028 62%, #07080f 100%);
 }
-
 .weather-app--partly_cloudy .weather-app__backdrop {
   background:
     radial-gradient(134% 76% at 50% -10%, rgb(122 166 250 / 48%), transparent 64%),
@@ -3440,7 +3412,6 @@ button {
     radial-gradient(94% 46% at 4% 96%, rgb(96 130 220 / 20%), transparent 62%),
     linear-gradient(180deg, #2c3566 0%, #1e2650 28%, #11162e 62%, #08090f 100%);
 }
-
 .weather-app--cloudy .weather-app__backdrop {
   background:
     radial-gradient(134% 76% at 50% -10%, rgb(150 170 205 / 40%), transparent 64%),
@@ -3448,7 +3419,6 @@ button {
     radial-gradient(94% 46% at 4% 96%, rgb(96 112 148 / 20%), transparent 62%),
     linear-gradient(180deg, #363e5a 0%, #262d46 30%, #161b2c 64%, #08090e 100%);
 }
-
 .weather-app--rain .weather-app__backdrop {
   background:
     radial-gradient(136% 78% at 50% -10%, rgb(78 146 214 / 46%), transparent 64%),
@@ -3456,7 +3426,6 @@ button {
     radial-gradient(96% 46% at 92% 92%, rgb(56 106 176 / 24%), transparent 62%),
     linear-gradient(180deg, #24395c 0%, #1a2a48 30%, #0f172c 64%, #06080e 100%);
 }
-
 .weather-app--thunder .weather-app__backdrop {
   background:
     radial-gradient(138% 80% at 50% -10%, rgb(152 118 255 / 50%), transparent 64%),
@@ -3464,14 +3433,12 @@ button {
     radial-gradient(96% 46% at 4% 94%, rgb(78 88 200 / 26%), transparent 62%),
     linear-gradient(180deg, #2e2760 0%, #201c46 30%, #12102a 64%, #07060d 100%);
 }
-
 .weather-app--fog .weather-app__backdrop {
   background:
     radial-gradient(140% 82% at 50% -14%, rgb(188 200 212 / 38%), transparent 66%),
     radial-gradient(96% 50% at 50% 46%, rgb(158 174 190 / 22%), transparent 62%),
     linear-gradient(180deg, #414a55 0%, #2c343f 30%, #191f26 64%, #0a0c0f 100%);
 }
-
 .weather-app--snow .weather-app__backdrop {
   background:
     radial-gradient(136% 78% at 50% -10%, rgb(154 200 255 / 44%), transparent 64%),
@@ -3479,7 +3446,6 @@ button {
     radial-gradient(94% 46% at 6% 94%, rgb(112 156 220 / 20%), transparent 62%),
     linear-gradient(180deg, #31446e 0%, #223052 30%, #141c2e 64%, #07090f 100%);
 }
-
 .weather-app__rain {
   position: absolute;
   z-index: -1;
@@ -3539,8 +3505,6 @@ button {
   overflow: hidden;
   pointer-events: none;
 }
-/* Voile general : le brouillard commence par un blanchiment de toute la
-   scene, les nappes ne font que le moduler. */
 .weather-app__fog::before {
   position: absolute;
   inset: 0;
@@ -3552,9 +3516,6 @@ button {
   );
   content: '';
 }
-
-/* Une ellipse s'estompe dans les deux axes : plus d'arete horizontale qui
-   coupe le texte. Le flou acheve de dissoudre le contour. */
 .weather-app__fog i {
   position: absolute;
   top: var(--fog-top);
@@ -3582,7 +3543,6 @@ button {
   animation: weather-snow-fall var(--snow-duration) linear var(--snow-delay)
     infinite;
 }
-
 .weather-app__snow i::after {
   position: absolute;
   inset: 0;
@@ -3610,7 +3570,6 @@ button {
   animation: weather-cloud-drift var(--cloud-duration) linear
     var(--cloud-delay) infinite;
 }
-
 .weather-app__sun-glow {
   background: radial-gradient(
     circle at 74% 18%,
@@ -3621,9 +3580,6 @@ button {
   transform-origin: 74% 18%;
   animation: weather-sun-breathe 7.5s ease-in-out infinite alternate;
 }
-
-/* Couronne de rayons : un balayage conique tres pale, adouci par un masque
-   radial pour qu'il ne se voie qu'autour du disque. */
 .weather-app__sun-glow::after {
   position: absolute;
   top: -14%;
@@ -3657,7 +3613,6 @@ button {
   opacity: 0.72;
   animation: weather-stars-twinkle 5s ease-in-out infinite alternate;
 }
-
 .weather-app__stars i {
   position: absolute;
   top: var(--star-top);
@@ -3721,7 +3676,6 @@ button {
     opacity: 0;
   }
 }
-
 @keyframes weather-snow-sway {
   from {
     transform: translateX(-9px);
@@ -3735,28 +3689,22 @@ button {
     opacity: 0.42;
   }
 }
-
 @keyframes weather-cloud-drift {
   to {
     transform: translateX(300%);
   }
 }
-
 @keyframes weather-sun-breathe {
   to {
     opacity: 0.66;
     transform: scale(1.06);
   }
 }
-
 @keyframes weather-sun-rays {
   to {
     transform: rotate(360deg);
   }
 }
-
-/* La trainee reste invisible la plus grande partie du cycle : une etoile
-   filante qui passe toutes les quinze secondes, pas une pluie de meteores. */
 @keyframes weather-shooting-star {
   0%,
   86% {
@@ -3795,8 +3743,6 @@ button {
 .phone-app--performance .weather-app__sun-glow {
   animation: none;
 }
-/* Le flou des nuages est ce qui coute le plus cher a l'affichage : en mode
-   performance la couche disparait entierement. */
 .phone-app--performance .weather-app__lightning,
 .phone-app--performance .weather-app__fog,
 .phone-app--performance .weather-app__snow,
@@ -3804,20 +3750,15 @@ button {
 .phone-app--performance .weather-app__sun-glow::after {
   display: none;
 }
-
 .weather-navbar {
-  --sky-navbar-glass: transparent;
+  --agent-navbar-glass: transparent;
   color: #fff;
 }
-.weather-navbar .sky-navbar__title,
-.weather-navbar .sky-link {
+.weather-navbar .agent-navbar__title,
+.weather-navbar .agent-link {
   color: #fff;
 }
 
-/* Banking */
-/* Le !important sur le fond est necessaire : ui/foundation.css est importe
-   apres main.css et .sky-app-page y pose background: var(--sky-bg) a
-   specificite egale. */
 .banking-app {
   --bank-border: rgb(255 255 255 / 8%);
   --bank-surface: rgb(12 12 20 / 62%);
@@ -3851,15 +3792,9 @@ button {
   color: #fff;
   isolation: isolate;
 }
-
-/* SkyAppPage peint un fond opaque dans .sky-app-page__backdrop, place en
-   z-index -1 : sans cette neutralisation il masque entierement le degrade. */
-.banking-app > .sky-app-page__backdrop {
+.banking-app > .agent-app-page__backdrop {
   background: transparent;
 }
-
-/* Voile clair sous la barre d'etat : le degrade seul laisse le haut trop
-   sature sous le texte blanc. */
 .banking-app::before {
   position: absolute;
   z-index: -1;
@@ -3874,7 +3809,7 @@ button {
 }
 
 .banking-navbar {
-  --sky-navbar-safe-area-top: 46px;
+  --agent-navbar-safe-area-top: 46px;
   position: absolute;
   z-index: 5;
   top: 0;
@@ -3882,7 +3817,6 @@ button {
   left: 0;
   color: #fff;
 }
-
 .banking-brand {
   display: flex;
   flex-direction: column;
@@ -3890,20 +3824,17 @@ button {
   gap: 1px;
   line-height: 1;
 }
-
 .banking-brand__name {
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 2.5px;
 }
-
 .banking-brand__sub {
   font-size: 7.5px;
   font-weight: 500;
   letter-spacing: 3.4px;
   color: var(--bank-muted);
 }
-
 .banking-scroll {
   position: absolute;
   inset: 0;
@@ -3919,21 +3850,16 @@ button {
   -webkit-overflow-scrolling: touch;
 }
 
-/* La colonne est un conteneur flex : sans cette regle, les enfants sont
-   compressibles et la carte de debit s'ecrase a quelques pixels. */
 .banking-scroll > * {
   flex: 0 0 auto;
 }
-
 .banking-scroll.is-locked {
   overflow-y: hidden;
   touch-action: none;
 }
-
 .banking-scroll::-webkit-scrollbar {
   display: none;
 }
-
 .banking-pull-refresh {
   display: flex;
   align-items: center;
@@ -3943,11 +3869,9 @@ button {
   opacity: 0;
   transition: opacity 0.18s ease;
 }
-
 .banking-pull-refresh.is-visible {
   opacity: 1;
 }
-
 .banking-loading,
 .banking-empty {
   display: flex;
@@ -3964,18 +3888,11 @@ button {
   padding: 0 28px;
   text-align: center;
 }
-
 .banking-empty p {
   color: var(--bank-muted);
   font-size: 13px;
   line-height: 1.5;
 }
-
-/* -------------------------------------------------------------------------
-   Carte de debit : element signature, reprise de la carte Fleeca du module
-   banking de la base.
-   ------------------------------------------------------------------------- */
-
 .banking-debit-card {
   position: relative;
   display: flex;
@@ -3995,7 +3912,6 @@ button {
     inset 0 1px 0 rgb(255 255 255 / 8%);
   overflow: hidden;
 }
-
 .banking-debit-card::after {
   position: absolute;
   right: -54px;
@@ -4011,13 +3927,11 @@ button {
   content: '';
   pointer-events: none;
 }
-
 .banking-debit-card__top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
 }
-
 .banking-debit-card__label {
   display: block;
   color: var(--bank-muted);
@@ -4026,7 +3940,6 @@ button {
   letter-spacing: 1.2px;
   text-transform: uppercase;
 }
-
 .banking-debit-card__iban {
   display: block;
   margin-top: 4px;
@@ -4034,7 +3947,6 @@ button {
   font-weight: 600;
   letter-spacing: 1.4px;
 }
-
 .banking-debit-card__wave {
   width: 19px;
   height: 19px;
@@ -4044,7 +3956,6 @@ button {
   stroke-width: 1.6;
   opacity: 0.62;
 }
-
 .banking-debit-card__chip {
   position: relative;
   width: 34px;
@@ -4058,7 +3969,6 @@ button {
     rgb(255 255 255 / 3%)
   );
 }
-
 .banking-debit-card__chip::after {
   position: absolute;
   inset: 6px 8px;
@@ -4066,14 +3976,12 @@ button {
   border-bottom: 1px solid rgb(255 255 255 / 18%);
   content: '';
 }
-
 .banking-debit-card__balance-label {
   color: var(--bank-muted);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.6px;
 }
-
 .banking-debit-card__balance {
   margin-top: 2px;
   font-size: 30px;
@@ -4081,7 +3989,6 @@ button {
   letter-spacing: -0.6px;
   line-height: 1.1;
 }
-
 .banking-debit-card__bottom {
   display: flex;
   align-items: flex-end;
@@ -4089,11 +3996,9 @@ button {
   gap: 12px;
   margin-top: 16px;
 }
-
 .banking-debit-card__cash {
   text-align: right;
 }
-
 .banking-debit-card__holder {
   display: block;
   margin-top: 3px;
@@ -4105,17 +4010,11 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-/* -------------------------------------------------------------------------
-   Tuiles de statistiques
-   ------------------------------------------------------------------------- */
-
 .banking-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
-
 .banking-stat {
   display: flex;
   flex-direction: column;
@@ -4124,7 +4023,6 @@ button {
   border-radius: var(--bank-radius-md);
   min-width: 0;
 }
-
 .banking-stat__icon {
   display: grid;
   place-items: center;
@@ -4139,7 +4037,6 @@ button {
     rgb(0 0 0 / 20%)
   );
 }
-
 .banking-stat__label {
   overflow: hidden;
   color: var(--bank-muted);
@@ -4149,7 +4046,6 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .banking-stat__amount {
   overflow: hidden;
   font-size: 13.5px;
@@ -4158,19 +4054,9 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .banking-stat__amount.is-incoming {
   color: var(--bank-income);
 }
-
-/* -------------------------------------------------------------------------
-   Virement rapide
-   ------------------------------------------------------------------------- */
-
-/* Action principale : une pastille claire pleine largeur, comme le bouton
-   de virement du module de la base, et lisible sur le degrade.
-   Le selecteur porte .banking-app pour passer devant .sky-button--primary,
-   defini dans ui/controls.css, importe apres main.css. */
 .banking-app .banking-transfer {
   display: flex;
   align-items: center;
@@ -4194,28 +4080,20 @@ button {
     transform 0.14s ease,
     box-shadow 0.14s ease;
 }
-
 .banking-app .banking-transfer:active {
   transform: translateY(1px);
   box-shadow:
     0 6px 16px rgb(6 4 20 / 38%),
     inset 0 1px 0 rgb(255 255 255 / 90%);
 }
-
 .banking-app .banking-transfer svg {
   flex: 0 0 auto;
 }
-
-/* -------------------------------------------------------------------------
-   Panneaux, listes et graphe
-   ------------------------------------------------------------------------- */
-
 .banking-panel {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
 .banking-panel__head {
   display: flex;
   align-items: baseline;
@@ -4223,7 +4101,6 @@ button {
   gap: 12px;
   padding: 0 4px;
 }
-
 .banking-panel__head h2 {
   font-size: 14px;
   font-weight: 600;
@@ -4236,27 +4113,22 @@ button {
   font-weight: 500;
   opacity: 0.7;
 }
-
 .banking-panel__count {
   color: var(--bank-sub);
   font-size: 11px;
   font-weight: 500;
 }
-
 .banking-transaction-list {
   margin: 0;
 }
-
 .banking-transaction-list b {
   font-size: 13px;
   font-weight: 650;
   white-space: nowrap;
 }
-
 .banking-transaction-list b.is-incoming {
   color: var(--bank-income);
 }
-
 .banking-no-transactions {
   padding: 24px 18px;
   border: 1px solid var(--bank-border);
@@ -4267,7 +4139,6 @@ button {
   line-height: 1.5;
   text-align: center;
 }
-
 .banking-analytics {
   display: flex;
   flex-direction: column;
@@ -4279,25 +4150,21 @@ button {
     linear-gradient(180deg, rgb(255 255 255 / 3%) 0%, rgb(0 0 0 / 0%) 60%),
     var(--bank-surface);
 }
-
 .banking-analytics__head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
 }
-
 .banking-analytics__head h2 {
   font-size: 14px;
   font-weight: 600;
 }
-
 .banking-analytics__period {
   color: var(--bank-muted);
   font-size: 11px;
   font-weight: 500;
 }
-
 .banking-analytics__legend {
   display: flex;
   gap: 14px;
@@ -4305,30 +4172,25 @@ button {
   font-size: 10.5px;
   font-weight: 500;
 }
-
 .banking-analytics__legend span {
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
-
 .banking-analytics__legend i {
   width: 7px;
   height: 7px;
   border-radius: 2px;
   background: var(--bank-outcome);
 }
-
 .banking-analytics__legend i.is-incoming {
   background: var(--bank-income);
 }
-
 .banking-chart {
   position: relative;
   height: 158px;
   padding: 6px 0 20px 30px;
 }
-
 .banking-chart__axis {
   position: absolute;
   top: 6px;
@@ -4341,7 +4203,6 @@ button {
   font-size: 9px;
   font-weight: 400;
 }
-
 .banking-chart__grid {
   position: absolute;
   inset: 6px 0 20px 30px;
@@ -4349,17 +4210,14 @@ button {
   flex-direction: column;
   justify-content: space-between;
 }
-
 .banking-chart__grid i {
   border-top: 1px dashed rgb(255 255 255 / 6%);
 }
-
 .banking-chart__days {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   height: 100%;
 }
-
 .banking-chart__day {
   display: flex;
   flex-direction: column;
@@ -4368,7 +4226,6 @@ button {
   gap: 6px;
   height: 100%;
 }
-
 .banking-chart__bars {
   display: flex;
   flex: 1;
@@ -4378,7 +4235,6 @@ button {
   width: 100%;
   min-height: 0;
 }
-
 .banking-chart__bars i {
   width: 7px;
   border-radius: 3px 3px 2px 2px;
@@ -4388,7 +4244,6 @@ button {
     rgb(196 120 120 / 35%) 100%
   );
 }
-
 .banking-chart__bars i.is-incoming {
   background: linear-gradient(
     180deg,
@@ -4402,11 +4257,6 @@ button {
   font-size: 10px;
   font-weight: 400;
 }
-
-/* -------------------------------------------------------------------------
-   Recherche et filtres
-   ------------------------------------------------------------------------- */
-
 .banking-search {
   display: flex;
   align-items: center;
@@ -4429,15 +4279,12 @@ button {
   font-size: 13px;
   outline: none;
 }
-
 .banking-search input::placeholder {
   color: var(--bank-sub);
 }
-
 .banking-search input::-webkit-search-cancel-button {
   display: none;
 }
-
 .banking-filters {
   display: flex;
   gap: 7px;
@@ -4446,11 +4293,9 @@ button {
   padding: 0 var(--banking-page-gutter);
   scrollbar-width: none;
 }
-
 .banking-filters::-webkit-scrollbar {
   display: none;
 }
-
 .banking-filter {
   flex: 0 0 auto;
   padding: 7px 14px;
@@ -4466,7 +4311,6 @@ button {
     background 0.15s ease,
     color 0.15s ease;
 }
-
 .banking-filter.is-active {
   border-color: rgb(255 255 255 / 18%);
   background: linear-gradient(
@@ -4479,17 +4323,12 @@ button {
   color: #fff;
 }
 
-/* -------------------------------------------------------------------------
-   Feuilles : virement et detail de transaction
-   ------------------------------------------------------------------------- */
-
 .banking-sheet__content {
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 4px 4px 8px;
 }
-
 .banking-modal__icon {
   display: grid;
   place-items: center;
@@ -4497,61 +4336,45 @@ button {
   height: 46px;
   border-radius: 14px;
   background: rgb(255 255 255 / 10%);
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
-
 .banking-sheet__content h2 {
   font-size: 19px;
   font-weight: 650;
   letter-spacing: -0.3px;
 }
-
 .banking-sheet__content > p {
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   font-size: 13px;
   line-height: 1.5;
 }
 
-/* -------------------------------------------------------------------------
-   Feuille de virement : le montant fait office de titre, le destinataire se
-   choisit sur une rangee de pastilles plutot que dans une liste qui deborde.
-   ------------------------------------------------------------------------- */
-
-/* La poignee de la feuille se confond avec le contenu : on lui donne une
-   bande a elle, separee par un filet, pour que la prise soit lisible. La
-   poignee etant collante, le filet reste visible pendant le defilement. */
-.banking-app .sky-sheet__grabber {
+.banking-app .agent-sheet__grabber {
   height: 42px;
   border-bottom: 1px solid rgb(255 255 255 / 9%);
 }
-
-.banking-app .sky-sheet__grabber::after {
+.banking-app .agent-sheet__grabber::after {
   width: 48px;
   height: 5px;
   background: rgb(255 255 255 / 34%);
 }
-
-/* La feuille n'a pas de gouttiere propre : sans elle le champ et la rangee
-   de contacts sont coupes par le bord de l'ecran. */
 .banking-send {
   --banking-sheet-gutter: 16px;
   gap: 30px;
   padding: 6px var(--banking-sheet-gutter) 30px;
 }
-
 .banking-send__head {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-
 .banking-send__available {
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   font-size: 12.5px;
 }
 
 .banking-send__available b {
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-weight: 650;
 }
 
@@ -4560,35 +4383,28 @@ button {
   flex-direction: column;
   gap: 14px;
 }
-
 .banking-send__label {
   padding-left: 2px;
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   font-size: 10.5px;
   font-weight: 650;
   letter-spacing: 0.9px;
   text-transform: uppercase;
 }
-
-/* Champ du numero : une pastille pleine, sans encadrement ni etiquette
-   flottante, pour rester dans le vocabulaire de l'application. */
 .banking-send__number {
   margin: 0;
 }
-
-.banking-send__number .sky-field__inner {
+.banking-send__number .agent-field__inner {
   padding: 0;
 }
-
-.banking-send__number .sky-field__control {
+.banking-send__number .agent-field__control {
   height: 46px;
   padding: 0 16px;
   border: 1px solid var(--bank-border, rgb(255 255 255 / 8%));
   border-radius: 999px;
   background: rgb(255 255 255 / 6%);
 }
-
-.banking-send__number .sky-field__input {
+.banking-send__number .agent-field__input {
   font-size: 15px;
   font-weight: 550;
   letter-spacing: 0.3px;
@@ -4602,11 +4418,9 @@ button {
   padding: 2px var(--banking-sheet-gutter) 6px;
   scrollbar-width: none;
 }
-
 .banking-send__contacts::-webkit-scrollbar {
   display: none;
 }
-
 .banking-send__contact {
   display: flex;
   flex: 0 0 auto;
@@ -4619,7 +4433,6 @@ button {
   color: inherit;
   cursor: pointer;
 }
-
 .banking-send__avatar {
   display: grid;
   place-items: center;
@@ -4640,49 +4453,41 @@ button {
     box-shadow 0.16s ease,
     transform 0.16s ease;
 }
-
 .banking-send__contact.is-selected .banking-send__avatar {
   transform: translateY(-1px);
   box-shadow:
-    0 0 0 2px var(--sky-sheet-background, #17171b),
+    0 0 0 2px var(--agent-sheet-background, #17171b),
     0 0 0 4px rgb(160 120 255 / 90%);
 }
-
 .banking-send__contact-name {
   overflow: hidden;
   max-width: 100%;
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   font-size: 10.5px;
   font-weight: 550;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .banking-send__contact.is-selected .banking-send__contact-name {
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
-
-/* Le montant est l'element principal de la feuille : saisie sans cadre, au
-   centre, avec le symbole monetaire cale contre le chiffre. */
 .banking-amount-field {
   display: flex;
   align-items: baseline;
   gap: 6px;
   padding: 2px 2px 4px;
 }
-
 .banking-amount-field > span {
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   font-size: 26px;
   font-weight: 600;
 }
-
 .banking-amount-field input {
   flex: 1;
   min-width: 0;
   border: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-family: inherit;
   font-size: 44px;
   font-weight: 700;
@@ -4690,12 +4495,10 @@ button {
   line-height: 1.05;
   outline: none;
 }
-
 .banking-amount-field input::placeholder {
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   opacity: 0.45;
 }
-
 .banking-send__error {
   padding-left: 2px;
   color: #ff6b6b;
@@ -4704,11 +4507,10 @@ button {
 
 .banking-send__empty {
   padding: 4px 2px;
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   font-size: 12.5px;
 }
-
-.banking-sheet__content > .sky-button:last-child {
+.banking-sheet__content > .agent-button:last-child {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4716,8 +4518,6 @@ button {
   margin-top: 4px;
 }
 
-/* Meme pastille claire que l'action principale de l'accueil : la feuille et
-   la page proposent la meme affordance. */
 .banking-app .banking-send__submit {
   height: 50px;
   border: 0;
@@ -4729,54 +4529,42 @@ button {
   font-size: 15px;
   font-weight: 650;
 }
-
 .banking-transaction-detail {
   align-items: flex-start;
 }
-
 .banking-transaction-detail__icon {
   background: rgb(255 255 255 / 10%);
 }
-
 .banking-transaction-detail__icon.is-incoming {
   background: rgb(111 191 138 / 18%);
   color: var(--bank-income, #6fbf8a);
 }
 
 .banking-transaction-detail > .banking-transaction-detail__eyebrow {
-  color: var(--sky-text-muted, #8a8a8e);
+  color: var(--agent-text-muted, #8a8a8e);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.6px;
   text-transform: uppercase;
 }
-
 .banking-transaction-detail h2 {
   margin-top: -6px;
 }
-
 .banking-transaction-detail__amount {
   font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.8px;
 }
-
 .banking-transaction-detail__amount.is-incoming {
   color: #34a853;
 }
-
 .banking-transaction-detail__list {
   margin: 4px 0 0;
   width: 100%;
 }
-
-.banking-transaction-detail__list .sky-list-item__subtitle {
+.banking-transaction-detail__list .agent-list-item__subtitle {
   overflow-wrap: anywhere;
 }
-
-/* -------------------------------------------------------------------------
-   Theme clair
-   ------------------------------------------------------------------------- */
 
 .phone-app--light .banking-app {
   --bank-border: rgb(0 0 0 / 8%);
@@ -4794,53 +4582,44 @@ button {
     radial-gradient(80% 46% at 92% 10%, rgb(0 122 255 / 14%), transparent 58%),
     radial-gradient(90% 42% at 4% 94%, rgb(255 64 129 / 8%), transparent 62%),
     linear-gradient(180deg, #f6f4ff 0%, #efeef5 44%, #e9e9ee 100%) !important;
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
-
 .phone-app--light .banking-app::before {
   background: linear-gradient(180deg, rgb(255 255 255 / 60%), transparent 30%);
 }
-
 .phone-app--light .banking-navbar {
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
-
 .phone-app--light .banking-panel__head button {
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
-
 .phone-app--light .banking-search {
   background: rgb(255 255 255 / 80%);
 }
 
 .phone-app--light .banking-search input {
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
 
 .phone-app--light .banking-filter {
   border-color: rgb(0 0 0 / 7%);
   background: rgb(255 255 255 / 80%);
 }
-
 .phone-app--light .banking-filter.is-active {
   border-color: rgb(0 0 0 / 16%);
   background: rgb(255 255 255);
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
-
 .phone-app--light .banking-chart__grid i {
   border-top-color: rgb(0 0 0 / 7%);
 }
-
 .phone-app--light .banking-chart__bars i.is-incoming {
   background: linear-gradient(180deg, #4fbf85 0%, rgb(111 191 138 / 40%) 100%);
 }
-
 .phone-app--light .banking-stat__icon {
   border-color: rgb(0 0 0 / 6%);
   background: linear-gradient(180deg, rgb(0 0 0 / 4%), rgb(0 0 0 / 1%));
 }
-
 .phone-app--light .banking-app .banking-transfer {
   background: linear-gradient(180deg, #1d1a2e 0%, #100e1c 100%);
   box-shadow:
@@ -4848,13 +4627,9 @@ button {
     inset 0 1px 0 rgb(255 255 255 / 12%);
   color: #fff;
 }
-
-/* La carte reste sombre en theme clair : c'est une carte bancaire, pas une
-   surface de l'interface. */
 .phone-app--light .banking-debit-card {
   color: #fff;
 }
-
 .weather-scroll {
   z-index: 1;
   padding-top: 0;
@@ -4873,14 +4648,9 @@ button {
     transform 160ms ease;
   pointer-events: none;
 }
-
 .weather-pull-refresh.is-visible {
   opacity: 1;
 }
-
-/* -------------------------------------------------------------------------
-   Bandeau principal
-   ------------------------------------------------------------------------- */
 
 .weather-hero {
   display: flex;
@@ -4889,7 +4659,6 @@ button {
   padding: 0 0 16px;
   text-align: center;
 }
-
 .weather-location {
   display: inline-flex;
   align-items: center;
@@ -4911,7 +4680,6 @@ button {
   margin: 10px 0 -2px;
   filter: drop-shadow(0 14px 26px rgb(4 8 22 / 46%));
 }
-
 .weather-temperature {
   margin: 0;
   font-size: 70px;
@@ -4921,14 +4689,12 @@ button {
   text-indent: -4.5px;
   text-shadow: 0 8px 26px rgb(4 8 22 / 40%);
 }
-
 .weather-hero__condition {
   margin-top: 4px;
   font-size: 19px;
   font-weight: 650;
   letter-spacing: -0.2px;
 }
-
 .weather-hero__summary {
   max-width: 250px;
   margin: 5px 0 0;
@@ -4936,7 +4702,6 @@ button {
   font-size: 11.5px;
   line-height: 1.45;
 }
-
 .weather-stale {
   margin: 0 0 16px;
   padding: 9px 12px;
@@ -4947,22 +4712,15 @@ button {
   font-size: 11px;
   text-align: center;
 }
-
-/* -------------------------------------------------------------------------
-   Sections : un titre nu au-dessus du contenu, comme dans la banque
-   ------------------------------------------------------------------------- */
-
 .weather-panel {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 14px;
 }
-
 .weather-panel:last-child {
   margin-bottom: 0;
 }
-
 .weather-panel__head {
   display: flex;
   align-items: baseline;
@@ -4970,24 +4728,17 @@ button {
   gap: 12px;
   padding: 0 4px;
 }
-
 .weather-panel__head h2 {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.1px;
 }
-
-/* -------------------------------------------------------------------------
-   Tuiles de detail
-   ------------------------------------------------------------------------- */
-
 .weather-details {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
-
 .weather-tile {
   display: flex;
   flex-direction: column;
@@ -5000,14 +4751,12 @@ button {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
-
 .weather-tile__head {
   display: flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
-
 .weather-tile__icon {
   display: grid;
   flex: 0 0 auto;
@@ -5019,11 +4768,9 @@ button {
   background: linear-gradient(180deg, rgb(255 255 255 / 10%), rgb(0 0 0 / 18%));
   color: var(--weather-accent-sky);
 }
-
 .weather-tile--gold .weather-tile__icon {
   color: var(--weather-accent-gold);
 }
-
 .weather-tile--teal .weather-tile__icon {
   color: var(--weather-accent-teal);
 }
@@ -5042,7 +4789,6 @@ button {
   text-transform: uppercase;
   white-space: nowrap;
 }
-
 .weather-tile__value {
   margin-top: 9px;
   overflow: hidden;
@@ -5053,11 +4799,6 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-/* -------------------------------------------------------------------------
-   Liste horaire : plus de traits verticaux, l'heure courante porte une pastille
-   ------------------------------------------------------------------------- */
-
 .weather-hourly {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -5070,11 +4811,9 @@ button {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
-
 .weather-hourly::-webkit-scrollbar {
   display: none;
 }
-
 .weather-hour {
   display: flex;
   align-items: center;
@@ -5084,24 +4823,18 @@ button {
   padding: 8px 0 9px;
   border-radius: 13px;
 }
-
 .weather-hour.is-now {
   background: rgb(255 255 255 / 10%);
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 9%);
 }
-
 .weather-hour__time {
   color: var(--weather-muted);
   font-size: 11px;
   font-weight: 600;
 }
-
 .weather-hour.is-now .weather-hour__time {
   color: #fff;
 }
-
-/* Hauteur reservee meme sans valeur : sans elle les colonnes sans averse
-   remontent et la ligne des temperatures se casse. */
 .weather-hour__rain {
   height: 12px;
   color: var(--weather-accent-cyan);
@@ -5109,17 +4842,11 @@ button {
   font-weight: 700;
   line-height: 12px;
 }
-
 .weather-hour__temperature {
   font-size: 16px;
   font-weight: 650;
   letter-spacing: -0.3px;
 }
-
-/* -------------------------------------------------------------------------
-   Etat vide
-   ------------------------------------------------------------------------- */
-
 .weather-empty {
   position: absolute;
   inset: 90px 20px 25px;
@@ -5131,14 +4858,10 @@ button {
   color: rgb(255 255 255 / 85%);
   text-align: center;
 }
-
 .weather-empty > svg,
 .weather-empty > img {
   opacity: 0.75;
 }
-
-/* Le flou coute cher a l'affichage : en mode performance les surfaces
-   redeviennent des aplats. */
 .phone-app--performance .weather-tile,
 .phone-app--performance .weather-hourly,
 .phone-app--performance .weather-location {
@@ -5147,8 +4870,6 @@ button {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
-
-
 .app-header {
   padding: 17px 18px 8px;
 }
@@ -5193,23 +4914,23 @@ button {
   color: #a0a0a7;
 }
 .clock-content {
-  --sky-block-gutter-left: 0px;
-  --sky-block-gutter-right: 0px;
+  --agent-block-gutter-left: 0px;
+  --agent-block-gutter-right: 0px;
   min-height: 0;
   flex: 1;
   overflow-y: auto;
   padding: 0 0
-    calc(var(--sky-tabbar-height) + var(--sky-safe-area-bottom) + 16px);
+    calc(var(--agent-tabbar-height) + var(--agent-safe-area-bottom) + 16px);
 }
-.clock-navbar.sky-navbar {
-  --sky-navbar-safe-area-top: var(--sky-space-2);
-  --sky-page-gutter: 12px;
+.clock-navbar.agent-navbar {
+  --agent-navbar-safe-area-top: var(--agent-space-2);
+  --agent-page-gutter: 12px;
 }
-.clock-navbar--alarm .sky-navbar__inner {
+.clock-navbar--alarm .agent-navbar__inner {
   margin-bottom: 0;
 }
-.clock-navbar--alarm .sky-navbar__left.sky-glass-surface,
-.clock-navbar--alarm .sky-navbar__right.sky-glass-surface {
+.clock-navbar--alarm .agent-navbar__left.agent-glass-surface,
+.clock-navbar--alarm .agent-navbar__right.agent-glass-surface {
   overflow: visible;
   border-radius: 0;
   background: transparent;
@@ -5217,20 +4938,20 @@ button {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-.clock-navbar-action.sky-link {
-  min-height: var(--sky-touch-target);
+.clock-navbar-action.agent-link {
+  min-height: var(--agent-touch-target);
   padding: 0 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
 }
-.clock-navbar-action--icon.sky-link {
-  width: var(--sky-touch-target);
+.clock-navbar-action--icon.agent-link {
+  width: var(--agent-touch-target);
   padding: 0;
 }
 .clock-navbar-action--icon svg {
@@ -5263,7 +4984,7 @@ button {
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
-  border-bottom: 1px solid var(--sky-hairline);
+  border-bottom: 1px solid var(--agent-hairline);
 }
 .clock-alarm-copy {
   min-width: 0;
@@ -5276,7 +4997,7 @@ button {
   padding: 10px 0;
   border: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   text-align: left;
 }
 .clock-alarm-remove + .clock-alarm-copy {
@@ -5284,7 +5005,7 @@ button {
 }
 .clock-alarm-copy:focus-visible {
   border-radius: 10px;
-  outline: 2px solid var(--sky-app-accent);
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: -2px;
 }
 .clock-alarm-time {
@@ -5303,20 +5024,20 @@ button {
   white-space: nowrap;
 }
 .clock-alarm-item--disabled .clock-alarm-copy {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 .clock-alarm-chevron {
   width: 18px;
   height: 18px;
   grid-column: 3;
   justify-self: end;
-  color: var(--sky-subtle);
+  color: var(--agent-subtle);
 }
-.clock-alarm-item > .sky-toggle {
+.clock-alarm-item > .agent-toggle {
   grid-column: 3;
   justify-self: end;
 }
-.clock-alarm-remove.sky-button--icon-only {
+.clock-alarm-remove.agent-button--icon-only {
   width: 28px;
   min-width: 28px;
   height: 28px;
@@ -5331,17 +5052,17 @@ button {
   stroke-width: 3;
 }
 .clock-alarm-sheet {
-  --sky-overlay-layer: 90;
-  --sky-sheet-background: #1c1c1d;
+  --agent-overlay-layer: 90;
+  --agent-sheet-background: #1c1c1d;
 }
-.clock-alarm-sheet .sky-sheet__panel {
-  height: calc(100% - var(--sky-safe-area-top) - var(--sky-space-2));
-  max-height: calc(100% - var(--sky-safe-area-top) - var(--sky-space-2));
+.clock-alarm-sheet .agent-sheet__panel {
+  height: calc(100% - var(--agent-safe-area-top) - var(--agent-space-2));
+  max-height: calc(100% - var(--agent-safe-area-top) - var(--agent-space-2));
   overflow: hidden;
-  border-radius: var(--sky-radius-sheet) var(--sky-radius-sheet) 0 0;
-  background: var(--sky-sheet-background);
+  border-radius: var(--agent-radius-sheet) var(--agent-radius-sheet) 0 0;
+  background: var(--agent-sheet-background);
 }
-.clock-alarm-sheet .sky-sheet__grabber {
+.clock-alarm-sheet .agent-sheet__grabber {
   display: none;
 }
 .clock-alarm-sheet-surface {
@@ -5349,24 +5070,24 @@ button {
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: var(--sky-radius-sheet) var(--sky-radius-sheet) 0 0;
-  background: var(--sky-sheet-background);
-  color: var(--sky-text);
+  border-radius: var(--agent-radius-sheet) var(--agent-radius-sheet) 0 0;
+  background: var(--agent-sheet-background);
+  color: var(--agent-text);
 }
-.clock-alarm-sheet-navbar.sky-navbar,
-.clock-alarm-sheet-surface > .sky-navbar {
-  --sky-navbar-safe-area-top: var(--sky-space-3);
-  --sky-page-gutter: 12px;
-  --sky-navbar-glass: transparent;
+.clock-alarm-sheet-navbar.agent-navbar,
+.clock-alarm-sheet-surface > .agent-navbar {
+  --agent-navbar-safe-area-top: var(--agent-space-3);
+  --agent-page-gutter: 12px;
+  --agent-navbar-glass: transparent;
   flex: none;
   background: transparent;
 }
-.clock-alarm-sheet-navbar .sky-navbar__blur,
-.clock-alarm-sheet-navbar .sky-navbar__background {
+.clock-alarm-sheet-navbar .agent-navbar__blur,
+.clock-alarm-sheet-navbar .agent-navbar__background {
   background: transparent;
 }
-.clock-alarm-editor.sky-scroll-area--padded {
-  --sky-page-gutter: 12px;
+.clock-alarm-editor.agent-scroll-area--padded {
+  --agent-page-gutter: 12px;
   min-height: 0;
   flex: 1;
   margin: 0;
@@ -5378,8 +5099,8 @@ button {
   margin-right: 0;
   margin-left: 0;
 }
-.clock-alarm-editor .sky-list--strong,
-.clock-alarm-editor .sky-list--inset {
+.clock-alarm-editor .agent-list--strong,
+.clock-alarm-editor .agent-list--inset {
   background: #2c2c2e;
 }
 .time-wheel-picker {
@@ -5446,7 +5167,7 @@ button {
   top: 100px;
   left: 53%;
   height: 40px;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 15px;
   font-weight: 600;
   line-height: 40px;
@@ -5490,7 +5211,7 @@ button {
   width: 100%;
   margin: 18px 0 0;
 }
-.clock-alarm-save.sky-link {
+.clock-alarm-save.agent-link {
   background: #ff9f0a;
   color: #fff;
 }
@@ -5500,11 +5221,11 @@ button {
   text-align: center;
 }
 .clock-stopwatch {
-  --sky-block-gutter-left: calc(
-    var(--sky-page-gutter) + var(--sky-safe-area-left)
+  --agent-block-gutter-left: calc(
+    var(--agent-page-gutter) + var(--agent-safe-area-left)
   );
-  --sky-block-gutter-right: calc(
-    var(--sky-page-gutter) + var(--sky-safe-area-right)
+  --agent-block-gutter-right: calc(
+    var(--agent-page-gutter) + var(--agent-safe-area-right)
   );
   min-height: 100%;
   display: flex;
@@ -5544,7 +5265,7 @@ button {
   gap: 12px;
   margin: 16px 0;
 }
-.clock-action-button.sky-button {
+.clock-action-button.agent-button {
   width: 82px;
   height: 82px;
   min-width: 82px;
@@ -5553,21 +5274,21 @@ button {
   font-size: 16px;
   font-weight: 500;
 }
-.clock-action-button.clock-action-button--secondary.sky-button--secondary {
+.clock-action-button.clock-action-button--secondary.agent-button--secondary {
   background: #1c1c1e;
   color: #8e8e93;
 }
-.clock-action-button.clock-action-button--start.sky-button--secondary {
+.clock-action-button.clock-action-button--start.agent-button--secondary {
   grid-column: 3;
   background: #032d13;
   color: #30d158;
 }
-.clock-action-button.clock-action-button--stop.sky-button--secondary {
+.clock-action-button.clock-action-button--stop.agent-button--secondary {
   grid-column: 3;
   background: #330c0a;
   color: #ff453a;
 }
-.clock-action-button.sky-button:disabled {
+.clock-action-button.agent-button:disabled {
   opacity: 0.42;
 }
 .clock-action-button--icon svg {
@@ -5580,7 +5301,7 @@ button {
 }
 .clock-tool-divider {
   height: 1px;
-  background: var(--sky-hairline);
+  background: var(--agent-hairline);
 }
 .clock-lap-list {
   margin-top: 0;
@@ -5719,7 +5440,6 @@ button {
   text-align: center;
   font-size: 13px;
 }
-/* Reference-accurate app surfaces. These remain scoped to the phone resource. */
 .reference-tabbar {
   position: absolute;
   z-index: 6;
@@ -5764,17 +5484,17 @@ button {
   color: #000;
 }
 .phone-app--light
-  .clock-action-button.clock-action-button--secondary.sky-button--secondary {
+  .clock-action-button.clock-action-button--secondary.agent-button--secondary {
   background: #e5e5ea;
   color: #8e8e93;
 }
 .phone-app--light
-  .clock-action-button.clock-action-button--start.sky-button--secondary {
+  .clock-action-button.clock-action-button--start.agent-button--secondary {
   background: #d9f5df;
   color: #248a3d;
 }
 .phone-app--light
-  .clock-action-button.clock-action-button--stop.sky-button--secondary {
+  .clock-action-button.clock-action-button--stop.agent-button--secondary {
   background: #ffe5e5;
   color: #d70015;
 }
@@ -5784,7 +5504,6 @@ button {
 .phone-app--light .time-wheel-picker__value--selected {
   color: #000;
 }
-
 .app-store-page {
   display: flex;
   flex-direction: column;
@@ -5916,7 +5635,6 @@ button {
 .app-store-page .store-list {
   padding: 0;
 }
-
 .phone-screen--app .phone-app--light .phone-status-bar {
   color: #000;
 }
@@ -7165,7 +6883,6 @@ button {
     transform: none;
   }
 }
-/* iOS 26-style Liquid Glass refinements and complete media pickers. */
 .messages-page {
   --ios-glass: rgb(252 252 255 / 70%);
   --ios-glass-strong: rgb(255 255 255 / 86%);
@@ -7256,10 +6973,10 @@ button {
 }
 .messages-media-picker-sheet {
   z-index: 90;
-  --sky-overlay-backdrop: rgb(0 0 0 / 34%);
-  --sky-sheet-background: rgb(247 247 251 / 96%);
+  --agent-overlay-backdrop: rgb(0 0 0 / 34%);
+  --agent-sheet-background: rgb(247 247 251 / 96%);
 }
-.messages-media-picker-sheet .sky-sheet__panel {
+.messages-media-picker-sheet .agent-sheet__panel {
   height: min(62%, 480px);
   max-height: 78%;
   overflow: hidden;
@@ -7268,12 +6985,12 @@ button {
   border: 1px solid rgb(255 255 255 / 76%);
   border-bottom: 0;
   border-radius: 30px 30px 0 0;
-  background: var(--sky-sheet-background);
+  background: var(--agent-sheet-background);
   box-shadow: 0 -14px 38px rgb(20 26 43 / 18%);
   backdrop-filter: blur(34px) saturate(180%);
   -webkit-backdrop-filter: blur(34px) saturate(180%);
 }
-.messages-media-picker-sheet .sky-sheet__grabber {
+.messages-media-picker-sheet .agent-sheet__grabber {
   flex: none;
   height: 27px;
 }
@@ -7304,7 +7021,7 @@ button {
 .messages-media-picker-sheet .messages-media-picker__contacts,
 .messages-media-picker-sheet .messages-media-picker__gifs {
   height: calc(100% - 44px);
-  padding-bottom: calc(var(--sky-safe-area-bottom) + 10px);
+  padding-bottom: calc(var(--agent-safe-area-bottom) + 10px);
   overscroll-behavior: contain;
 }
 .messages-media-picker-sheet .messages-media-picker__contacts {
@@ -7387,7 +7104,7 @@ button {
   overflow: hidden;
   border: 1px solid rgb(60 60 67 / 10%);
   border-radius: 12px;
-  background: var(--sky-surface-muted);
+  background: var(--agent-surface-muted);
   box-shadow: none;
 }
 .messages-media-picker__gifs--masonry .messages-gif-result img {
@@ -7603,8 +7320,6 @@ button {
   display: block;
   object-fit: contain;
 }
-
-/* Konsta's k-app dark state drives the complete iOS Messages palette. */
 .phone-app.dark .messages-page {
   --ios-glass: rgb(28 28 30 / 76%);
   --ios-glass-strong: rgb(36 36 38 / 90%);
@@ -7708,10 +7423,10 @@ button {
   color: #f5f5f7;
 }
 .phone-app.dark .messages-media-picker-sheet {
-  --sky-overlay-backdrop: rgb(0 0 0 / 52%);
-  --sky-sheet-background: rgb(28 28 30 / 96%);
+  --agent-overlay-backdrop: rgb(0 0 0 / 52%);
+  --agent-sheet-background: rgb(28 28 30 / 96%);
 }
-.phone-app.dark .messages-media-picker-sheet .sky-sheet__panel {
+.phone-app.dark .messages-media-picker-sheet .agent-sheet__panel {
   border-color: rgb(255 255 255 / 11%);
   box-shadow: 0 -16px 42px rgb(0 0 0 / 46%);
 }
@@ -7728,7 +7443,7 @@ button {
   .messages-media-picker__gifs--masonry
   .messages-gif-result {
   border-color: rgb(255 255 255 / 10%);
-  background: var(--sky-surface-muted);
+  background: var(--agent-surface-muted);
 }
 .phone-app.dark .messages-media-picker__gifs .messages-gif-more,
 .phone-app.dark .messages-media-picker__gifs .messages-gif-error button {
@@ -7752,8 +7467,6 @@ button {
 .phone-app.dark .messages-avatar--header {
   border-color: #2c2c2e;
 }
-
-/* Native iOS Messages thread treatment shared by light and dark appearances. */
 .messages-thread-page {
   --messages-thread-background: #fff;
   --messages-thread-control: #fff;
@@ -8081,8 +7794,6 @@ button {
   border: 0 !important;
   background: transparent !important;
 }
-
-/* Native iOS Messages conversation list in matching light and dark palettes. */
 .messages-inbox-page {
   --messages-inbox-background: #fff;
   --messages-inbox-control: #fff;
@@ -8310,8 +8021,6 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
-
-/* Widget-aware iOS springboard layout */
 .springboard {
   --springboard-page-duration: 0.5s;
   --springboard-page-easing: cubic-bezier(0.32, 0.72, 0, 1);
@@ -8330,8 +8039,6 @@ button {
   scrollbar-width: none;
   touch-action: pan-y;
 }
-/* En-tete de la page Aujourd'hui : jour en capitales puis date en grand titre,
-   sur le meme reglage typographique que la bibliotheque d'apps. */
 .today-header {
   display: flex;
   flex-direction: column;
@@ -8358,7 +8065,7 @@ button {
   gap: 6px;
   padding: 34px 18px;
   border: 1px solid #ffffff1f;
-  border-radius: var(--sky-widget-radius-large);
+  border-radius: var(--agent-widget-radius-large);
   background: #00000038;
   text-align: center;
   backdrop-filter: blur(20px);
@@ -8395,17 +8102,15 @@ button {
   height: 44px;
   margin-top: 18px;
   border: 0;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
-  transition: transform 160ms var(--sky-ease-out);
+  transition: transform 160ms var(--agent-ease-out);
 }
 .today-edit:active {
   transform: scale(0.97);
 }
-/* Entree en cascade des widgets : la surface et le libelle sont animes plutot
-   que la coque, dont la transform sert deja au glisser-deposer. */
 @keyframes today-widget-in {
   from {
     opacity: 0;
@@ -8421,42 +8126,42 @@ button {
 .springboard-page--widgets-active .today-empty,
 .springboard-page--widgets-active
   .springboard-widget-grid--page
-  .sky-widget-frame
+  .agent-widget-frame
   > * {
   animation: today-widget-in 0.46s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .springboard-page--widgets-active
   .springboard-widget-grid--page
   .home-widget-shell:nth-child(1)
-  .sky-widget-frame
+  .agent-widget-frame
   > * {
   animation-delay: 0.05s;
 }
 .springboard-page--widgets-active
   .springboard-widget-grid--page
   .home-widget-shell:nth-child(2)
-  .sky-widget-frame
+  .agent-widget-frame
   > * {
   animation-delay: 0.1s;
 }
 .springboard-page--widgets-active
   .springboard-widget-grid--page
   .home-widget-shell:nth-child(3)
-  .sky-widget-frame
+  .agent-widget-frame
   > * {
   animation-delay: 0.15s;
 }
 .springboard-page--widgets-active
   .springboard-widget-grid--page
   .home-widget-shell:nth-child(4)
-  .sky-widget-frame
+  .agent-widget-frame
   > * {
   animation-delay: 0.2s;
 }
 .springboard-page--widgets-active
   .springboard-widget-grid--page
   .home-widget-shell:nth-child(n + 5)
-  .sky-widget-frame
+  .agent-widget-frame
   > * {
   animation-delay: 0.25s;
 }
@@ -8469,7 +8174,7 @@ button {
 .springboard--editing
   .springboard-page--widgets-active
   .springboard-widget-grid--page
-  .sky-widget-frame
+  .agent-widget-frame
   > * {
   animation: none;
 }
@@ -8487,17 +8192,17 @@ button {
   min-height: var(--springboard-grid-row);
 }
 .app-icon-button {
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
 }
 .app-icon-label {
-  min-height: var(--sky-home-label-height);
-  font-size: var(--sky-home-label-font-size);
+  min-height: var(--agent-home-label-height);
+  font-size: var(--agent-home-label-font-size);
   font-weight: 500;
   letter-spacing: -0.15px;
-  line-height: var(--sky-home-label-height);
+  line-height: var(--agent-home-label-height);
   text-align: center;
 }
 .springboard-edit-add {
@@ -8552,7 +8257,6 @@ button {
     transform: translate3d(0, 0, 0);
   }
 }
-
 .springboard-page-add {
   display: grid;
   width: 22px !important;
@@ -8566,7 +8270,6 @@ button {
   background: rgb(255 255 255 / 18%) !important;
   box-shadow: 0 1px 7px rgb(0 0 0 / 18%);
 }
-
 .springboard-page-delete {
   display: grid;
   width: 22px !important;

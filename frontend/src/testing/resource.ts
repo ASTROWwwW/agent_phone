@@ -2,11 +2,7 @@ import { existsSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
-// Le dossier de la ressource porte un nom variable selon les installations :
-// 'agent_phone' une fois deployee, mais pas forcement dans un depot de travail.
-// Les tests de contrat lisent les sources Lua sur disque ; un nom code en dur
-// les faisait tous echouer d'un coup sur une arborescence renommee.
-const RESOURCE_CANDIDATES = ['agent_phone', 'Phone', 'sky_phone']
+const RESOURCE_CANDIDATES = ['agent_phone', 'Phone', 'agent_phone']
 
 const frontendRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -21,10 +17,6 @@ export const RESOURCE_ROOT = ((): string => {
   )
 })()
 
-/**
- * Chemin absolu d'un fichier de la ressource, sous forme d'URL file://
- * directement utilisable par readFileSync et readdirSync.
- */
 export function resourceUrl(relativePath: string): URL {
   return pathToFileURL(join(RESOURCE_ROOT, relativePath))
 }

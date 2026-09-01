@@ -3,28 +3,28 @@ import { defineStore } from 'pinia'
 import { useGamesStore } from '@/features/games/store'
 
 import {
-  createSkyFlappyGame,
-  flapSkyGlider,
-  pauseSkyFlappy,
-  resumeSkyFlappy,
-  stepSkyFlappy,
+  createAgentFlappyGame,
+  flapAgentGlider,
+  pauseAgentFlappy,
+  resumeAgentFlappy,
+  stepAgentFlappy,
 } from './engine'
-import type { SkyFlappyDesign, SkyFlappyGameState } from './types'
+import type { AgentFlappyDesign, AgentFlappyGameState } from './types'
 
-type SkyFlappySave = {
-  design: SkyFlappyDesign
+type AgentFlappySave = {
+  design: AgentFlappyDesign
   highScore: number
   soundEnabled: boolean
 }
 
-function isDesign(value: unknown): value is SkyFlappyDesign {
+function isDesign(value: unknown): value is AgentFlappyDesign {
   return value === 'dawn' || value === 'neon' || value === 'storm'
 }
 
-export const useSkyFlappyStore = defineStore('agent-flappy', {
+export const useAgentFlappyStore = defineStore('agent-flappy', {
   state: () => ({
-    design: 'dawn' as SkyFlappyDesign,
-    game: null as SkyFlappyGameState | null,
+    design: 'dawn' as AgentFlappyDesign,
+    game: null as AgentFlappyGameState | null,
     highScore: 0,
     hydrated: false,
     menuOpen: true,
@@ -33,7 +33,7 @@ export const useSkyFlappyStore = defineStore('agent-flappy', {
   actions: {
     hydrate(): void {
       if (this.hydrated) return
-      const saved = useGamesStore().readGame<Partial<SkyFlappySave>>('agent-flappy')
+      const saved = useGamesStore().readGame<Partial<AgentFlappySave>>('agent-flappy')
       this.highScore = typeof saved?.highScore === 'number' && saved.highScore >= 0 ? Math.floor(saved.highScore) : 0
       this.design = isDesign(saved?.design) ? saved.design : 'dawn'
       if (typeof saved?.soundEnabled === 'boolean') this.soundEnabled = saved.soundEnabled
@@ -44,29 +44,29 @@ export const useSkyFlappyStore = defineStore('agent-flappy', {
         design: this.design,
         highScore: this.highScore,
         soundEnabled: this.soundEnabled,
-      } satisfies SkyFlappySave)
+      } satisfies AgentFlappySave)
     },
     start(): void {
-      this.game = createSkyFlappyGame()
+      this.game = createAgentFlappyGame()
       this.menuOpen = false
     },
     flap(): void {
-      if (this.game) this.game = flapSkyGlider(this.game)
+      if (this.game) this.game = flapAgentGlider(this.game)
     },
     tick(elapsedSeconds: number): void {
       if (!this.game) return
-      this.game = stepSkyFlappy(this.game, elapsedSeconds)
+      this.game = stepAgentFlappy(this.game, elapsedSeconds)
       if (this.game.status === 'over' && this.game.score > this.highScore) {
         this.highScore = this.game.score
         this.persist()
       }
     },
     pause(): void {
-      if (this.game) this.game = pauseSkyFlappy(this.game)
+      if (this.game) this.game = pauseAgentFlappy(this.game)
     },
     resume(): void {
       if (this.game) {
-        this.game = resumeSkyFlappy(this.game)
+        this.game = resumeAgentFlappy(this.game)
         this.menuOpen = false
       }
     },
@@ -74,7 +74,7 @@ export const useSkyFlappyStore = defineStore('agent-flappy', {
       this.pause()
       this.menuOpen = true
     },
-    setDesign(design: SkyFlappyDesign): void {
+    setDesign(design: AgentFlappyDesign): void {
       this.design = design
       this.persist()
     },

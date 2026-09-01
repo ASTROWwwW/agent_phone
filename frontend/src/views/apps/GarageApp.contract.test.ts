@@ -17,12 +17,12 @@ describe('GarageApp Agent UI contract', () => {
   it('uses first-party Agent UI without direct Konsta markup', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyAppPage')
-    expect(source).toContain('<SkyNavbar')
-    expect(source).toContain('<SkyScrollArea')
-    expect(source).toContain('<SkySearchbar')
-    expect(source).toContain('<SkySegmented')
-    expect(source).toContain('<SkyGlass')
+    expect(source).toContain('<AgentAppPage')
+    expect(source).toContain('<AgentNavbar')
+    expect(source).toContain('<AgentScrollArea')
+    expect(source).toContain('<AgentSearchbar')
+    expect(source).toContain('<AgentSegmented')
+    expect(source).toContain('<AgentGlass')
   })
 
   it('does not expose provider metadata or vehicle sharing', () => {
@@ -35,7 +35,7 @@ describe('GarageApp Agent UI contract', () => {
   it('raises the Garage title and subtitle when no navbar action exists', () => {
     expect(source).toContain('class="garage-navbar"')
     expect(source).toMatch(
-      /\.garage-navbar :deep\(\.sky-navbar__title-container > div\)\s*\{[^}]*translateY\(-30px\)/s,
+      /\.garage-navbar :deep\(\.agent-navbar__title-container > div\)\s*\{[^}]*translateY\(-30px\)/s,
     )
   })
 
@@ -54,12 +54,12 @@ describe('GarageApp Agent UI contract', () => {
     expect(source).toContain('v-else :is="kindIcons[vehicle.kind]"')
     expect(garageServer).toContain('imageUrl = vehicle_image_url(model)')
     expect(phoneConfig).toContain(
-      'UrlTemplate = "https://cdn.sky-systems.net/vehicles/{model}.png"',
+      'UrlTemplate = "https://docs.fivem.net/vehicles/{model}.webp"',
     )
     expect(phoneConfig).toContain('ModelNames = {}')
   })
 
-  it('uses the draggable Sky sheet instead of a close button', () => {
+  it('uses the draggable Agent sheet instead of a close button', () => {
     expect(source).toContain('swipe-to-close')
     expect(source).toContain('grabber-clickable')
     expect(source).toContain('@swipeclose="selectedVehicle = null"')

@@ -6,10 +6,10 @@ const source = readFileSync(new URL('./MemosApp.vue', import.meta.url), 'utf8')
 describe('MemosApp layout', () => {
   it('uses the shared horizontal page gutter in list and detail views', () => {
     expect(source).toContain(
-      '<SkyScrollArea padded class="memos-page__content">',
+      '<AgentScrollArea padded class="memos-page__content">',
     )
     expect(source).toContain(
-      '<SkyScrollArea padded class="memo-detail-scroll">',
+      '<AgentScrollArea padded class="memo-detail-scroll">',
     )
   })
 

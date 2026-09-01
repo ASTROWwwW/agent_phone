@@ -42,9 +42,9 @@ describe('CalculatorApp layout contract', () => {
   })
 
   it('uses the shared navigation controls in calculation history', () => {
-    expect(source).toContain('SkyButton, SkyNavbar, SkySheet')
+    expect(source).toContain('AgentButton, AgentNavbar, AgentSheet')
     expect(source).toContain(
-      'calculator-history sky-ui-provider sky-ui-provider--dark',
+      'calculator-history agent-ui-provider agent-ui-provider--dark',
     )
     expect(source).toContain('class="calculator-history__navbar"')
     expect(source).toContain(
@@ -52,8 +52,8 @@ describe('CalculatorApp layout contract', () => {
     )
     expect(source).toContain('calculator-history__nav-button--edit')
     expect(source).toContain('calculator-history__nav-button--close')
-    expect(source.match(/<SkyButton\s+glass/g)).toHaveLength(2)
-    expect(source).toContain('--sky-glass: rgb(44 44 46 / 62%);')
+    expect(source.match(/<AgentButton\s+glass/g)).toHaveLength(2)
+    expect(source).toContain('--agent-glass: rgb(44 44 46 / 62%);')
     expect(source).toContain('-webkit-backdrop-filter: none;')
     expect(source).toContain('backdrop-filter: none;')
     expect(source).toContain('min-width: 106px;')

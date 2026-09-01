@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import {
-  SkyBlock,
-  SkyBlockTitle,
-  SkyButton,
-  SkyDialog,
-  SkyDialogButton,
-  SkyDropdown,
-  SkyGlass,
-  SkyLink,
-  SkyList,
-  SkyField,
-  SkyListItem,
-  SkyNavbar,
-  SkyAppPage,
-  SkyPillNavigation,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySpinner,
-  SkyRange,
-  SkySearchbar,
-  SkySheet,
-  SkyNotification,
+  AgentBlock,
+  AgentBlockTitle,
+  AgentButton,
+  AgentDialog,
+  AgentDialogButton,
+  AgentDropdown,
+  AgentGlass,
+  AgentLink,
+  AgentList,
+  AgentField,
+  AgentListItem,
+  AgentNavbar,
+  AgentAppPage,
+  AgentPillNavigation,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSpinner,
+  AgentRange,
+  AgentSearchbar,
+  AgentSheet,
+  AgentNotification,
 } from '@/ui'
 import {
   Check,
@@ -659,16 +659,16 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     component="main"
-    class="music-app sky-ui-provider"
+    class="music-app agent-ui-provider"
     :class="{
       'music-app--playlist': activePlaylist,
       'music-app--playing': music.currentTrack,
-      'sky-ui-provider--dark': phone.isDarkMode,
+      'agent-ui-provider--dark': phone.isDarkMode,
     }"
   >
-    <sky-navbar
+    <agent-navbar
       component="nav"
       class="music-navbar"
       title-class="music-navbar-title"
@@ -679,7 +679,7 @@ onBeforeUnmount(() => {
       @back="closePlaylist"
     >
       <template #right>
-        <sky-link
+        <agent-link
           v-if="activePlaylist"
           component="button"
           icon-only
@@ -689,8 +689,8 @@ onBeforeUnmount(() => {
           @click="openAddMenu"
         >
           <Ellipsis :size="22" />
-        </sky-link>
-        <sky-link
+        </agent-link>
+        <agent-link
           v-else
           component="button"
           icon-only
@@ -700,16 +700,16 @@ onBeforeUnmount(() => {
           @click="openAddMenu"
         >
           <Plus :size="24" />
-        </sky-link>
+        </agent-link>
       </template>
-    </sky-navbar>
+    </agent-navbar>
 
     <div ref="scrollEl" class="music-scroll">
       <div
         v-if="music.isLoading && !allTracks.length && !music.playlists.length"
         class="music-loading"
       >
-        <sky-spinner />
+        <agent-spinner />
         <span>{{ phone.t('Apps.music.loading') }}</span>
       </div>
 
@@ -742,7 +742,7 @@ onBeforeUnmount(() => {
             }}
           </p>
           <div class="music-playlist-actions">
-            <sky-button
+            <agent-button
               large
               rounded
               :disabled="!playlistTracks.length"
@@ -753,8 +753,8 @@ onBeforeUnmount(() => {
             >
               <Play :size="18" fill="currentColor" />
               {{ phone.t('Apps.music.play') }}
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               large
               rounded
               tonal
@@ -762,12 +762,12 @@ onBeforeUnmount(() => {
             >
               <CirclePlus :size="18" />
               {{ phone.t('Apps.music.addSongs') }}
-            </sky-button>
+            </agent-button>
           </div>
         </section>
 
-        <sky-list v-if="playlistTracks.length" nested class="music-track-list">
-          <sky-list-item
+        <agent-list v-if="playlistTracks.length" nested class="music-track-list">
+          <agent-list-item
             v-for="track in playlistTracks"
             :key="`${track.source}:${track.id}`"
             link
@@ -788,7 +788,7 @@ onBeforeUnmount(() => {
               </span>
             </template>
             <template #after>
-              <sky-link
+              <agent-link
                 component="button"
                 icon-only
                 :aria-label="phone.t('Apps.music.songActions')"
@@ -801,15 +801,15 @@ onBeforeUnmount(() => {
                 @click="openTrackMenu($event, track)"
               >
                 <Ellipsis :size="20" />
-              </sky-link>
+              </agent-link>
             </template>
-          </sky-list-item>
-        </sky-list>
-        <sky-block v-else class="music-empty" inset>
+          </agent-list-item>
+        </agent-list>
+        <agent-block v-else class="music-empty" inset>
           <ListMusic :size="43" />
           <strong>{{ phone.t('Apps.music.emptyPlaylist') }}</strong>
           <span>{{ phone.t('Apps.music.emptyPlaylistBody') }}</span>
-        </sky-block>
+        </agent-block>
       </template>
 
       <template v-else-if="activeTab === 'library'">
@@ -818,7 +818,7 @@ onBeforeUnmount(() => {
           <p>{{ phone.t('Apps.music.librarySubtitle') }}</p>
         </header>
 
-        <sky-glass
+        <agent-glass
           v-if="featuredTrack"
           class="music-featured"
           :highlight="false"
@@ -846,12 +846,12 @@ onBeforeUnmount(() => {
               <Music2 v-else :size="52" />
             </div>
           </button>
-        </sky-glass>
+        </agent-glass>
 
         <template v-if="recentTracks.length">
-          <sky-block-title class="music-section-title">{{
+          <agent-block-title class="music-section-title">{{
             phone.t('Apps.music.recentlyAdded')
-          }}</sky-block-title>
+          }}</agent-block-title>
           <section class="music-album-grid">
             <button
               v-for="track in recentTracks"
@@ -873,11 +873,11 @@ onBeforeUnmount(() => {
             </button>
           </section>
 
-          <sky-block-title class="music-section-title">{{
+          <agent-block-title class="music-section-title">{{
             phone.t('Apps.music.songs')
-          }}</sky-block-title>
-          <sky-list nested class="music-track-list">
-            <sky-list-item
+          }}</agent-block-title>
+          <agent-list nested class="music-track-list">
+            <agent-list-item
               v-for="track in allTracks"
               :key="`${track.source}:${track.id}`"
               link
@@ -898,7 +898,7 @@ onBeforeUnmount(() => {
                 </span>
               </template>
               <template #after>
-                <sky-link
+                <agent-link
                   component="button"
                   icon-only
                   :aria-label="phone.t('Apps.music.songActions')"
@@ -911,20 +911,20 @@ onBeforeUnmount(() => {
                   @click="openTrackMenu($event, track)"
                 >
                   <Ellipsis :size="20" />
-                </sky-link>
+                </agent-link>
               </template>
-            </sky-list-item>
-          </sky-list>
+            </agent-list-item>
+          </agent-list>
         </template>
-        <sky-block v-else class="music-empty music-empty--library" inset>
+        <agent-block v-else class="music-empty music-empty--library" inset>
           <Music2 :size="48" />
           <strong>{{ phone.t('Apps.music.emptyLibrary') }}</strong>
           <span>{{ phone.t('Apps.music.emptyLibraryBody') }}</span>
-          <sky-button rounded @click="openSheet('youtube')">
+          <agent-button rounded @click="openSheet('youtube')">
             <ExternalLink :size="17" />
             {{ phone.t('Apps.music.addYouTube') }}
-          </sky-button>
-        </sky-block>
+          </agent-button>
+        </agent-block>
       </template>
 
       <template v-else-if="activeTab === 'playlists'">
@@ -967,30 +967,30 @@ onBeforeUnmount(() => {
             </small>
           </button>
         </section>
-        <sky-block v-else class="music-empty music-empty--library" inset>
+        <agent-block v-else class="music-empty music-empty--library" inset>
           <ListMusic :size="48" />
           <strong>{{ phone.t('Apps.music.noPlaylists') }}</strong>
           <span>{{ phone.t('Apps.music.noPlaylistsBody') }}</span>
-          <sky-button rounded @click="openNewPlaylist()">
+          <agent-button rounded @click="openNewPlaylist()">
             <Plus :size="17" />
             {{ phone.t('Apps.music.newPlaylist') }}
-          </sky-button>
-        </sky-block>
+          </agent-button>
+        </agent-block>
       </template>
 
       <template v-else>
         <header class="music-large-title music-large-title--search">
           <h1>{{ pageTitle }}</h1>
         </header>
-        <sky-searchbar
+        <agent-searchbar
           class="music-searchbar"
           :value="searchQuery"
           :placeholder="phone.t('Apps.music.searchPlaceholder')"
           @input="searchQuery = eventValue($event)"
           @clear="searchQuery = ''"
         />
-        <sky-list v-if="searchResults.length" nested class="music-track-list">
-          <sky-list-item
+        <agent-list v-if="searchResults.length" nested class="music-track-list">
+          <agent-list-item
             v-for="track in searchResults"
             :key="`${track.source}:${track.id}`"
             link
@@ -1011,7 +1011,7 @@ onBeforeUnmount(() => {
               </span>
             </template>
             <template #after>
-              <sky-link
+              <agent-link
                 component="button"
                 icon-only
                 :aria-label="phone.t('Apps.music.songActions')"
@@ -1024,19 +1024,19 @@ onBeforeUnmount(() => {
                 @click="openTrackMenu($event, track)"
               >
                 <Ellipsis :size="20" />
-              </sky-link>
+              </agent-link>
             </template>
-          </sky-list-item>
-        </sky-list>
-        <sky-block v-else class="music-empty" inset>
+          </agent-list-item>
+        </agent-list>
+        <agent-block v-else class="music-empty" inset>
           <Search :size="42" />
           <strong>{{ phone.t('Apps.music.noResults') }}</strong>
           <span>{{ phone.t('Apps.music.noResultsBody') }}</span>
-        </sky-block>
+        </agent-block>
       </template>
     </div>
 
-    <sky-glass
+    <agent-glass
       v-if="music.currentTrack"
       class="music-mini-player"
       :highlight="false"
@@ -1072,15 +1072,15 @@ onBeforeUnmount(() => {
       >
         <SkipForward :size="23" fill="currentColor" />
       </button>
-    </sky-glass>
+    </agent-glass>
 
-    <SkyPillNavigation
+    <AgentPillNavigation
       v-if="!activePlaylist"
       class="music-navigation"
       layout="full"
       :label="phone.t('Apps.music.navigation')"
     >
-      <SkySegmented
+      <AgentSegmented
         strong
         rounded
         navigation
@@ -1089,7 +1089,7 @@ onBeforeUnmount(() => {
         :data-active-tab="activeTab"
         :item-count="tabs.length"
       >
-        <SkySegmentedButton
+        <AgentSegmentedButton
           v-for="item in tabs"
           :key="item.id"
           :active="activeTab === item.id"
@@ -1106,11 +1106,11 @@ onBeforeUnmount(() => {
             />
             <span>{{ phone.t(`Apps.music.tabs.${item.id}`) }}</span>
           </span>
-        </SkySegmentedButton>
-      </SkySegmented>
-    </SkyPillNavigation>
+        </AgentSegmentedButton>
+      </AgentSegmented>
+    </AgentPillNavigation>
 
-    <SkyDropdown
+    <AgentDropdown
       :items="menuItems"
       :label="menuLabel"
       :opened="addMenuOpened || actionMenuOpened"
@@ -1122,16 +1122,16 @@ onBeforeUnmount(() => {
     />
 
     <div class="music-form-sheet">
-      <sky-sheet :opened="Boolean(activeSheet)" @backdropclick="closeSheet">
+      <agent-sheet :opened="Boolean(activeSheet)" @backdropclick="closeSheet">
         <section class="music-sheet-content">
           <header>
-            <sky-link component="button" @click="closeSheet">{{
+            <agent-link component="button" @click="closeSheet">{{
               phone.t(
                 activeSheet === 'track-picker'
                   ? 'Common.done'
                   : 'Common.cancel',
               )
-            }}</sky-link>
+            }}</agent-link>
             <strong>{{ sheetTitle }}</strong>
             <span />
           </header>
@@ -1139,8 +1139,8 @@ onBeforeUnmount(() => {
           <template v-if="activeSheet === 'youtube'">
             <div class="music-sheet-icon"><ExternalLink :size="28" /></div>
             <p>{{ phone.t('Apps.music.youtubeBody') }}</p>
-            <sky-list inset strong>
-              <sky-field
+            <agent-list inset strong>
+              <agent-field
                 :label="phone.t('Apps.music.youtubeUrl')"
                 input-id="music-youtube-url"
                 inputmode="url"
@@ -1150,7 +1150,7 @@ onBeforeUnmount(() => {
                 @input="youtubeUrl = eventValue($event)"
                 @keydown.enter="handleEnterAction($event, submitYouTube)"
               />
-              <sky-field
+              <agent-field
                 :label="phone.t('Apps.music.youtubeTitle')"
                 input-id="music-youtube-title"
                 maxlength="160"
@@ -1159,7 +1159,7 @@ onBeforeUnmount(() => {
                 @input="youtubeTitle = eventValue($event)"
                 @keydown.enter="handleEnterAction($event, submitYouTube)"
               />
-              <sky-field
+              <agent-field
                 :label="phone.t('Apps.music.youtubeArtist')"
                 input-id="music-youtube-artist"
                 maxlength="120"
@@ -1168,31 +1168,31 @@ onBeforeUnmount(() => {
                 @input="youtubeArtist = eventValue($event)"
                 @keydown.enter="handleEnterAction($event, submitYouTube)"
               />
-            </sky-list>
+            </agent-list>
             <p v-if="music.error" class="music-form-error" role="alert">
               {{ errorText() }}
             </p>
-            <sky-button
+            <agent-button
               large
               rounded
               :disabled="music.isLoading || !youtubeUrl.trim()"
               @click="submitYouTube"
             >
-              <sky-spinner v-if="music.isLoading" />
+              <agent-spinner v-if="music.isLoading" />
               <template v-else>{{
                 phone.t('Apps.music.addToLibrary')
               }}</template>
-            </sky-button>
+            </agent-button>
           </template>
 
           <template v-else-if="activeSheet === 'playlist-picker'">
-            <sky-list
+            <agent-list
               v-if="music.playlists.length"
               inset
               strong
               class="music-picker-list"
             >
-              <sky-list-item
+              <agent-list-item
                 v-for="playlist in music.playlists"
                 :key="playlist.id"
                 :link="!actionTrackIsInPlaylist(playlist)"
@@ -1222,9 +1222,9 @@ onBeforeUnmount(() => {
                   </span>
                   <CirclePlus v-else :size="19" />
                 </template>
-              </sky-list-item>
-            </sky-list>
-            <sky-button
+              </agent-list-item>
+            </agent-list>
+            <agent-button
               v-if="music.playlists.length"
               rounded
               tonal
@@ -1233,18 +1233,18 @@ onBeforeUnmount(() => {
               @click="openNewPlaylist(actionTrack)"
             >
               <Plus :size="17" /> {{ phone.t('Apps.music.newPlaylist') }}
-            </sky-button>
-            <sky-block v-else class="music-empty" inset>
+            </agent-button>
+            <agent-block v-else class="music-empty" inset>
               <ListMusic :size="42" />
               <strong>{{ phone.t('Apps.music.noPlaylists') }}</strong>
               <span>{{ phone.t('Apps.music.createPlaylistFirst') }}</span>
-              <sky-button
+              <agent-button
                 rounded
                 :disabled="music.isLoading"
                 @click="openNewPlaylist(actionTrack)"
-                >{{ phone.t('Apps.music.newPlaylist') }}</sky-button
+                >{{ phone.t('Apps.music.newPlaylist') }}</agent-button
               >
-            </sky-block>
+            </agent-block>
             <p v-if="music.error" class="music-form-error" role="alert">
               {{ errorText() }}
             </p>
@@ -1252,13 +1252,13 @@ onBeforeUnmount(() => {
 
           <template v-else-if="activeSheet === 'track-picker'">
             <p>{{ phone.t('Apps.music.addSongsBody') }}</p>
-            <sky-list
+            <agent-list
               v-if="availablePlaylistTracks.length"
               inset
               strong
               class="music-picker-list"
             >
-              <sky-list-item
+              <agent-list-item
                 v-for="track in availablePlaylistTracks"
                 :key="`${track.source}:${track.id}`"
                 link
@@ -1281,9 +1281,9 @@ onBeforeUnmount(() => {
                   </span>
                 </template>
                 <template #after><CirclePlus :size="20" /></template>
-              </sky-list-item>
-            </sky-list>
-            <sky-block v-else class="music-empty" inset>
+              </agent-list-item>
+            </agent-list>
+            <agent-block v-else class="music-empty" inset>
               <Check v-if="allTracks.length" :size="42" />
               <Music2 v-else :size="42" />
               <strong>{{
@@ -1300,7 +1300,7 @@ onBeforeUnmount(() => {
                     : 'Apps.music.emptyLibraryBody',
                 )
               }}</span>
-            </sky-block>
+            </agent-block>
             <p v-if="music.error" class="music-form-error" role="alert">
               {{ errorText() }}
             </p>
@@ -1309,8 +1309,8 @@ onBeforeUnmount(() => {
           <template v-else>
             <div class="music-sheet-icon"><ListMusic :size="29" /></div>
             <p>{{ phone.t('Apps.music.playlistBody') }}</p>
-            <sky-list inset strong>
-              <sky-field
+            <agent-list inset strong>
+              <agent-field
                 :label="phone.t('Apps.music.playlistName')"
                 input-id="music-playlist-name"
                 maxlength="80"
@@ -1320,54 +1320,54 @@ onBeforeUnmount(() => {
                 @input="playlistName = eventValue($event)"
                 @keydown.enter="handleEnterAction($event, submitPlaylist)"
               />
-            </sky-list>
+            </agent-list>
             <p v-if="music.error" class="music-form-error" role="alert">
               {{ errorText() }}
             </p>
-            <sky-button
+            <agent-button
               large
               rounded
               :disabled="music.isLoading || !playlistName.trim()"
               @click="submitPlaylist"
             >
-              <sky-spinner v-if="music.isLoading" />
+              <agent-spinner v-if="music.isLoading" />
               <template v-else>{{ phone.t('Common.save') }}</template>
-            </sky-button>
+            </agent-button>
           </template>
         </section>
-      </sky-sheet>
+      </agent-sheet>
     </div>
 
     <div class="music-player-sheet">
-      <sky-sheet :opened="playerOpened" @backdropclick="playerOpened = false">
+      <agent-sheet :opened="playerOpened" @backdropclick="playerOpened = false">
         <section v-if="music.currentTrack" class="music-player">
           <header>
-            <sky-link
+            <agent-link
               component="button"
               icon-only
               :aria-label="phone.t('Common.close')"
               @click="playerOpened = false"
             >
               <X :size="20" />
-            </sky-link>
+            </agent-link>
             <span>{{ phone.t('Apps.music.nowPlaying') }}</span>
             <div class="music-player-header-actions">
-              <sky-link
+              <agent-link
                 component="button"
                 icon-only
                 :aria-label="phone.t('Apps.easyShare.share')"
                 @click="shareTrack(music.currentTrack)"
               >
                 <Share2 :size="20" />
-              </sky-link>
-              <sky-link
+              </agent-link>
+              <agent-link
                 component="button"
                 icon-only
                 :aria-label="phone.t('Apps.music.addToPlaylist')"
                 @click="openCurrentTrackPlaylistPicker"
               >
                 <CirclePlus :size="21" />
-              </sky-link>
+              </agent-link>
             </div>
           </header>
           <div
@@ -1387,7 +1387,7 @@ onBeforeUnmount(() => {
             <span>{{ music.currentTrack.artist }}</span>
           </div>
           <div class="music-progress">
-            <sky-range
+            <agent-range
               :value="music.currentTime"
               :min="0"
               :max="Math.max(1, music.duration)"
@@ -1431,7 +1431,7 @@ onBeforeUnmount(() => {
           </div>
           <div class="music-volume">
             <Volume1 :size="18" />
-            <sky-range
+            <agent-range
               :value="Math.round(music.volume * 100)"
               :min="0"
               :max="100"
@@ -1444,53 +1444,53 @@ onBeforeUnmount(() => {
             {{ phone.t('Apps.music.errors.playback_failed') }}
           </p>
         </section>
-      </sky-sheet>
+      </agent-sheet>
     </div>
 
-    <sky-dialog
+    <agent-dialog
       :opened="confirmRemoveTrack"
       :title="phone.t('Apps.music.removeSongTitle')"
       :content="phone.t('Apps.music.removeSongBody')"
       @backdropclick="cancelRemoveTrack"
     >
       <template #buttons>
-        <sky-dialog-button @click="cancelRemoveTrack">{{
+        <agent-dialog-button @click="cancelRemoveTrack">{{
           phone.t('Common.cancel')
-        }}</sky-dialog-button>
-        <sky-dialog-button strong @click="removePersonalTrack">{{
+        }}</agent-dialog-button>
+        <agent-dialog-button strong @click="removePersonalTrack">{{
           phone.t('Common.delete')
-        }}</sky-dialog-button>
+        }}</agent-dialog-button>
       </template>
-    </sky-dialog>
+    </agent-dialog>
 
-    <sky-dialog
+    <agent-dialog
       :opened="confirmDeletePlaylist"
       :title="phone.t('Apps.music.deletePlaylistTitle')"
       :content="phone.t('Apps.music.deletePlaylistBody')"
       @backdropclick="confirmDeletePlaylist = false"
     >
       <template #buttons>
-        <sky-dialog-button @click="confirmDeletePlaylist = false">{{
+        <agent-dialog-button @click="confirmDeletePlaylist = false">{{
           phone.t('Common.cancel')
-        }}</sky-dialog-button>
-        <sky-dialog-button strong @click="deleteActivePlaylist">{{
+        }}</agent-dialog-button>
+        <agent-dialog-button strong @click="deleteActivePlaylist">{{
           phone.t('Common.delete')
-        }}</sky-dialog-button>
+        }}</agent-dialog-button>
       </template>
-    </sky-dialog>
+    </agent-dialog>
 
-    <sky-notification :opened="Boolean(toastText)" :text="toastText" />
-  </sky-app-page>
+    <agent-notification :opened="Boolean(toastText)" :text="toastText" />
+  </agent-app-page>
 </template>
 
 <style scoped>
 .music-app {
   --music-accent: #fa2d48;
   --music-mini-player-bottom: calc(
-    var(--sky-safe-area-bottom) + var(--sky-tabbar-height) + var(--sky-space-2)
+    var(--agent-safe-area-bottom) + var(--agent-tabbar-height) + var(--agent-space-2)
   );
   --music-mini-player-height: 58px;
-  --sky-app-accent: var(--music-accent);
+  --agent-app-accent: var(--music-accent);
   --music-bg: #f7f7fa;
   --music-card: rgb(255 255 255 / 88%);
   --music-label: #111114;
@@ -1531,8 +1531,8 @@ onBeforeUnmount(() => {
   min-height: 0;
   padding: 8px 0
     calc(
-      var(--sky-safe-area-bottom) + var(--sky-tabbar-height) +
-        var(--sky-space-3)
+      var(--agent-safe-area-bottom) + var(--agent-tabbar-height) +
+        var(--agent-space-3)
     );
   overflow-y: auto;
   overflow-x: hidden;
@@ -1543,7 +1543,7 @@ onBeforeUnmount(() => {
 .music-app--playing .music-scroll {
   padding-bottom: calc(
     var(--music-mini-player-bottom) + var(--music-mini-player-height) +
-      var(--sky-space-3)
+      var(--agent-space-3)
   );
 }
 
@@ -1883,9 +1883,9 @@ onBeforeUnmount(() => {
 .music-mini-player {
   position: absolute;
   z-index: 32;
-  right: calc(var(--sky-safe-area-right) + var(--sky-space-4));
+  right: calc(var(--agent-safe-area-right) + var(--agent-space-4));
   bottom: var(--music-mini-player-bottom);
-  left: calc(var(--sky-safe-area-left) + var(--sky-space-4));
+  left: calc(var(--agent-safe-area-left) + var(--agent-space-4));
   height: var(--music-mini-player-height);
   padding: 6px 10px 6px 7px;
   border-radius: 17px;
@@ -2034,7 +2034,7 @@ onBeforeUnmount(() => {
   margin: 14px 16px 0 !important;
 }
 
-.music-player-sheet :deep(.sky-sheet__panel) {
+.music-player-sheet :deep(.agent-sheet__panel) {
   background: rgb(22 22 25 / 96%) !important;
 }
 

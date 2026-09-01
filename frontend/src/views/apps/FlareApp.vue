@@ -1,33 +1,33 @@
 <script setup lang="ts">
 import {
-  SkyBadge,
-  SkyBlock,
-  SkyBlockTitle,
-  SkyButton,
-  SkyCard,
-  SkyDialog,
-  SkyDialogButton,
-  SkyDropdown,
-  SkyIcon,
-  SkyLink,
-  SkyList,
-  SkyField,
-  SkyListItem,
-  SkyMessage,
-  SkyMessagebar,
-  SkyMessages,
-  SkyNavbar,
-  SkyNavbarBackLink,
-  SkyAppPage,
-  SkySettingsGroup,
-  SkySettingsRow,
-  SkySpinner,
-  SkySheet,
-  SkyTabBar,
-  SkyTabButton,
-  SkyToolbarPane,
-  SkyNotification,
-  SkyToggle,
+  AgentBadge,
+  AgentBlock,
+  AgentBlockTitle,
+  AgentButton,
+  AgentCard,
+  AgentDialog,
+  AgentDialogButton,
+  AgentDropdown,
+  AgentIcon,
+  AgentLink,
+  AgentList,
+  AgentField,
+  AgentListItem,
+  AgentMessage,
+  AgentMessagebar,
+  AgentMessages,
+  AgentNavbar,
+  AgentNavbarBackLink,
+  AgentAppPage,
+  AgentSettingsGroup,
+  AgentSettingsRow,
+  AgentSpinner,
+  AgentSheet,
+  AgentTabBar,
+  AgentTabButton,
+  AgentToolbarPane,
+  AgentNotification,
+  AgentToggle,
 } from '@/ui'
 import {
   ArrowUpCircle,
@@ -984,7 +984,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     component="main"
     class="native-app flare-page"
     :class="{
@@ -996,7 +996,7 @@ onBeforeUnmount(() => {
   >
     <div v-if="flare.loading" class="flare-loading">
       <span class="flare-mark"><Flame fill="currentColor" /></span>
-      <sky-spinner />
+      <agent-spinner />
     </div>
 
     <section
@@ -1009,7 +1009,7 @@ onBeforeUnmount(() => {
     </section>
 
     <template v-else-if="!flare.profile">
-      <sky-navbar
+      <agent-navbar
         :title="phone.t('Apps.flare.createProfile')"
         class="flare-navbar top-0 sticky"
       />
@@ -1021,7 +1021,7 @@ onBeforeUnmount(() => {
             <p>{{ phone.t('Apps.flare.welcomeBody') }}</p>
           </div>
         </div>
-        <sky-card :content-wrap="false" class="flare-photo-editor">
+        <agent-card :content-wrap="false" class="flare-photo-editor">
           <header>
             <div>
               <strong>{{ phone.t('Apps.flare.profilePhotos') }}</strong>
@@ -1039,7 +1039,7 @@ onBeforeUnmount(() => {
               <span v-if="index === 0" class="flare-photo-primary">
                 {{ phone.t('Apps.flare.primaryPhoto') }}
               </span>
-              <sky-link
+              <agent-link
                 v-if="draftPhotos.length > 1"
                 component="button"
                 icon-only
@@ -1052,21 +1052,21 @@ onBeforeUnmount(() => {
                 @click="removeDraftPhoto(photo.id)"
               >
                 <X />
-              </sky-link>
+              </agent-link>
             </div>
           </div>
           <div
             v-if="draftPhotos.length < 6"
             class="flare-onboarding-photo-actions"
           >
-            <sky-button outline rounded @click="openProfileMediaApp('photos')">
+            <agent-button outline rounded @click="openProfileMediaApp('photos')">
               <Images :size="19" />
               <span>{{ phone.t('Apps.flare.choosePhotos') }}</span>
-            </sky-button>
-            <sky-button outline rounded @click="openProfileMediaApp('camera')">
+            </agent-button>
+            <agent-button outline rounded @click="openProfileMediaApp('camera')">
               <Camera :size="19" />
               <span>{{ phone.t('Apps.flare.takePhoto') }}</span>
-            </sky-button>
+            </agent-button>
           </div>
           <p
             v-if="!hasRequiredProfilePhoto"
@@ -1075,15 +1075,15 @@ onBeforeUnmount(() => {
           >
             {{ phone.t('Apps.flare.profilePhotoRequired') }}
           </p>
-        </sky-card>
-        <sky-list inset strong>
-          <sky-field
+        </agent-card>
+        <agent-list inset strong>
+          <agent-field
             :label="phone.t('Apps.flare.yourName')"
             :value="profileDraft.name"
             :placeholder="phone.t('Apps.flare.namePlaceholder')"
             @input="profileDraft.name = eventValue($event)"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.age')"
             type="number"
             min="18"
@@ -1091,7 +1091,7 @@ onBeforeUnmount(() => {
             :value="profileDraft.age"
             @input="updateNumber('age', $event)"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.bio')"
             type="textarea"
             :value="profileDraft.bio"
@@ -1100,7 +1100,7 @@ onBeforeUnmount(() => {
             :maxlength="300"
             @input="profileDraft.bio = eventValue($event)"
           />
-          <sky-list-item
+          <agent-list-item
             class="flare-choice-row"
             :header="phone.t('Apps.flare.gender')"
             :title="choiceLabel('gender')"
@@ -1108,7 +1108,7 @@ onBeforeUnmount(() => {
             link-component="button"
             :link-props="choiceLinkProps('gender')"
           />
-          <sky-list-item
+          <agent-list-item
             class="flare-choice-row"
             :header="phone.t('Apps.flare.showMe')"
             :title="choiceLabel('interestedIn')"
@@ -1116,7 +1116,7 @@ onBeforeUnmount(() => {
             link-component="button"
             :link-props="choiceLinkProps('interestedIn')"
           />
-          <sky-list-item
+          <agent-list-item
             class="flare-choice-row"
             :header="phone.t('Apps.flare.relationshipGoal')"
             :title="choiceLabel('lookingFor')"
@@ -1124,21 +1124,21 @@ onBeforeUnmount(() => {
             link-component="button"
             :link-props="choiceLinkProps('lookingFor')"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.interests')"
             :value="profileDraft.interests.join(', ')"
             :placeholder="phone.t('Apps.flare.interestsPlaceholder')"
             @input="updateInterests"
           />
-        </sky-list>
+        </agent-list>
         <p class="flare-form-hint">
           {{ phone.t('Apps.flare.interestsHint') }}
         </p>
         <p v-if="flare.error" class="flare-error">
           {{ phone.t(`Apps.flare.errors.${flare.error}`) }}
         </p>
-        <sky-block class="flare-profile-form__actions">
-          <sky-button
+        <agent-block class="flare-profile-form__actions">
+          <agent-button
             large
             rounded
             :disabled="profileSaving || !hasRequiredProfilePhoto"
@@ -1146,15 +1146,15 @@ onBeforeUnmount(() => {
             @click="saveProfile"
           >
             {{ phone.t('Apps.flare.start') }}
-          </sky-button>
-        </sky-block>
+          </agent-button>
+        </agent-block>
       </section>
     </template>
 
     <template v-else-if="activeMatch">
-      <sky-navbar class="flare-navbar top-0 sticky">
+      <agent-navbar class="flare-navbar top-0 sticky">
         <template #left>
-          <sky-navbar-back-link
+          <agent-navbar-back-link
             :text="phone.t('Common.back')"
             @click="closeMatch"
           />
@@ -1166,19 +1166,19 @@ onBeforeUnmount(() => {
           </span>
         </template>
         <template #right>
-          <sky-link
+          <agent-link
             component="button"
             icon-only
             :aria-label="phone.t('Apps.flare.matchActions')"
             @click="unmatchDialog = true"
           >
             <Ellipsis />
-          </sky-link>
+          </agent-link>
         </template>
-      </sky-navbar>
+      </agent-navbar>
       <div ref="messageScroll" class="flare-chat-scroll">
-        <sky-messages>
-          <sky-message
+        <agent-messages>
+          <agent-message
             v-for="message in flare.messages"
             :key="message.id"
             :type="message.direction"
@@ -1196,8 +1196,8 @@ onBeforeUnmount(() => {
                 :message="attachmentMessage(message)"
               />
             </template>
-          </sky-message>
-        </sky-messages>
+          </agent-message>
+        </agent-messages>
       </div>
 
       <section v-if="attachmentMenuOpen" class="messages-attachment-menu">
@@ -1272,7 +1272,7 @@ onBeforeUnmount(() => {
               {{ phone.t('Apps.flare.retryGifs') }}
             </button>
           </div>
-          <sky-spinner v-if="gifLoading" class="messages-gif-loading" />
+          <agent-spinner v-if="gifLoading" class="messages-gif-loading" />
         </div>
       </section>
 
@@ -1293,7 +1293,7 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
-      <sky-messagebar
+      <agent-messagebar
         class="flare-messagebar messages-messagebar"
         :placeholder="phone.t('Apps.flare.messagePlaceholder')"
         :value="draft"
@@ -1302,8 +1302,8 @@ onBeforeUnmount(() => {
         @keydown.enter.exact="handleEnterAction($event, sendMessage)"
       >
         <template #left>
-          <sky-toolbar-pane class="ios:h-10 messages-messagebar__tools">
-            <sky-link
+          <agent-toolbar-pane class="ios:h-10 messages-messagebar__tools">
+            <agent-link
               component="button"
               icon-only
               :aria-label="phone.t('Apps.flare.moreActions')"
@@ -1313,26 +1313,26 @@ onBeforeUnmount(() => {
               @click="toggleAttachmentMenu"
             >
               <Plus :size="25" />
-            </sky-link>
-          </sky-toolbar-pane>
+            </agent-link>
+          </agent-toolbar-pane>
         </template>
         <template #right>
-          <sky-toolbar-pane>
-            <sky-link
+          <agent-toolbar-pane>
+            <agent-link
               component="button"
               icon-only
               :disabled="(!draft.trim() && !shareDraft) || flare.sending"
               @click="sendMessage"
             >
               <ArrowUpCircle :size="29" />
-            </sky-link>
-          </sky-toolbar-pane>
+            </agent-link>
+          </agent-toolbar-pane>
         </template>
-      </sky-messagebar>
+      </agent-messagebar>
     </template>
 
     <template v-else>
-      <sky-navbar
+      <agent-navbar
         :key="
           profileEditing
             ? 'profile-edit'
@@ -1363,7 +1363,7 @@ onBeforeUnmount(() => {
           </strong>
         </template>
         <template #right>
-          <sky-link
+          <agent-link
             v-if="
               activeTab === 'profile' && (profileEditing || profileSettings)
             "
@@ -1374,8 +1374,8 @@ onBeforeUnmount(() => {
             @click="saveProfile"
           >
             {{ phone.t('Common.done') }}
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             v-else-if="activeTab === 'discover'"
             component="button"
             icon-only
@@ -1383,9 +1383,9 @@ onBeforeUnmount(() => {
             @click="openSettings"
           >
             <SlidersHorizontal />
-          </sky-link>
+          </agent-link>
         </template>
-      </sky-navbar>
+      </agent-navbar>
 
       <section v-if="activeTab === 'discover'" class="flare-discover">
         <div
@@ -1395,9 +1395,9 @@ onBeforeUnmount(() => {
           <span class="flare-state__icon"><EyeOff /></span>
           <h2>{{ phone.t('Apps.flare.discoveryOffTitle') }}</h2>
           <p>{{ phone.t('Apps.flare.discoveryOffBody') }}</p>
-          <sky-button rounded @click="setDiscovery(true)">
+          <agent-button rounded @click="setDiscovery(true)">
             {{ phone.t('Apps.flare.enableDiscovery') }}
-          </sky-button>
+          </agent-button>
         </div>
         <div v-else-if="currentProfile" class="flare-deck">
           <article
@@ -1490,51 +1490,51 @@ onBeforeUnmount(() => {
           <span class="flare-state__icon"><RotateCcw /></span>
           <h2>{{ phone.t('Apps.flare.noProfiles') }}</h2>
           <p>{{ phone.t('Apps.flare.noProfilesBody') }}</p>
-          <sky-button
+          <agent-button
             v-if="activeExploreMode !== 'all'"
             clear
             rounded
             @click="clearExplore"
           >
             {{ phone.t('Apps.flare.clearExploreFilter') }}
-          </sky-button>
+          </agent-button>
         </div>
         <div
           v-if="flare.profile.discoverable && currentProfile"
           class="flare-actions"
         >
-          <sky-button
+          <agent-button
             rounded
             class="flare-action flare-action--small flare-action--rewind"
             :aria-label="phone.t('Apps.flare.rewind')"
             @click="rewind"
           >
             <RotateCcw />
-          </sky-button>
-          <sky-button
+          </agent-button>
+          <agent-button
             rounded
             class="flare-action flare-action--pass"
             :aria-label="phone.t('Apps.flare.pass')"
             @click="swipe('pass')"
           >
             <X />
-          </sky-button>
-          <sky-button
+          </agent-button>
+          <agent-button
             rounded
             class="flare-action flare-action--small flare-action--super"
             :aria-label="phone.t('Apps.flare.superLike')"
             @click="swipe('superlike')"
           >
             <Star fill="currentColor" />
-          </sky-button>
-          <sky-button
+          </agent-button>
+          <agent-button
             rounded
             class="flare-action flare-action--like"
             :aria-label="phone.t('Apps.flare.like')"
             @click="swipe('like')"
           >
             <Heart fill="currentColor" />
-          </sky-button>
+          </agent-button>
         </div>
       </section>
 
@@ -1546,7 +1546,7 @@ onBeforeUnmount(() => {
           <p>{{ phone.t('Apps.flare.exploreBody') }}</p>
         </div>
         <div class="flare-explore-grid">
-          <sky-card
+          <agent-card
             v-for="tile in exploreTiles"
             :key="tile.key"
             component="button"
@@ -1566,7 +1566,7 @@ onBeforeUnmount(() => {
               phone.t(`Apps.flare.exploreModes.${tile.key}`)
             }}</strong>
             <ChevronRight />
-          </sky-card>
+          </agent-card>
         </div>
       </section>
 
@@ -1589,20 +1589,20 @@ onBeforeUnmount(() => {
               <small v-else>{{ phone.t('Apps.flare.likedYou') }}</small>
             </span>
             <div class="flare-like-actions">
-              <sky-button
+              <agent-button
                 rounded
                 :aria-label="phone.t('Apps.flare.pass')"
                 @click="reactToLike(profile.id, 'pass')"
               >
                 <X />
-              </sky-button>
-              <sky-button
+              </agent-button>
+              <agent-button
                 rounded
                 :aria-label="phone.t('Apps.flare.like')"
                 @click="reactToLike(profile.id, 'like')"
               >
                 <Heart fill="currentColor" />
-              </sky-button>
+              </agent-button>
             </div>
           </article>
         </div>
@@ -1635,8 +1635,8 @@ onBeforeUnmount(() => {
             </button>
           </div>
           <h2>{{ phone.t('Apps.flare.messages') }}</h2>
-          <sky-list strong class="flare-conversation-list">
-            <sky-list-item
+          <agent-list strong class="flare-conversation-list">
+            <agent-list-item
               v-for="match in flare.matches"
               :key="match.id"
               link
@@ -1655,8 +1655,8 @@ onBeforeUnmount(() => {
                   match.unread
                 }}</span>
               </template>
-            </sky-list-item>
-          </sky-list>
+            </agent-list-item>
+          </agent-list>
         </template>
         <div v-else class="flare-state flare-state--compact">
           <span class="flare-state__icon"><MessageCircle /></span>
@@ -1669,33 +1669,33 @@ onBeforeUnmount(() => {
         v-else-if="profileSettings"
         class="flare-scroll-view flare-settings"
       >
-        <sky-block-title>{{
+        <agent-block-title>{{
           phone.t('Apps.flare.discoverySettings')
-        }}</sky-block-title>
-        <sky-list inset strong>
-          <sky-list-item
+        }}</agent-block-title>
+        <agent-list inset strong>
+          <agent-list-item
             :title="phone.t('Apps.flare.showProfile')"
             :subtitle="phone.t('Apps.flare.showProfileBody')"
           >
             <template #after>
-              <sky-toggle
+              <agent-toggle
                 :checked="flare.profile.discoverable"
                 :disabled="discoverySaving"
                 :aria-label="phone.t('Apps.flare.showProfile')"
                 @change="setDiscovery(!flare.profile.discoverable)"
               />
             </template>
-          </sky-list-item>
-        </sky-list>
-        <sky-block class="flare-settings-note">
+          </agent-list-item>
+        </agent-list>
+        <agent-block class="flare-settings-note">
           {{ phone.t('Apps.flare.discoveryPrivacyNote') }}
-        </sky-block>
+        </agent-block>
 
-        <sky-block-title>{{
+        <agent-block-title>{{
           phone.t('Apps.flare.discoveryPreferences')
-        }}</sky-block-title>
-        <sky-list inset strong>
-          <sky-list-item
+        }}</agent-block-title>
+        <agent-list inset strong>
+          <agent-list-item
             class="flare-choice-row"
             :header="phone.t('Apps.flare.showMe')"
             :title="choiceLabel('interestedIn')"
@@ -1703,7 +1703,7 @@ onBeforeUnmount(() => {
             link-component="button"
             :link-props="choiceLinkProps('interestedIn')"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.minimumAge')"
             type="number"
             min="18"
@@ -1711,7 +1711,7 @@ onBeforeUnmount(() => {
             :value="profileDraft.minAge"
             @input="updateNumber('minAge', $event)"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.maximumAge')"
             type="number"
             min="18"
@@ -1719,14 +1719,14 @@ onBeforeUnmount(() => {
             :value="profileDraft.maxAge"
             @input="updateNumber('maxAge', $event)"
           />
-        </sky-list>
+        </agent-list>
 
-        <sky-settings-group
+        <agent-settings-group
           class="flare-account-actions"
           :title="phone.t('Apps.flare.accountActions')"
           :footer="phone.t('Apps.flare.signOutHint')"
         >
-          <sky-settings-row
+          <agent-settings-row
             kind="action"
             :pending="accountActionPending"
             :title="phone.t('Apps.flare.signOut')"
@@ -1735,8 +1735,8 @@ onBeforeUnmount(() => {
             <template #leading>
               <LogOut :size="20" aria-hidden="true" />
             </template>
-          </sky-settings-row>
-          <sky-settings-row
+          </agent-settings-row>
+          <agent-settings-row
             kind="action"
             tone="danger"
             :pending="accountActionPending"
@@ -1746,8 +1746,8 @@ onBeforeUnmount(() => {
             <template #leading>
               <Trash2 :size="20" aria-hidden="true" />
             </template>
-          </sky-settings-row>
-        </sky-settings-group>
+          </agent-settings-row>
+        </agent-settings-group>
 
         <p v-if="flare.error" class="flare-error">
           {{ phone.t(`Apps.flare.errors.${flare.error}`) }}
@@ -1818,7 +1818,7 @@ onBeforeUnmount(() => {
             {{ phone.t('Apps.easyShare.shareProfile') }}
           </button>
         </div>
-        <sky-card
+        <agent-card
           component="button"
           type="button"
           :content-wrap="false"
@@ -1836,11 +1836,11 @@ onBeforeUnmount(() => {
             <small>{{ phone.t('Apps.flare.profileGoalBody') }}</small>
           </div>
           <ChevronRight />
-        </sky-card>
+        </agent-card>
       </section>
 
       <section v-else class="flare-profile-form flare-profile-form--editing">
-        <sky-card :content-wrap="false" class="flare-photo-editor">
+        <agent-card :content-wrap="false" class="flare-photo-editor">
           <header>
             <div>
               <strong>{{ phone.t('Apps.flare.profilePhotos') }}</strong>
@@ -1858,7 +1858,7 @@ onBeforeUnmount(() => {
               <span v-if="index === 0" class="flare-photo-primary">
                 {{ phone.t('Apps.flare.primaryPhoto') }}
               </span>
-              <sky-link
+              <agent-link
                 v-if="draftPhotos.length > 1"
                 component="button"
                 icon-only
@@ -1871,9 +1871,9 @@ onBeforeUnmount(() => {
                 @click="removeDraftPhoto(photo.id)"
               >
                 <X />
-              </sky-link>
+              </agent-link>
             </div>
-            <sky-button
+            <agent-button
               v-if="draftPhotos.length < 6"
               clear
               class="flare-photo-add"
@@ -1885,7 +1885,7 @@ onBeforeUnmount(() => {
             >
               <Plus />
               <span>{{ phone.t('Apps.flare.addPhotos') }}</span>
-            </sky-button>
+            </agent-button>
           </div>
           <p
             v-if="!hasRequiredProfilePhoto"
@@ -1894,14 +1894,14 @@ onBeforeUnmount(() => {
           >
             {{ phone.t('Apps.flare.profilePhotoRequired') }}
           </p>
-        </sky-card>
-        <sky-list inset strong>
-          <sky-field
+        </agent-card>
+        <agent-list inset strong>
+          <agent-field
             :label="phone.t('Apps.flare.yourName')"
             :value="profileDraft.name"
             @input="profileDraft.name = eventValue($event)"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.age')"
             type="number"
             min="18"
@@ -1909,7 +1909,7 @@ onBeforeUnmount(() => {
             :value="profileDraft.age"
             @input="updateNumber('age', $event)"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.bio')"
             type="textarea"
             :value="profileDraft.bio"
@@ -1918,7 +1918,7 @@ onBeforeUnmount(() => {
             :maxlength="300"
             @input="profileDraft.bio = eventValue($event)"
           />
-          <sky-list-item
+          <agent-list-item
             class="flare-choice-row"
             :header="phone.t('Apps.flare.gender')"
             :title="choiceLabel('gender')"
@@ -1926,7 +1926,7 @@ onBeforeUnmount(() => {
             link-component="button"
             :link-props="choiceLinkProps('gender')"
           />
-          <sky-list-item
+          <agent-list-item
             class="flare-choice-row"
             :header="phone.t('Apps.flare.relationshipGoal')"
             :title="choiceLabel('lookingFor')"
@@ -1934,13 +1934,13 @@ onBeforeUnmount(() => {
             link-component="button"
             :link-props="choiceLinkProps('lookingFor')"
           />
-          <sky-field
+          <agent-field
             :label="phone.t('Apps.flare.interests')"
             :value="profileDraft.interests.join(', ')"
             :placeholder="phone.t('Apps.flare.interestsPlaceholder')"
             @input="updateInterests"
           />
-        </sky-list>
+        </agent-list>
         <p class="flare-form-hint">
           {{ phone.t('Apps.flare.interestsHint') }}
         </p>
@@ -1949,7 +1949,7 @@ onBeforeUnmount(() => {
         </p>
       </section>
 
-      <sky-tab-bar
+      <agent-tab-bar
         v-if="!profileEditing && !profileSettings"
         component="nav"
         icons
@@ -1959,8 +1959,8 @@ onBeforeUnmount(() => {
         class="flare-tabbar bottom-0 left-0 fixed"
         :aria-label="phone.t('Apps.flare.navigation')"
       >
-        <sky-toolbar-pane class="flare-tab-pane">
-          <sky-tab-button
+        <agent-toolbar-pane class="flare-tab-pane">
+          <agent-tab-button
             component="button"
             :active="activeTab === 'discover'"
             :link-props="{ type: 'button', class: 'flare-tab-link' }"
@@ -1970,10 +1970,10 @@ onBeforeUnmount(() => {
               phone.t('Apps.flare.tabs.discover')
             }}</template>
             <template #icon
-              ><sky-icon><Flame fill="currentColor" /></sky-icon
+              ><agent-icon><Flame fill="currentColor" /></agent-icon
             ></template>
-          </sky-tab-button>
-          <sky-tab-button
+          </agent-tab-button>
+          <agent-tab-button
             component="button"
             :active="activeTab === 'explore'"
             :link-props="{ type: 'button', class: 'flare-tab-link' }"
@@ -1981,10 +1981,10 @@ onBeforeUnmount(() => {
           >
             <template #label>{{ phone.t('Apps.flare.tabs.explore') }}</template>
             <template #icon
-              ><sky-icon><Grid2X2 /></sky-icon
+              ><agent-icon><Grid2X2 /></agent-icon
             ></template>
-          </sky-tab-button>
-          <sky-tab-button
+          </agent-tab-button>
+          <agent-tab-button
             component="button"
             :active="activeTab === 'likes'"
             :link-props="{ type: 'button', class: 'flare-tab-link' }"
@@ -1992,15 +1992,15 @@ onBeforeUnmount(() => {
           >
             <template #label>{{ phone.t('Apps.flare.tabs.likes') }}</template>
             <template #icon>
-              <sky-icon class="flare-tab-icon">
+              <agent-icon class="flare-tab-icon">
                 <Heart fill="currentColor" />
-                <sky-badge v-if="flare.likes.length" small>{{
+                <agent-badge v-if="flare.likes.length" small>{{
                   flare.likes.length
-                }}</sky-badge>
-              </sky-icon>
+                }}</agent-badge>
+              </agent-icon>
             </template>
-          </sky-tab-button>
-          <sky-tab-button
+          </agent-tab-button>
+          <agent-tab-button
             component="button"
             :active="activeTab === 'matches'"
             :link-props="{ type: 'button', class: 'flare-tab-link' }"
@@ -2008,15 +2008,15 @@ onBeforeUnmount(() => {
           >
             <template #label>{{ phone.t('Apps.flare.tabs.matches') }}</template>
             <template #icon>
-              <sky-icon class="flare-tab-icon">
+              <agent-icon class="flare-tab-icon">
                 <MessageCircle />
-                <sky-badge v-if="unreadMatches" small>{{
+                <agent-badge v-if="unreadMatches" small>{{
                   unreadMatches
-                }}</sky-badge>
-              </sky-icon>
+                }}</agent-badge>
+              </agent-icon>
             </template>
-          </sky-tab-button>
-          <sky-tab-button
+          </agent-tab-button>
+          <agent-tab-button
             component="button"
             :active="activeTab === 'profile'"
             :link-props="{ type: 'button', class: 'flare-tab-link' }"
@@ -2024,11 +2024,11 @@ onBeforeUnmount(() => {
           >
             <template #label>{{ phone.t('Apps.flare.tabs.profile') }}</template>
             <template #icon
-              ><sky-icon><UserRound /></sky-icon
+              ><agent-icon><UserRound /></agent-icon
             ></template>
-          </sky-tab-button>
-        </sky-toolbar-pane>
-      </sky-tab-bar>
+          </agent-tab-button>
+        </agent-toolbar-pane>
+      </agent-tab-bar>
     </template>
 
     <div
@@ -2037,7 +2037,7 @@ onBeforeUnmount(() => {
       role="dialog"
       aria-modal="true"
     >
-      <SkyButton
+      <AgentButton
         glass
         icon-only
         rounded
@@ -2047,7 +2047,7 @@ onBeforeUnmount(() => {
         @click="matchReveal = null"
       >
         <X />
-      </SkyButton>
+      </AgentButton>
       <Flame class="flare-match-reveal__flame" fill="currentColor" />
       <h2>{{ phone.t('Apps.flare.itsAMatch') }}</h2>
       <p>
@@ -2061,26 +2061,26 @@ onBeforeUnmount(() => {
         <i :style="profilePhotoStyle(matchReveal.profile)" />
       </div>
       <div class="flare-match-actions">
-        <sky-button
+        <agent-button
           large
           rounded
           class="flare-match-primary"
           @click="openRevealedMatch"
         >
           {{ phone.t('Apps.flare.sayHello') }}
-        </sky-button>
-        <sky-button
+        </agent-button>
+        <agent-button
           clear
           inline
           class="flare-match-secondary"
           @click="matchReveal = null"
         >
           {{ phone.t('Apps.flare.keepSwiping') }}
-        </sky-button>
+        </agent-button>
       </div>
     </div>
 
-    <SkyDropdown
+    <AgentDropdown
       id="flare-photo-source-menu"
       :items="photoSourceItems"
       :label="phone.t('Apps.flare.addPhotos')"
@@ -2093,7 +2093,7 @@ onBeforeUnmount(() => {
     />
 
     <div class="flare-choice-sheet">
-      <sky-sheet
+      <agent-sheet
         :opened="choiceOpened"
         @backdropclick="closeChoice"
         @escape="closeChoice"
@@ -2112,7 +2112,7 @@ onBeforeUnmount(() => {
           <span class="flare-choice-sheet__grabber" aria-hidden="true" />
           <header class="flare-choice-sheet__header">
             <h2 id="flare-choice-sheet-title">{{ activeChoiceTitle }}</h2>
-            <sky-link
+            <agent-link
               component="button"
               icon-only
               class="flare-choice-sheet__close"
@@ -2121,16 +2121,16 @@ onBeforeUnmount(() => {
               @click="closeChoice"
             >
               <X />
-            </sky-link>
+            </agent-link>
           </header>
-          <sky-list
+          <agent-list
             component="ul"
             role="listbox"
             inset
             strong
             class="flare-choice-sheet__list"
           >
-            <sky-list-item
+            <agent-list-item
               v-for="option in activeChoiceOptions"
               :key="option.value"
               class="flare-choice-option"
@@ -2153,13 +2153,13 @@ onBeforeUnmount(() => {
                   aria-hidden="true"
                 />
               </template>
-            </sky-list-item>
-          </sky-list>
+            </agent-list-item>
+          </agent-list>
         </section>
-      </sky-sheet>
+      </agent-sheet>
     </div>
 
-    <sky-dialog
+    <agent-dialog
       :opened="signOutDialogOpened"
       :title="phone.t('Apps.flare.signOutTitle')"
       :content="phone.t('Apps.flare.signOutBody')"
@@ -2167,13 +2167,13 @@ onBeforeUnmount(() => {
       @escape="closeSignOutDialog"
     >
       <template #buttons>
-        <sky-dialog-button
+        <agent-dialog-button
           :disabled="accountActionPending"
           @click="closeSignOutDialog"
         >
           {{ phone.t('Common.cancel') }}
-        </sky-dialog-button>
-        <sky-dialog-button
+        </agent-dialog-button>
+        <agent-dialog-button
           strong
           :disabled="accountActionPending"
           @click="signOut"
@@ -2183,11 +2183,11 @@ onBeforeUnmount(() => {
               ? phone.t('Apps.flare.signingOut')
               : phone.t('Apps.flare.signOut')
           }}
-        </sky-dialog-button>
+        </agent-dialog-button>
       </template>
-    </sky-dialog>
+    </agent-dialog>
 
-    <sky-dialog
+    <agent-dialog
       :opened="deleteAccountDialogOpened"
       role="alertdialog"
       :title="phone.t('Apps.flare.deleteAccountTitle')"
@@ -2196,13 +2196,13 @@ onBeforeUnmount(() => {
       @escape="closeDeleteAccountDialog"
     >
       <template #buttons>
-        <sky-dialog-button
+        <agent-dialog-button
           :disabled="accountActionPending"
           @click="closeDeleteAccountDialog"
         >
           {{ phone.t('Common.cancel') }}
-        </sky-dialog-button>
-        <sky-dialog-button
+        </agent-dialog-button>
+        <agent-dialog-button
           strong
           class="flare-dialog-button--danger"
           :disabled="accountActionPending"
@@ -2213,11 +2213,11 @@ onBeforeUnmount(() => {
               ? phone.t('Apps.flare.deletingAccount')
               : phone.t('Common.delete')
           }}
-        </sky-dialog-button>
+        </agent-dialog-button>
       </template>
-    </sky-dialog>
+    </agent-dialog>
 
-    <sky-dialog
+    <agent-dialog
       :opened="unmatchDialog"
       @backdropclick="unmatchDialog = false"
       @escape="unmatchDialog = false"
@@ -2231,17 +2231,17 @@ onBeforeUnmount(() => {
         }}
       </p>
       <template #buttons>
-        <sky-dialog-button @click="unmatchDialog = false">
+        <agent-dialog-button @click="unmatchDialog = false">
           {{ phone.t('Common.cancel') }}
-        </sky-dialog-button>
-        <sky-dialog-button strong @click="confirmUnmatch">
+        </agent-dialog-button>
+        <agent-dialog-button strong @click="confirmUnmatch">
           {{ phone.t('Apps.flare.unmatch') }}
-        </sky-dialog-button>
+        </agent-dialog-button>
       </template>
-    </sky-dialog>
+    </agent-dialog>
 
-    <sky-notification :opened="Boolean(actionToast)" :text="actionToast" />
-  </sky-app-page>
+    <agent-notification :opened="Boolean(actionToast)" :text="actionToast" />
+  </agent-app-page>
 </template>
 
 <style scoped>
@@ -2253,8 +2253,8 @@ onBeforeUnmount(() => {
   --flare-surface: #fff;
   --flare-panel: #f4f4f6;
   --color-primary: var(--flare);
-  --sky-safe-area-top: 46px;
-  --sky-safe-area-bottom: 25px;
+  --agent-safe-area-top: 46px;
+  --agent-safe-area-bottom: 25px;
   display: flex !important;
   flex-direction: column;
   padding: 0 0 105px !important;
@@ -2275,7 +2275,7 @@ onBeforeUnmount(() => {
   color: var(--flare-ink);
   border-bottom: 1px solid color-mix(in srgb, var(--flare-ink) 9%, transparent);
 }
-.flare-navbar :deep(.sky-link) {
+.flare-navbar :deep(.agent-link) {
   color: var(--flare-muted);
 }
 .flare-navbar :deep(.flare-navbar-done) {
@@ -2360,7 +2360,7 @@ onBeforeUnmount(() => {
 .flare-state--discovery-off {
   grid-row: 1 / -1;
 }
-.flare-state--discovery-off :deep(.sky-button) {
+.flare-state--discovery-off :deep(.agent-button) {
   width: auto;
   margin-top: 7px;
   padding-right: 20px;
@@ -2721,7 +2721,7 @@ onBeforeUnmount(() => {
   display: flex;
   gap: 7px;
 }
-.flare-like-actions :deep(.sky-button) {
+.flare-like-actions :deep(.agent-button) {
   width: 33px !important;
   height: 33px !important;
   min-width: 33px !important;
@@ -2731,7 +2731,7 @@ onBeforeUnmount(() => {
   background: rgb(7 7 9 / 72%);
   backdrop-filter: blur(10px);
 }
-.flare-like-actions :deep(.sky-button:last-child) {
+.flare-like-actions :deep(.agent-button:last-child) {
   color: #35d898;
 }
 .flare-like-actions svg {
@@ -2987,7 +2987,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
 }
 .flare-profile-card:active {
-  background: var(--sky-pressed) !important;
+  background: var(--agent-pressed) !important;
 }
 .flare-profile-card:focus-visible {
   outline: 2px solid var(--flare);
@@ -3033,8 +3033,8 @@ onBeforeUnmount(() => {
 .flare-profile-form__actions {
   margin: 16px 0 0 !important;
 }
-.flare-profile-form :deep(.sky-list),
-.flare-settings :deep(.sky-list) {
+.flare-profile-form :deep(.agent-list),
+.flare-settings :deep(.agent-list) {
   margin-top: 8px;
   margin-bottom: 8px;
 }
@@ -3193,23 +3193,23 @@ onBeforeUnmount(() => {
   height: 25px;
 }
 .flare-onboarding-photo-actions {
-  margin-top: var(--sky-space-3);
+  margin-top: var(--agent-space-3);
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
-.flare-onboarding-photo-actions :deep(.sky-button) {
+.flare-onboarding-photo-actions :deep(.agent-button) {
   min-width: 0;
-  padding-inline: var(--sky-space-2);
+  padding-inline: var(--agent-space-2);
 }
-.flare-onboarding-photo-actions :deep(.sky-button span) {
+.flare-onboarding-photo-actions :deep(.agent-button span) {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .flare-photo-required {
-  margin: var(--sky-space-3) 0 0;
+  margin: var(--agent-space-3) 0 0;
   color: var(--flare);
-  font-size: var(--sky-font-caption);
+  font-size: var(--agent-font-caption);
   font-weight: 650;
   line-height: 1.35;
 }
@@ -3229,7 +3229,7 @@ onBeforeUnmount(() => {
   padding-right: 0;
   padding-left: 0;
 }
-.flare-settings :deep(.sky-block-title) {
+.flare-settings :deep(.agent-block-title) {
   margin-top: 15px;
   margin-bottom: 5px;
 }
@@ -3240,23 +3240,23 @@ onBeforeUnmount(() => {
   line-height: 1.45;
 }
 .flare-account-actions {
-  margin: 0 var(--sky-page-gutter) var(--sky-space-6);
+  margin: 0 var(--agent-page-gutter) var(--agent-space-6);
 }
-.flare-account-actions :deep(.sky-settings-group__title),
-.flare-account-actions :deep(.sky-settings-group__footer) {
+.flare-account-actions :deep(.agent-settings-group__title),
+.flare-account-actions :deep(.agent-settings-group__footer) {
   margin-right: 0;
   margin-left: 0;
 }
 .flare-account-actions
-  :deep(.sky-settings-row--danger .sky-settings-row__leading) {
-  color: var(--sky-danger);
+  :deep(.agent-settings-row--danger .agent-settings-row__leading) {
+  color: var(--agent-danger);
 }
 .flare-dialog-button--danger:not(:disabled) {
-  background: var(--sky-danger);
+  background: var(--agent-danger);
   color: #fff;
 }
 
-.flare-choice-sheet :deep(.sky-sheet__panel) {
+.flare-choice-sheet :deep(.agent-sheet__panel) {
   z-index: 70;
   max-height: min(62%, 420px);
   overflow-y: auto !important;
@@ -3265,7 +3265,7 @@ onBeforeUnmount(() => {
   box-shadow: 0 -18px 55px rgb(0 0 0 / 18%);
 }
 .flare-choice-sheet__content {
-  padding: 8px 0 max(18px, var(--sky-safe-area-bottom));
+  padding: 8px 0 max(18px, var(--agent-safe-area-bottom));
 }
 .flare-choice-sheet__grabber {
   width: 36px;
@@ -3332,7 +3332,7 @@ onBeforeUnmount(() => {
 .flare-page--attachment-panel .flare-chat-scroll {
   padding-bottom: 390px;
 }
-.flare-chat-scroll :deep(.sky-message--sent [class*='message-bubble']) {
+.flare-chat-scroll :deep(.agent-message--sent [class*='message-bubble']) {
   background: linear-gradient(
     110deg,
     var(--flare-warm),
@@ -3348,13 +3348,13 @@ onBeforeUnmount(() => {
   border-radius: 22px;
   box-shadow: 0 7px 24px rgb(0 0 0 / 12%);
 }
-.flare-messagebar :deep(.sky-link) {
+.flare-messagebar :deep(.agent-link) {
   color: var(--flare);
 }
-.flare-messagebar :deep(.messages-messagebar__tools .sky-link) {
+.flare-messagebar :deep(.messages-messagebar__tools .agent-link) {
   color: var(--flare-text);
 }
-.flare-messagebar :deep(.messages-messagebar__tools .sky-link.active) {
+.flare-messagebar :deep(.messages-messagebar__tools .agent-link.active) {
   background: rgb(255 56 92 / 13%);
   color: var(--flare);
 }
@@ -3391,13 +3391,13 @@ onBeforeUnmount(() => {
   width: 22px;
   height: 22px;
 }
-.flare-tabbar :deep(.sky-tab-button--active) {
+.flare-tabbar :deep(.agent-tab-button--active) {
   color: var(--flare) !important;
 }
 .flare-tab-icon {
   position: relative;
 }
-.flare-tab-icon :deep(.sky-badge) {
+.flare-tab-icon :deep(.agent-badge) {
   position: absolute;
   top: -7px;
   right: -8px;

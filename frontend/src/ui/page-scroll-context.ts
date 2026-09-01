@@ -6,16 +6,16 @@ import {
   type ShallowRef,
 } from 'vue'
 
-interface SkyPageScrollContext {
+interface AgentPageScrollContext {
   collapseOffset: ShallowRef<number>
   element: ShallowRef<HTMLElement | null>
   register: (element: HTMLElement) => () => void
 }
 
-const skyPageScrollKey: InjectionKey<SkyPageScrollContext> =
-  Symbol('sky-ui-page-scroll')
+const agentPageScrollKey: InjectionKey<AgentPageScrollContext> =
+  Symbol('agent-ui-page-scroll')
 
-export function provideSkyPageScroll(): SkyPageScrollContext {
+export function provideAgentPageScroll(): AgentPageScrollContext {
   const collapseOffset = shallowRef(0)
   const elements = shallowRef<HTMLElement[]>([])
   const element = shallowRef<HTMLElement | null>(null)
@@ -35,11 +35,11 @@ export function provideSkyPageScroll(): SkyPageScrollContext {
     }
   }
 
-  const context: SkyPageScrollContext = { collapseOffset, element, register }
-  provide(skyPageScrollKey, context)
+  const context: AgentPageScrollContext = { collapseOffset, element, register }
+  provide(agentPageScrollKey, context)
   return context
 }
 
-export function useSkyPageScroll(): SkyPageScrollContext | null {
-  return inject(skyPageScrollKey, null)
+export function useAgentPageScroll(): AgentPageScrollContext | null {
+  return inject(agentPageScrollKey, null)
 }

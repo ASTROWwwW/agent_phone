@@ -60,9 +60,6 @@ describe('voice provider contracts', () => {
       /call\.speakers\[source\] = data\.enabled\s+send_state\(call, source, "connected", call\.channel\)/,
     )
     expect(clientNuiBridge).toMatch(/calls\s*=\s*\[\[[^\]]*set-speaker/)
-    expect(clientCalls).toContain(
-      'SaltyChat call membership is owned by the server bridge.',
-    )
   })
 
   it('supports one global server-authoritative speaker switch', () => {
@@ -78,11 +75,8 @@ describe('voice provider contracts', () => {
   })
 
   it('integrates Yaca calls, speaker mode and provider-backed mute end to end', () => {
-    expect(config).toContain('yaca (alias: yaca-voice)')
     expect(clientCalls).toContain('yaca = "yaca-voice"')
-    expect(clientCalls).toContain(
-      'Yaca and SaltyChat call membership is owned by the server bridge.',
-    )
+    expect(clientCalls).toContain('["yaca-voice"] = "yaca"')
     expect(serverVoice).toContain(
       'exports["yaca-voice"]:callPlayer(caller_source, target_source, true)',
     )
@@ -100,9 +94,7 @@ describe('voice provider contracts', () => {
   })
 
   it('supports explicit automatic call-provider discovery on client and server', () => {
-    expect(config).toContain(
-      'VoiceProvider = "pma", -- auto, yaca (alias: yaca-voice)',
-    )
+    expect(config).toMatch(/\bVoiceProvider = "pma"/)
     expect(clientCalls).toContain('if configured == "auto" then')
     expect(serverVoice).toContain('if configured == "auto" then')
     expect(clientCalls).toContain(

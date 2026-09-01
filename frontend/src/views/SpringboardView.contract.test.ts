@@ -50,13 +50,13 @@ function functionSource(name: string): string {
 
 describe('Springboard page swipe contract', () => {
   it('keeps app and widget labels on the larger shared home typography', () => {
-    expect(tokensCss).toContain('--sky-home-label-font-size: 13px;')
-    expect(tokensCss).toContain('--sky-home-label-height: 16px;')
+    expect(tokensCss).toContain('--agent-home-label-font-size: 13px;')
+    expect(tokensCss).toContain('--agent-home-label-height: 16px;')
     expect(mainCss).toMatch(
-      /\.app-icon-label\s*\{[\s\S]*?font-size:\s*var\(--sky-home-label-font-size\);/,
+      /\.app-icon-label\s*\{[\s\S]*?font-size:\s*var\(--agent-home-label-font-size\);/,
     )
     expect(foundationCss).toMatch(
-      /\.sky-widget-frame__label\s*\{[\s\S]*?font-size:\s*var\(--sky-home-label-font-size\);/,
+      /\.agent-widget-frame__label\s*\{[\s\S]*?font-size:\s*var\(--agent-home-label-font-size\);/,
     )
   })
 

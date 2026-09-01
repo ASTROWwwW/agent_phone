@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SkyDialog as kDialog, SkyDialogButton as kDialogButton } from '@/ui'
+import { AgentDialog as kDialog, AgentDialogButton as kDialogButton } from '@/ui'
 
 import { useAppAuthStore, type AppAuthId } from '@/stores/app-auth'
 import { useFeatherStore } from '@/stores/feather'

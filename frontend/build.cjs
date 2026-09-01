@@ -3,10 +3,7 @@ const path = require('node:path')
 
 const frontendRoot = __dirname
 
-// Le dossier de la ressource porte un nom variable selon les installations.
-// On resout le premier qui existe reellement, au lieu de coder un nom en dur :
-// un chemin faux ecrivait le build dans un dossier inexistant, en silence.
-const RESOURCE_CANDIDATES = ['agent_phone', 'Phone', 'sky_phone']
+const RESOURCE_CANDIDATES = ['agent_phone', 'Phone']
 const resourceDirectory = (() => {
   for (const name of RESOURCE_CANDIDATES) {
     const candidate = path.join(frontendRoot, '..', name)

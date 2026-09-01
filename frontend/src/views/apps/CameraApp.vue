@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SkyAppPage, SkyButton, SkyFab, SkyGlass } from '@/ui'
+import { AgentAppPage, AgentButton, AgentFab, AgentGlass } from '@/ui'
 import {
   ArrowLeft,
   Images,
@@ -24,7 +24,7 @@ import type {
   PhoneMedia,
   UploadResult,
 } from '@/types/media'
-import { SkySegmented, SkySegmentedButton } from '@/ui'
+import { AgentSegmented, AgentSegmentedButton } from '@/ui'
 import { createGameView, type GameView } from '@/utils/gameView'
 import { formatRecordingDuration, mediaErrorKey } from '@/utils/media'
 import { nuiCall } from '@/utils/nui'
@@ -459,7 +459,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     class="camera-page"
     :class="{ 'camera-page--landscape': phone.cameraLandscape }"
     :aria-label="phone.t('Apps.camera.name')"
@@ -487,7 +487,7 @@ onBeforeUnmount(() => {
 
     <header class="camera-topbar">
       <div class="camera-topbar-actions">
-        <sky-fab
+        <agent-fab
           v-if="requestedMessageMedia"
           component="button"
           class="camera-control camera-picker-back"
@@ -497,8 +497,8 @@ onBeforeUnmount(() => {
           @click="cancelMediaSelection"
         >
           <template #icon><ArrowLeft :size="20" /></template>
-        </sky-fab>
-        <sky-fab
+        </agent-fab>
+        <agent-fab
           v-else
           component="button"
           type="button"
@@ -512,8 +512,8 @@ onBeforeUnmount(() => {
             <Zap v-if="flashEnabled" :size="19" />
             <ZapOff v-else :size="19" />
           </template>
-        </sky-fab>
-        <sky-fab
+        </agent-fab>
+        <agent-fab
           v-if="mode === 'video'"
           component="button"
           type="button"
@@ -535,7 +535,7 @@ onBeforeUnmount(() => {
             <Mic v-if="microphoneEnabled" :size="19" />
             <MicOff v-else :size="19" />
           </template>
-        </sky-fab>
+        </agent-fab>
       </div>
       <span v-if="noticeText" class="camera-notice-text">
         {{ noticeText }}
@@ -543,7 +543,7 @@ onBeforeUnmount(() => {
       <span v-else-if="pendingCount" class="camera-upload-pill">
         {{ phone.t('Apps.camera.uploading', { count: String(pendingCount) }) }}
       </span>
-      <SkyButton
+      <AgentButton
         v-else
         glass
         rounded
@@ -563,8 +563,8 @@ onBeforeUnmount(() => {
         <LockKeyhole v-if="cameraLocked" :size="12" />
         <LockOpen v-else :size="12" />
         <kbd>{{ phone.t('Apps.camera.lookKey') }}</kbd>
-      </SkyButton>
-      <sky-fab
+      </AgentButton>
+      <agent-fab
         component="button"
         type="button"
         class="camera-control"
@@ -580,7 +580,7 @@ onBeforeUnmount(() => {
         @click="toggleOrientation"
       >
         <template #icon><RotateCcwSquare :size="19" /></template>
-      </sky-fab>
+      </agent-fab>
     </header>
 
     <div v-if="recording || savingVideo" class="camera-record-status">
@@ -590,7 +590,7 @@ onBeforeUnmount(() => {
 
     <div class="camera-zoom-control">
       <div class="camera-zoom-row">
-        <SkyButton
+        <AgentButton
           v-for="zoom in zoomLevels"
           :key="zoom"
           rounded
@@ -603,13 +603,13 @@ onBeforeUnmount(() => {
           @click="setZoom(zoom)"
         >
           {{ zoomPresetLabel(zoom) }}
-        </SkyButton>
+        </AgentButton>
       </div>
     </div>
 
     <footer class="camera-controls">
       <div class="camera-capture-row">
-        <sky-glass
+        <agent-glass
           component="button"
           class="camera-latest"
           type="button"
@@ -630,7 +630,7 @@ onBeforeUnmount(() => {
           />
           <Video v-else-if="latestMedia" :size="22" />
           <Images v-else :size="22" />
-        </sky-glass>
+        </agent-glass>
 
         <button
           class="camera-shutter"
@@ -651,7 +651,7 @@ onBeforeUnmount(() => {
           <span></span>
         </button>
 
-        <sky-fab
+        <agent-fab
           component="button"
           type="button"
           class="camera-control camera-selfie"
@@ -660,10 +660,10 @@ onBeforeUnmount(() => {
           @click="toggleFacing"
         >
           <template #icon><RefreshCw :size="20" /></template>
-        </sky-fab>
+        </agent-fab>
       </div>
 
-      <SkySegmented
+      <AgentSegmented
         class="camera-mode-navbar"
         :active-index="mode === 'photo' ? 0 : 1"
         :aria-label="phone.t('Apps.camera.name')"
@@ -672,36 +672,36 @@ onBeforeUnmount(() => {
         compact
         strong
       >
-        <SkySegmentedButton
+        <AgentSegmentedButton
           :active="mode === 'photo'"
           :disabled="recording || savingVideo"
           @click="setMode('photo')"
         >
           {{ phone.t('Apps.camera.photo') }}
-        </SkySegmentedButton>
-        <SkySegmentedButton
+        </AgentSegmentedButton>
+        <AgentSegmentedButton
           :active="mode === 'video'"
           :disabled="recording || savingVideo"
           @click="setMode('video')"
         >
           {{ phone.t('Apps.camera.video') }}
-        </SkySegmentedButton>
-      </SkySegmented>
+        </AgentSegmentedButton>
+      </AgentSegmented>
     </footer>
-  </sky-app-page>
+  </agent-app-page>
 </template>
 
 <style scoped>
 .camera-page {
-  --sky-bg: #000;
-  --sky-text: #fff;
+  --agent-bg: #000;
+  --agent-text: #fff;
   position: relative;
   overflow: clip;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
 .camera-page--landscape {
-  --sky-bg: rgba(0, 0, 0, 0.42);
+  --agent-bg: rgba(0, 0, 0, 0.42);
 }
 .camera-viewport {
   position: absolute;
@@ -819,8 +819,8 @@ onBeforeUnmount(() => {
   height: 44px;
 }
 .camera-control {
-  --sky-glass: rgb(28 28 30 / 58%);
-  --sky-hairline: rgb(255 255 255 / 16%);
+  --agent-glass: rgb(28 28 30 / 58%);
+  --agent-hairline: rgb(255 255 255 / 16%);
   color: rgb(255 255 255 / 92%) !important;
 }
 .camera-control--flash-active {
@@ -940,7 +940,7 @@ onBeforeUnmount(() => {
     box-shadow 0.2s ease;
 }
 .camera-zoom-pill::before {
-  width: var(--sky-touch-target, 44px);
+  width: var(--agent-touch-target, 44px);
   inset-block: -4px;
 }
 .camera-zoom-pill.active {
@@ -972,17 +972,17 @@ onBeforeUnmount(() => {
   padding: 0 24px 32px;
 }
 .camera-latest {
-  --sky-glass: rgb(28 28 30 / 58%);
-  --sky-hairline: rgb(255 255 255 / 16%);
+  --agent-glass: rgb(28 28 30 / 58%);
+  --agent-hairline: rgb(255 255 255 / 16%);
   width: 44px;
   height: 44px;
   overflow: hidden;
   border-radius: 50%;
-  background: var(--sky-glass);
+  background: var(--agent-glass);
   color: #fff;
   display: grid;
   place-items: center;
-  box-shadow: var(--sky-shadow-glass);
+  box-shadow: var(--agent-shadow-glass);
 }
 .camera-selfie {
   justify-self: end;
@@ -1027,21 +1027,21 @@ onBeforeUnmount(() => {
   margin-bottom: 18px;
   transform: translateY(-16px);
 }
-.camera-mode-navbar.sky-segmented--navigation {
+.camera-mode-navbar.agent-segmented--navigation {
   border-color: rgb(255 255 255 / 14%);
   background: rgb(28 28 30 / 88%);
 }
-.camera-mode-navbar :deep(.sky-segmented__highlight) {
+.camera-mode-navbar :deep(.agent-segmented__highlight) {
   background: #3a3a3c;
 }
-.camera-mode-navbar :deep(.sky-segmented-button) {
+.camera-mode-navbar :deep(.agent-segmented-button) {
   color: #8e8e93;
   font-size: 12px;
 }
-.camera-mode-navbar :deep(.sky-segmented-button--active) {
+.camera-mode-navbar :deep(.agent-segmented-button--active) {
   color: #ffd60a;
 }
-.camera-mode-navbar :deep(.sky-segmented-button:focus-visible) {
+.camera-mode-navbar :deep(.agent-segmented-button:focus-visible) {
   outline: 0;
   box-shadow: none;
 }

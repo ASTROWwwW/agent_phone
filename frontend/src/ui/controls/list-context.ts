@@ -1,9 +1,9 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 
-export interface SkyListContext {
+export interface AgentListContext {
   dividers: boolean
   nested: boolean
 }
 
-export const skyListContextKey: InjectionKey<ComputedRef<SkyListContext>> =
-  Symbol('sky-list-context')
+export const agentListContextKey: InjectionKey<ComputedRef<AgentListContext>> =
+  Symbol('agent-list-context')

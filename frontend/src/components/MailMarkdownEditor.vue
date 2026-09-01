@@ -15,7 +15,7 @@ import {
 } from 'lucide-vue-next'
 import { onBeforeUnmount, watch } from 'vue'
 
-import { SkyButton, SkyIcon, SkyToolbar, SkyToolbarPane } from '@/ui'
+import { AgentButton, AgentIcon, AgentToolbar, AgentToolbarPane } from '@/ui'
 
 export type MailEditorLabels = {
   bold: string
@@ -120,14 +120,14 @@ onBeforeUnmount(() => editor.value?.destroy())
       class="mail-editor__content"
       :editor="editor"
     />
-    <SkyToolbar
+    <AgentToolbar
       v-if="editable && editor"
       class="mail-editor__tools"
       component="footer"
       :aria-label="labels.toolbar"
     >
-      <SkyToolbarPane class="mail-editor__tool-pane">
-        <SkyButton
+      <AgentToolbarPane class="mail-editor__tool-pane">
+        <AgentButton
           class="mail-editor__tool"
           :class="{
             'mail-editor__tool--active': editor.isActive('bold'),
@@ -138,9 +138,9 @@ onBeforeUnmount(() => editor.value?.destroy())
           :aria-pressed="editor.isActive('bold')"
           @click="editor.chain().focus().toggleBold().run()"
         >
-          <SkyIcon :size="20"><Bold /></SkyIcon>
-        </SkyButton>
-        <SkyButton
+          <AgentIcon :size="20"><Bold /></AgentIcon>
+        </AgentButton>
+        <AgentButton
           class="mail-editor__tool"
           :class="{
             'mail-editor__tool--active': editor.isActive('italic'),
@@ -151,9 +151,9 @@ onBeforeUnmount(() => editor.value?.destroy())
           :aria-pressed="editor.isActive('italic')"
           @click="editor.chain().focus().toggleItalic().run()"
         >
-          <SkyIcon :size="20"><Italic /></SkyIcon>
-        </SkyButton>
-        <SkyButton
+          <AgentIcon :size="20"><Italic /></AgentIcon>
+        </AgentButton>
+        <AgentButton
           class="mail-editor__tool"
           :class="{
             'mail-editor__tool--active': editor.isActive('bulletList'),
@@ -164,9 +164,9 @@ onBeforeUnmount(() => editor.value?.destroy())
           :aria-pressed="editor.isActive('bulletList')"
           @click="editor.chain().focus().toggleBulletList().run()"
         >
-          <SkyIcon :size="20"><List /></SkyIcon>
-        </SkyButton>
-        <SkyButton
+          <AgentIcon :size="20"><List /></AgentIcon>
+        </AgentButton>
+        <AgentButton
           class="mail-editor__tool"
           :class="{
             'mail-editor__tool--active': editor.isActive('orderedList'),
@@ -177,9 +177,9 @@ onBeforeUnmount(() => editor.value?.destroy())
           :aria-pressed="editor.isActive('orderedList')"
           @click="editor.chain().focus().toggleOrderedList().run()"
         >
-          <SkyIcon :size="20"><ListOrdered /></SkyIcon>
-        </SkyButton>
-        <SkyButton
+          <AgentIcon :size="20"><ListOrdered /></AgentIcon>
+        </AgentButton>
+        <AgentButton
           class="mail-editor__tool"
           :class="{
             'mail-editor__tool--active': editor.isActive('blockquote'),
@@ -190,9 +190,9 @@ onBeforeUnmount(() => editor.value?.destroy())
           :aria-pressed="editor.isActive('blockquote')"
           @click="editor.chain().focus().toggleBlockquote().run()"
         >
-          <SkyIcon :size="20"><Quote /></SkyIcon>
-        </SkyButton>
-        <SkyButton
+          <AgentIcon :size="20"><Quote /></AgentIcon>
+        </AgentButton>
+        <AgentButton
           class="mail-editor__tool"
           variant="plain"
           icon-only
@@ -200,9 +200,9 @@ onBeforeUnmount(() => editor.value?.destroy())
           :aria-label="labels.undo"
           @click="editor.chain().focus().undo().run()"
         >
-          <SkyIcon :size="20"><Undo2 /></SkyIcon>
-        </SkyButton>
-        <SkyButton
+          <AgentIcon :size="20"><Undo2 /></AgentIcon>
+        </AgentButton>
+        <AgentButton
           class="mail-editor__tool"
           variant="plain"
           icon-only
@@ -210,10 +210,10 @@ onBeforeUnmount(() => editor.value?.destroy())
           :aria-label="labels.redo"
           @click="editor.chain().focus().redo().run()"
         >
-          <SkyIcon :size="20"><Redo2 /></SkyIcon>
-        </SkyButton>
-      </SkyToolbarPane>
-    </SkyToolbar>
+          <AgentIcon :size="20"><Redo2 /></AgentIcon>
+        </AgentButton>
+      </AgentToolbarPane>
+    </AgentToolbar>
   </div>
 </template>
 
@@ -225,8 +225,8 @@ onBeforeUnmount(() => editor.value?.destroy())
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
 
 .mail-editor__content {
@@ -242,27 +242,27 @@ onBeforeUnmount(() => editor.value?.destroy())
 }
 
 .mail-editor__tools {
-  padding-right: var(--sky-space-3);
-  padding-left: var(--sky-space-3);
+  padding-right: var(--agent-space-3);
+  padding-left: var(--agent-space-3);
 }
 
-.mail-editor__tools :deep(.sky-toolbar__inner),
+.mail-editor__tools :deep(.agent-toolbar__inner),
 .mail-editor__tool-pane {
   width: 100%;
 }
 
 .mail-editor__tool {
-  min-width: var(--sky-touch-target);
-  min-height: var(--sky-touch-target);
+  min-width: var(--agent-touch-target);
+  min-height: var(--agent-touch-target);
   flex: 1 1 0;
   border-radius: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
 
 .mail-editor__tool--active {
   background: transparent;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 :deep(.tiptap) {

@@ -25,7 +25,7 @@ import { useCallsStore } from '@/stores/calls'
 import { useMessagesStore } from '@/stores/messages'
 import { usePhoneStore } from '@/stores/phone'
 import type { WidgetInstance } from '@/types/widgets'
-import { SkyWidgetFrame } from '@/ui'
+import { AgentWidgetFrame } from '@/ui'
 import {
   reorderDirectionFromKeyboard,
   type ReorderDirection,
@@ -134,9 +134,6 @@ const weatherRainy = computed(
     weatherConditionId.value === 'rain' ||
     weatherConditionId.value === 'thunder',
 )
-// Colonne, longueur, duree de chute, retard. Une trame repetee ne convenait
-// pas : des traits verticaux que l'on translate verticalement paraissent
-// immobiles. Huit gouttes reelles suffisent a lire l'averse.
 const widgetRainDrops = [
   ['8%', '9px', '1.6s', '-0.2s'],
   ['17%', '7px', '2s', '-1.1s'],
@@ -198,8 +195,6 @@ function avatar(name: string): string {
   return name.trim().charAt(0).toLocaleUpperCase(phone.lang) || '?'
 }
 
-// Teinte de la pastille derivee du nom plutot que du rang dans la grille : un
-// contact garde sa couleur meme si l'ordre des favoris change.
 const AVATAR_HUE_BASE = 210
 const AVATAR_HUE_SPREAD = 88
 
@@ -211,8 +206,6 @@ function contactHue(name: string): number {
   return AVATAR_HUE_BASE + (hash % AVATAR_HUE_SPREAD)
 }
 
-// La reference interne d'un mouvement n'apprend rien au joueur : on affiche
-// le moment ou il a eu lieu, comme la liste de l'application Banking.
 function formatTransactionMoment(createdAt: number): string {
   return new Intl.DateTimeFormat(phone.lang, {
     day: 'numeric',
@@ -223,8 +216,6 @@ function formatTransactionMoment(createdAt: number): string {
   }).format(createdAt)
 }
 
-// Trois rendez-vous au plus dans un widget moyen : au-dela la colonne se
-// tasse et rien n'est lisible.
 const visibleEvents = computed(() =>
   calendarService.events.value.slice(0, props.instance.size === 'large' ? 5 : 3),
 )
@@ -413,7 +404,7 @@ onBeforeUnmount(() => {
     :style="placementStyle"
     :data-widget-id="instance.id"
   >
-    <SkyWidgetFrame
+    <AgentWidgetFrame
       class="home-widget-drag-surface"
       :label="widgetLabel"
       :show-label="!preview && instance.page !== 0"
@@ -700,7 +691,7 @@ onBeforeUnmount(() => {
           </div>
         </template>
       </article>
-    </SkyWidgetFrame>
+    </AgentWidgetFrame>
 
     <button
       v-if="editMode && !preview"
@@ -763,7 +754,7 @@ onBeforeUnmount(() => {
   padding: 15px;
   overflow: hidden;
   border: 0.75px solid rgb(255 255 255 / 17%);
-  border-radius: var(--sky-widget-radius-medium);
+  border-radius: var(--agent-widget-radius-medium);
   outline: none;
   color: #fff;
   background: rgb(25 25 27 / 91%);
@@ -773,7 +764,7 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(26px) saturate(125%);
   -webkit-backdrop-filter: blur(26px) saturate(125%);
   cursor: pointer;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
@@ -781,12 +772,12 @@ onBeforeUnmount(() => {
 
 .home-widget-shell--small .home-widget {
   padding: 13px;
-  border-radius: var(--sky-widget-radius-small);
+  border-radius: var(--agent-widget-radius-small);
 }
 
 .home-widget-shell--large .home-widget {
   padding: 18px;
-  border-radius: var(--sky-widget-radius-large);
+  border-radius: var(--agent-widget-radius-large);
 }
 
 .home-widget:active {
@@ -813,7 +804,7 @@ onBeforeUnmount(() => {
 }
 
 .home-widget-open:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--sky-app-accent, #0a84ff);
+  box-shadow: inset 0 0 0 2px var(--agent-app-accent, #0a84ff);
 }
 
 .home-widget [data-widget-control] {
@@ -873,8 +864,6 @@ onBeforeUnmount(() => {
   font-weight: 500;
 }
 
-/* Le chiffre du jour a gauche, les rendez-vous a droite : c'est la
-   composition de la vraie tuile Calendrier d'iOS. */
 .widget-date-body {
   display: flex;
   width: 100%;
@@ -883,13 +872,11 @@ onBeforeUnmount(() => {
   gap: 14px;
   margin-top: 26px;
 }
-
 .widget-date-mark {
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
 }
-
 .widget-date-events {
   display: flex;
   min-width: 0;
@@ -900,7 +887,6 @@ onBeforeUnmount(() => {
   padding: 0;
   list-style: none;
 }
-
 .widget-date-events li {
   display: flex;
   min-width: 0;
@@ -909,14 +895,12 @@ onBeforeUnmount(() => {
   padding-left: 9px;
   border-left: 2px solid #ff453a;
 }
-
 .widget-date-events time {
   color: rgb(255 255 255 / 52%);
   font-size: 9.5px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
-
 .widget-date-events span {
   overflow: hidden;
   font-size: 11.5px;
@@ -924,7 +908,6 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .widget-date-empty {
   flex: 1 1 auto;
   margin: 3px 0 0;
@@ -932,7 +915,6 @@ onBeforeUnmount(() => {
   font-size: 11.5px;
   font-weight: 500;
 }
-
 .widget-date-header {
   position: absolute;
   top: 15px;
@@ -944,45 +926,37 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   gap: 8px;
 }
-
 .widget-date-weekday,
 .widget-date-time {
   font-size: 11.5px;
   font-weight: 700;
   line-height: 1;
 }
-
 .widget-date-weekday {
   color: #ff453a;
 }
 
-/* L'heure est une indication secondaire : en rouge elle rivalisait avec le
-   jour de la semaine et la carte semblait porter deux titres. */
 .widget-date-time {
   color: rgb(255 255 255 / 45%);
   font-weight: 600;
 }
-
 .widget-date-weekday {
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
 }
-
 .widget-date-time {
   flex: none;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.1px;
 }
-
 .widget-date-day {
   font-size: 46px;
   font-weight: 320;
   letter-spacing: -2.6px;
   line-height: 0.92;
 }
-
 .home-widget--weather {
   position: relative;
   display: grid;
@@ -995,7 +969,6 @@ onBeforeUnmount(() => {
     linear-gradient(180deg, #2c3566 0%, #1e2650 34%, #11162e 72%, #0a0b16 100%);
   transition: background 0.35s ease;
 }
-
 .home-widget--weather[data-weather-condition='sunny'],
 .home-widget--weather[data-weather-condition='clear'][data-weather-period='day'] {
   background:
@@ -1003,49 +976,42 @@ onBeforeUnmount(() => {
     radial-gradient(76% 42% at 88% 4%, rgb(255 216 128 / 32%), transparent 56%),
     linear-gradient(180deg, #472a58 0%, #32204a 34%, #191530 70%, #0c0a16 100%);
 }
-
 .home-widget--weather[data-weather-condition='clear'] {
   background:
     radial-gradient(124% 72% at 50% -12%, rgb(92 132 255 / 44%), transparent 64%),
     radial-gradient(74% 40% at 90% 6%, rgb(150 116 255 / 28%), transparent 58%),
     linear-gradient(180deg, #1f2358 0%, #171b46 34%, #0e1028 70%, #07080f 100%);
 }
-
 .home-widget--weather[data-weather-condition='partly_cloudy'] {
   background:
     radial-gradient(120% 72% at 50% -12%, rgb(122 166 250 / 44%), transparent 64%),
     radial-gradient(78% 44% at 92% 6%, rgb(255 206 132 / 24%), transparent 58%),
     linear-gradient(180deg, #2c3566 0%, #1e2650 34%, #11162e 72%, #0a0b16 100%);
 }
-
 .home-widget--weather[data-weather-condition='cloudy'] {
   background:
     radial-gradient(122% 72% at 50% -12%, rgb(150 170 205 / 38%), transparent 64%),
     radial-gradient(80% 44% at 92% 8%, rgb(126 148 188 / 24%), transparent 58%),
     linear-gradient(180deg, #363e5a 0%, #262d46 34%, #161b2c 72%, #0a0b12 100%);
 }
-
 .home-widget--weather[data-weather-condition='rain'] {
   background:
     radial-gradient(124% 74% at 50% -12%, rgb(78 146 214 / 44%), transparent 64%),
     radial-gradient(78% 42% at 12% 8%, rgb(126 200 240 / 22%), transparent 56%),
     linear-gradient(180deg, #24395c 0%, #1a2a48 34%, #0f172c 72%, #070a12 100%);
 }
-
 .home-widget--weather[data-weather-condition='thunder'] {
   background:
     radial-gradient(126% 76% at 50% -12%, rgb(152 118 255 / 46%), transparent 64%),
     radial-gradient(74% 40% at 86% 6%, rgb(202 182 255 / 26%), transparent 56%),
     linear-gradient(180deg, #2e2760 0%, #201c46 34%, #12102a 72%, #08070f 100%);
 }
-
 .home-widget--weather[data-weather-condition='fog'] {
   background:
     radial-gradient(128% 78% at 50% -16%, rgb(188 200 212 / 34%), transparent 66%),
     radial-gradient(90% 46% at 50% 48%, rgb(158 174 190 / 20%), transparent 62%),
     linear-gradient(180deg, #414a55 0%, #2c343f 34%, #191f26 72%, #0b0d10 100%);
 }
-
 .home-widget--weather[data-weather-condition='snow'] {
   background:
     radial-gradient(124% 74% at 50% -12%, rgb(154 200 255 / 42%), transparent 64%),
@@ -1053,13 +1019,6 @@ onBeforeUnmount(() => {
     linear-gradient(180deg, #31446e 0%, #223052 34%, #141c2e 72%, #080b12 100%);
 }
 
-/* -------------------------------------------------------------------------
-   Ciel anime. Une seule couche par widget : les gouttes, les flocons et les
-   nappes sont des degrades repetes que l'on fait defiler, pas des elements.
-   ------------------------------------------------------------------------- */
-
-/* phone-effect--decorative retire cette couche en mode performance : un
-   springboard peut porter plusieurs widgets a la fois. */
 .widget-weather-sky {
   position: absolute;
   z-index: 0;
@@ -1068,16 +1027,11 @@ onBeforeUnmount(() => {
   border-radius: inherit;
   pointer-events: none;
 }
-
 .home-widget--weather > *:not(.widget-weather-sky) {
   position: relative;
   z-index: 1;
 }
 
-/* Le masque s'applique a l'element et a ses enfants : les gouttes s'effacent
-   en descendant vers le releve, au lieu de le traverser. mask-image sans
-   prefixe n'arrive qu'avec Chrome 120, c'est la version -webkit- qui compte
-   pour le CEF vise. */
 [data-weather-condition='rain'] .widget-weather-sky,
 [data-weather-condition='thunder'] .widget-weather-sky {
   mask-image: radial-gradient(
@@ -1093,7 +1047,6 @@ onBeforeUnmount(() => {
     transparent 94%
   );
 }
-
 .widget-weather-sky i {
   position: absolute;
   top: -16px;
@@ -1111,7 +1064,6 @@ onBeforeUnmount(() => {
   animation: widget-weather-drop var(--widget-rain-duration) linear
     var(--widget-rain-delay) infinite;
 }
-
 [data-weather-condition='thunder'] .widget-weather-sky::after {
   position: absolute;
   inset: 0;
@@ -1121,7 +1073,6 @@ onBeforeUnmount(() => {
   content: '';
   animation: widget-weather-flash 9s steps(1, end) infinite;
 }
-
 [data-weather-condition='snow'] .widget-weather-sky {
   background-image:
     radial-gradient(circle at 18% 12%, #fff 0 1.6px, transparent 2.3px),
@@ -1133,7 +1084,6 @@ onBeforeUnmount(() => {
   opacity: 0.34;
   animation: widget-weather-snow 10s linear infinite;
 }
-
 [data-weather-condition='partly_cloudy'] .widget-weather-sky,
 [data-weather-condition='cloudy'] .widget-weather-sky {
   background-image:
@@ -1150,7 +1100,6 @@ onBeforeUnmount(() => {
   background-size: 190% 100%;
   animation: widget-weather-clouds 46s linear infinite;
 }
-
 [data-weather-condition='fog'] .widget-weather-sky {
   background-image: linear-gradient(
     180deg,
@@ -1161,7 +1110,6 @@ onBeforeUnmount(() => {
   background-size: 100% 58%;
   animation: widget-weather-fog 24s ease-in-out infinite alternate;
 }
-
 [data-weather-condition='sunny'] .widget-weather-sky,
 [data-weather-condition='clear'][data-weather-period='day']
   .widget-weather-sky {
@@ -1173,7 +1121,6 @@ onBeforeUnmount(() => {
   );
   animation: widget-weather-sun 9s ease-in-out infinite alternate;
 }
-
 [data-weather-period='night'] .widget-weather-sky::before {
   position: absolute;
   inset: 0;
@@ -1186,9 +1133,6 @@ onBeforeUnmount(() => {
   content: '';
   animation: widget-weather-twinkle 6s ease-in-out infinite alternate;
 }
-
-/* La chute depasse volontairement la hauteur du widget : le conteneur rogne,
-   et la meme animation sert aux trois tailles de widget. */
 @keyframes widget-weather-drop {
   0% {
     opacity: 0;
@@ -1203,19 +1147,16 @@ onBeforeUnmount(() => {
     transform: translate(22px, 230px) rotate(9deg);
   }
 }
-
 @keyframes widget-weather-snow {
   to {
     background-position: -14px 100%;
   }
 }
-
 @keyframes widget-weather-clouds {
   to {
     background-position: 190% 0;
   }
 }
-
 @keyframes widget-weather-fog {
   from {
     background-position: -30% 22%;
@@ -1224,20 +1165,17 @@ onBeforeUnmount(() => {
     background-position: 30% 62%;
   }
 }
-
 @keyframes widget-weather-sun {
   to {
     opacity: 0.74;
     transform: scale(1.035);
   }
 }
-
 @keyframes widget-weather-twinkle {
   to {
     opacity: 0.16;
   }
 }
-
 @keyframes widget-weather-flash {
   0%,
   93%,
@@ -1252,7 +1190,6 @@ onBeforeUnmount(() => {
     opacity: 0.018;
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .widget-weather-sky,
   .widget-weather-sky i,
@@ -1264,7 +1201,6 @@ onBeforeUnmount(() => {
     display: none;
   }
 }
-
 .widget-weather-summary {
   display: flex;
   min-width: 0;
@@ -1272,7 +1208,6 @@ onBeforeUnmount(() => {
   align-items: flex-start;
   flex-direction: column;
 }
-
 .widget-weather-location {
   max-width: 100%;
   overflow: hidden;
@@ -1290,7 +1225,6 @@ onBeforeUnmount(() => {
   letter-spacing: -2.2px;
   line-height: 1;
 }
-
 .widget-weather-current {
   display: flex;
   width: 100%;
@@ -1308,11 +1242,9 @@ onBeforeUnmount(() => {
   flex: 1;
   flex-direction: column;
 }
-
 .widget-weather-current :deep(.weather-condition-icon) {
   flex: none;
 }
-
 .widget-weather-current small {
   overflow: hidden;
   color: #fff;
@@ -1329,7 +1261,6 @@ onBeforeUnmount(() => {
   font-weight: 550 !important;
   line-height: 13px !important;
 }
-
 .widget-weather-unavailable {
   display: grid;
   min-width: 0;
@@ -1340,7 +1271,6 @@ onBeforeUnmount(() => {
   font-weight: 600;
   text-align: center;
 }
-
 .widget-weather-hourly {
   display: grid;
   min-width: 0;
@@ -1348,7 +1278,6 @@ onBeforeUnmount(() => {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   border-left: 0.5px solid rgb(255 255 255 / 20%);
 }
-
 .widget-weather-hourly > div {
   display: grid;
   min-width: 0;
@@ -1356,24 +1285,20 @@ onBeforeUnmount(() => {
   justify-items: center;
   gap: 7px;
 }
-
 .widget-weather-hourly time {
   color: rgb(255 255 255 / 58%);
   font-size: 9px;
   font-weight: 600;
 }
-
 .widget-weather-hourly strong {
   font-size: 12px;
   font-weight: 650;
 }
-
 .home-widget-shell--medium .home-widget--weather {
   padding: 13px 15px;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
   gap: 12px;
 }
-
 .home-widget-shell--medium .widget-weather-temperature {
   font-size: 42px;
 }
@@ -1381,33 +1306,26 @@ onBeforeUnmount(() => {
 .home-widget-shell--medium .widget-weather-hourly {
   padding-left: 10px;
 }
-
 .home-widget-shell--medium .widget-weather-hourly svg {
   width: 18px;
   height: 18px;
 }
-
 .home-widget-shell--medium .widget-weather-hourly time {
   font-size: 8px;
 }
-
 .home-widget-shell--medium .widget-weather-hourly strong {
   font-size: 11px;
 }
-
 .home-widget-shell--large .home-widget--weather {
   display: flex;
   flex-direction: column;
 }
-
 .home-widget-shell--large .widget-weather-temperature {
   font-size: 62px;
 }
-
 .home-widget-shell--large .widget-weather-current {
   margin-top: 16px;
 }
-
 .home-widget-shell--large .widget-weather-hourly {
   margin-top: auto;
   padding-top: 16px;
@@ -1415,7 +1333,6 @@ onBeforeUnmount(() => {
   border-top: 0.5px solid rgb(255 255 255 / 20%);
   border-left: 0;
 }
-
 .home-widget--music {
   display: grid;
   position: relative;
@@ -1424,7 +1341,6 @@ onBeforeUnmount(() => {
   gap: 14px;
   background: rgb(39 39 42 / 95%);
 }
-
 .home-widget--music-empty::after {
   position: absolute;
   z-index: 1;
@@ -1439,7 +1355,6 @@ onBeforeUnmount(() => {
   );
   pointer-events: none;
 }
-
 .home-widget--music-empty .widget-album,
 .home-widget--music-empty .widget-music-placeholder {
   -webkit-mask-image: linear-gradient(
@@ -1457,14 +1372,12 @@ onBeforeUnmount(() => {
     transparent 100%
   );
 }
-
 .home-widget-shell--large .home-widget--music {
   align-content: start;
   grid-template-columns: 1fr;
   grid-template-rows: 172px minmax(0, 1fr);
   gap: 16px;
 }
-
 .widget-album {
   display: grid;
   width: 100%;
@@ -1483,21 +1396,18 @@ onBeforeUnmount(() => {
     inset 0 0 0 0.5px rgb(255 255 255 / 5%),
     0 5px 13px rgb(0 0 0 / 18%);
 }
-
 .widget-album img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .home-widget-shell--large .widget-album {
   width: 172px;
   height: 172px;
   margin: 0 auto;
   border-radius: 25px;
 }
-
 .widget-music-body {
   display: flex;
   min-width: 0;
@@ -1505,32 +1415,27 @@ onBeforeUnmount(() => {
   height: 100%;
   flex-direction: column;
 }
-
 .widget-music-mark {
   align-self: flex-end;
   flex: none;
   color: #ff375f;
 }
-
 .widget-music-copy {
   display: flex;
   min-width: 0;
   margin-top: auto;
   flex-direction: column;
 }
-
 .widget-music-copy strong,
 .widget-music-copy small {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .widget-music-copy strong {
   font-size: 14px;
   line-height: 18px;
 }
-
 .widget-music-progress {
   width: 100%;
   height: 3px;
@@ -1539,14 +1444,12 @@ onBeforeUnmount(() => {
   border-radius: 3px;
   background: rgb(255 255 255 / 12%);
 }
-
 .widget-music-progress i {
   display: block;
   height: 100%;
   border-radius: inherit;
   background: #ff375f;
 }
-
 .widget-music-empty {
   position: absolute;
   right: 15px;
@@ -1560,25 +1463,21 @@ onBeforeUnmount(() => {
   line-height: 17px;
   text-align: center;
 }
-
 .widget-music-placeholder {
   display: grid;
   margin: auto 0;
   gap: 10px;
 }
-
 .widget-music-placeholder span {
   display: block;
   height: 7px;
   border-radius: 7px;
   background: rgb(255 255 255 / 8%);
 }
-
 .widget-music-placeholder span:first-child {
   width: 54%;
   background: rgb(255 55 95 / 14%);
 }
-
 .widget-music-controls {
   display: flex;
   margin-top: auto;
@@ -1586,9 +1485,6 @@ onBeforeUnmount(() => {
   justify-content: flex-end;
   gap: 2px;
 }
-
-/* Regle des seules commandes de lecture : elle imposait aussi sa taille et
-   son fond gris aux pastilles de contact, qui sont devenues des boutons. */
 .widget-music-controls button {
   display: grid;
   width: 44px;
@@ -1599,31 +1495,25 @@ onBeforeUnmount(() => {
   color: #fff;
   background: rgb(255 255 255 / 11%);
 }
-
 .home-widget-shell--large .widget-music-body {
   text-align: center;
 }
-
 .home-widget-shell--large .widget-music-mark {
   position: absolute;
   top: 18px;
   right: 18px;
 }
-
 .home-widget-shell--large .widget-music-copy,
 .home-widget-shell--large .widget-music-empty {
   margin-right: auto;
   margin-left: auto;
 }
-
 .home-widget-shell--large .widget-music-controls {
   justify-content: center;
 }
-
 .home-widget--wallet {
   background: rgb(25 26 29 / 94%);
 }
-
 .home-widget--wallet {
   background:
     linear-gradient(
@@ -1634,7 +1524,6 @@ onBeforeUnmount(() => {
     linear-gradient(180deg, rgb(42 42 46 / 94%), rgb(15 15 17 / 96%));
 }
 
-/* Le halo d'angle de la carte de debit de Banking, repris en plus discret. */
 .home-widget--wallet::after {
   position: absolute;
   right: -48px;
@@ -1650,7 +1539,6 @@ onBeforeUnmount(() => {
   content: '';
   pointer-events: none;
 }
-
 .widget-wallet-icon {
   position: absolute;
   top: 13px;
@@ -1668,26 +1556,22 @@ onBeforeUnmount(() => {
     rgb(255 255 255 / 2%)
   );
 }
-
 .home-widget--wallet .widget-eyebrow {
   font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 1.1px;
   text-transform: uppercase;
 }
-
 .widget-balance {
   margin: 3px 0 1px;
   font-size: 30px;
   font-weight: 650;
   letter-spacing: -1.1px;
 }
-
 .home-widget--wallet small {
   font-size: 11.5px;
   letter-spacing: 0.3px;
 }
-
 .home-widget--transactions,
 .home-widget--contacts {
   display: flex;
@@ -1702,9 +1586,6 @@ onBeforeUnmount(() => {
     rgb(18 18 20 / 95%)
   );
 }
-
-/* L'en-tete d'un widget n'est pas un titre colore : il nomme la source, en
-   blanc, et seule l'icone porte la teinte de l'application. */
 .widget-list-header {
   display: flex;
   margin-bottom: 9px;
@@ -1715,12 +1596,10 @@ onBeforeUnmount(() => {
   font-weight: 650;
   letter-spacing: -0.2px;
 }
-
 .widget-list-header svg {
   color: #6fbf8a;
   opacity: 0.9;
 }
-
 .widget-transaction {
   display: flex;
   min-height: 43px;
@@ -1734,18 +1613,15 @@ onBeforeUnmount(() => {
   background: transparent;
   text-align: left;
 }
-
 .widget-transaction:first-of-type {
   border-top: 0;
   padding-top: 0;
 }
-
 .widget-transaction > span {
   display: flex;
   min-width: 0;
   flex-direction: column;
 }
-
 .widget-transaction strong {
   overflow: hidden;
   font-size: 12.5px;
@@ -1754,14 +1630,12 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .widget-transaction small {
   margin-top: 2px;
   color: rgb(255 255 255 / 45%);
   font-size: 9.5px;
   font-weight: 500;
 }
-
 .widget-transaction b {
   flex: 0 0 auto;
   color: rgb(255 255 255 / 78%);
@@ -1771,18 +1645,15 @@ onBeforeUnmount(() => {
   letter-spacing: -0.2px;
   white-space: nowrap;
 }
-
 .widget-transaction b.positive {
   color: #6fbf8a;
 }
-
 .widget-contacts {
   display: grid;
   flex: 1;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 7px;
 }
-
 .home-widget-shell--large .widget-contacts {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(2, 1fr);
@@ -1796,14 +1667,12 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 7px;
 }
-
 .widget-contact-mark {
   position: relative;
   display: block;
   width: 46px;
   height: 46px;
 }
-
 .widget-contact-avatar {
   display: grid;
   width: 46px;
@@ -1822,9 +1691,6 @@ onBeforeUnmount(() => {
   font-size: 17px;
   font-weight: 650;
 }
-
-/* Le message se loge dans l'angle de la pastille : dans une tuile de 46 px il
-   n'y a pas la place pour deux boutons cote a cote sous le nom. */
 .widget-contact-message {
   position: absolute;
   right: -3px;
@@ -1839,7 +1705,6 @@ onBeforeUnmount(() => {
   color: #fff;
   background: #2f80ed;
 }
-
 .widget-contacts strong {
   max-width: 100%;
   overflow: hidden;
@@ -1848,7 +1713,6 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .home-widget-remove {
   position: absolute;
   z-index: 8;
@@ -1863,7 +1727,6 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   background: transparent;
 }
-
 .home-widget-remove > span {
   display: grid;
   width: 23px;
@@ -1880,7 +1743,6 @@ onBeforeUnmount(() => {
   font-weight: 400;
   line-height: 1;
 }
-
 @keyframes widget-wobble {
   from {
     transform: rotate(-0.7deg) translateY(-0.5px);
@@ -1889,7 +1751,6 @@ onBeforeUnmount(() => {
     transform: rotate(0.7deg) translateY(0.5px);
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .home-widget-shell--editing {
     animation: none;

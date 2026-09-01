@@ -472,8 +472,6 @@ local function use_sim(source, used_item)
     return true
 end
 
--- Register the guarded callbacks in both modes so a resource-only restart can
--- replace registrations left behind in framework-owned usable-item tables.
 local registered_sim_items = {}
 
 local function register_configured_sim_items()

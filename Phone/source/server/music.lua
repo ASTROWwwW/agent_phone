@@ -120,8 +120,6 @@ local function discover_music_assets()
                 or (relative_directory .. "/" .. name)
             local asset_path = mount_path .. "/" .. name
 
-            -- Cfx returns an empty directory listing for regular files. Walking every
-            -- entry is portable; io.open cannot distinguish directories on Linux.
             if not walk(asset_path, relative_path, depth + 1) then
                 add_music_asset(index, relative_path, name)
             end

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {
-  SkyButton,
-  SkyFab,
-  SkyList,
-  SkyField,
-  SkyAppPage,
-  SkyGlass,
-  SkySpinner,
-  SkySheet,
-  SkyNotification,
+  AgentButton,
+  AgentFab,
+  AgentList,
+  AgentField,
+  AgentAppPage,
+  AgentGlass,
+  AgentSpinner,
+  AgentSheet,
+  AgentNotification,
 } from '@/ui'
 import {
   LocateFixed,
@@ -580,7 +580,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     class="map-app"
     :label="phone.t('Apps.map.name')"
     :dark="phone.isDarkMode"
@@ -663,7 +663,7 @@ onBeforeUnmount(() => {
     </div>
 
     <nav class="map-controls" :aria-label="phone.t('Apps.map.controls')">
-      <SkyFab
+      <AgentFab
         component="button"
         type="button"
         class="map-control map-control--share"
@@ -674,8 +674,8 @@ onBeforeUnmount(() => {
         <template #icon>
           <Share2 aria-hidden="true" />
         </template>
-      </SkyFab>
-      <SkyFab
+      </AgentFab>
+      <AgentFab
         component="button"
         type="button"
         class="map-control"
@@ -686,8 +686,8 @@ onBeforeUnmount(() => {
         <template #icon>
           <component :is="activeMapStyle.icon" aria-hidden="true" />
         </template>
-      </SkyFab>
-      <SkyFab
+      </AgentFab>
+      <AgentFab
         component="button"
         type="button"
         class="map-control map-control--marker"
@@ -699,8 +699,8 @@ onBeforeUnmount(() => {
         <template #icon>
           <MapPinPlus aria-hidden="true" />
         </template>
-      </SkyFab>
-      <SkyFab
+      </AgentFab>
+      <AgentFab
         component="button"
         type="button"
         class="map-control map-control--location"
@@ -712,10 +712,10 @@ onBeforeUnmount(() => {
         <template #icon>
           <LocateFixed aria-hidden="true" />
         </template>
-      </SkyFab>
+      </AgentFab>
     </nav>
 
-    <SkyGlass
+    <AgentGlass
       v-if="placingMarker"
       component="section"
       class="map-placement-panel"
@@ -723,7 +723,7 @@ onBeforeUnmount(() => {
       <strong>{{ phone.t('Apps.map.placeMarker') }}</strong>
       <span>{{ phone.t('Apps.map.placeMarkerHint') }}</span>
       <div>
-        <SkyButton
+        <AgentButton
           block
           rounded
           tonal
@@ -732,16 +732,16 @@ onBeforeUnmount(() => {
         >
           <X :size="16" />
           {{ phone.t('Common.cancel') }}
-        </SkyButton>
-        <SkyButton block rounded @click="openMarkerEditor">
+        </AgentButton>
+        <AgentButton block rounded @click="openMarkerEditor">
           <MapPin :size="16" />
           {{ phone.t('Apps.map.addHere') }}
-        </SkyButton>
+        </AgentButton>
       </div>
-    </SkyGlass>
+    </AgentGlass>
 
     <div class="map-marker-sheet">
-      <sky-sheet
+      <agent-sheet
         :opened="Boolean(draftCoords || selectedMarker)"
         @backdropclick="closeMarkerSheet"
       >
@@ -755,8 +755,8 @@ onBeforeUnmount(() => {
         >
           <h2>{{ phone.t('Apps.map.newMarker') }}</h2>
           <p>{{ phone.t('Apps.map.newMarkerDescription') }}</p>
-          <sky-list inset strong>
-            <sky-field
+          <agent-list inset strong>
+            <agent-field
               input-id="map-marker-label"
               :label="phone.t('Apps.map.markerName')"
               :placeholder="phone.t('Apps.map.markerNamePlaceholder')"
@@ -766,7 +766,7 @@ onBeforeUnmount(() => {
               @input="updateMarkerLabel"
               @keydown.enter="handleEnterAction($event, saveMarker)"
             />
-          </sky-list>
+          </agent-list>
           <span class="map-marker-sheet__label">{{
             phone.t('Apps.map.markerColor')
           }}</span>
@@ -790,15 +790,15 @@ onBeforeUnmount(() => {
           <p v-if="markerError" class="map-marker-error" role="alert">
             {{ markerError }}
           </p>
-          <sky-button
+          <agent-button
             large
             rounded
             :disabled="mapStore.isLoading || !markerLabel.trim()"
             @click="saveMarker"
           >
-            <sky-spinner v-if="mapStore.isLoading" />
+            <agent-spinner v-if="mapStore.isLoading" />
             <template v-else>{{ phone.t('Apps.map.saveMarker') }}</template>
-          </sky-button>
+          </agent-button>
         </section>
 
         <section
@@ -823,7 +823,7 @@ onBeforeUnmount(() => {
           <p v-if="markerError" class="map-marker-error" role="alert">
             {{ markerError }}
           </p>
-          <sky-button
+          <agent-button
             large
             rounded
             class="map-marker-waypoint"
@@ -832,26 +832,26 @@ onBeforeUnmount(() => {
           >
             <Route :size="17" />
             {{ phone.t('Apps.map.setWaypoint') }}
-          </sky-button>
-          <sky-button
+          </agent-button>
+          <agent-button
             large
             rounded
             class="map-marker-delete"
             :disabled="mapStore.isLoading"
             @click="deleteSelectedMarker"
           >
-            <sky-spinner v-if="mapStore.isLoading" />
+            <agent-spinner v-if="mapStore.isLoading" />
             <template v-else>
               <Trash2 :size="17" />
               {{ phone.t('Apps.map.deleteMarker') }}
             </template>
-          </sky-button>
+          </agent-button>
         </section>
-      </sky-sheet>
+      </agent-sheet>
     </div>
 
-    <sky-notification :opened="Boolean(toastText)" :text="toastText" />
-  </SkyAppPage>
+    <agent-notification :opened="Boolean(toastText)" :text="toastText" />
+  </AgentAppPage>
 </template>
 
 <style scoped>
@@ -1015,16 +1015,16 @@ onBeforeUnmount(() => {
 }
 
 .map-control {
-  --sky-glass: rgb(247 247 248 / 72%);
-  --sky-hairline: rgb(0 0 0 / 16%);
+  --agent-glass: rgb(247 247 248 / 72%);
+  --agent-hairline: rgb(0 0 0 / 16%);
   color: #151515;
 }
 .map-control--share {
   color: #007aff;
 }
-.sky-app-page--dark .map-control {
-  --sky-glass: rgb(44 44 46 / 62%);
-  --sky-hairline: rgb(255 255 255 / 16%);
+.agent-app-page--dark .map-control {
+  --agent-glass: rgb(44 44 46 / 62%);
+  --agent-hairline: rgb(255 255 255 / 16%);
   color: #fff;
 }
 
@@ -1044,7 +1044,7 @@ onBeforeUnmount(() => {
   padding: 12px;
   flex-direction: column;
   border-color: rgb(255 255 255 / 22%);
-  border-radius: var(--sky-radius-card);
+  border-radius: var(--agent-radius-card);
   color: #fff;
   background: rgb(24 24 27 / 92%);
   backdrop-filter: blur(22px) saturate(145%);

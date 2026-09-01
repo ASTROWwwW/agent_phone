@@ -485,7 +485,6 @@ export function playPhoneTone(
       try {
         oscillator.stop()
       } catch {
-        // The oscillator already completed its scheduled note.
       }
     }
     void context.close()

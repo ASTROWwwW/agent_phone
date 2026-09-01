@@ -28,17 +28,17 @@ describe('FlipTokApp Agent UI contract', () => {
   it('uses first-party Agent UI without direct Konsta markup', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyAppPage')
-    expect(source).toContain('<SkyNavbar')
-    expect(source).toContain('<SkyScrollArea')
-    expect(source).toContain('<SkySearchbar')
-    expect(source).toContain('<SkyPillNavigation')
-    expect(source).toContain('<SkyMessagebar')
+    expect(source).toContain('<AgentAppPage')
+    expect(source).toContain('<AgentNavbar')
+    expect(source).toContain('<AgentScrollArea')
+    expect(source).toContain('<AgentSearchbar')
+    expect(source).toContain('<AgentPillNavigation')
+    expect(source).toContain('<AgentMessagebar')
   })
 
-  it('uses the SkyUI navigation pill and native navbar back action', () => {
+  it('uses the AgentUI navigation pill and native navbar back action', () => {
     expect(source).toMatch(
-      /<SkySegmented[\s\S]*?:item-count="5"[\s\S]*?navigation/,
+      /<AgentSegmented[\s\S]*?:item-count="5"[\s\S]*?navigation/,
     )
     expect(source).toContain(':show-back="Boolean(store.viewedProfile)"')
     expect(source).toContain('back-appearance="surface"')
@@ -146,14 +146,14 @@ describe('FlipTokApp Agent UI contract', () => {
     )
     expect(source).toContain('class="fliptok-navbar fliptok-discover-navbar"')
     expect(source).toMatch(
-      /\.fliptok-discover-navbar\.sky-navbar--no-navigation\s*\{[^}]*padding-top:/s,
+      /\.fliptok-discover-navbar\.agent-navbar--no-navigation\s*\{[^}]*padding-top:/s,
     )
   })
 
   it('uses separate profile action boxes and disables duplicate follows', () => {
     expect(source).toContain('class="fliptok-navbar fliptok-profile-navbar"')
     expect(source).toMatch(
-      /\.profile-navbar-actions :deep\(\.sky-link\)\s*\{[^}]*width: 38px;[^}]*border:/s,
+      /\.profile-navbar-actions :deep\(\.agent-link\)\s*\{[^}]*width: 38px;[^}]*border:/s,
     )
     expect(source).toContain(':disabled="connectionIsFollowing(profile)"')
     expect(source).toContain("connectionsMode.value === 'following'")
@@ -206,10 +206,10 @@ describe('FlipTokApp Agent UI contract', () => {
     expect(source).toContain('class="report-sheet__actions"')
     expect(source).toContain('class="profile-account-list"')
     expect(source).toMatch(
-      /\.report-sheet\s*\{[^}]*padding-bottom:\s*calc\(var\(--sky-safe-area-bottom\)/s,
+      /\.report-sheet\s*\{[^}]*padding-bottom:\s*calc\(var\(--agent-safe-area-bottom\)/s,
     )
     expect(source).toMatch(
-      /\.profile-form-list,[\s\S]*?\.profile-account-list\s*\{[^}]*border-radius:\s*var\(--sky-radius-card\)/,
+      /\.profile-form-list,[\s\S]*?\.profile-account-list\s*\{[^}]*border-radius:\s*var\(--agent-radius-card\)/,
     )
   })
 

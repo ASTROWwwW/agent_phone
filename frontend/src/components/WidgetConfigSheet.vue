@@ -11,14 +11,14 @@ import type {
   WidgetSize,
 } from '@/types/widgets'
 import {
-  SkyButton,
-  SkyProvider,
-  SkyScrollArea,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySettingsGroup,
-  SkySettingsRow,
-  SkySheet,
+  AgentButton,
+  AgentProvider,
+  AgentScrollArea,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSettingsGroup,
+  AgentSettingsRow,
+  AgentSheet,
 } from '@/ui'
 
 const props = defineProps<{
@@ -75,12 +75,12 @@ watch(
 </script>
 
 <template>
-  <SkyProvider
+  <AgentProvider
     class="widget-config-provider"
     :dark="phone.isDarkMode"
     safe-areas
   >
-    <SkySheet
+    <AgentSheet
       class="widget-config-sheet"
       :opened="opened"
       :aria-label="phone.t('Home.widgetSystem.configure')"
@@ -94,7 +94,7 @@ watch(
     >
       <section v-if="instance" class="widget-config-surface">
         <header class="widget-config-navbar">
-          <SkyButton
+          <AgentButton
             class="widget-config-nav-button"
             inline
             rounded
@@ -103,9 +103,9 @@ watch(
             @click="emit('close')"
           >
             {{ phone.t('Common.cancel') }}
-          </SkyButton>
+          </AgentButton>
           <h2>{{ phone.t('Home.widgetSystem.configure') }}</h2>
-          <SkyButton
+          <AgentButton
             class="widget-config-nav-button"
             inline
             rounded
@@ -114,10 +114,10 @@ watch(
             @click="save"
           >
             {{ phone.t('Common.done') }}
-          </SkyButton>
+          </AgentButton>
         </header>
 
-        <SkyScrollArea class="widget-config-scroll">
+        <AgentScrollArea class="widget-config-scroll">
           <div class="widget-config-preview">
             <SpringboardWidget
               :instance="{ ...instance, size }"
@@ -128,47 +128,47 @@ watch(
 
           <section class="widget-config-size">
             <h3>{{ phone.t('Home.widgetSystem.size') }}</h3>
-            <SkySegmented
+            <AgentSegmented
               :active-index="activeSizeIndex"
               :aria-label="phone.t('Home.widgetSystem.size')"
               :item-count="supportedSizes.length"
               rounded
               strong
             >
-              <SkySegmentedButton
+              <AgentSegmentedButton
                 v-for="supportedSize in supportedSizes"
                 :key="supportedSize"
                 :active="size === supportedSize"
                 @click="size = supportedSize"
               >
                 {{ phone.t(`Home.widgetSystem.sizes.${supportedSize}`) }}
-              </SkySegmentedButton>
-            </SkySegmented>
+              </AgentSegmentedButton>
+            </AgentSegmented>
           </section>
 
-          <SkySettingsGroup
+          <AgentSettingsGroup
             v-if="instance.kind === 'clock'"
             class="widget-config-group"
             :aria-label="phone.t('Home.widgetSystem.clock.name')"
           >
-            <SkySettingsRow
+            <AgentSettingsRow
               v-model="showDate"
               kind="toggle"
               :title="phone.t('Home.widgetSystem.clock.showDate')"
             />
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
 
-          <SkySettingsGroup
+          <AgentSettingsGroup
             v-if="instance.kind === 'wallet'"
             class="widget-config-group"
             :aria-label="phone.t('Home.widgetSystem.wallet.balance')"
           >
-            <SkySettingsRow
+            <AgentSettingsRow
               kind="custom"
               :title="phone.t('Home.widgetSystem.wallet.balance')"
             >
               <template #trailing>
-                <SkySegmented
+                <AgentSegmented
                   :active-index="balanceSource === 'bank' ? 0 : 1"
                   :aria-label="phone.t('Home.widgetSystem.wallet.balance')"
                   class="widget-config-balance"
@@ -176,29 +176,29 @@ watch(
                   rounded
                   strong
                 >
-                  <SkySegmentedButton
+                  <AgentSegmentedButton
                     :active="balanceSource === 'bank'"
                     @click="balanceSource = 'bank'"
                   >
                     {{ phone.t('Home.widgetSystem.wallet.bank') }}
-                  </SkySegmentedButton>
-                  <SkySegmentedButton
+                  </AgentSegmentedButton>
+                  <AgentSegmentedButton
                     :active="balanceSource === 'cash'"
                     @click="balanceSource = 'cash'"
                   >
                     {{ phone.t('Home.widgetSystem.wallet.cash') }}
-                  </SkySegmentedButton>
-                </SkySegmented>
+                  </AgentSegmentedButton>
+                </AgentSegmented>
               </template>
-            </SkySettingsRow>
-          </SkySettingsGroup>
+            </AgentSettingsRow>
+          </AgentSettingsGroup>
 
-          <SkySettingsGroup
+          <AgentSettingsGroup
             v-if="instance.kind === 'contacts'"
             class="widget-config-group"
             :title="phone.t('Home.widgetSystem.contacts.choose')"
           >
-            <SkySettingsRow
+            <AgentSettingsRow
               v-for="contact in contactsService.contacts.value"
               :key="contact.id"
               kind="choice"
@@ -212,12 +212,12 @@ watch(
                   contact.name.charAt(0).toUpperCase()
                 }}</span>
               </template>
-            </SkySettingsRow>
-          </SkySettingsGroup>
-        </SkyScrollArea>
+            </AgentSettingsRow>
+          </AgentSettingsGroup>
+        </AgentScrollArea>
       </section>
-    </SkySheet>
-  </SkyProvider>
+    </AgentSheet>
+  </AgentProvider>
 </template>
 
 <style scoped>
@@ -229,18 +229,18 @@ watch(
 }
 
 .widget-config-sheet {
-  --sky-overlay-layer: 115;
+  --agent-overlay-layer: 115;
 }
 
-.widget-config-sheet :deep(.sky-overlay-backdrop) {
+.widget-config-sheet :deep(.agent-overlay-backdrop) {
   background: rgb(0 0 0 / 58%);
 }
 
-.widget-config-sheet :deep(.sky-sheet__panel) {
-  height: calc(100% - var(--sky-space-3));
-  max-height: calc(100% - var(--sky-space-3));
+.widget-config-sheet :deep(.agent-sheet__panel) {
+  height: calc(100% - var(--agent-space-3));
+  max-height: calc(100% - var(--agent-space-3));
   overflow: hidden;
-  background: var(--sky-bg);
+  background: var(--agent-bg);
 }
 
 .widget-config-surface {
@@ -248,8 +248,8 @@ watch(
   min-height: 0;
   display: flex;
   flex-direction: column;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
 
 .widget-config-navbar {
@@ -257,16 +257,16 @@ watch(
   display: grid;
   grid-template-columns: minmax(72px, 1fr) minmax(0, 2fr) minmax(72px, 1fr);
   align-items: center;
-  gap: var(--sky-space-2);
-  padding: 0 var(--sky-space-3);
-  border-bottom: 1px solid var(--sky-hairline);
+  gap: var(--agent-space-2);
+  padding: 0 var(--agent-space-3);
+  border-bottom: 1px solid var(--agent-hairline);
 }
 
 .widget-config-navbar h2 {
   overflow: hidden;
   margin: 0;
-  color: var(--sky-text);
-  font-size: var(--sky-font-title);
+  color: var(--agent-text);
+  font-size: var(--agent-font-title);
   font-weight: 650;
   text-align: center;
   text-overflow: ellipsis;
@@ -281,11 +281,11 @@ watch(
   justify-self: end;
 }
 
-.widget-config-navbar :deep(.widget-config-nav-button.sky-button) {
-  min-height: var(--sky-touch-target);
-  padding: 0 var(--sky-space-4);
+.widget-config-navbar :deep(.widget-config-nav-button.agent-button) {
+  min-height: var(--agent-touch-target);
+  padding: 0 var(--agent-space-4);
   border: 1px solid rgb(255 255 255 / 12%);
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
   color: #fff;
   font-size: 15px;
   font-weight: 600;
@@ -295,36 +295,36 @@ watch(
   min-height: 0;
   flex: 1;
   overflow-y: auto;
-  padding: var(--sky-space-3) var(--sky-page-gutter)
-    calc(var(--sky-space-6) + var(--sky-safe-area-bottom));
+  padding: var(--agent-space-3) var(--agent-page-gutter)
+    calc(var(--agent-space-6) + var(--agent-safe-area-bottom));
 }
 
 .widget-config-preview {
   display: flex;
   min-height: 250px;
-  padding: var(--sky-space-4) 0;
+  padding: var(--agent-space-4) 0;
   align-items: center;
   justify-content: center;
 }
 
 .widget-config-size {
-  margin-bottom: var(--sky-space-5);
+  margin-bottom: var(--agent-space-5);
 }
 
 .widget-config-size h3 {
-  margin: 0 0 var(--sky-space-2) var(--sky-space-3);
-  color: var(--sky-muted);
-  font-size: var(--sky-font-caption);
+  margin: 0 0 var(--agent-space-2) var(--agent-space-3);
+  color: var(--agent-muted);
+  font-size: var(--agent-font-caption);
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.widget-config-size :deep(.sky-segmented) {
+.widget-config-size :deep(.agent-segmented) {
   width: 100%;
 }
 
 .widget-config-group {
-  margin: 0 0 var(--sky-space-5);
+  margin: 0 0 var(--agent-space-5);
 }
 
 .widget-config-balance {

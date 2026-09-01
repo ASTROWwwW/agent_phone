@@ -6,7 +6,7 @@ const source = readFileSync(new URL('./MusicApp.vue', import.meta.url), 'utf8')
 const playlistPlaceholder = readFileSync(
   new URL('../../assets/img/music/playlist-placeholder.jpg', import.meta.url),
 )
-const menuSource = source.match(/<SkyDropdown[\s\S]*?\/>/)?.[0] ?? ''
+const menuSource = source.match(/<AgentDropdown[\s\S]*?\/>/)?.[0] ?? ''
 const menuItemsSource = source.slice(
   source.indexOf('const menuItems = computed'),
   source.indexOf('function eventValue'),
@@ -18,7 +18,7 @@ const menuDispatcherSource = source.slice(
 
 describe('MusicApp action menu contract', () => {
   it('uses the shared anchored Agent dropdown and its close paths', () => {
-    expect(source).toContain('SkyDropdown,')
+    expect(source).toContain('AgentDropdown,')
     expect(source).toContain('const menuTarget = ref<HTMLElement | null>(null)')
     expect(source.split('menuTarget.value = event.currentTarget')).toHaveLength(
       3,
@@ -99,10 +99,10 @@ describe('MusicApp action menu contract', () => {
   })
 
   it('does not retain the generic or manually positioned popover menu', () => {
-    expect(source).not.toContain('SkyPopover,')
-    expect(source).not.toContain('<SkyPopover')
-    expect(source).not.toContain('SkyListButton,')
-    expect(source).not.toContain('<sky-list-button')
+    expect(source).not.toContain('AgentPopover,')
+    expect(source).not.toContain('<AgentPopover')
+    expect(source).not.toContain('AgentListButton,')
+    expect(source).not.toContain('<agent-list-button')
     expect(source).not.toContain('positionPopover')
     expect(source).not.toContain('popoverStyle')
     expect(source).not.toContain('MUSIC_POPOVER_')

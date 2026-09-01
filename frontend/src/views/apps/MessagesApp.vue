@@ -51,32 +51,32 @@ import type { PhoneContact } from '@/types/phone'
 import type { EasySharePayload } from '@/types/easyshare'
 import type { PhoneMedia } from '@/types/media'
 import {
-  SkyAppPage,
-  SkyButton,
-  SkyDialog,
-  SkyDialogButton,
-  SkyDropdown,
-  SkyEmptyState,
-  SkyFab,
-  SkyField,
-  SkyGlass,
-  SkyLink,
-  SkyList,
-  SkyListItem,
-  SkyMessage,
-  SkyMessagebar,
-  SkyMessages,
-  SkyMessagesTitle,
-  SkyNavbar,
-  SkyPillNavigation,
-  SkyScrollArea,
-  SkySearchbar,
-  SkySettingsGroup,
-  SkySettingsRow,
-  SkySheet,
-  SkySpinner,
-  SkyNotification,
-  SkyToolbar,
+  AgentAppPage,
+  AgentButton,
+  AgentDialog,
+  AgentDialogButton,
+  AgentDropdown,
+  AgentEmptyState,
+  AgentFab,
+  AgentField,
+  AgentGlass,
+  AgentLink,
+  AgentList,
+  AgentListItem,
+  AgentMessage,
+  AgentMessagebar,
+  AgentMessages,
+  AgentMessagesTitle,
+  AgentNavbar,
+  AgentPillNavigation,
+  AgentScrollArea,
+  AgentSearchbar,
+  AgentSettingsGroup,
+  AgentSettingsRow,
+  AgentSheet,
+  AgentSpinner,
+  AgentNotification,
+  AgentToolbar,
 } from '@/ui'
 
 const VOICE_MAX_DURATION_MS = 30_000
@@ -1092,34 +1092,34 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     v-if="!hasSim"
-    class="messages-sky-page"
+    class="messages-agent-page"
     :label="phone.t('Apps.messages.name')"
     :dark="phone.isDarkMode"
     accent="#34c759"
     accent-soft="rgba(52, 199, 89, 0.16)"
   >
-    <SkyNavbar variant="large" :title="phone.t('Apps.messages.name')" />
-    <SkyScrollArea padded class="messages-sky-state-scroll">
-      <SkyEmptyState
+    <AgentNavbar variant="large" :title="phone.t('Apps.messages.name')" />
+    <AgentScrollArea padded class="messages-agent-state-scroll">
+      <AgentEmptyState
         :title="phone.t('Apps.messages.noSim')"
         :body="phone.t('Apps.messages.noSimBody')"
       >
         <template #icon><MessageCircle :size="35" /></template>
-      </SkyEmptyState>
-    </SkyScrollArea>
-  </SkyAppPage>
+      </AgentEmptyState>
+    </AgentScrollArea>
+  </AgentAppPage>
 
-  <SkyAppPage
+  <AgentAppPage
     v-else-if="!messages.activeNumber && !composing"
-    class="messages-sky-page messages-sky-inbox"
+    class="messages-agent-page messages-agent-inbox"
     :label="phone.t('Apps.messages.name')"
     :dark="phone.isDarkMode"
     accent="#34c759"
     accent-soft="rgba(52, 199, 89, 0.16)"
   >
-    <SkyNavbar
+    <AgentNavbar
       variant="large"
       :title="
         editingList
@@ -1130,17 +1130,17 @@ onBeforeUnmount(() => {
       "
     >
       <template #right>
-        <SkyLink
+        <AgentLink
           v-if="editingList"
-          class="messages-sky-edit"
+          class="messages-agent-edit"
           @click="toggleListEditing"
         >
           {{ phone.t('Common.done') }}
-        </SkyLink>
-        <SkyLink
+        </AgentLink>
+        <AgentLink
           v-else
           icon-only
-          class="messages-sky-inbox-menu-trigger"
+          class="messages-agent-inbox-menu-trigger"
           aria-haspopup="menu"
           :aria-expanded="inboxMenuOpened"
           aria-controls="messages-inbox-menu"
@@ -1148,21 +1148,21 @@ onBeforeUnmount(() => {
           @click="openInboxMenu"
         >
           <Ellipsis :size="22" />
-        </SkyLink>
+        </AgentLink>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
-    <SkyScrollArea
+    <AgentScrollArea
       padded
       :with-tabbar="editingList"
-      class="messages-sky-inbox-scroll"
+      class="messages-agent-inbox-scroll"
     >
-      <SkyList
+      <AgentList
         v-if="filteredConversations.length"
         flush
-        class="messages-sky-conversation-list"
+        class="messages-agent-conversation-list"
       >
-        <SkyListItem
+        <AgentListItem
           v-for="conversation in filteredConversations"
           :key="conversation.phoneNumber"
           link
@@ -1179,16 +1179,16 @@ onBeforeUnmount(() => {
               : {}
           "
           :aria-label="conversationLabel(conversation)"
-          class="messages-sky-conversation"
+          class="messages-agent-conversation"
           :class="{
-            'messages-sky-conversation--unread': conversation.unread > 0,
+            'messages-agent-conversation--unread': conversation.unread > 0,
           }"
           @click="openConversation(conversation)"
         >
           <template #media>
             <span class="messages-conversation-media" aria-hidden="true">
               <span
-                class="messages-sky-unread-slot"
+                class="messages-agent-unread-slot"
                 :class="{
                   'is-visible': !editingList && conversation.unread > 0,
                 }"
@@ -1219,7 +1219,7 @@ onBeforeUnmount(() => {
                 </span>
                 <span
                   v-if="editingList"
-                  class="messages-sky-selection"
+                  class="messages-agent-selection"
                   :class="{
                     'is-selected': selectedNumbers.includes(
                       conversation.phoneNumber,
@@ -1238,7 +1238,7 @@ onBeforeUnmount(() => {
             {{ contactName(conversation.phoneNumber) }}
           </template>
           <template #after>
-            <span class="messages-sky-conversation-time">
+            <span class="messages-agent-conversation-time">
               <time>{{
                 formatConversationDate(conversation.lastMessageAt)
               }}</time>
@@ -1248,12 +1248,12 @@ onBeforeUnmount(() => {
           <template #subtitle>
             {{ conversationPreview(conversation) }}
           </template>
-        </SkyListItem>
-      </SkyList>
+        </AgentListItem>
+      </AgentList>
 
-      <SkyEmptyState
+      <AgentEmptyState
         v-else
-        class="messages-sky-empty"
+        class="messages-agent-empty"
         :title="
           phone.t(
             search || showUnreadOnly
@@ -1269,43 +1269,43 @@ onBeforeUnmount(() => {
       >
         <template #icon><MessageCircle :size="32" /></template>
         <template v-if="!search && !showUnreadOnly" #actions>
-          <SkyButton rounded @click="beginCompose">
+          <AgentButton rounded @click="beginCompose">
             {{ phone.t('Apps.messages.compose') }}
-          </SkyButton>
+          </AgentButton>
         </template>
-      </SkyEmptyState>
-    </SkyScrollArea>
+      </AgentEmptyState>
+    </AgentScrollArea>
 
-    <SkyToolbar
+    <AgentToolbar
       v-if="!editingList"
-      class="messages-sky-inbox-toolbar"
+      class="messages-agent-inbox-toolbar"
       component="footer"
       :aria-label="phone.t('Apps.messages.search')"
     >
-      <SkySearchbar
+      <AgentSearchbar
         v-model="search"
-        class="messages-sky-search"
+        class="messages-agent-search"
         :label="phone.t('Apps.messages.search')"
         :placeholder="phone.t('Apps.messages.search')"
         :clear-label="phone.t('Common.clear')"
       />
-      <SkyFab
+      <AgentFab
         variant="glass"
         :aria-label="phone.t('Apps.messages.compose')"
         @click="beginCompose"
       >
         <template #icon><SquarePen :size="21" /></template>
-      </SkyFab>
-    </SkyToolbar>
+      </AgentFab>
+    </AgentToolbar>
 
-    <SkyPillNavigation
+    <AgentPillNavigation
       v-if="editingList"
       layout="compact"
       align="center"
-      class="messages-sky-edit-navigation"
+      class="messages-agent-edit-navigation"
       :label="phone.t('Apps.messages.deleteSelected')"
     >
-      <SkyButton
+      <AgentButton
         rounded
         variant="danger"
         :disabled="!selectedNumbers.length"
@@ -1313,10 +1313,10 @@ onBeforeUnmount(() => {
       >
         <Trash2 :size="18" />
         {{ phone.t('Apps.messages.deleteSelected') }}
-      </SkyButton>
-    </SkyPillNavigation>
+      </AgentButton>
+    </AgentPillNavigation>
 
-    <SkyDropdown
+    <AgentDropdown
       id="messages-inbox-menu"
       :items="inboxMenuItems"
       :label="phone.t('Apps.messages.inboxActions')"
@@ -1327,26 +1327,26 @@ onBeforeUnmount(() => {
       @positionerror="dismissInboxMenu"
       @select="selectInboxMenuItem"
     />
-  </SkyAppPage>
+  </AgentAppPage>
 
-  <SkyAppPage
+  <AgentAppPage
     v-else-if="composing"
-    class="messages-sky-page messages-sky-compose"
+    class="messages-agent-page messages-agent-compose"
     :label="phone.t('Apps.messages.compose')"
     :dark="phone.isDarkMode"
     accent="#34c759"
     accent-soft="rgba(52, 199, 89, 0.16)"
   >
-    <SkyNavbar :title="phone.t('Apps.messages.compose')">
+    <AgentNavbar :title="phone.t('Apps.messages.compose')">
       <template #right>
-        <SkyLink @click="goBack">
+        <AgentLink @click="goBack">
           {{ phone.t('Common.cancel') }}
-        </SkyLink>
+        </AgentLink>
       </template>
-    </SkyNavbar>
-    <SkyScrollArea padded class="messages-sky-compose-scroll">
-      <SkyList class="messages-recipient-field" density="compact" flush>
-        <SkyField
+    </AgentNavbar>
+    <AgentScrollArea padded class="messages-agent-compose-scroll">
+      <AgentList class="messages-recipient-field" density="compact" flush>
+        <AgentField
           v-model="composerNumber"
           :label="phone.t('Apps.messages.to')"
           layout="inline"
@@ -1357,13 +1357,13 @@ onBeforeUnmount(() => {
           @clear="composerNumber = ''"
           @keyup.enter="chooseRecipient(composerNumber)"
         />
-      </SkyList>
-      <SkyList
+      </AgentList>
+      <AgentList
         v-if="contactSuggestions.length"
         class="messages-contact-list"
         flush
       >
-        <SkyListItem
+        <AgentListItem
           v-for="contact in contactSuggestions"
           :key="contact.id"
           link
@@ -1386,12 +1386,12 @@ onBeforeUnmount(() => {
               }}</span>
             </span>
           </template>
-        </SkyListItem>
-      </SkyList>
-      <div v-else-if="messages.loading" class="messages-sky-loading">
-        <SkySpinner :label="phone.t('Common.loading')" />
+        </AgentListItem>
+      </AgentList>
+      <div v-else-if="messages.loading" class="messages-agent-loading">
+        <AgentSpinner :label="phone.t('Common.loading')" />
       </div>
-      <SkyButton
+      <AgentButton
         v-else-if="composerNumber.trim()"
         rounded
         tonal
@@ -1400,24 +1400,24 @@ onBeforeUnmount(() => {
       >
         <MessageCircle :size="17" />
         {{ composerNumber }}
-      </SkyButton>
-    </SkyScrollArea>
-  </SkyAppPage>
+      </AgentButton>
+    </AgentScrollArea>
+  </AgentAppPage>
 
-  <SkyAppPage
+  <AgentAppPage
     v-else
-    class="messages-sky-page messages-sky-thread"
+    class="messages-agent-page messages-agent-thread"
     :class="{
-      'messages-sky-thread--panel': attachmentPanelOpen,
-      'messages-sky-thread--share': Boolean(shareDraft),
+      'messages-agent-thread--panel': attachmentPanelOpen,
+      'messages-agent-thread--share': Boolean(shareDraft),
     }"
     :label="activeTitle"
     :dark="phone.isDarkMode"
     accent="#34c759"
     accent-soft="rgba(52, 199, 89, 0.16)"
   >
-    <SkyNavbar
-      class="messages-sky-thread-navbar"
+    <AgentNavbar
+      class="messages-agent-thread-navbar"
       :aria-hidden="contactDetailsOpen"
       :inert="contactDetailsOpen || undefined"
       :title="activeTitle"
@@ -1429,7 +1429,7 @@ onBeforeUnmount(() => {
       <template #title>
         <button
           type="button"
-          class="messages-sky-thread-contact"
+          class="messages-agent-thread-contact"
           :aria-label="phone.t('Apps.messages.contactDetails')"
           @click="openContactDetails"
         >
@@ -1459,9 +1459,9 @@ onBeforeUnmount(() => {
           <ChevronRight :size="13" />
         </button>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
-    <SkyAppPage
+    <AgentAppPage
       v-if="contactDetailsOpen"
       class="messages-contact-overlay"
       component="section"
@@ -1470,14 +1470,14 @@ onBeforeUnmount(() => {
       accent="#34c759"
       accent-soft="rgba(52, 199, 89, 0.16)"
     >
-      <SkyNavbar
+      <AgentNavbar
         :title="phone.t('Apps.messages.contactDetails')"
         show-back
         back-appearance="surface"
         :back-label="phone.t('Common.back')"
         @back="contactDetailsOpen = false"
       />
-      <SkyScrollArea padded class="messages-contact-overlay__scroll">
+      <AgentScrollArea padded class="messages-contact-overlay__scroll">
         <div class="messages-contact-profile__hero">
           <span
             class="messages-avatar messages-avatar--contact"
@@ -1507,7 +1507,7 @@ onBeforeUnmount(() => {
           </small>
         </div>
         <div class="messages-contact-profile__actions">
-          <SkyButton
+          <AgentButton
             v-if="activeContact?.canCall !== false"
             icon-only
             rounded
@@ -1516,8 +1516,8 @@ onBeforeUnmount(() => {
             @click="callActiveContact"
           >
             <PhoneIcon :size="22" />
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             v-if="activeCanMessage"
             icon-only
             rounded
@@ -1526,8 +1526,8 @@ onBeforeUnmount(() => {
             @click="contactDetailsOpen = false"
           >
             <MessageCircle :size="22" />
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             v-if="activeContactEmail"
             icon-only
             rounded
@@ -1536,37 +1536,37 @@ onBeforeUnmount(() => {
             @click="mailActiveContact"
           >
             <Mail :size="22" />
-          </SkyButton>
+          </AgentButton>
         </div>
-        <SkySettingsGroup
+        <AgentSettingsGroup
           class="messages-contact-profile__details"
           :title="phone.t('Apps.messages.details')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             :title="phone.t('Apps.phone.mobile')"
             :value="messages.activeNumber ?? ''"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             v-if="activeContact?.organization"
             :title="phone.t('Apps.messages.company')"
             :value="activeContact.organization"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             v-if="activeContactEmail"
             :title="phone.t('Apps.phone.mail')"
             :value="activeContactEmail"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             v-if="activeContact?.notes"
             :title="phone.t('Apps.phone.notes')"
             :description="activeContact.notes"
           />
-        </SkySettingsGroup>
-        <SkySettingsGroup
+        </AgentSettingsGroup>
+        <AgentSettingsGroup
           class="messages-contact-profile__options"
           :aria-label="phone.t('Apps.messages.contactActions')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             kind="navigation"
             :title="
               phone.t(
@@ -1578,31 +1578,31 @@ onBeforeUnmount(() => {
             @activate="openActiveContactInPhone"
           >
             <template #leading><ContactRound :size="20" /></template>
-          </SkySettingsRow>
-          <SkySettingsRow
+          </AgentSettingsRow>
+          <AgentSettingsRow
             kind="action"
             tone="danger"
             :title="phone.t('Apps.messages.blockContact')"
             @activate="confirmBlockActiveContact"
           >
             <template #leading><Ban :size="20" /></template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
-      </SkyScrollArea>
-    </SkyAppPage>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
+      </AgentScrollArea>
+    </AgentAppPage>
 
-    <SkyScrollArea
+    <AgentScrollArea
       padded
-      class="messages-sky-thread-scroll"
+      class="messages-agent-thread-scroll"
       :aria-hidden="contactDetailsOpen"
       :inert="contactDetailsOpen || undefined"
     >
-      <SkyMessages class="messages-bubbles">
+      <AgentMessages class="messages-bubbles">
         <template
           v-for="(message, index) in messages.messages"
           :key="message.client_id ?? message.id"
         >
-          <SkyMessagesTitle v-if="startsDay(message, index)">
+          <AgentMessagesTitle v-if="startsDay(message, index)">
             <span class="messages-thread-timestamp">
               <span>{{ phone.t('Apps.messages.smsLabel') }}</span>
               <b
@@ -1610,8 +1610,8 @@ onBeforeUnmount(() => {
                 {{ timeLabel(message.created_at) }}</b
               >
             </span>
-          </SkyMessagesTitle>
-          <SkyMessage
+          </AgentMessagesTitle>
+          <AgentMessage
             :class="{
               'messages-message--sending':
                 message.delivery_status === 'sending',
@@ -1645,15 +1645,15 @@ onBeforeUnmount(() => {
               />
               <MessageAttachmentBubble v-else :message="message" />
             </template>
-          </SkyMessage>
+          </AgentMessage>
         </template>
-      </SkyMessages>
+      </AgentMessages>
       <span
         ref="threadBottom"
         class="messages-thread-bottom"
         aria-hidden="true"
       />
-    </SkyScrollArea>
+    </AgentScrollArea>
 
     <section
       v-if="activeCanMessage && !activeServiceLine && attachmentMenuOpen"
@@ -1661,45 +1661,45 @@ onBeforeUnmount(() => {
       :aria-hidden="contactDetailsOpen"
       :inert="contactDetailsOpen || undefined"
     >
-      <SkyGlass
+      <AgentGlass
         component="button"
         type="button"
         @click="openMediaApp('photos', 'photo')"
       >
         <span><Images :size="20" /></span>
         {{ phone.t('Apps.messages.attachPhoto') }}
-      </SkyGlass>
-      <SkyGlass
+      </AgentGlass>
+      <AgentGlass
         component="button"
         type="button"
         @click="openMediaApp('camera', 'photo')"
       >
         <span><Camera :size="20" /></span>
         {{ phone.t('Apps.messages.takePhoto') }}
-      </SkyGlass>
-      <SkyGlass component="button" type="button" @click="openEmojiPicker">
+      </AgentGlass>
+      <AgentGlass component="button" type="button" @click="openEmojiPicker">
         <span class="messages-action-emoji">😀</span>
         {{ phone.t('Apps.messages.emoji') }}
-      </SkyGlass>
-      <SkyGlass component="button" type="button" @click="openContactPicker">
+      </AgentGlass>
+      <AgentGlass component="button" type="button" @click="openContactPicker">
         <span><ContactRound :size="20" /></span>
         {{ phone.t('Apps.messages.shareContact') }}
-      </SkyGlass>
-      <SkyGlass component="button" type="button" @click="openGifPicker">
+      </AgentGlass>
+      <AgentGlass component="button" type="button" @click="openGifPicker">
         <span><ImagePlay :size="20" /></span>
         {{ phone.t('Apps.messages.attachGif') }}
-      </SkyGlass>
-      <SkyGlass
+      </AgentGlass>
+      <AgentGlass
         component="button"
         type="button"
         @click="openMediaApp('photos', 'video')"
       >
         <span><Video :size="20" /></span>
         {{ phone.t('Apps.messages.attachVideo') }}
-      </SkyGlass>
+      </AgentGlass>
     </section>
 
-    <SkySheet
+    <AgentSheet
       class="messages-media-picker-sheet"
       :opened="
         activeCanMessage && !activeServiceLine && attachmentPicker !== null
@@ -1734,17 +1734,17 @@ onBeforeUnmount(() => {
               )
             }}
           </strong>
-          <SkyLink @click="closeAttachmentPicker">
+          <AgentLink @click="closeAttachmentPicker">
             {{ phone.t('Common.done') }}
-          </SkyLink>
+          </AgentLink>
         </header>
-        <SkyList
+        <AgentList
           v-if="attachmentPicker === 'contacts'"
           inset
           strong
           class="messages-media-picker__contacts"
         >
-          <SkyListItem
+          <AgentListItem
             v-for="contact in calls.contacts"
             :key="contact.id"
             link
@@ -1766,16 +1766,16 @@ onBeforeUnmount(() => {
                 }}</span>
               </span>
             </template>
-          </SkyListItem>
+          </AgentListItem>
           <p v-if="!calls.contacts.length" class="messages-media-picker__empty">
             {{ phone.t('Apps.messages.noContactsToShare') }}
           </p>
-        </SkyList>
+        </AgentList>
         <div
           v-else
           class="messages-media-picker__gifs messages-media-picker__gifs--masonry"
         >
-          <SkySearchbar
+          <AgentSearchbar
             v-model="gifQuery"
             class="messages-gif-search"
             :label="phone.t('Apps.messages.searchGifs')"
@@ -1820,14 +1820,14 @@ onBeforeUnmount(() => {
               {{ phone.t('Apps.messages.retryGifs') }}
             </button>
           </div>
-          <SkySpinner
+          <AgentSpinner
             v-if="gifLoading"
             class="messages-gif-loading"
             :label="phone.t('Common.loading')"
           />
         </div>
       </section>
-    </SkySheet>
+    </AgentSheet>
 
     <FullEmojiPicker
       v-if="activeCanMessage && emojiOpen"
@@ -1844,13 +1844,13 @@ onBeforeUnmount(() => {
       :inert="contactDetailsOpen || undefined"
     >
       <SharedContentCard compact :payload="shareDraft" variant="messages" />
-      <SkyLink
+      <AgentLink
         icon-only
         :aria-label="phone.t('Common.close')"
         @click="shareDraft = null"
       >
         <X :size="15" />
-      </SkyLink>
+      </AgentLink>
     </div>
 
     <section
@@ -1859,14 +1859,14 @@ onBeforeUnmount(() => {
       :aria-hidden="contactDetailsOpen"
       :inert="contactDetailsOpen || undefined"
     >
-      <SkyLink
+      <AgentLink
         icon-only
         class="messages-recorder__cancel"
         :aria-label="phone.t('Apps.messages.cancelRecording')"
         @click="cancelVoiceRecording"
       >
         <X :size="20" />
-      </SkyLink>
+      </AgentLink>
       <span class="messages-recorder__dot" />
       <time>{{ formatRecordingTime(recordingElapsedMs) }}</time>
       <div class="messages-recorder__wave" aria-hidden="true">
@@ -1876,7 +1876,7 @@ onBeforeUnmount(() => {
           :style="{ height: `${Math.max(3, level * 24)}px` }"
         />
       </div>
-      <SkyButton
+      <AgentButton
         icon-only
         rounded
         tonal
@@ -1885,12 +1885,12 @@ onBeforeUnmount(() => {
         @click="stopVoiceRecording"
       >
         <ArrowUpCircle :size="27" :stroke-width="2.4" />
-      </SkyButton>
+      </AgentButton>
     </section>
 
     <div
       v-else-if="activeCanMessage"
-      class="messages-sky-composer-shell"
+      class="messages-agent-composer-shell"
       :aria-hidden="contactDetailsOpen"
       :inert="contactDetailsOpen || undefined"
     >
@@ -1940,27 +1940,27 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <div class="messages-sky-composer-row">
-        <SkyGlass
+      <div class="messages-agent-composer-row">
+        <AgentGlass
           v-if="!activeServiceLine"
           component="button"
           type="button"
-          class="messages-sky-messagebar__action messages-sky-messagebar__plus"
+          class="messages-agent-messagebar__action messages-agent-messagebar__plus"
           :class="{ active: attachmentMenuOpen || attachmentPanelOpen }"
           :disabled="sending"
           :aria-label="phone.t('Apps.messages.moreActions')"
           @click="toggleAttachmentMenu"
         >
           <Plus :size="24" />
-        </SkyGlass>
-        <SkyGlass
+        </AgentGlass>
+        <AgentGlass
           component="div"
           :highlight="false"
-          class="messages-sky-composer-pill"
+          class="messages-agent-composer-pill"
         >
-          <SkyMessagebar
+          <AgentMessagebar
             v-model="draft"
-            class="messages-sky-messagebar"
+            class="messages-agent-messagebar"
             embedded
             :outline="false"
             :placeholder="phone.t('Apps.messages.message')"
@@ -1968,43 +1968,43 @@ onBeforeUnmount(() => {
             @keydown.enter.exact="handleEnterAction($event, sendTextMessage)"
           >
             <template #right>
-              <SkyLink
+              <AgentLink
                 v-if="composerHasContent"
                 icon-only
-                class="messages-sky-messagebar__send"
+                class="messages-agent-messagebar__send"
                 :disabled="sending"
                 :aria-label="phone.t('Apps.messages.send')"
                 @click="sendTextMessage"
               >
                 <ArrowUpCircle :size="29" :stroke-width="2.4" />
-              </SkyLink>
-              <SkyLink
+              </AgentLink>
+              <AgentLink
                 v-else-if="!activeServiceLine"
                 icon-only
-                class="messages-sky-messagebar__send"
+                class="messages-agent-messagebar__send"
                 :disabled="sending || recordingStarting"
                 :aria-busy="recordingStarting"
                 :aria-label="phone.t('Apps.messages.recordVoice')"
                 @click="startVoiceRecording"
               >
                 <Mic :size="21" :stroke-width="2.3" />
-              </SkyLink>
+              </AgentLink>
             </template>
-          </SkyMessagebar>
-        </SkyGlass>
+          </AgentMessagebar>
+        </AgentGlass>
       </div>
     </div>
     <div
       v-else
-      class="messages-sky-unavailable"
+      class="messages-agent-unavailable"
       :aria-hidden="contactDetailsOpen"
       :inert="contactDetailsOpen || undefined"
     >
       {{ phone.t('Apps.messages.messagingUnavailable') }}
     </div>
-  </SkyAppPage>
+  </AgentAppPage>
 
-  <SkyDialog
+  <AgentDialog
     :opened="blockDialogOpened"
     @backdropclick="blockDialogOpened = false"
     @escape="blockDialogOpened = false"
@@ -2018,23 +2018,23 @@ onBeforeUnmount(() => {
       }}
     </p>
     <template #buttons>
-      <SkyDialogButton
+      <AgentDialogButton
         :disabled="blockingContact"
         @click="blockDialogOpened = false"
       >
         {{ phone.t('Common.cancel') }}
-      </SkyDialogButton>
-      <SkyDialogButton
+      </AgentDialogButton>
+      <AgentDialogButton
         strong
         :disabled="blockingContact"
         @click="blockActiveContact"
       >
         {{ phone.t('Apps.messages.blockContact') }}
-      </SkyDialogButton>
+      </AgentDialogButton>
     </template>
-  </SkyDialog>
+  </AgentDialog>
 
-  <SkyNotification
+  <AgentNotification
     :opened="toastOpened"
     :text="toastText"
     @click="toastOpened = false"
@@ -2042,50 +2042,50 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.messages-sky-state-scroll,
-.messages-sky-loading {
+.messages-agent-state-scroll,
+.messages-agent-loading {
   display: grid;
   place-items: center;
 }
 
-.messages-sky-state-scroll :deep(.sky-empty-state) {
+.messages-agent-state-scroll :deep(.agent-empty-state) {
   margin: auto;
 }
 
-.messages-sky-edit {
-  color: var(--sky-app-accent);
+.messages-agent-edit {
+  color: var(--agent-app-accent);
   font-size: 15px;
   font-weight: 650;
 }
 
-.messages-sky-search {
+.messages-agent-search {
   min-width: 0;
   width: 100%;
   flex: 1;
 }
 
-.messages-sky-inbox-toolbar :deep(.sky-toolbar__inner) {
+.messages-agent-inbox-toolbar :deep(.agent-toolbar__inner) {
   width: 100%;
 }
 
-.messages-sky-inbox-scroll {
+.messages-agent-inbox-scroll {
   padding-top: 4px;
 }
 
-.messages-sky-conversation-list {
-  margin: 0 calc(var(--sky-page-gutter) * -1);
+.messages-agent-conversation-list {
+  margin: 0 calc(var(--agent-page-gutter) * -1);
 }
 
-.messages-sky-conversation :deep(.sky-list-item__row) {
+.messages-agent-conversation :deep(.agent-list-item__row) {
   min-height: 72px;
 }
 
-.messages-sky-conversation :deep(.sky-list-item__content) {
+.messages-agent-conversation :deep(.agent-list-item__content) {
   padding-top: 9px;
   padding-bottom: 9px;
 }
 
-.messages-sky-conversation :deep(.sky-list-item__media) {
+.messages-agent-conversation :deep(.agent-list-item__media) {
   position: relative;
 }
 
@@ -2093,94 +2093,94 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: 10px 50px;
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
-.messages-sky-conversation :deep(.sky-list-item__title) {
+.messages-agent-conversation :deep(.agent-list-item__title) {
   overflow: hidden;
   font-size: 15px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.messages-sky-conversation--unread :deep(.sky-list-item__title) {
+.messages-agent-conversation--unread :deep(.agent-list-item__title) {
   font-weight: 760;
 }
 
-.messages-sky-conversation :deep(.sky-list-item__subtitle) {
+.messages-agent-conversation :deep(.agent-list-item__subtitle) {
   overflow: hidden;
   display: -webkit-box;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 12px;
   line-height: 16px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
-.messages-sky-conversation-time {
+.messages-agent-conversation-time {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 11px;
   white-space: nowrap;
 }
 
-.messages-sky-selection {
+.messages-agent-selection {
   position: absolute;
   z-index: 2;
   border-radius: 50%;
 }
 
-.messages-sky-selection {
+.messages-agent-selection {
   right: -3px;
   bottom: -2px;
   width: 20px;
   height: 20px;
   display: grid;
   place-items: center;
-  border: 2px solid var(--sky-bg);
-  background: var(--sky-surface-muted);
+  border: 2px solid var(--agent-bg);
+  background: var(--agent-surface-muted);
   color: #fff;
 }
 
-.messages-sky-selection.is-selected {
-  background: var(--sky-app-accent);
+.messages-agent-selection.is-selected {
+  background: var(--agent-app-accent);
 }
 
-.messages-sky-unread-slot {
+.messages-agent-unread-slot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
   opacity: 0;
 }
 
-.messages-sky-unread-slot.is-visible {
+.messages-agent-unread-slot.is-visible {
   opacity: 1;
 }
 
-.messages-sky-empty {
+.messages-agent-empty {
   min-height: 65%;
 }
 
-.messages-sky-edit-navigation :deep(.sky-button) {
+.messages-agent-edit-navigation :deep(.agent-button) {
   min-width: 132px;
 }
 
-.messages-sky-compose-scroll {
+.messages-agent-compose-scroll {
   padding-top: 2px;
 }
 
 .messages-recipient-field,
 .messages-contact-list {
-  margin: 0 calc(var(--sky-page-gutter) * -1) 12px;
-  border-top: 1px solid var(--sky-hairline);
-  border-bottom: 1px solid var(--sky-hairline);
+  margin: 0 calc(var(--agent-page-gutter) * -1) 12px;
+  border-top: 1px solid var(--agent-hairline);
+  border-bottom: 1px solid var(--agent-hairline);
   background: transparent;
 }
 
-.messages-recipient-field :deep(.sky-field) {
+.messages-recipient-field :deep(.agent-field) {
   min-height: 52px;
   padding: 0 14px;
   display: flex;
@@ -2188,7 +2188,7 @@ onBeforeUnmount(() => {
   background: transparent;
 }
 
-.messages-recipient-field :deep(.sky-field__inner) {
+.messages-recipient-field :deep(.agent-field__inner) {
   min-width: 0;
   display: flex;
   flex: 1;
@@ -2197,29 +2197,29 @@ onBeforeUnmount(() => {
   padding: 0;
 }
 
-.messages-contact-list :deep(.sky-list-item__row) {
+.messages-contact-list :deep(.agent-list-item__row) {
   background: transparent;
 }
 
-.messages-recipient-field :deep(.sky-field__label) {
+.messages-recipient-field :deep(.agent-field__label) {
   margin: 0;
   flex: none;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 14px;
   line-height: 20px;
 }
 
-.messages-recipient-field :deep(.sky-field__control),
-.messages-recipient-field :deep(.sky-field__input) {
+.messages-recipient-field :deep(.agent-field__control),
+.messages-recipient-field :deep(.agent-field__input) {
   min-height: 52px;
 }
 
-.messages-recipient-field :deep(.sky-field__control) {
+.messages-recipient-field :deep(.agent-field__control) {
   flex: 1;
   margin: 0;
 }
 
-.messages-recipient-field :deep(.sky-field__input) {
+.messages-recipient-field :deep(.agent-field__input) {
   font-size: 15px;
 }
 
@@ -2227,19 +2227,19 @@ onBeforeUnmount(() => {
   margin: 0;
 }
 
-.messages-sky-loading {
+.messages-agent-loading {
   min-height: 120px;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
-.messages-sky-thread-navbar :deep(.sky-navbar__heading) {
+.messages-agent-thread-navbar :deep(.agent-navbar__heading) {
   overflow: visible;
 }
 
-.messages-sky-thread-contact {
+.messages-agent-thread-contact {
   width: 100%;
   min-width: 0;
-  height: var(--sky-navbar-height);
+  height: var(--agent-navbar-height);
   padding: 0;
   display: flex;
   align-items: center;
@@ -2247,13 +2247,13 @@ onBeforeUnmount(() => {
   gap: 7px;
   border: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font: inherit;
   font-size: 15px;
   font-weight: 700;
 }
 
-.messages-sky-thread-contact > span:not(.messages-avatar) {
+.messages-agent-thread-contact > span:not(.messages-avatar) {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2263,12 +2263,12 @@ onBeforeUnmount(() => {
 .messages-avatar--thread {
   width: 32px;
   height: 32px;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   box-shadow: none;
   font-size: 12px;
 }
 
-.messages-sky-thread-scroll {
+.messages-agent-thread-scroll {
   padding: 4px 14px 10px;
   transition: padding-bottom 240ms ease;
 }
@@ -2279,56 +2279,56 @@ onBeforeUnmount(() => {
   padding: 0;
 }
 
-.messages-bubbles :deep(.sky-message) {
+.messages-bubbles :deep(.agent-message) {
   max-width: 86%;
   margin-bottom: 7px;
 }
 
-.messages-bubbles :deep(.sky-message__bubble) {
+.messages-bubbles :deep(.agent-message__bubble) {
   padding: 8px 12px;
   border-radius: 19px;
   font-size: 15px;
   line-height: 19px;
 }
 
-.messages-bubbles :deep(.sky-message--received .sky-message__bubble) {
-  background: var(--sky-message-received-background);
-  color: var(--sky-text);
+.messages-bubbles :deep(.agent-message--received .agent-message__bubble) {
+  background: var(--agent-message-received-background);
+  color: var(--agent-text);
 }
 
-.messages-bubbles :deep(.sky-message--sent .sky-message__bubble) {
-  background: var(--sky-app-accent);
+.messages-bubbles :deep(.agent-message--sent .agent-message__bubble) {
+  background: var(--agent-app-accent);
   color: #fff;
 }
 
-.messages-bubbles :deep(.sky-message__text-footer) {
+.messages-bubbles :deep(.agent-message__text-footer) {
   margin-top: 2px;
   font-size: 10px;
   line-height: 13px;
 }
 
-.messages-bubbles :deep(.messages-message--failed .sky-message__bubble) {
-  box-shadow: 0 0 0 1px var(--sky-danger);
+.messages-bubbles :deep(.messages-message--failed .agent-message__bubble) {
+  box-shadow: 0 0 0 1px var(--agent-danger);
 }
 
-.messages-sky-composer-shell {
+.messages-agent-composer-shell {
   z-index: 42;
   display: flex;
   flex: none;
   flex-direction: column;
-  gap: var(--sky-space-2);
-  padding: 6px var(--sky-page-gutter) calc(var(--sky-safe-area-bottom) + 6px);
-  background: var(--sky-bg);
+  gap: var(--agent-space-2);
+  padding: 6px var(--agent-page-gutter) calc(var(--agent-safe-area-bottom) + 6px);
+  background: var(--agent-bg);
 }
 
-.messages-sky-composer-row {
+.messages-agent-composer-row {
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
-.messages-sky-composer-pill {
+.messages-agent-composer-pill {
   min-width: 0;
   min-height: 56px;
   padding: 5px 7px;
@@ -2337,10 +2337,10 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 6px;
   overflow: hidden;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
 }
 
-.messages-sky-messagebar {
+.messages-agent-messagebar {
   min-width: 0;
   padding: 0;
   flex: 1;
@@ -2348,25 +2348,25 @@ onBeforeUnmount(() => {
   background: transparent;
 }
 
-.messages-sky-composer-pill > .messages-sky-messagebar {
+.messages-agent-composer-pill > .messages-agent-messagebar {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   background: transparent;
   box-shadow: none;
 }
 
-.messages-sky-messagebar :deep(textarea) {
+.messages-agent-messagebar :deep(textarea) {
   min-height: 44px;
   padding: 11px 8px 9px 10px;
   border: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 15px;
   line-height: 20px;
 }
 
-.messages-sky-messagebar__action,
-.messages-sky-messagebar__send {
+.messages-agent-messagebar__action,
+.messages-agent-messagebar__send {
   width: 40px;
   height: 40px;
   display: grid;
@@ -2374,32 +2374,32 @@ onBeforeUnmount(() => {
   border-radius: 50%;
 }
 
-.messages-sky-messagebar__action {
+.messages-agent-messagebar__action {
   width: 46px;
   height: 46px;
   flex: 0 0 46px;
   border-color: transparent;
-  background: var(--sky-surface-variant);
-  color: var(--sky-text);
+  background: var(--agent-surface-variant);
+  color: var(--agent-text);
   box-shadow: none;
 }
 
-.messages-sky-messagebar__plus {
+.messages-agent-messagebar__plus {
   transition: transform 180ms ease;
 }
 
-.messages-sky-messagebar__plus.active {
-  color: var(--sky-app-accent);
+.messages-agent-messagebar__plus.active {
+  color: var(--agent-app-accent);
   transform: rotate(45deg);
 }
 
-.messages-sky-messagebar__send {
-  color: var(--sky-app-accent);
+.messages-agent-messagebar__send {
+  color: var(--agent-app-accent);
 }
 
 .messages-pending-media {
   display: flex;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
   overflow-x: auto;
   padding: 2px;
   scrollbar-width: none;
@@ -2415,8 +2415,8 @@ onBeforeUnmount(() => {
   height: 72px;
   flex: 0 0 72px;
   overflow: visible;
-  border-radius: var(--sky-radius-card);
-  background: var(--sky-surface-muted);
+  border-radius: var(--agent-radius-card);
+  background: var(--agent-surface-muted);
 }
 
 .messages-pending-media__item > img,
@@ -2437,10 +2437,10 @@ onBeforeUnmount(() => {
   height: 24px;
   display: grid;
   place-items: center;
-  border: 2px solid var(--sky-bg);
+  border: 2px solid var(--agent-bg);
   border-radius: 50%;
-  background: var(--sky-text);
-  color: var(--sky-bg);
+  background: var(--agent-text);
+  color: var(--agent-bg);
 }
 
 .messages-pending-media__item > button:disabled {
@@ -2452,7 +2452,7 @@ onBeforeUnmount(() => {
   height: 38px;
   flex: 0 0 38px;
   padding: 0;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 .messages-recorder__wave i {
@@ -2461,18 +2461,18 @@ onBeforeUnmount(() => {
   flex: 1 1 2px;
 }
 
-.messages-sky-unavailable {
-  padding: 12px 18px calc(var(--sky-safe-area-bottom) + 12px);
-  color: var(--sky-muted);
+.messages-agent-unavailable {
+  padding: 12px 18px calc(var(--agent-safe-area-bottom) + 12px);
+  color: var(--agent-muted);
   font-size: 13px;
   text-align: center;
 }
 
-.messages-sky-thread--panel .messages-sky-thread-scroll {
+.messages-agent-thread--panel .messages-agent-thread-scroll {
   padding-bottom: 326px;
 }
 
-.messages-sky-thread--share .messages-sky-thread-scroll {
+.messages-agent-thread--share .messages-agent-thread-scroll {
   padding-bottom: 150px;
 }
 
@@ -2487,10 +2487,10 @@ onBeforeUnmount(() => {
 }
 
 .messages-contact-profile__hero {
-  padding: var(--sky-space-3) 0 var(--sky-space-4);
+  padding: var(--agent-space-3) 0 var(--agent-space-4);
   display: grid;
   justify-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
   text-align: center;
 }
 
@@ -2501,19 +2501,19 @@ onBeforeUnmount(() => {
 }
 
 .messages-contact-profile__hero small {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 12px;
 }
 
 .messages-contact-profile__actions {
   width: min(100%, 256px);
-  margin: 0 auto var(--sky-space-5);
+  margin: 0 auto var(--agent-space-5);
   display: flex;
   justify-content: center;
-  gap: var(--sky-space-3);
+  gap: var(--agent-space-3);
 }
 
-.messages-contact-profile__actions :deep(.sky-button) {
+.messages-contact-profile__actions :deep(.agent-button) {
   width: 56px;
   min-width: 56px;
   height: 56px;
@@ -2524,8 +2524,8 @@ onBeforeUnmount(() => {
 
 .messages-contact-profile__details,
 .messages-contact-profile__options {
-  margin-right: calc(var(--sky-page-gutter) * -1);
-  margin-left: calc(var(--sky-page-gutter) * -1);
+  margin-right: calc(var(--agent-page-gutter) * -1);
+  margin-left: calc(var(--agent-page-gutter) * -1);
 }
 
 .messages-gif-search {
@@ -2534,8 +2534,8 @@ onBeforeUnmount(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .messages-sky-thread-scroll,
-  .messages-sky-messagebar__plus {
+  .messages-agent-thread-scroll,
+  .messages-agent-messagebar__plus {
     transition: none;
   }
 }

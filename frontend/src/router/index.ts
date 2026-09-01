@@ -11,9 +11,9 @@ import SpringboardView from '@/views/SpringboardView.vue'
 const developmentRoutes: RouteRecordRaw[] = import.meta.env.DEV
   ? [
       {
-        component: () => import('@/views/development/SkyUiKitchenSinkView.vue'),
-        name: 'development-sky-ui',
-        path: '/development/sky-ui/:demo?',
+        component: () => import('@/views/development/AgentUiKitchenSinkView.vue'),
+        name: 'development-agent-ui',
+        path: '/development/agent-ui/:demo?',
       },
       {
         component: () =>

@@ -15,12 +15,12 @@ import { usePhoneStore } from '@/stores/phone'
 import { useWeatherStore } from '@/stores/weather'
 import type { WeatherConditionId } from '@/types/weather'
 import {
-  SkyAppPage,
-  SkyLink,
-  SkyNavbar,
-  SkyScrollArea,
-  SkySpinner,
-  SkyNotification,
+  AgentAppPage,
+  AgentLink,
+  AgentNavbar,
+  AgentScrollArea,
+  AgentSpinner,
+  AgentNotification,
 } from '@/ui'
 
 const phone = usePhoneStore()
@@ -57,8 +57,6 @@ const rainy = computed(
     forecast.value?.condition === 'rain' ||
     forecast.value?.condition === 'thunder',
 )
-// Un ciel degage de jour merite le soleil, pas seulement la condition sunny :
-// clear bascule deja sur l'icone du soleil aux memes heures.
 const sunlit = computed(
   () =>
     !isNight.value &&
@@ -93,8 +91,6 @@ const rainDrops = [
   '--rain-left': left,
   '--rain-opacity': opacity,
 }))
-// Colonne, duree de chute, retard, opacite, diametre. Les tailles melangees
-// donnent une profondeur : les gros flocons tombent devant, plus vite.
 const snowFlakes = [
   ['4%', '3.2s', '-1.2s', '0.4', '2px'],
   ['9%', '2.2s', '-2.4s', '0.72', '4px'],
@@ -121,8 +117,6 @@ const snowFlakes = [
   '--snow-opacity': opacity,
   '--snow-size': size,
 }))
-// Nuages : de larges taches floues qui traversent l'ecran en une minute. Ce
-// sont les seules animations de ciel couvert, ou rien ne bougeait jusqu'ici.
 const cloudDrifts = [
   ['6%', '62%', '86px', '38s', '-6s', '0.2'],
   ['19%', '86%', '120px', '54s', '-28s', '0.14'],
@@ -136,7 +130,6 @@ const cloudDrifts = [
   '--cloud-top': top,
   '--cloud-width': width,
 }))
-// Etoiles filantes : rares, decalees, pour que la nuit ne soit pas figee.
 const shootingStars = [
   ['12%', '8%', '-2s'],
   ['58%', '3%', '-11s'],
@@ -145,9 +138,6 @@ const shootingStars = [
   '--star-left': left,
   '--star-top': top,
 }))
-// Brume : retard, duree, opacite, hauteur, position verticale, depart et
-// arrivee horizontaux. Les nappes ne vont pas toutes dans le meme sens, sinon
-// l'ensemble ressemble a un tapis roulant plutot qu'a du brouillard.
 const fogLayers = [
   ['-16s', '58s', '0.5', '34%', '-4%', '-45%', '30%'],
   ['-38s', '72s', '0.34', '46%', '14%', '25%', '-40%'],
@@ -164,11 +154,9 @@ const fogLayers = [
   '--fog-top': top,
 }))
 
-// Les quatre tuiles ne different que par leur icone, leur teinte et leur clef
-// de locale : les decrire une fois evite quatre blocs de balisage jumeaux.
 const DETAIL_TILES = [
   { accent: 'gold', icon: ThermometerSun, key: 'feelsLike' },
-  { accent: 'sky', icon: Wind, key: 'wind' },
+  { accent: 'agent', icon: Wind, key: 'wind' },
   { accent: 'teal', icon: Droplets, key: 'humidity' },
   { accent: 'cyan', icon: Umbrella, key: 'rain' },
 ] as const
@@ -214,7 +202,7 @@ watch(
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     class="weather-app"
     :class="[
       forecast ? `weather-app--${forecast.condition}` : '',
@@ -253,9 +241,9 @@ watch(
     <div v-if="isNight" class="weather-app__stars" aria-hidden="true">
       <i v-for="(star, index) in shootingStars" :key="index" :style="star"></i>
     </div>
-    <SkyNavbar class="weather-navbar" :title="phone.t('Apps.weather.name')" />
+    <AgentNavbar class="weather-navbar" :title="phone.t('Apps.weather.name')" />
 
-    <SkyScrollArea
+    <AgentScrollArea
       v-if="forecast"
       class="weather-scroll"
       @touchend="finishPull"
@@ -269,7 +257,7 @@ watch(
         :style="{ transform: `translateY(${pullDistance - pullThreshold}px)` }"
         aria-live="polite"
       >
-        <SkySpinner :label="phone.t('Common.loading')" />
+        <AgentSpinner :label="phone.t('Common.loading')" />
       </div>
 
       <header class="weather-hero">
@@ -356,31 +344,31 @@ watch(
           </div>
         </div>
       </section>
-    </SkyScrollArea>
+    </AgentScrollArea>
 
     <div v-else class="weather-empty">
-      <SkySpinner v-if="weather.isLoading" :label="phone.t('Common.loading')" />
+      <AgentSpinner v-if="weather.isLoading" :label="phone.t('Common.loading')" />
       <CloudSun v-else :size="52" :stroke-width="1.4" />
       <strong>{{
         phone.t(
           weather.isLoading ? 'Common.loading' : 'Apps.weather.unavailable',
         )
       }}</strong>
-      <SkyLink
+      <AgentLink
         v-if="!weather.isLoading"
         component="button"
         @click="weather.refresh(true, true)"
       >
         {{ phone.t('Apps.weather.tryAgain') }}
-      </SkyLink>
+      </AgentLink>
     </div>
 
-    <SkyNotification
+    <AgentNotification
       :opened="cooldownToastOpened"
       :text="phone.t('Apps.weather.errors.reload_cooldown')"
       @click="closeCooldownToast"
     />
-  </SkyAppPage>
+  </AgentAppPage>
 </template>
 
 <style scoped>

@@ -106,12 +106,12 @@ describe('Home folder interaction contract', () => {
   })
 
   it('edits the folder name inline with Agent UI controls', () => {
-    expect(overlaySource).toContain('<SkyField')
+    expect(overlaySource).toContain('<AgentField')
     expect(overlaySource).toContain('home-folder-heading--editing')
     expect(overlaySource).toContain('<Check')
     expect(overlaySource).toContain('<X')
-    expect(overlaySource).not.toContain('<SkyDialog')
-    expect(overlaySource).not.toContain('<SkySheet')
+    expect(overlaySource).not.toContain('<AgentDialog')
+    expect(overlaySource).not.toContain('<AgentSheet')
   })
 
   it('visually closes the folder while an app leaves and closes after extraction', () => {
@@ -147,7 +147,7 @@ describe('Home folder interaction contract', () => {
       /\.home-folder-title\s*\{[^}]*text-align:\s*left;/s,
     )
     expect(overlaySource).toMatch(
-      /\.home-folder-rename-field :deep\(\.sky-field__input\)\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;/s,
+      /\.home-folder-rename-field :deep\(\.agent-field__input\)\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;/s,
     )
   })
 

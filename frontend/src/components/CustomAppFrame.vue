@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {
-  SkyAppPage as kPage,
-  SkyBlock as kBlock,
-  SkyButton as kButton,
-  SkySpinner as kPreloader,
+  AgentAppPage as kPage,
+  AgentBlock as kBlock,
+  AgentButton as kButton,
+  AgentSpinner as kPreloader,
 } from '@/ui'
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
@@ -63,7 +63,7 @@ const router = useRouter()
 const frame = ref<HTMLIFrameElement | null>(null)
 const frameLoaded = ref(false)
 const frameUnavailable = ref(false)
-const skyBridgeReady = ref(false)
+const agentBridgeReady = ref(false)
 const lbFrameDocument = ref<string | null>(null)
 let loadTimeout: ReturnType<typeof setTimeout> | undefined
 let frameDocumentController: AbortController | undefined
@@ -113,7 +113,7 @@ const bridgeRequests = createCustomAppBridgeRequestHandler({
 
 const frameUrl = computed(() => {
   const url = new URL(props.app.ui)
-  url.searchParams.set('skyPhoneAppId', props.app.id)
+  url.searchParams.set('agentPhoneAppId', props.app.id)
   return url.href
 })
 const frameOrigin = computed(() => new URL(frameUrl.value).origin)
@@ -135,7 +135,7 @@ const sandbox = computed(() =>
 const frameReady = computed(
   () =>
     frameLoaded.value &&
-    (props.app.bridgeMode === 'legacy' || skyBridgeReady.value),
+    (props.app.bridgeMode === 'legacy' || agentBridgeReady.value),
 )
 const context = computed<AgentPhoneAppContextV1>(() => {
   const capabilities = getAgentPhoneAppCapabilities(props.app.capabilities)
@@ -188,7 +188,7 @@ function queueReadyLifecycle(): void {
 }
 
 function sendContext(): void {
-  if (!skyBridgeReady.value) return
+  if (!agentBridgeReady.value) return
   postToFrame({
     appId: props.app.id,
     context: context.value,
@@ -249,7 +249,7 @@ async function prepareLbFrameDocument(): Promise<void> {
 function flushOpenRequest(): void {
   const request = catalog.openRequests[props.app.id]
   if (!request || !frameLoaded.value) return
-  if (props.app.bridgeMode === 'sky' && !skyBridgeReady.value) return
+  if (props.app.bridgeMode === 'agent' && !agentBridgeReady.value) return
 
   if (
     props.app.bridgeMode === 'legacy' ||
@@ -266,12 +266,12 @@ function flushOpenRequest(): void {
 
 function flushHostMessages(): void {
   if (!frameLoaded.value) return
-  if (props.app.bridgeMode === 'sky' && !skyBridgeReady.value) return
+  if (props.app.bridgeMode === 'agent' && !agentBridgeReady.value) return
 
   let lastDeliveredSequence = 0
   for (const message of catalog.hostMessages[props.app.id] ?? []) {
     const delivered = postToFrame(
-      props.app.bridgeMode === 'sky'
+      props.app.bridgeMode === 'agent'
         ? {
             appId: props.app.id,
             payload: message.payload,
@@ -410,10 +410,10 @@ function onFrameMessage(event: MessageEvent): void {
   }
 
   if (message.type === 'agent-phone-app:ready') {
-    if (!skyBridgeReady.value) {
+    if (!agentBridgeReady.value) {
       if (loadTimeout !== undefined) clearTimeout(loadTimeout)
       loadTimeout = undefined
-      skyBridgeReady.value = true
+      agentBridgeReady.value = true
       frameUnavailable.value = false
       sendContext()
       flushOpenRequest()
@@ -442,7 +442,7 @@ function onFrameLoad(): void {
     postToFrame(message)
   }
   sendLbSettings()
-  if (props.app.bridgeMode === 'legacy' || skyBridgeReady.value) {
+  if (props.app.bridgeMode === 'legacy' || agentBridgeReady.value) {
     frameUnavailable.value = false
   }
   if (shouldReportCustomAppReady(props.app.bridgeMode, 'frame-load')) {
@@ -584,7 +584,7 @@ watch(() => catalog.openRequests[props.app.id], flushOpenRequest, {
   text-align: center;
 }
 
-.custom-app-state :deep(.sky-block) {
+.custom-app-state :deep(.agent-block) {
   margin: 0;
 }
 

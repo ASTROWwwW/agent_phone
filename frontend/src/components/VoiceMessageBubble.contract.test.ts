@@ -9,8 +9,8 @@ const source = readFileSync(
 
 describe('VoiceMessageBubble contract', () => {
   it('uses the central accessible range to seek protected audio', () => {
-    expect(source).toContain("import { SkyRange } from '@/ui'")
-    expect(source).toContain('<SkyRange')
+    expect(source).toContain("import { AgentRange } from '@/ui'")
+    expect(source).toContain('<AgentRange')
     expect(source).toContain("phone.t('Apps.messages.seekAudio')")
     expect(source).toContain('@input="seekPlayback"')
     expect(source).toContain('audio.value.currentTime = nextTime')

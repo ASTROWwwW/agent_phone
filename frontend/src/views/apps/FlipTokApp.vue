@@ -49,32 +49,32 @@ import type {
 } from '@/types/fliptok'
 import type { PhoneMedia } from '@/types/media'
 import {
-  SkyAppPage,
-  SkyBlock,
-  SkyBlockTitle,
-  SkyButton,
-  SkyChip,
-  SkyDialog,
-  SkyDialogButton,
-  SkyDropdown,
-  SkyField,
-  SkyGlass,
-  SkyLink,
-  SkyList,
-  SkyListButton,
-  SkyListItem,
-  SkyMessagebar,
-  SkyNavbar,
-  SkyPillNavigation,
-  SkyRange,
-  SkyScrollArea,
-  SkySearchbar,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySheet,
-  SkySpinner,
-  SkyNotification,
-  SkyToggle,
+  AgentAppPage,
+  AgentBlock,
+  AgentBlockTitle,
+  AgentButton,
+  AgentChip,
+  AgentDialog,
+  AgentDialogButton,
+  AgentDropdown,
+  AgentField,
+  AgentGlass,
+  AgentLink,
+  AgentList,
+  AgentListButton,
+  AgentListItem,
+  AgentMessagebar,
+  AgentNavbar,
+  AgentPillNavigation,
+  AgentRange,
+  AgentScrollArea,
+  AgentSearchbar,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSheet,
+  AgentSpinner,
+  AgentNotification,
+  AgentToggle,
 } from '@/ui'
 import { nuiCall } from '@/utils/nui'
 import {
@@ -1773,7 +1773,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     class="fliptok-page"
     :dark="phone.isDarkMode"
     :label="t('name')"
@@ -1781,7 +1781,7 @@ onBeforeUnmount(() => {
     accent-soft="rgba(255, 45, 85, 0.18)"
   >
     <div v-if="store.loading && !store.feed.length" class="state">
-      <SkySpinner :label="t('loading')" /><span>{{ t('loading') }}</span>
+      <AgentSpinner :label="t('loading')" /><span>{{ t('loading') }}</span>
     </div>
 
     <section
@@ -1789,14 +1789,14 @@ onBeforeUnmount(() => {
       class="fliptok-auth"
       :class="{ 'fliptok-auth--dark': phone.isDarkMode }"
     >
-      <SkyNavbar
+      <AgentNavbar
         class="fliptok-auth__navbar"
         :aria-label="t(authMode === 'login' ? 'login' : 'register')"
         :scroll-el="null"
         variant="medium"
       />
       <div class="fliptok-auth__body">
-        <SkyGlass class="fliptok-auth__glass">
+        <AgentGlass class="fliptok-auth__glass">
           <header class="fliptok-auth__hero">
             <img :src="flipTokIcon" alt="" />
             <div>
@@ -1807,7 +1807,7 @@ onBeforeUnmount(() => {
             </div>
           </header>
 
-          <SkySegmented
+          <AgentSegmented
             class="fliptok-auth__segment"
             :active-index="authMode === 'login' ? 0 : 1"
             :item-count="2"
@@ -1815,24 +1815,24 @@ onBeforeUnmount(() => {
             strong
             rounded
           >
-            <SkySegmentedButton
+            <AgentSegmentedButton
               :active="authMode === 'login'"
               @click="authMode = 'login'"
             >
               {{ t('login') }}
-            </SkySegmentedButton>
-            <SkySegmentedButton
+            </AgentSegmentedButton>
+            <AgentSegmentedButton
               :active="authMode === 'register'"
               @click="authMode = 'register'"
             >
               {{ t('register') }}
-            </SkySegmentedButton>
-          </SkySegmented>
+            </AgentSegmentedButton>
+          </AgentSegmented>
 
           <form class="fliptok-auth__form" @submit.prevent="submitAuth">
-            <SkyBlockTitle>{{ t('accountDetails') }}</SkyBlockTitle>
-            <SkyList inset strong>
-              <SkyField
+            <AgentBlockTitle>{{ t('accountDetails') }}</AgentBlockTitle>
+            <AgentList inset strong>
+              <AgentField
                 v-if="authMode === 'register'"
                 id="fliptok-display-name"
                 :label="t('displayName')"
@@ -1842,7 +1842,7 @@ onBeforeUnmount(() => {
                 clear-button
                 @input="authDisplayName = inputValue($event)"
               />
-              <SkyField
+              <AgentField
                 id="fliptok-handle"
                 :label="t('username')"
                 :placeholder="t('usernamePlaceholder')"
@@ -1853,7 +1853,7 @@ onBeforeUnmount(() => {
                 clear-button
                 @input="authHandle = inputValue($event)"
               />
-              <SkyField
+              <AgentField
                 id="fliptok-password"
                 type="password"
                 :label="t('password')"
@@ -1865,7 +1865,7 @@ onBeforeUnmount(() => {
                 maxlength="72"
                 @input="authPassword = inputValue($event)"
               />
-              <SkyField
+              <AgentField
                 v-if="authMode === 'register'"
                 id="fliptok-confirm-password"
                 type="password"
@@ -1876,18 +1876,18 @@ onBeforeUnmount(() => {
                 maxlength="72"
                 @input="authConfirmPassword = inputValue($event)"
               />
-            </SkyList>
-            <SkyButton large rounded type="submit" :disabled="authSubmitting">
-              <SkySpinner v-if="authSubmitting" :label="t('loading')" />
+            </AgentList>
+            <AgentButton large rounded type="submit" :disabled="authSubmitting">
+              <AgentSpinner v-if="authSubmitting" :label="t('loading')" />
               <template v-else>{{
                 t(authMode === 'login' ? 'login' : 'createAccount')
               }}</template>
-            </SkyButton>
-            <SkyBlock v-if="authMode === 'register'" class="fliptok-auth__hint">
+            </AgentButton>
+            <AgentBlock v-if="authMode === 'register'" class="fliptok-auth__hint">
               {{ t('registrationHint') }}
-            </SkyBlock>
+            </AgentBlock>
           </form>
-        </SkyGlass>
+        </AgentGlass>
       </div>
     </section>
 
@@ -1906,7 +1906,7 @@ onBeforeUnmount(() => {
           {{ t('forYou') }}
         </button>
       </header>
-      <SkyLink
+      <AgentLink
         component="button"
         icon-only
         class="feed-search"
@@ -1914,7 +1914,7 @@ onBeforeUnmount(() => {
         @click="tab = 'discover'"
       >
         <Search />
-      </SkyLink>
+      </AgentLink>
       <main class="video-feed">
         <article
           v-for="video in store.feed"
@@ -2125,13 +2125,13 @@ onBeforeUnmount(() => {
     </template>
 
     <template v-else-if="tab === 'discover'">
-      <SkyNavbar
+      <AgentNavbar
         class="fliptok-navbar fliptok-discover-navbar"
         :title="t('discover')"
         variant="medium"
       >
         <template #subnavbar>
-          <SkySearchbar
+          <AgentSearchbar
             v-model="search"
             class="discover-search"
             :label="t('searchPlaceholder')"
@@ -2139,10 +2139,10 @@ onBeforeUnmount(() => {
             :placeholder="t('searchPlaceholder')"
           />
         </template>
-      </SkyNavbar>
-      <SkyScrollArea padded with-tabbar class="light-screen discover-screen">
+      </AgentNavbar>
+      <AgentScrollArea padded with-tabbar class="light-screen discover-screen">
         <div class="trend-pills">
-          <SkyChip
+          <AgentChip
             v-for="trend in discoveryTags"
             :key="trend.value"
             component="button"
@@ -2150,7 +2150,7 @@ onBeforeUnmount(() => {
             @click="search = trend.value"
           >
             {{ t(trend.labelKey) }}
-          </SkyChip>
+          </AgentChip>
         </div>
         <div class="video-grid">
           <button
@@ -2171,16 +2171,16 @@ onBeforeUnmount(() => {
             /><span><Play />{{ compactCount(video.view_count) }}</span>
           </button>
         </div>
-      </SkyScrollArea>
+      </AgentScrollArea>
     </template>
 
     <template v-else-if="tab === 'activity'">
-      <SkyNavbar
+      <AgentNavbar
         class="fliptok-navbar"
         :title="t('activity')"
         variant="large"
       />
-      <SkyScrollArea padded with-tabbar class="light-screen activity-list">
+      <AgentScrollArea padded with-tabbar class="light-screen activity-list">
         <article
           v-for="activity in store.activities"
           :key="activity.id"
@@ -2200,11 +2200,11 @@ onBeforeUnmount(() => {
         <div v-if="!store.activities.length" class="light-empty">
           <Bell /><strong>{{ t('noActivity') }}</strong>
         </div>
-      </SkyScrollArea>
+      </AgentScrollArea>
     </template>
 
     <template v-else-if="tab === 'profile'">
-      <SkyNavbar
+      <AgentNavbar
         class="fliptok-navbar fliptok-profile-navbar"
         title=""
         :show-back="Boolean(store.viewedProfile)"
@@ -2215,7 +2215,7 @@ onBeforeUnmount(() => {
       >
         <template v-if="currentProfile" #right>
           <div class="profile-navbar-actions">
-            <SkyLink
+            <AgentLink
               v-if="currentProfile.is_owner"
               component="button"
               icon-only
@@ -2223,19 +2223,19 @@ onBeforeUnmount(() => {
               @click="editProfile"
             >
               <Pencil />
-            </SkyLink>
-            <SkyLink
+            </AgentLink>
+            <AgentLink
               component="button"
               icon-only
               :aria-label="phone.t('Apps.easyShare.shareProfile')"
               @click="shareCurrentProfile"
             >
               <Share2 />
-            </SkyLink>
+            </AgentLink>
           </div>
         </template>
-      </SkyNavbar>
-      <SkyScrollArea
+      </AgentNavbar>
+      <AgentScrollArea
         v-if="currentProfile"
         padded
         with-tabbar
@@ -2273,19 +2273,19 @@ onBeforeUnmount(() => {
         <p class="bio">{{ currentProfile.bio || t('emptyBio') }}</p>
         <div v-if="!currentProfile.is_owner" class="profile-actions">
           <template>
-            <SkyButton
+            <AgentButton
               rounded
               :disabled="profileFollowPending"
               @click="followCurrentProfile"
             >
               {{ currentProfile.is_following ? t('unfollow') : t('follow') }}
-            </SkyButton>
-            <SkyButton
+            </AgentButton>
+            <AgentButton
               rounded
               tonal
               class="danger-button"
               @click="blockCurrentProfile"
-              >{{ t('block') }}</SkyButton
+              >{{ t('block') }}</AgentButton
             >
           </template>
         </div>
@@ -2310,10 +2310,10 @@ onBeforeUnmount(() => {
             <span><Play />{{ compactCount(video.view_count) }}</span>
           </button>
         </div>
-      </SkyScrollArea>
+      </AgentScrollArea>
     </template>
 
-    <SkyPillNavigation
+    <AgentPillNavigation
       v-if="
         store.authenticated &&
         !composeOpen &&
@@ -2324,60 +2324,60 @@ onBeforeUnmount(() => {
       :label="t('navigation')"
       layout="full"
     >
-      <SkySegmented
+      <AgentSegmented
         class="main-tabs__segments"
         :active-index="tabIndex"
         :item-count="5"
         :aria-label="t('navigation')"
         navigation
       >
-        <SkySegmentedButton
+        <AgentSegmentedButton
           :active="tab === 'feed'"
           class="main-tab"
           @click="openFeedTab"
         >
           <Home /><small>{{ t('home') }}</small>
-        </SkySegmentedButton>
-        <SkySegmentedButton
+        </AgentSegmentedButton>
+        <AgentSegmentedButton
           :active="tab === 'discover'"
           class="main-tab"
           @click="tab = 'discover'"
         >
           <Compass /><small>{{ t('discover') }}</small>
-        </SkySegmentedButton>
-        <SkySegmentedButton
+        </AgentSegmentedButton>
+        <AgentSegmentedButton
           class="main-tab main-tab--create"
           @click="composeOpen = true"
         >
           <span class="create-icon" aria-hidden="true"><Plus /></span
           ><small>{{ t('create') }}</small>
-        </SkySegmentedButton>
-        <SkySegmentedButton
+        </AgentSegmentedButton>
+        <AgentSegmentedButton
           :active="tab === 'activity'"
           class="main-tab"
           @click="tab = 'activity'"
         >
           <Bell /><small>{{ t('activity') }}</small>
-        </SkySegmentedButton>
-        <SkySegmentedButton
+        </AgentSegmentedButton>
+        <AgentSegmentedButton
           :active="tab === 'profile'"
           class="main-tab"
           @click="openOwnProfile"
         >
           <UserRound /><small>{{ t('profile') }}</small>
-        </SkySegmentedButton>
-      </SkySegmented>
-    </SkyPillNavigation>
+        </AgentSegmentedButton>
+      </AgentSegmented>
+    </AgentPillNavigation>
 
     <section v-if="composeOpen" class="overlay-screen compose-screen">
-      <SkyNavbar
+      <AgentNavbar
         :title="t('newVideo')"
         :show-back="true"
         :back-label="t('cancel')"
         back-appearance="surface"
         @back="composeOpen = false"
       />
-      <SkyScrollArea padded class="compose-body">
+      <AgentScrollArea padded class="compose-body">
         <header class="compose-intro">
           <span><Video /></span>
           <div>
@@ -2385,7 +2385,7 @@ onBeforeUnmount(() => {
             <p>{{ t('createBody') }}</p>
           </div>
         </header>
-        <SkyGlass v-if="!selectedMedia" class="media-picker">
+        <AgentGlass v-if="!selectedMedia" class="media-picker">
           <header>
             <ImagePlus /><strong>{{ t('chooseMedia') }}</strong>
             <span>{{ t('chooseMediaHint') }}</span>
@@ -2401,8 +2401,8 @@ onBeforeUnmount(() => {
               <ImagePlus /><strong>{{ t('photoSlideshow') }}</strong>
             </button>
           </div>
-        </SkyGlass>
-        <SkyGlass v-else class="media-preview">
+        </AgentGlass>
+        <AgentGlass v-else class="media-preview">
           <video
             v-if="selectedMediaType === 'video'"
             ref="previewVideo"
@@ -2422,7 +2422,7 @@ onBeforeUnmount(() => {
               alt=""
             />
             <template v-if="selectedMediaItems.length > 1">
-              <SkyButton
+              <AgentButton
                 glass
                 icon-only
                 rounded
@@ -2433,8 +2433,8 @@ onBeforeUnmount(() => {
                 @click="moveComposerPhoto(-1)"
               >
                 <ChevronLeft />
-              </SkyButton>
-              <SkyButton
+              </AgentButton>
+              <AgentButton
                 glass
                 icon-only
                 rounded
@@ -2445,7 +2445,7 @@ onBeforeUnmount(() => {
                 @click="moveComposerPhoto(1)"
               >
                 <ChevronRight />
-              </SkyButton>
+              </AgentButton>
               <span class="compose-photo-preview__count">
                 {{ composerPhotoIndex + 1 }} / {{ selectedMediaItems.length }}
               </span>
@@ -2462,7 +2462,7 @@ onBeforeUnmount(() => {
             </template>
           </div>
           <div class="media-preview__actions">
-            <SkyButton
+            <AgentButton
               small
               rounded
               tonal
@@ -2473,8 +2473,8 @@ onBeforeUnmount(() => {
               "
             >
               {{ t('changeMedia') }}
-            </SkyButton>
-            <SkyButton
+            </AgentButton>
+            <AgentButton
               small
               rounded
               tonal
@@ -2485,7 +2485,7 @@ onBeforeUnmount(() => {
               "
             >
               <Camera />{{ t('camera') }}
-            </SkyButton>
+            </AgentButton>
           </div>
           <audio
             v-if="composerMusicUrl"
@@ -2496,8 +2496,8 @@ onBeforeUnmount(() => {
             @loadedmetadata="markComposerMusicReady"
             @error="markComposerMusicFailed"
           />
-        </SkyGlass>
-        <SkyGlass
+        </AgentGlass>
+        <AgentGlass
           v-if="selectedMediaType === 'video' && videoDurationMs"
           class="editor-card"
         >
@@ -2507,7 +2507,7 @@ onBeforeUnmount(() => {
               >{{ t('trimStart') }}
               <strong>{{ formatDuration(trimStartMs) }}</strong></span
             >
-            <SkyRange
+            <AgentRange
               :value="trimStartMs"
               :min="0"
               :max="Math.max(0, trimEndMs - 500)"
@@ -2520,7 +2520,7 @@ onBeforeUnmount(() => {
               >{{ t('trimEnd') }}
               <strong>{{ formatDuration(trimEndMs) }}</strong></span
             >
-            <SkyRange
+            <AgentRange
               :value="trimEndMs"
               :min="Math.min(videoDurationMs, trimStartMs + 500)"
               :max="videoDurationMs"
@@ -2533,7 +2533,7 @@ onBeforeUnmount(() => {
               >{{ t('coverFrame') }}
               <strong>{{ formatDuration(coverTimeMs) }}</strong></span
             >
-            <SkyRange
+            <AgentRange
               :value="coverTimeMs"
               :min="trimStartMs"
               :max="trimEndMs"
@@ -2541,8 +2541,8 @@ onBeforeUnmount(() => {
               @input="updateCover"
             />
           </label>
-        </SkyGlass>
-        <SkyGlass v-if="selectedMedia" class="editor-card">
+        </AgentGlass>
+        <AgentGlass v-if="selectedMedia" class="editor-card">
           <button class="sound-picker" type="button" @click="openMusicSheet">
             <span><Music2 />{{ t('sounds') }}</span>
             <strong>{{
@@ -2561,7 +2561,7 @@ onBeforeUnmount(() => {
               >{{ t('originalVolume') }}
               <strong>{{ originalVolume }}%</strong></span
             >
-            <SkyRange
+            <AgentRange
               :value="originalVolume"
               :min="0"
               :max="100"
@@ -2574,7 +2574,7 @@ onBeforeUnmount(() => {
               >{{ t('musicVolume') }}
               <strong>{{ hasMusic ? `${musicVolume}%` : '—' }}</strong></span
             >
-            <SkyRange
+            <AgentRange
               :value="musicVolume"
               :min="0"
               :max="100"
@@ -2586,9 +2586,9 @@ onBeforeUnmount(() => {
           <p v-if="customMusicLoadFailed" class="custom-sound-error">
             {{ t('customSoundLoadFailed') }}
           </p>
-        </SkyGlass>
-        <SkyList inset strong class="compose-form-list">
-          <SkyField
+        </AgentGlass>
+        <AgentList inset strong class="compose-form-list">
+          <AgentField
             type="textarea"
             :label="t('caption')"
             :placeholder="t('captionPlaceholder')"
@@ -2596,7 +2596,7 @@ onBeforeUnmount(() => {
             maxlength="500"
             @input="caption = inputValue($event)"
           />
-          <SkyListItem
+          <AgentListItem
             link
             link-component="button"
             content-class="w-full"
@@ -2610,34 +2610,34 @@ onBeforeUnmount(() => {
             "
             @click="openVisibilityMenu"
           />
-          <SkyListItem :title="t('allowComments')">
+          <AgentListItem :title="t('allowComments')">
             <template #after>
-              <SkyToggle
+              <AgentToggle
                 v-model="commentsEnabled"
                 :aria-label="t('allowComments')"
               />
             </template>
-          </SkyListItem>
-        </SkyList>
+          </AgentListItem>
+        </AgentList>
         <div class="compose-actions">
-          <SkyButton
+          <AgentButton
             tonal
             rounded
             :disabled="!canPublish"
             @click="publish(true)"
-            >{{ t('saveDraft') }}</SkyButton
-          ><SkyButton
+            >{{ t('saveDraft') }}</AgentButton
+          ><AgentButton
             rounded
             :disabled="!canPublish || publishing"
             @click="publish(false)"
-            >{{ publishing ? t('publishing') : t('post') }}</SkyButton
+            >{{ publishing ? t('publishing') : t('post') }}</AgentButton
           >
         </div>
-      </SkyScrollArea>
+      </AgentScrollArea>
     </section>
 
     <section v-if="profileEditOpen" class="overlay-screen profile-edit">
-      <SkyNavbar
+      <AgentNavbar
         :title="t('editProfile')"
         :show-back="true"
         :back-label="t('backToProfile')"
@@ -2645,7 +2645,7 @@ onBeforeUnmount(() => {
         @back="profileEditOpen = false"
       >
         <template #right>
-          <SkyButton
+          <AgentButton
             small
             rounded
             class="done-button"
@@ -2653,10 +2653,10 @@ onBeforeUnmount(() => {
             @click="saveProfile"
           >
             {{ profileSaving ? t('savingProfile') : t('done') }}
-          </SkyButton>
+          </AgentButton>
         </template>
-      </SkyNavbar>
-      <SkyScrollArea padded class="profile-edit__body">
+      </AgentNavbar>
+      <AgentScrollArea padded class="profile-edit__body">
         <section class="profile-photo-editor">
           <button
             class="profile-photo-trigger"
@@ -2680,16 +2680,16 @@ onBeforeUnmount(() => {
               <Camera />
             </span>
           </button>
-          <SkyLink
+          <AgentLink
             class="profile-photo-change"
             @click="profilePhotoSheetOpen = true"
           >
             {{ t('changePhoto') }}
-          </SkyLink>
+          </AgentLink>
         </section>
-        <SkyBlockTitle>{{ t('profileDetails') }}</SkyBlockTitle>
-        <SkyList strong class="profile-form-list">
-          <SkyField
+        <AgentBlockTitle>{{ t('profileDetails') }}</AgentBlockTitle>
+        <AgentList strong class="profile-form-list">
+          <AgentField
             id="fliptok-profile-display-name"
             :label="t('displayName')"
             :value="profileDraft.displayName"
@@ -2697,7 +2697,7 @@ onBeforeUnmount(() => {
             clear-button
             @input="profileDraft.displayName = inputValue($event)"
           />
-          <SkyField
+          <AgentField
             id="fliptok-profile-handle"
             :label="t('username')"
             :value="profileDraft.handle"
@@ -2706,7 +2706,7 @@ onBeforeUnmount(() => {
             clear-button
             @input="profileDraft.handle = inputValue($event)"
           />
-          <SkyField
+          <AgentField
             id="fliptok-profile-bio"
             type="textarea"
             :label="t('bio')"
@@ -2715,30 +2715,30 @@ onBeforeUnmount(() => {
             :spellcheck="false"
             @input="profileDraft.bio = inputValue($event)"
           />
-          <SkyListItem
+          <AgentListItem
             link
             link-component="button"
             :title="t('accountType')"
             :after="t(`accountTypes.${profileDraft.accountType}`)"
             @click="accountTypeSheetOpen = true"
           />
-        </SkyList>
+        </AgentList>
 
-        <SkyBlockTitle>{{ t('account') }}</SkyBlockTitle>
-        <SkyList inset strong class="profile-account-list">
-          <SkyListButton
+        <AgentBlockTitle>{{ t('account') }}</AgentBlockTitle>
+        <AgentList inset strong class="profile-account-list">
+          <AgentListButton
             class="logout-button"
             variant="danger"
             @click="logoutDialogOpen = true"
           >
             {{ t('logout') }}
-          </SkyListButton>
-        </SkyList>
-      </SkyScrollArea>
+          </AgentListButton>
+        </AgentList>
+      </AgentScrollArea>
     </section>
 
     <div v-if="commentsOpen" class="fliptok-sheet">
-      <SkySheet
+      <AgentSheet
         :opened="commentsOpen"
         :aria-label="t('comments')"
         grabber-clickable
@@ -2923,7 +2923,7 @@ onBeforeUnmount(() => {
                 <X />
               </button>
             </div>
-            <SkyMessagebar
+            <AgentMessagebar
               v-model="commentBody"
               class="comments-messagebar"
               embedded
@@ -2934,26 +2934,26 @@ onBeforeUnmount(() => {
               "
             >
               <template #right>
-                <SkyLink
+                <AgentLink
                   component="button"
                   icon-only
                   type="submit"
                   :aria-label="phone.t('Common.send')"
                 >
                   <Send />
-                </SkyLink>
+                </AgentLink>
               </template>
-            </SkyMessagebar>
+            </AgentMessagebar>
           </form>
           <p v-else class="comments-disabled">
             {{ t('errors.comments_disabled') }}
           </p>
         </div>
-      </SkySheet>
+      </AgentSheet>
     </div>
 
     <div v-if="actionsOpen" class="fliptok-sheet">
-      <SkySheet
+      <AgentSheet
         :opened="actionsOpen"
         grabber-clickable
         swipe-to-close
@@ -2962,36 +2962,36 @@ onBeforeUnmount(() => {
         @swipeclose="actionsOpen = false"
       >
         <div class="action-sheet">
-          <SkyList inset strong
-            ><SkyListItem
+          <AgentList inset strong
+            ><AgentListItem
               v-if="selectedVideo?.is_owner"
               link
               link-component="button"
               content-class="w-full"
               class="danger"
               :title="t('removeVideo')"
-              @click="requestDeleteVideo" /><SkyListItem
+              @click="requestDeleteVideo" /><AgentListItem
               v-if="!selectedVideo?.is_owner"
               link
               link-component="button"
               content-class="w-full"
               :title="t('report')"
-              @click="openReport" /><SkyListItem
+              @click="openReport" /><AgentListItem
               v-if="!selectedVideo?.is_owner"
               link
               link-component="button"
               content-class="w-full"
               class="danger"
               :title="t('block')"
-              @click="blockCreator" /></SkyList
-          ><SkyButton large rounded tonal @click="actionsOpen = false">{{
+              @click="blockCreator" /></AgentList
+          ><AgentButton large rounded tonal @click="actionsOpen = false">{{
             t('cancel')
-          }}</SkyButton>
+          }}</AgentButton>
         </div>
-      </SkySheet>
+      </AgentSheet>
     </div>
     <div v-if="reportSheetOpen" class="fliptok-sheet">
-      <SkySheet
+      <AgentSheet
         :opened="reportSheetOpen"
         grabber-clickable
         swipe-to-close
@@ -3002,8 +3002,8 @@ onBeforeUnmount(() => {
         <div class="selection-sheet report-sheet">
           <h3>{{ t('report') }}</h3>
           <p class="report-sheet__note">{{ t('reportDiscordNote') }}</p>
-          <SkyList inset strong>
-            <SkyListItem
+          <AgentList inset strong>
+            <AgentListItem
               v-for="reason in reportReasonOptions"
               :key="reason"
               link
@@ -3016,10 +3016,10 @@ onBeforeUnmount(() => {
               <template #after
                 ><Check v-if="reportReason === reason" class="selection-check"
               /></template>
-            </SkyListItem>
-          </SkyList>
-          <SkyList inset strong>
-            <SkyField
+            </AgentListItem>
+          </AgentList>
+          <AgentList inset strong>
+            <AgentField
               type="textarea"
               :label="t('reportDetails')"
               :placeholder="t('reportDetails')"
@@ -3027,27 +3027,27 @@ onBeforeUnmount(() => {
               maxlength="500"
               @input="reportDetails = inputValue($event)"
             />
-          </SkyList>
+          </AgentList>
           <div class="report-sheet__actions">
-            <SkyButton
+            <AgentButton
               rounded
               :disabled="reportSubmitting"
               @click="reportVideo"
-              >{{ t('submitReport') }}</SkyButton
+              >{{ t('submitReport') }}</AgentButton
             >
-            <SkyButton
+            <AgentButton
               rounded
               tonal
               :disabled="reportSubmitting"
               @click="reportSheetOpen = false"
-              >{{ t('cancel') }}</SkyButton
+              >{{ t('cancel') }}</AgentButton
             >
           </div>
         </div>
-      </SkySheet>
+      </AgentSheet>
     </div>
     <div v-if="musicSheetOpen" class="fliptok-sheet">
-      <SkySheet
+      <AgentSheet
         :opened="musicSheetOpen"
         grabber-clickable
         swipe-to-close
@@ -3057,8 +3057,8 @@ onBeforeUnmount(() => {
       >
         <div class="selection-sheet music-selection-sheet">
           <h3>{{ t('chooseSound') }}</h3>
-          <SkyList inset strong>
-            <SkyListItem
+          <AgentList inset strong>
+            <AgentListItem
               link
               link-component="button"
               content-class="w-full"
@@ -3071,8 +3071,8 @@ onBeforeUnmount(() => {
                   v-if="!musicTrack && !customMusicUrl"
                   class="selection-check"
               /></template>
-            </SkyListItem>
-            <SkyListItem
+            </AgentListItem>
+            <AgentListItem
               v-for="track in store.musicTracks"
               :key="track.id"
               link
@@ -3089,8 +3089,8 @@ onBeforeUnmount(() => {
                   class="selection-check"
                 /><span v-else>{{ track.artist }}</span></template
               >
-            </SkyListItem>
-          </SkyList>
+            </AgentListItem>
+          </AgentList>
           <p v-if="!store.musicTracks.length" class="sheet-note">
             {{ t('noMusic') }}
           </p>
@@ -3106,8 +3106,8 @@ onBeforeUnmount(() => {
                 class="selection-check"
               />
             </header>
-            <SkyList inset strong>
-              <SkyField
+            <AgentList inset strong>
+              <AgentField
                 id="fliptok-custom-sound-url"
                 type="url"
                 input-mode="url"
@@ -3121,7 +3121,7 @@ onBeforeUnmount(() => {
                 :clear-label="phone.t('Common.clear')"
                 @input="customMusicDraftUrl = inputValue($event)"
               />
-            </SkyList>
+            </AgentList>
             <audio
               v-if="
                 validCustomMusicUrl(customMusicDraftUrl) &&
@@ -3138,7 +3138,7 @@ onBeforeUnmount(() => {
               <strong>{{ customMusicTitle }}</strong>
               <span>{{ customMusicArtist }}</span>
             </p>
-            <SkyButton
+            <AgentButton
               rounded
               :disabled="
                 customMusicResolving ||
@@ -3146,20 +3146,20 @@ onBeforeUnmount(() => {
               "
               @click="chooseCustomMusic"
             >
-              <SkySpinner
+              <AgentSpinner
                 v-if="customMusicResolving"
                 :label="t('loadingSound')"
               />
               <template v-else>{{ t('useCustomSound') }}</template>
-            </SkyButton>
+            </AgentButton>
           </section>
-          <SkyButton large rounded tonal @click="musicSheetOpen = false">{{
+          <AgentButton large rounded tonal @click="musicSheetOpen = false">{{
             t('cancel')
-          }}</SkyButton>
+          }}</AgentButton>
         </div>
-      </SkySheet>
+      </AgentSheet>
     </div>
-    <SkyDropdown
+    <AgentDropdown
       :items="visibilityMenuItems"
       :label="t('whoCanWatch')"
       :opened="visibilityMenuOpen"
@@ -3171,7 +3171,7 @@ onBeforeUnmount(() => {
       @select="selectVisibility"
     />
     <div v-if="profilePhotoSheetOpen" class="fliptok-sheet">
-      <SkySheet
+      <AgentSheet
         :opened="profilePhotoSheetOpen"
         :aria-label="t('profilePhoto')"
         grabber-clickable
@@ -3183,8 +3183,8 @@ onBeforeUnmount(() => {
       >
         <div class="selection-sheet profile-photo-sheet">
           <h3>{{ t('profilePhoto') }}</h3>
-          <SkyList inset strong>
-            <SkyListItem
+          <AgentList inset strong>
+            <AgentListItem
               link
               link-component="button"
               content-class="w-full"
@@ -3192,8 +3192,8 @@ onBeforeUnmount(() => {
               @click="openProfileMedia('photos')"
             >
               <template #media><ImagePlus /></template>
-            </SkyListItem>
-            <SkyListItem
+            </AgentListItem>
+            <AgentListItem
               link
               link-component="button"
               content-class="w-full"
@@ -3201,8 +3201,8 @@ onBeforeUnmount(() => {
               @click="openProfileMedia('camera')"
             >
               <template #media><Camera /></template>
-            </SkyListItem>
-            <SkyListItem
+            </AgentListItem>
+            <AgentListItem
               v-if="selectedProfilePhoto || profileDraft.avatarMediaId"
               link
               link-component="button"
@@ -3213,16 +3213,16 @@ onBeforeUnmount(() => {
               @click="removeProfilePhoto"
             >
               <template #media><Trash2 /></template>
-            </SkyListItem>
-          </SkyList>
-          <SkyButton large rounded tonal @click="profilePhotoSheetOpen = false">
+            </AgentListItem>
+          </AgentList>
+          <AgentButton large rounded tonal @click="profilePhotoSheetOpen = false">
             {{ t('cancel') }}
-          </SkyButton>
+          </AgentButton>
         </div>
-      </SkySheet>
+      </AgentSheet>
     </div>
     <div v-if="accountTypeSheetOpen" class="fliptok-sheet">
-      <SkySheet
+      <AgentSheet
         :opened="accountTypeSheetOpen"
         grabber-clickable
         swipe-to-close
@@ -3232,8 +3232,8 @@ onBeforeUnmount(() => {
       >
         <div class="selection-sheet">
           <h3>{{ t('accountType') }}</h3>
-          <SkyList inset strong
-            ><SkyListItem
+          <AgentList inset strong
+            ><AgentListItem
               v-for="option in accountTypeOptions"
               :key="option"
               link
@@ -3245,27 +3245,27 @@ onBeforeUnmount(() => {
               ><template #after
                 ><Check
                   v-if="profileDraft.accountType === option"
-                  class="selection-check" /></template></SkyListItem></SkyList
-          ><SkyButton
+                  class="selection-check" /></template></AgentListItem></AgentList
+          ><AgentButton
             large
             rounded
             tonal
             @click="accountTypeSheetOpen = false"
-            >{{ t('cancel') }}</SkyButton
+            >{{ t('cancel') }}</AgentButton
           >
-        </div></SkySheet
+        </div></AgentSheet
       >
     </div>
     <section v-if="connectionsOpen" class="overlay-screen connections-screen">
-      <SkyNavbar
+      <AgentNavbar
         :title="t(connectionsMode)"
         :show-back="true"
         :back-label="phone.t('Common.back')"
         back-appearance="surface"
         @back="connectionsOpen = false"
       />
-      <SkyScrollArea padded class="connections-body">
-        <SkySegmented
+      <AgentScrollArea padded class="connections-body">
+        <AgentSegmented
           class="connections-tabs"
           :active-index="connectionsMode === 'followers' ? 0 : 1"
           :item-count="2"
@@ -3273,24 +3273,24 @@ onBeforeUnmount(() => {
           strong
           rounded
         >
-          <SkySegmentedButton
+          <AgentSegmentedButton
             :active="connectionsMode === 'followers'"
             @click="openConnections('followers')"
-            >{{ t('followers') }}</SkySegmentedButton
+            >{{ t('followers') }}</AgentSegmentedButton
           >
-          <SkySegmentedButton
+          <AgentSegmentedButton
             :active="connectionsMode === 'following'"
             @click="openConnections('following')"
-            >{{ t('following') }}</SkySegmentedButton
+            >{{ t('following') }}</AgentSegmentedButton
           >
-        </SkySegmented>
-        <SkyList
+        </AgentSegmented>
+        <AgentList
           v-if="store.connections.length"
           inset
           strong
           class="connections-list"
         >
-          <SkyListItem
+          <AgentListItem
             v-for="profile in store.connections"
             :key="profile.id"
             :title="profile.display_name"
@@ -3316,7 +3316,7 @@ onBeforeUnmount(() => {
               </button>
             </template>
             <template #after>
-              <SkyButton
+              <AgentButton
                 v-if="!profile.is_owner"
                 small
                 rounded
@@ -3325,68 +3325,68 @@ onBeforeUnmount(() => {
                 @click="followConnection(profile)"
                 >{{
                   connectionIsFollowing(profile) ? t('unfollow') : t('follow')
-                }}</SkyButton
+                }}</AgentButton
               >
             </template>
-          </SkyListItem>
-        </SkyList>
+          </AgentListItem>
+        </AgentList>
         <div v-else class="light-empty connections-empty">
           <UsersRound /><strong>{{ t('noConnections') }}</strong>
         </div>
-      </SkyScrollArea>
+      </AgentScrollArea>
     </section>
-    <SkyDialog
+    <AgentDialog
       :opened="logoutDialogOpen"
       @backdropclick="!logoutSubmitting && (logoutDialogOpen = false)"
     >
       <template #title>{{ t('signOutTitle') }}</template>
       <p>{{ t('signOutBody') }}</p>
       <template #buttons>
-        <SkyDialogButton
+        <AgentDialogButton
           :disabled="logoutSubmitting"
           @click="logoutDialogOpen = false"
         >
           {{ t('cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton
+        </AgentDialogButton>
+        <AgentDialogButton
           strong
           class="logout-dialog-button"
           :disabled="logoutSubmitting"
           @click="confirmLogout"
         >
           {{ logoutSubmitting ? t('signingOut') : t('logout') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
-    <SkyDialog
+    </AgentDialog>
+    <AgentDialog
       :opened="deleteDialogOpen"
       @backdropclick="!deleteSubmitting && (deleteDialogOpen = false)"
     >
       <template #title>{{ t('deleteVideoTitle') }}</template>
       <p>{{ t('deleteVideoBody') }}</p>
       <template #buttons>
-        <SkyDialogButton
+        <AgentDialogButton
           :disabled="deleteSubmitting"
           @click="deleteDialogOpen = false"
         >
           {{ t('cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton
+        </AgentDialogButton>
+        <AgentDialogButton
           strong
           class="logout-dialog-button"
           :disabled="deleteSubmitting"
           @click="confirmDeleteVideo"
         >
           {{ deleteSubmitting ? t('deletingVideo') : t('removeVideo') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
-    <SkyNotification
+    </AgentDialog>
+    <AgentNotification
       :opened="Boolean(feedback)"
       :text="feedback"
       @click="feedback = ''"
     />
-  </SkyAppPage>
+  </AgentAppPage>
 </template>
 
 <style scoped>
@@ -3395,7 +3395,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
   background: #000;
   color: #fff;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
 }
 .state,
 .light-empty,
@@ -4159,7 +4159,7 @@ onBeforeUnmount(() => {
   padding: 0;
   display: grid;
   place-items: center;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 .moderation-button__surface {
@@ -4168,8 +4168,8 @@ onBeforeUnmount(() => {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--sky-surface-variant);
-  box-shadow: inset 0 0 0 1px var(--sky-hairline);
+  background: var(--agent-surface-variant);
+  box-shadow: inset 0 0 0 1px var(--agent-hairline);
 }
 
 .moderation-button__surface svg {
@@ -4179,7 +4179,7 @@ onBeforeUnmount(() => {
 .done-button {
   font-weight: 650;
 }
-.fliptok-sheet :deep(.sky-sheet__panel) {
+.fliptok-sheet :deep(.agent-sheet__panel) {
   color: #f5f5f7;
 }
 .sheet-handle {
@@ -4218,8 +4218,8 @@ onBeforeUnmount(() => {
 .action-sheet .danger :deep([class*='title']) {
   color: #ff453a;
 }
-.action-sheet :deep(.sky-button),
-.selection-sheet :deep(.sky-button) {
+.action-sheet :deep(.agent-button),
+.selection-sheet :deep(.agent-button) {
   margin-top: 10px;
   color: #0a84ff;
   background: #1c1c1e;
@@ -4400,11 +4400,11 @@ onBeforeUnmount(() => {
   margin: 0 16px 10px;
   overflow: hidden;
 }
-.fliptok-auth__form :deep(.sky-block-title) {
+.fliptok-auth__form :deep(.agent-block-title) {
   margin-top: 12px;
   margin-bottom: 5px;
 }
-.fliptok-auth__form :deep(.sky-list) {
+.fliptok-auth__form :deep(.agent-list) {
   margin-top: 0;
   margin-bottom: 12px;
 }
@@ -4412,7 +4412,7 @@ onBeforeUnmount(() => {
 .fliptok-auth__form :deep(textarea) {
   color: var(--fliptok-auth-text) !important;
 }
-.fliptok-auth__form > .sky-button {
+.fliptok-auth__form > .agent-button {
   box-sizing: border-box;
   width: calc(100% - 32px);
   margin: 0 16px;
@@ -4559,15 +4559,15 @@ onBeforeUnmount(() => {
   padding: 10px;
 }
 .report-sheet {
-  padding-bottom: calc(var(--sky-safe-area-bottom) + var(--sky-space-3));
+  padding-bottom: calc(var(--agent-safe-area-bottom) + var(--agent-space-3));
 }
 .report-sheet__actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sky-space-2);
-  margin-top: var(--sky-space-3);
+  gap: var(--agent-space-2);
+  margin-top: var(--agent-space-3);
 }
-.report-sheet__actions :deep(.sky-button) {
+.report-sheet__actions :deep(.agent-button) {
   width: 100%;
   min-width: 0;
   min-height: 44px;
@@ -4575,9 +4575,9 @@ onBeforeUnmount(() => {
   padding-inline: 10px;
   font-size: 13px;
 }
-.report-sheet__actions :deep(.sky-button:first-child) {
+.report-sheet__actions :deep(.agent-button:first-child) {
   color: #fff;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
 }
 .sheet-note {
   color: #a1a1a6;
@@ -4631,28 +4631,27 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
-/* FlipTok layout follows SkyUI's page, navbar, scroll and pill contracts. */
 .fliptok-page {
-  background: var(--sky-bg);
-  color: var(--sky-text);
-  font-family: var(--sky-font-family);
+  background: var(--agent-bg);
+  color: var(--agent-text);
+  font-family: var(--agent-font-family);
 }
 
 .fliptok-auth,
 .fliptok-auth--dark {
-  --fliptok-auth-bg: var(--sky-bg);
-  --fliptok-auth-text: var(--sky-text);
-  --fliptok-auth-secondary: var(--sky-muted);
+  --fliptok-auth-bg: var(--agent-bg);
+  --fliptok-auth-text: var(--agent-text);
+  --fliptok-auth-secondary: var(--agent-muted);
 }
 
 .fliptok-auth__glass,
 .media-picker,
 .media-preview,
 .editor-card {
-  border-color: var(--sky-hairline);
-  background: var(--sky-surface);
-  color: var(--sky-text);
-  box-shadow: var(--sky-shadow-glass);
+  border-color: var(--agent-hairline);
+  background: var(--agent-surface);
+  color: var(--agent-text);
+  box-shadow: var(--agent-shadow-glass);
 }
 
 .fliptok-navbar {
@@ -4663,10 +4662,10 @@ onBeforeUnmount(() => {
   position: relative;
   inset: auto;
   min-height: 0;
-  padding-top: var(--sky-page-space);
+  padding-top: var(--agent-page-space);
   flex: 1 1 auto;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
 
 .overlay-screen {
@@ -4678,14 +4677,14 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
 
 .discover-screen,
 .activity-list,
 .profile-screen {
-  padding-top: var(--sky-space-2);
+  padding-top: var(--agent-space-2);
 }
 
 .discover-search {
@@ -4694,20 +4693,20 @@ onBeforeUnmount(() => {
 }
 
 .trend-pills {
-  margin: 0 calc(0px - var(--sky-space-1)) var(--sky-space-2);
-  padding: var(--sky-space-1);
+  margin: 0 calc(0px - var(--agent-space-1)) var(--agent-space-2);
+  padding: var(--agent-space-1);
 }
 
 .trend-pills button {
   border: 0;
-  background: var(--sky-surface);
-  color: var(--sky-text);
+  background: var(--agent-surface);
+  color: var(--agent-text);
 }
 
 .activity-list article {
-  min-height: var(--sky-touch-target);
+  min-height: var(--agent-touch-target);
   align-items: center;
-  border-color: var(--sky-hairline);
+  border-color: var(--agent-hairline);
 }
 
 .activity-list p span,
@@ -4717,7 +4716,7 @@ onBeforeUnmount(() => {
 .compose-intro p,
 .connection-profile small,
 .comment-content time {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
 .avatar,
@@ -4740,38 +4739,38 @@ onBeforeUnmount(() => {
 }
 
 .profile-screen {
-  padding-right: var(--sky-page-gutter);
-  padding-left: var(--sky-page-gutter);
+  padding-right: var(--agent-page-gutter);
+  padding-left: var(--agent-page-gutter);
 }
 
 .profile-avatar {
-  background: var(--sky-surface-variant);
-  color: var(--sky-text);
+  background: var(--agent-surface-variant);
+  color: var(--agent-text);
 }
 
 .profile-stats {
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
 .profile-stats button,
 .profile-stats div {
   min-width: 78px;
   min-height: 58px;
-  padding: var(--sky-space-2);
+  padding: var(--agent-space-2);
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
   gap: 2px;
   border: 0;
-  border-radius: var(--sky-radius-control);
-  background: var(--sky-surface);
-  color: var(--sky-text);
+  border-radius: var(--agent-radius-control);
+  background: var(--agent-surface);
+  color: var(--agent-text);
   font: inherit;
 }
 
 .profile-stats button:active {
-  background: var(--sky-pressed);
+  background: var(--agent-pressed);
 }
 
 .profile-actions {
@@ -4782,7 +4781,7 @@ onBeforeUnmount(() => {
   gap: 6px;
 }
 
-.profile-actions :deep(.sky-button) {
+.profile-actions :deep(.agent-button) {
   width: 100%;
   min-height: 44px;
   min-width: 0;
@@ -4790,26 +4789,26 @@ onBeforeUnmount(() => {
   font-size: 12px;
 }
 
-.profile-actions :deep(.sky-button svg) {
+.profile-actions :deep(.agent-button svg) {
   width: 14px;
   height: 14px;
 }
 
-.profile-actions :deep(.sky-button:last-child:nth-child(odd)) {
+.profile-actions :deep(.agent-button:last-child:nth-child(odd)) {
   grid-column: 1 / -1;
 }
 
 .main-tabs {
   position: absolute !important;
-  right: calc(var(--sky-safe-area-right) + var(--sky-page-gutter));
-  bottom: calc(var(--sky-safe-area-bottom) + 10px);
-  left: calc(var(--sky-safe-area-left) + var(--sky-page-gutter));
+  right: calc(var(--agent-safe-area-right) + var(--agent-page-gutter));
+  bottom: calc(var(--agent-safe-area-bottom) + 10px);
+  left: calc(var(--agent-safe-area-left) + var(--agent-page-gutter));
   height: auto;
   min-height: 56px;
   padding: 0 !important;
   border: 0;
   background: transparent !important;
-  color: var(--sky-text) !important;
+  color: var(--agent-text) !important;
   backdrop-filter: none;
 }
 
@@ -4819,7 +4818,7 @@ onBeforeUnmount(() => {
 
 .main-tab {
   min-width: 0;
-  padding-inline: var(--sky-space-1) !important;
+  padding-inline: var(--agent-space-1) !important;
 }
 
 .main-tab svg {
@@ -4837,12 +4836,12 @@ onBeforeUnmount(() => {
 
 .video-copy {
   right: 58px;
-  bottom: calc(var(--sky-safe-area-bottom) + 78px);
+  bottom: calc(var(--agent-safe-area-bottom) + 78px);
 }
 
 .video-actions {
   right: 10px;
-  bottom: calc(var(--sky-safe-area-bottom) + 78px);
+  bottom: calc(var(--agent-safe-area-bottom) + 78px);
   gap: 4px;
 }
 
@@ -4873,13 +4872,13 @@ onBeforeUnmount(() => {
 }
 
 .create-icon::before {
-  border-color: var(--sky-hairline);
-  background: var(--sky-app-accent-soft);
+  border-color: var(--agent-hairline);
+  background: var(--agent-app-accent-soft);
 }
 
 .create-icon::after {
-  border-color: var(--sky-app-accent-tint);
-  background: var(--sky-app-accent);
+  border-color: var(--agent-app-accent-tint);
+  background: var(--agent-app-accent);
 }
 
 .compose-screen,
@@ -4895,29 +4894,29 @@ onBeforeUnmount(() => {
 }
 
 .profile-edit__body {
-  padding-right: var(--sky-page-gutter);
-  padding-bottom: calc(var(--sky-safe-area-bottom) + var(--sky-space-6));
-  padding-left: var(--sky-page-gutter);
+  padding-right: var(--agent-page-gutter);
+  padding-bottom: calc(var(--agent-safe-area-bottom) + var(--agent-space-6));
+  padding-left: var(--agent-page-gutter);
 }
 
 .compose-intro {
-  margin-bottom: var(--sky-space-3);
-  padding: var(--sky-space-3);
+  margin-bottom: var(--agent-space-3);
+  padding: var(--agent-space-3);
   display: flex;
   align-items: center;
-  gap: var(--sky-space-3);
-  border-radius: var(--sky-radius-card);
-  background: var(--sky-app-accent-soft);
+  gap: var(--agent-space-3);
+  border-radius: var(--agent-radius-card);
+  background: var(--agent-app-accent-soft);
 }
 
 .compose-intro > span {
-  width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
+  width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
   display: grid;
-  flex: 0 0 var(--sky-touch-target);
+  flex: 0 0 var(--agent-touch-target);
   place-items: center;
   border-radius: 50%;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
   color: #fff;
 }
 
@@ -4940,54 +4939,54 @@ onBeforeUnmount(() => {
 .media-picker {
   min-height: 188px;
   height: auto;
-  border: 1px dashed var(--sky-hairline);
+  border: 1px dashed var(--agent-hairline);
 }
 
 .media-picker:active {
-  background: var(--sky-pressed);
+  background: var(--agent-pressed);
 }
 
 .editor-card {
-  border-color: var(--sky-hairline);
-  background: var(--sky-surface);
+  border-color: var(--agent-hairline);
+  background: var(--agent-surface);
 }
 
 .editor-card label > span,
 .sound-picker span {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
 .sound-picker {
-  border-color: var(--sky-hairline);
-  color: var(--sky-text);
+  border-color: var(--agent-hairline);
+  color: var(--agent-text);
 }
 
 .custom-sound-error {
-  margin: var(--sky-space-2) 0 0;
-  color: var(--sky-danger);
+  margin: var(--agent-space-2) 0 0;
+  color: var(--agent-danger);
   font-size: 11px;
   line-height: 1.35;
 }
 
 .music-selection-sheet {
   max-height: min(76vh, 620px);
-  padding-bottom: calc(var(--sky-safe-area-bottom) + var(--sky-space-3));
+  padding-bottom: calc(var(--agent-safe-area-bottom) + var(--agent-space-3));
   overflow-y: auto;
 }
 
 .custom-sound-editor {
-  margin-top: var(--sky-space-3);
-  padding: var(--sky-space-3);
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-card);
-  background: var(--sky-surface-variant);
+  margin-top: var(--agent-space-3);
+  padding: var(--agent-space-3);
+  border: 1px solid var(--agent-hairline);
+  border-radius: var(--agent-radius-card);
+  background: var(--agent-surface-variant);
 }
 
 .custom-sound-editor > header {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
 .custom-sound-editor > header > span {
@@ -4996,8 +4995,8 @@ onBeforeUnmount(() => {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--sky-app-accent-soft);
-  color: var(--sky-app-accent);
+  background: var(--agent-app-accent-soft);
+  color: var(--agent-app-accent);
 }
 
 .custom-sound-editor > header svg {
@@ -5012,29 +5011,29 @@ onBeforeUnmount(() => {
 
 .custom-sound-editor > header p {
   margin: 2px 0 0;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 10px;
   line-height: 1.35;
 }
 
-.custom-sound-editor :deep(.sky-list) {
-  margin: var(--sky-space-3) 0 0;
+.custom-sound-editor :deep(.agent-list) {
+  margin: var(--agent-space-3) 0 0;
 }
 
 .custom-sound-editor audio {
   width: 100%;
   height: 34px;
-  margin-top: var(--sky-space-2);
+  margin-top: var(--agent-space-2);
 }
 
 .custom-sound-metadata {
-  margin: var(--sky-space-2) 0 0;
-  padding: var(--sky-space-2) var(--sky-space-3);
+  margin: var(--agent-space-2) 0 0;
+  padding: var(--agent-space-2) var(--agent-space-3);
   display: flex;
   flex-direction: column;
   gap: 2px;
-  border-radius: var(--sky-radius-control);
-  background: var(--sky-app-accent-soft);
+  border-radius: var(--agent-radius-control);
+  background: var(--agent-app-accent-soft);
 }
 
 .custom-sound-metadata strong {
@@ -5042,11 +5041,11 @@ onBeforeUnmount(() => {
 }
 
 .custom-sound-metadata span {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 10px;
 }
 
-.custom-sound-editor :deep(.sky-button) {
+.custom-sound-editor :deep(.agent-button) {
   width: 100%;
 }
 
@@ -5056,26 +5055,26 @@ onBeforeUnmount(() => {
 }
 
 .compose-actions {
-  margin-bottom: calc(var(--sky-safe-area-bottom) + var(--sky-space-2));
+  margin-bottom: calc(var(--agent-safe-area-bottom) + var(--agent-space-2));
 }
 
 .profile-photo-editor {
-  margin: var(--sky-space-3) 0 var(--sky-space-4);
-  padding: var(--sky-space-5) var(--sky-space-3);
+  margin: var(--agent-space-3) 0 var(--agent-space-4);
+  padding: var(--agent-space-5) var(--agent-space-3);
   display: grid;
   justify-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
   overflow: hidden;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-card);
+  border: 1px solid var(--agent-hairline);
+  border-radius: var(--agent-radius-card);
   background:
     radial-gradient(
       circle at 50% 20%,
-      var(--sky-app-accent-soft),
+      var(--agent-app-accent-soft),
       transparent 62%
     ),
-    var(--sky-surface);
-  box-shadow: var(--sky-shadow-thumb);
+    var(--agent-surface);
+  box-shadow: var(--agent-shadow-thumb);
 }
 
 .profile-photo-trigger {
@@ -5086,11 +5085,11 @@ onBeforeUnmount(() => {
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   box-shadow:
-    0 0 0 4px var(--sky-surface),
-    0 0 0 6px var(--sky-app-accent-tint),
-    var(--sky-shadow-thumb);
+    0 0 0 4px var(--agent-surface),
+    0 0 0 6px var(--agent-app-accent-tint),
+    var(--agent-shadow-thumb);
 }
 
 .profile-avatar--editor {
@@ -5110,9 +5109,9 @@ onBeforeUnmount(() => {
   height: 28px;
   display: grid;
   place-items: center;
-  border: 3px solid var(--sky-bg);
+  border: 3px solid var(--agent-bg);
   border-radius: 50%;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
   color: #fff;
 }
 
@@ -5135,55 +5134,55 @@ onBeforeUnmount(() => {
 .profile-form-list,
 .profile-account-list {
   overflow: hidden;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-card);
-  background: var(--sky-surface);
-  box-shadow: var(--sky-shadow-thumb);
+  border: 1px solid var(--agent-hairline);
+  border-radius: var(--agent-radius-card);
+  background: var(--agent-surface);
+  box-shadow: var(--agent-shadow-thumb);
 }
 
 .profile-account-list {
   margin-right: 0;
-  margin-bottom: var(--sky-space-4);
+  margin-bottom: var(--agent-space-4);
   margin-left: 0;
 }
 
-.profile-edit__body :deep(.sky-block-title) {
-  margin-right: var(--sky-space-1);
-  margin-left: var(--sky-space-1);
+.profile-edit__body :deep(.agent-block-title) {
+  margin-right: var(--agent-space-1);
+  margin-left: var(--agent-space-1);
 }
 
 .done-button {
   min-width: 58px;
   color: #fff;
-  background: var(--sky-app-accent);
-  box-shadow: 0 6px 16px var(--sky-app-accent-soft);
+  background: var(--agent-app-accent);
+  box-shadow: 0 6px 16px var(--agent-app-accent-soft);
 }
 
-.profile-photo-sheet :deep(.sky-list-item__media svg) {
+.profile-photo-sheet :deep(.agent-list-item__media svg) {
   width: 20px;
   height: 20px;
 }
 
-.profile-photo-sheet :deep(.danger .sky-list-item__row) {
-  color: var(--sky-danger);
+.profile-photo-sheet :deep(.danger .agent-list-item__row) {
+  color: var(--agent-danger);
 }
 
-.fliptok-sheet :deep(.sky-sheet__panel),
-.fliptok-connections-sheet :deep(.sky-sheet__panel) {
+.fliptok-sheet :deep(.agent-sheet__panel),
+.fliptok-connections-sheet :deep(.agent-sheet__panel) {
   overflow: hidden;
-  background: var(--sky-surface);
-  color: var(--sky-text);
+  background: var(--agent-surface);
+  color: var(--agent-text);
 }
 
 .comments-sheet {
   height: min(68vh, 500px);
-  padding: 0 var(--sky-space-3)
-    calc(var(--sky-safe-area-bottom) + var(--sky-space-2));
-  color: var(--sky-text);
+  padding: 0 var(--agent-space-3)
+    calc(var(--agent-safe-area-bottom) + var(--agent-space-2));
+  color: var(--agent-text);
 }
 
 .comments-sheet > header {
-  min-height: var(--sky-touch-target);
+  min-height: var(--agent-touch-target);
   padding: 0;
   align-items: center;
 }
@@ -5198,21 +5197,21 @@ onBeforeUnmount(() => {
   place-items: center;
   border: 0;
   border-radius: 50%;
-  background: var(--sky-surface-variant);
-  color: var(--sky-text);
+  background: var(--agent-surface-variant);
+  color: var(--agent-text);
 }
 
 .comments-list {
-  padding: 0 var(--sky-space-1);
+  padding: 0 var(--agent-space-1);
 }
 
 .comment-thread {
-  padding: var(--sky-space-2) 0;
-  border-bottom: 1px solid var(--sky-hairline);
+  padding: var(--agent-space-2) 0;
+  border-bottom: 1px solid var(--agent-hairline);
 }
 
 .comments-list .comment-row {
-  padding: var(--sky-space-2) 0;
+  padding: var(--agent-space-2) 0;
   align-items: flex-start;
   border: 0;
 }
@@ -5238,7 +5237,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
 .comment-content header button {
@@ -5254,7 +5253,7 @@ onBeforeUnmount(() => {
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font: inherit;
   font-weight: 650;
 }
@@ -5267,7 +5266,7 @@ onBeforeUnmount(() => {
 .comments-list .comment-content p {
   margin: 3px 0 5px;
   display: block;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 11px;
   line-height: 1.35;
   overflow-wrap: anywhere;
@@ -5276,7 +5275,7 @@ onBeforeUnmount(() => {
 .comment-content footer {
   display: flex;
   align-items: center;
-  gap: var(--sky-space-4);
+  gap: var(--agent-space-4);
 }
 
 .comment-content footer button {
@@ -5284,10 +5283,10 @@ onBeforeUnmount(() => {
   padding: 0;
   display: inline-flex;
   align-items: center;
-  gap: var(--sky-space-1);
+  gap: var(--agent-space-1);
   border: 0;
   background: transparent;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font: inherit;
   font-size: 10px;
   font-weight: 650;
@@ -5299,7 +5298,7 @@ onBeforeUnmount(() => {
 }
 
 .comment-content footer .liked {
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 .comment-like-pulse svg {
@@ -5313,7 +5312,7 @@ onBeforeUnmount(() => {
   }
   38% {
     transform: scale(1.32) rotate(-7deg);
-    filter: drop-shadow(0 0 3px var(--sky-app-accent));
+    filter: drop-shadow(0 0 3px var(--agent-app-accent));
   }
   72% {
     transform: scale(0.94) rotate(3deg);
@@ -5325,40 +5324,40 @@ onBeforeUnmount(() => {
 
 .reply-handle {
   margin-right: 3px;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
   font-weight: 650;
 }
 
 .comments-sheet form.comments-composer {
   display: block;
-  padding: var(--sky-space-1) 0 0;
-  border-top: 1px solid var(--sky-hairline);
+  padding: var(--agent-space-1) 0 0;
+  border-top: 1px solid var(--agent-hairline);
 }
 
 .comments-messagebar {
   width: 100%;
-  padding: var(--sky-space-1) 0 var(--sky-space-2);
+  padding: var(--agent-space-1) 0 var(--agent-space-2);
   background: transparent;
 }
 
 .comments-disabled {
   margin: 0;
-  padding: var(--sky-space-3) var(--sky-space-2)
-    calc(var(--sky-safe-area-bottom) + var(--sky-space-3));
-  border-top: 1px solid var(--sky-hairline);
-  color: var(--sky-muted);
+  padding: var(--agent-space-3) var(--agent-space-2)
+    calc(var(--agent-safe-area-bottom) + var(--agent-space-3));
+  border-top: 1px solid var(--agent-hairline);
+  color: var(--agent-muted);
   font-size: 10px;
   text-align: center;
 }
 
 .replying-to {
   min-height: 20px;
-  padding: 0 var(--sky-space-2) 2px;
+  padding: 0 var(--agent-space-2) 2px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sky-space-2);
-  color: var(--sky-muted);
+  gap: var(--agent-space-2);
+  color: var(--agent-muted);
   font-size: 9px;
   line-height: 1.2;
 }
@@ -5379,8 +5378,8 @@ onBeforeUnmount(() => {
   place-items: center;
   border: 0;
   border-radius: 50%;
-  background: var(--sky-pressed);
-  color: var(--sky-text);
+  background: var(--agent-pressed);
+  color: var(--agent-text);
 }
 
 .comments-sheet form .replying-to svg {
@@ -5395,7 +5394,6 @@ onBeforeUnmount(() => {
   }
 }
 
-/* FlipTok's media viewport is bound to the phone app, never the browser. */
 .fliptok-page {
   width: 100%;
   height: 100%;
@@ -5470,7 +5468,7 @@ onBeforeUnmount(() => {
 
 .photo-slideshow__count {
   position: absolute;
-  top: calc(var(--sky-safe-area-top) + 58px);
+  top: calc(var(--agent-safe-area-top) + 58px);
   right: 12px;
   padding: 4px 7px;
   border-radius: 999px;
@@ -5552,7 +5550,7 @@ onBeforeUnmount(() => {
   min-height: calc(100% - 48px);
   justify-content: center;
   padding-top: 10px;
-  padding-bottom: calc(var(--sky-safe-area-bottom) + 18px);
+  padding-bottom: calc(var(--agent-safe-area-bottom) + 18px);
 }
 
 .fliptok-auth__glass {
@@ -5584,7 +5582,7 @@ onBeforeUnmount(() => {
 }
 
 .profile-stats button:active {
-  background: var(--sky-pressed);
+  background: var(--agent-pressed);
 }
 
 .comment-content header button {
@@ -5605,7 +5603,7 @@ onBeforeUnmount(() => {
   gap: 8px;
   border: 0;
   background: transparent;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 10px;
   font-weight: 650;
 }
@@ -5613,7 +5611,7 @@ onBeforeUnmount(() => {
 .replies-toggle span {
   width: 24px;
   height: 1px;
-  background: var(--sky-hairline);
+  background: var(--agent-hairline);
 }
 
 .report-sheet {
@@ -5625,16 +5623,16 @@ onBeforeUnmount(() => {
 
 .report-sheet__note {
   margin: -4px 4px 10px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 10px;
   line-height: 1.35;
 }
 
 .media-picker {
-  padding: var(--sky-space-4);
+  padding: var(--agent-space-4);
   align-items: stretch;
   justify-content: flex-start;
-  gap: var(--sky-space-3);
+  gap: var(--agent-space-3);
 }
 
 .media-picker > header {
@@ -5647,7 +5645,7 @@ onBeforeUnmount(() => {
 .media-picker > header svg {
   width: 28px;
   height: 28px;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 .media-picker > header strong,
@@ -5662,7 +5660,7 @@ onBeforeUnmount(() => {
 }
 
 .media-picker > header span {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 10px;
   line-height: 1.35;
 }
@@ -5682,10 +5680,10 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-control);
-  background: var(--sky-surface-variant);
-  color: var(--sky-text);
+  border: 1px solid var(--agent-hairline);
+  border-radius: var(--agent-radius-control);
+  background: var(--agent-surface-variant);
+  color: var(--agent-text);
   font: inherit;
   font-size: 9px;
   line-height: 1.2;
@@ -5700,7 +5698,7 @@ onBeforeUnmount(() => {
 .media-source-grid svg {
   width: 20px;
   height: 20px;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 .media-preview__actions {
@@ -5708,13 +5706,13 @@ onBeforeUnmount(() => {
   gap: 6px;
 }
 
-.media-preview__actions :deep(.sky-button) {
+.media-preview__actions :deep(.agent-button) {
   flex: 1 1 0;
 }
 
 .compose-photo-preview {
   height: 300px;
-  border-radius: var(--sky-radius-control);
+  border-radius: var(--agent-radius-control);
 }
 
 .connections-screen {
@@ -5734,15 +5732,15 @@ onBeforeUnmount(() => {
 .connections-list {
   margin: 0;
   overflow: hidden;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-card);
+  border: 1px solid var(--agent-hairline);
+  border-radius: var(--agent-radius-card);
 }
 
-.connections-list :deep(.sky-list-item__content) {
+.connections-list :deep(.agent-list-item__content) {
   min-height: 62px;
 }
 
-.connections-list :deep(.sky-list-item__title) {
+.connections-list :deep(.agent-list-item__title) {
   max-width: 112px;
   overflow: hidden;
   font-size: 12px;
@@ -5750,8 +5748,8 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
-.connections-list :deep(.sky-list-item__text) {
-  color: var(--sky-muted);
+.connections-list :deep(.agent-list-item__text) {
+  color: var(--agent-muted);
   font-size: 9px;
 }
 
@@ -5763,14 +5761,14 @@ onBeforeUnmount(() => {
   box-sizing: border-box;
   min-height: 300px;
   max-height: min(70vh, 520px);
-  padding: 0 var(--sky-space-3)
-    calc(var(--sky-safe-area-bottom) + var(--sky-space-3));
+  padding: 0 var(--agent-space-3)
+    calc(var(--agent-safe-area-bottom) + var(--agent-space-3));
   display: flex;
   flex-direction: column;
 }
 
 .connections-sheet > header {
-  min-height: var(--sky-touch-target);
+  min-height: var(--agent-touch-target);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -5779,7 +5777,7 @@ onBeforeUnmount(() => {
 .connections-sheet > header > div {
   display: flex;
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
 .connections-sheet > header svg {
@@ -5795,11 +5793,11 @@ onBeforeUnmount(() => {
 
 .connection-row {
   min-height: 60px;
-  padding: var(--sky-space-2) 0;
+  padding: var(--agent-space-2) 0;
   display: flex;
   align-items: center;
-  gap: var(--sky-space-2);
-  border-top: 1px solid var(--sky-hairline);
+  gap: var(--agent-space-2);
+  border-top: 1px solid var(--agent-hairline);
 }
 
 .connection-profile {
@@ -5808,21 +5806,21 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   flex: 1;
-  gap: var(--sky-space-3);
+  gap: var(--agent-space-3);
   border: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   text-align: left;
 }
 
 .connection-avatar {
-  width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
+  width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
   display: grid;
-  flex: 0 0 var(--sky-touch-target);
+  flex: 0 0 var(--agent-touch-target);
   place-items: center;
   border-radius: 50%;
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
   font-size: 12px;
   font-weight: 700;
 }
@@ -5854,12 +5852,11 @@ onBeforeUnmount(() => {
 }
 
 .connections-list .connection-profile {
-  width: var(--sky-touch-target);
-  min-width: var(--sky-touch-target);
-  flex: 0 0 var(--sky-touch-target);
+  width: var(--agent-touch-target);
+  min-width: var(--agent-touch-target);
+  flex: 0 0 var(--agent-touch-target);
 }
 
-/* Feed interaction and photo posts stay inside the phone viewport. */
 .video-feed {
   overscroll-behavior-y: contain;
   contain: layout paint;
@@ -5912,13 +5909,12 @@ onBeforeUnmount(() => {
 }
 
 .photo-slideshow__count {
-  top: calc(var(--sky-safe-area-top) + 58px);
+  top: calc(var(--agent-safe-area-top) + 58px);
   right: 12px;
   z-index: 1;
   pointer-events: none;
 }
 
-/* The avatar follow control must not inherit the generic action height. */
 .video-actions .follow-dot {
   bottom: -2px;
   width: 20px !important;
@@ -5930,7 +5926,7 @@ onBeforeUnmount(() => {
   place-items: center;
   border: 2px solid #111;
   border-radius: 50% !important;
-  background: var(--sky-app-accent) !important;
+  background: var(--agent-app-accent) !important;
   line-height: 0;
 }
 
@@ -5945,9 +5941,8 @@ onBeforeUnmount(() => {
   opacity: 1;
 }
 
-/* No unused action row is reserved above Discover. */
-.fliptok-discover-navbar.sky-navbar--no-navigation {
-  padding-top: calc(var(--sky-navbar-safe-area-top) + var(--sky-space-2));
+.fliptok-discover-navbar.agent-navbar--no-navigation {
+  padding-top: calc(var(--agent-navbar-safe-area-top) + var(--agent-space-2));
 }
 
 .compose-photo-preview {
@@ -5985,7 +5980,7 @@ onBeforeUnmount(() => {
   top: 10px;
   right: 10px;
   padding: 4px 8px;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   background: rgb(14 14 16 / 58%);
   color: #fff;
   font-size: 10px;
@@ -6014,11 +6009,10 @@ onBeforeUnmount(() => {
 
 .compose-photo-preview__dots span.active {
   width: 13px;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   background: #fff;
 }
 
-/* Login and register center in the remaining phone area and still scroll. */
 .fliptok-auth {
   display: flex;
   flex-direction: column;
@@ -6031,7 +6025,7 @@ onBeforeUnmount(() => {
 
 .fliptok-auth__body {
   min-height: 0;
-  padding-top: var(--sky-space-3);
+  padding-top: var(--agent-space-3);
   flex: 1 1 auto;
   overflow-y: auto;
 }
@@ -6040,8 +6034,7 @@ onBeforeUnmount(() => {
   margin-block: auto;
 }
 
-/* Profile actions are separate icon surfaces instead of one shared pill. */
-.fliptok-profile-navbar :deep(.sky-navbar__right) {
+.fliptok-profile-navbar :deep(.agent-navbar__right) {
   overflow: visible;
   background: transparent;
   box-shadow: none;
@@ -6051,27 +6044,27 @@ onBeforeUnmount(() => {
   gap: 6px;
 }
 
-.profile-navbar-actions :deep(.sky-link) {
+.profile-navbar-actions :deep(.agent-link) {
   width: 38px;
   height: 38px;
   min-width: 38px;
   min-height: 38px;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-control);
-  background: var(--sky-surface);
-  color: var(--sky-text);
-  box-shadow: var(--sky-shadow-thumb);
+  border: 1px solid var(--agent-hairline);
+  border-radius: var(--agent-radius-control);
+  background: var(--agent-surface);
+  color: var(--agent-text);
+  box-shadow: var(--agent-shadow-thumb);
 }
 
-.connections-list :deep(.sky-list-item__media) {
-  width: var(--sky-touch-target);
-  min-width: var(--sky-touch-target);
+.connections-list :deep(.agent-list-item__media) {
+  width: var(--agent-touch-target);
+  min-width: var(--agent-touch-target);
   display: grid;
   place-items: center;
 }
 
 .connections-list .connection-profile {
-  height: var(--sky-touch-target);
+  height: var(--agent-touch-target);
   padding: 0;
   display: grid;
   place-items: center;
@@ -6094,7 +6087,7 @@ onBeforeUnmount(() => {
   text-align: center;
 }
 
-.connections-list :deep(.sky-button:disabled) {
+.connections-list :deep(.agent-button:disabled) {
   opacity: 0.72;
 }
 </style>

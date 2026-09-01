@@ -57,8 +57,8 @@ describe('custom app bridge', () => {
   it('reports ready lifecycle from load only for legacy frames', () => {
     expect(shouldReportCustomAppReady('legacy', 'frame-load')).toBe(true)
     expect(shouldReportCustomAppReady('legacy', 'bridge-ready')).toBe(false)
-    expect(shouldReportCustomAppReady('sky', 'frame-load')).toBe(false)
-    expect(shouldReportCustomAppReady('sky', 'bridge-ready')).toBe(true)
+    expect(shouldReportCustomAppReady('agent', 'frame-load')).toBe(false)
+    expect(shouldReportCustomAppReady('agent', 'bridge-ready')).toBe(true)
   })
 
   it('boots LB Phone frames with their documented ready signal', () => {

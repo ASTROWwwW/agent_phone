@@ -256,7 +256,7 @@ export function loadYouTubeApi(): Promise<YouTubeApi> {
     window.onYouTubeIframeAPIReady = handleReady
     if (!script) {
       script = document.createElement('script')
-      script.dataset.skyPhoneYoutubeApi = 'true'
+      script.dataset.agentPhoneYoutubeApi = 'true'
       script.src = 'https://www.youtube.com/iframe_api'
       script.async = true
       document.head.append(script)

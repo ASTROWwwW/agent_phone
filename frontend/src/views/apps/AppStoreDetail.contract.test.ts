@@ -35,7 +35,7 @@ describe('AppStoreDetail contract', () => {
     expect(source).not.toContain(':has(')
     expect(previewSource).not.toContain('color-mix(')
     expect(source).toMatch(
-      /\.store-detail\s*\{[^}]*padding:\s*var\(--sky-space-3\) 0 var\(--sky-space-6\)/s,
+      /\.store-detail\s*\{[^}]*padding:\s*var\(--agent-space-3\) 0 var\(--agent-space-6\)/s,
     )
   })
 
@@ -73,12 +73,12 @@ describe('AppStoreDetail contract', () => {
   })
 
   it('uses shared liquid glass for toolbar and preview controls', () => {
-    expect(source).toContain("import { SkyButton } from '@/ui'")
-    expect(source.match(/<SkyButton\s+glass/g)).toHaveLength(4)
+    expect(source).toContain("import { AgentButton } from '@/ui'")
+    expect(source.match(/<AgentButton\s+glass/g)).toHaveLength(4)
     expect(source).toContain('class="store-detail__toolbar-button"')
     expect(source).toContain('class="store-detail__preview-control"')
     expect(source).toMatch(
-      /\.store-detail__preview-control\s*\{[^}]*width:\s*var\(--sky-touch-target\);[^}]*height:\s*var\(--sky-touch-target\);[^}]*border-radius:\s*50%;/s,
+      /\.store-detail__preview-control\s*\{[^}]*width:\s*var\(--agent-touch-target\);[^}]*height:\s*var\(--agent-touch-target\);[^}]*border-radius:\s*50%;/s,
     )
   })
 })

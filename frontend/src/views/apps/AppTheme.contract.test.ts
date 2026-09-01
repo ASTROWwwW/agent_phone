@@ -20,11 +20,11 @@ const appSources = readdirSync(appDirectory)
 
 describe('phone app theme contract', () => {
   it('provides the reactive phone theme to every routed app', () => {
-    expect(appShellSource).toContain('import { SkyProvider }')
+    expect(appShellSource).toContain('import { AgentProvider }')
     expect(appShellSource).toContain('class="phone-app-theme"')
     expect(appShellSource).toContain(':dark="displayedDarkMode"')
     expect(appShellSource).toMatch(
-      /<SkyProvider[\s\S]*?<RouterView[\s\S]*?<component/,
+      /<AgentProvider[\s\S]*?<RouterView[\s\S]*?<component/,
     )
   })
 
@@ -37,8 +37,8 @@ describe('phone app theme contract', () => {
   })
 
   it('keeps shared app surfaces and known custom apps theme-aware', () => {
-    expect(mainCssSource).toContain('background: var(--sky-bg);')
-    expect(mainCssSource).toContain('color: var(--sky-text);')
+    expect(mainCssSource).toContain('background: var(--agent-bg);')
+    expect(mainCssSource).toContain('color: var(--agent-text);')
     expect(mainCssSource).toContain('.phone-app--light .banking-app')
 
     const calculator = appSources.find(
@@ -47,7 +47,7 @@ describe('phone app theme contract', () => {
     const mail = appSources.find(({ file }) => file === 'MailApp.vue')?.source
 
     expect(calculator).toContain("'calculator-app--light': !phone.isDarkMode")
-    expect(mail).toContain('background: var(--sky-bg) !important;')
-    expect(mail).toContain('color: var(--sky-text);')
+    expect(mail).toContain('background: var(--agent-bg) !important;')
+    expect(mail).toContain('color: var(--agent-text);')
   })
 })

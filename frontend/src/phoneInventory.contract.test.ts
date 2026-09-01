@@ -11,9 +11,6 @@ const readResourceFile = (path: string) =>
 const readFrontendFile = (path: string) =>
   readFileSync(new URL(path, import.meta.url), 'utf8')
 
-// La base Agent tourne sur ox_inventory. Les 16 autres adaptateurs ont ete
-// retires : un adaptateur dont le fichier n'existe plus resterait
-// selectionnable par la detection automatique, donc la table suit.
 const inventoryAdapters = [
   ['ox', 'source/bridge/server/inventory/ox.lua'],
 ] as const

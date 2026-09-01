@@ -27,13 +27,13 @@ const CONDITIONS: WeatherConditionId[] = [
 describe('WeatherApp layout contract', () => {
   it('preserves its exact custom forecast gutter instead of generic page padding', () => {
     expect(source).toMatch(
-      /<SkyScrollArea[\s\S]*?class="weather-scroll"[\s\S]*?>/,
+      /<AgentScrollArea[\s\S]*?class="weather-scroll"[\s\S]*?>/,
     )
     expect(source).toMatch(
       /\.weather-scroll\s*\{\s*padding:\s*4px 14px 24px;\s*\}/,
     )
     expect(source).not.toMatch(
-      /<SkyScrollArea[\s\S]*?class="weather-scroll"[\s\S]*?\spadded(?:\s|=)[\s\S]*?>/,
+      /<AgentScrollArea[\s\S]*?class="weather-scroll"[\s\S]*?\spadded(?:\s|=)[\s\S]*?>/,
     )
   })
 
@@ -79,8 +79,6 @@ describe('WeatherApp layout contract', () => {
   })
 
   it('reserves the rain line even when no shower is forecast', () => {
-    // Sans hauteur reservee, une colonne sans averse remonte et la ligne des
-    // temperatures se casse en escalier.
     expect(styles).toMatch(/\.weather-hour__rain\s*\{[\s\S]*?height:\s*\d+px;/)
   })
 

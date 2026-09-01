@@ -289,7 +289,7 @@ export function shouldReportCustomAppReady(
   bridgeMode: CustomAppBridgeMode,
   signal: 'bridge-ready' | 'frame-load',
 ): boolean {
-  return bridgeMode === 'sky'
+  return bridgeMode === 'agent'
     ? signal === 'bridge-ready'
     : signal === 'frame-load'
 }

@@ -8,7 +8,6 @@ export default defineConfig({
   base: './',
   build: {
     assetsDir: 'assets',
-    // Keep the published NUI compatible with the Chromium 103 CEF runtime.
     cssMinify: 'lightningcss',
     cssTarget: 'chrome103',
     emptyOutDir: true,
@@ -33,8 +32,6 @@ export default defineConfig({
       allow: [fileURLToPath(new URL('.', import.meta.url))],
       strict: false,
     },
-    // Bind one loopback family so strictPort also rejects a second dev server.
-    // Open the UI through localhost so embeds still receive that page origin.
     host: '127.0.0.1',
   },
 })

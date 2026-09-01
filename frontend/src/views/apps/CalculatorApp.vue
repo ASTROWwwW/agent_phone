@@ -17,7 +17,7 @@ import {
   type CalculatorHistoryEntry,
 } from '@/stores/calculator'
 import { usePhoneStore } from '@/stores/phone'
-import { SkyButton, SkyNavbar, SkySheet } from '@/ui'
+import { AgentButton, AgentNavbar, AgentSheet } from '@/ui'
 import type {
   CalculatorOperator,
   CalculatorUnaryOperation,
@@ -362,22 +362,22 @@ watch([() => calculator.display, expression], async () => {
       </button>
     </section>
 
-    <SkySheet
+    <AgentSheet
       class="calculator-history-sheet"
       :opened="historyOpened"
       :aria-label="phone.t('Apps.calculator.history')"
       @backdropclick="historyOpened = false"
       @escape="historyOpened = false"
     >
-      <section class="calculator-history sky-ui-provider sky-ui-provider--dark">
+      <section class="calculator-history agent-ui-provider agent-ui-provider--dark">
         <div class="calculator-history__handle"></div>
-        <SkyNavbar
+        <AgentNavbar
           class="calculator-history__navbar"
           :scroll-el="null"
           title=""
         >
           <template #left>
-            <SkyButton
+            <AgentButton
               glass
               class="calculator-history__nav-button calculator-history__nav-button--edit"
               inline
@@ -394,10 +394,10 @@ watch([() => calculator.display, expression], async () => {
                   )
                 }}
               </span>
-            </SkyButton>
+            </AgentButton>
           </template>
           <template #right>
-            <SkyButton
+            <AgentButton
               glass
               class="calculator-history__nav-button calculator-history__nav-button--close"
               icon-only
@@ -407,9 +407,9 @@ watch([() => calculator.display, expression], async () => {
               @click="historyOpened = false"
             >
               <X :size="23" />
-            </SkyButton>
+            </AgentButton>
           </template>
-        </SkyNavbar>
+        </AgentNavbar>
 
         <div v-if="historyGroups.length" class="calculator-history__scroll">
           <section v-for="group in historyGroups" :key="group.label">
@@ -443,15 +443,15 @@ watch([() => calculator.display, expression], async () => {
           {{ phone.t('Apps.calculator.clearHistory') }}
         </button>
       </section>
-    </SkySheet>
+    </AgentSheet>
   </main>
 </template>
 
 <style scoped>
 .calculator-app {
   --calculator-orange: #ff9500;
-  padding: calc(var(--sky-safe-area-top) + 5px) 15px
-    calc(var(--sky-safe-area-bottom) + 4px);
+  padding: calc(var(--agent-safe-area-top) + 5px) 15px
+    calc(var(--agent-safe-area-bottom) + 4px);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -577,21 +577,21 @@ watch([() => calculator.display, expression], async () => {
 }
 
 .calculator-app--light {
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
 }
 
 .calculator-app--light .calculator-toolbar button,
 .calculator-app--light .calculator-key {
-  border-color: var(--sky-hairline);
+  border-color: var(--agent-hairline);
   background: linear-gradient(145deg, #ffffff, #e5e5ea);
   box-shadow: inset 0 1px rgb(255 255 255 / 80%);
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
 
 .calculator-app--light .calculator-expression,
 .calculator-app--light .calculator-angle {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
 .calculator-app--light .calculator-key--utility {
@@ -671,11 +671,11 @@ watch([() => calculator.display, expression], async () => {
   font-size: 29px;
 }
 
-:deep(.calculator-history-sheet .sky-overlay-backdrop) {
+:deep(.calculator-history-sheet .agent-overlay-backdrop) {
   background: rgb(0 0 0 / 60%);
 }
 
-:deep(.calculator-history-sheet .sky-sheet__panel) {
+:deep(.calculator-history-sheet .agent-sheet__panel) {
   height: 72%;
   max-height: 72%;
   overflow: hidden;
@@ -688,7 +688,7 @@ watch([() => calculator.display, expression], async () => {
 
 .calculator-history {
   height: 100%;
-  padding: 8px 18px calc(var(--sky-safe-area-bottom) + 8px);
+  padding: 8px 18px calc(var(--agent-safe-area-bottom) + 8px);
   display: flex;
   flex-direction: column;
 }
@@ -702,20 +702,20 @@ watch([() => calculator.display, expression], async () => {
 }
 
 .calculator-history__navbar {
-  --sky-navbar-glass: transparent;
-  --sky-navbar-safe-area-top: 0px;
-  min-height: var(--sky-navbar-height);
+  --agent-navbar-glass: transparent;
+  --agent-navbar-safe-area-top: 0px;
+  min-height: var(--agent-navbar-height);
   padding-top: 0;
 }
 
-.calculator-history__navbar :deep(.sky-navbar__inner) {
+.calculator-history__navbar :deep(.agent-navbar__inner) {
   grid-template-columns: 106px minmax(0, 1fr) 44px;
   padding-inline: 0;
   margin-bottom: 6px;
 }
 
-.calculator-history__navbar :deep(.sky-navbar__left),
-.calculator-history__navbar :deep(.sky-navbar__right) {
+.calculator-history__navbar :deep(.agent-navbar__left),
+.calculator-history__navbar :deep(.agent-navbar__right) {
   background: transparent;
   box-shadow: none;
   -webkit-backdrop-filter: none;
@@ -723,8 +723,8 @@ watch([() => calculator.display, expression], async () => {
 }
 
 .calculator-history__navbar :deep(.calculator-history__nav-button) {
-  --sky-glass: rgb(44 44 46 / 62%);
-  --sky-hairline: rgb(255 255 255 / 14%);
+  --agent-glass: rgb(44 44 46 / 62%);
+  --agent-hairline: rgb(255 255 255 / 14%);
   height: 44px;
   min-height: 44px;
   color: #fff;
@@ -763,8 +763,8 @@ watch([() => calculator.display, expression], async () => {
   }
 }
 
-.calculator-history__navbar :deep(.sky-navbar__background),
-.calculator-history__navbar :deep(.sky-navbar__blur) {
+.calculator-history__navbar :deep(.agent-navbar__background),
+.calculator-history__navbar :deep(.agent-navbar__blur) {
   display: none;
 }
 

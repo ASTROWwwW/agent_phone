@@ -15,25 +15,25 @@ describe('MessagesApp Agent UI contract', () => {
   it('uses first-party Agent UI without direct Konsta markup', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyAppPage')
-    expect(source).toContain('<SkyNavbar')
-    expect(source).toContain('<SkyScrollArea')
-    expect(source).toContain('<SkySearchbar')
-    expect(source).toContain('<SkyDropdown')
-    expect(source).toContain('<SkyFab')
-    expect(source).toContain('<SkyMessages')
-    expect(source).toContain('<SkyMessagebar')
-    expect(source).toContain('<SkyPillNavigation')
-    expect(source).toContain('<SkySettingsGroup')
-    expect(source).toContain('<SkySettingsRow')
-    expect(source).toContain('<SkySheet')
-    expect(source).toContain('<SkyToolbar')
-    expect(source).not.toContain('<SkySegmented')
+    expect(source).toContain('<AgentAppPage')
+    expect(source).toContain('<AgentNavbar')
+    expect(source).toContain('<AgentScrollArea')
+    expect(source).toContain('<AgentSearchbar')
+    expect(source).toContain('<AgentDropdown')
+    expect(source).toContain('<AgentFab')
+    expect(source).toContain('<AgentMessages')
+    expect(source).toContain('<AgentMessagebar')
+    expect(source).toContain('<AgentPillNavigation')
+    expect(source).toContain('<AgentSettingsGroup')
+    expect(source).toContain('<AgentSettingsRow')
+    expect(source).toContain('<AgentSheet')
+    expect(source).toContain('<AgentToolbar')
+    expect(source).not.toContain('<AgentSegmented')
   })
 
   it('uses the anchored central dropdown for sort, filter, and edit actions', () => {
     const inboxStart = source.indexOf(
-      'class="messages-sky-page messages-sky-inbox"',
+      'class="messages-agent-page messages-agent-inbox"',
     )
     const composeStart = source.indexOf('v-else-if="composing"')
     const inbox = source.slice(inboxStart, composeStart)
@@ -57,7 +57,7 @@ describe('MessagesApp Agent UI contract', () => {
     )
     expect(source).toContain("if (id === 'edit') toggleListEditing()")
 
-    expect(inbox).toContain('class="messages-sky-inbox-menu-trigger"')
+    expect(inbox).toContain('class="messages-agent-inbox-menu-trigger"')
     expect(inbox).toContain('aria-haspopup="menu"')
     expect(inbox).toContain(':aria-expanded="inboxMenuOpened"')
     expect(inbox).toContain('@click="openInboxMenu"')
@@ -73,19 +73,19 @@ describe('MessagesApp Agent UI contract', () => {
 
   it('places search and the compose action together in the bottom toolbar', () => {
     const inboxStart = source.indexOf(
-      'class="messages-sky-page messages-sky-inbox"',
+      'class="messages-agent-page messages-agent-inbox"',
     )
     const composeStart = source.indexOf('v-else-if="composing"')
     const inbox = source.slice(inboxStart, composeStart)
-    const scrollEnd = inbox.indexOf('</SkyScrollArea>')
-    const toolbarStart = inbox.indexOf('<SkyToolbar')
-    const toolbarEnd = inbox.indexOf('</SkyToolbar>', toolbarStart)
+    const scrollEnd = inbox.indexOf('</AgentScrollArea>')
+    const toolbarStart = inbox.indexOf('<AgentToolbar')
+    const toolbarEnd = inbox.indexOf('</AgentToolbar>', toolbarStart)
     const toolbar = inbox.slice(toolbarStart, toolbarEnd)
-    const searchbarStart = toolbar.indexOf('<SkySearchbar')
-    const fabStart = toolbar.indexOf('<SkyFab')
+    const searchbarStart = toolbar.indexOf('<AgentSearchbar')
+    const fabStart = toolbar.indexOf('<AgentFab')
 
     expect(toolbarStart).toBeGreaterThan(scrollEnd)
-    expect(toolbar).toContain('class="messages-sky-inbox-toolbar"')
+    expect(toolbar).toContain('class="messages-agent-inbox-toolbar"')
     expect(toolbar).toContain('component="footer"')
     expect(searchbarStart).toBeGreaterThan(-1)
     expect(fabStart).toBeGreaterThan(searchbarStart)
@@ -93,7 +93,7 @@ describe('MessagesApp Agent UI contract', () => {
     expect(toolbar).toContain('variant="glass"')
     expect(toolbar).toContain('@click="beginCompose"')
     expect(toolbar).toContain('<SquarePen :size="21" />')
-    expect(inbox).not.toContain('messages-sky-compose-navigation')
+    expect(inbox).not.toContain('messages-agent-compose-navigation')
   })
 
   it('uses the results-empty state for search and unread filters', () => {
@@ -103,13 +103,13 @@ describe('MessagesApp Agent UI contract', () => {
 
   it('keeps the unread marker in the media slot left of the avatar', () => {
     const inboxStart = source.indexOf(
-      'class="messages-sky-page messages-sky-inbox"',
+      'class="messages-agent-page messages-agent-inbox"',
     )
     const composeStart = source.indexOf('v-else-if="composing"')
     const inbox = source.slice(inboxStart, composeStart)
     const mediaSlotStart = inbox.indexOf('<template #media>')
     const unreadSlot = inbox.indexOf(
-      'class="messages-sky-unread-slot"',
+      'class="messages-agent-unread-slot"',
       mediaSlotStart,
     )
     const avatar = inbox.indexOf('class="messages-avatar"', mediaSlotStart)
@@ -125,25 +125,25 @@ describe('MessagesApp Agent UI contract', () => {
   })
 
   it('uses one compact scroll region and an in-flow composer in threads', () => {
-    expect(source).toContain('class="messages-sky-thread-scroll"')
+    expect(source).toContain('class="messages-agent-thread-scroll"')
     expect(source).toContain('class="messages-bubbles"')
-    expect(source).toContain('class="messages-sky-composer-pill"')
-    expect(source).toContain('class="messages-sky-messagebar"')
+    expect(source).toContain('class="messages-agent-composer-pill"')
+    expect(source).toContain('class="messages-agent-messagebar"')
     expect(source).toMatch(
       /\.messages-bubbles\s*\{[^}]*min-height:\s*100%[^}]*justify-content:\s*flex-end/s,
     )
     expect(source).toMatch(
-      /\.messages-sky-composer-shell\s*\{[^}]*flex:\s*none/s,
+      /\.messages-agent-composer-shell\s*\{[^}]*flex:\s*none/s,
     )
     expect(source).toMatch(
-      /\.messages-sky-composer-pill\s*\{[^}]*border-radius:\s*var\(--sky-radius-pill\)/s,
+      /\.messages-agent-composer-pill\s*\{[^}]*border-radius:\s*var\(--agent-radius-pill\)/s,
     )
   })
 
   it('keeps add and text entry in separate glass surfaces', () => {
-    expect(source).toContain('class="messages-sky-composer-row"')
+    expect(source).toContain('class="messages-agent-composer-row"')
     expect(source).toMatch(
-      /<SkyGlass[\s\S]*?class="messages-sky-messagebar__action messages-sky-messagebar__plus"[\s\S]*?<\/SkyGlass>[\s\S]*?<SkyGlass[\s\S]*?class="messages-sky-composer-pill"/,
+      /<AgentGlass[\s\S]*?class="messages-agent-messagebar__action messages-agent-messagebar__plus"[\s\S]*?<\/AgentGlass>[\s\S]*?<AgentGlass[\s\S]*?class="messages-agent-composer-pill"/,
     )
   })
 
@@ -175,7 +175,7 @@ describe('MessagesApp Agent UI contract', () => {
     )
     expect(source).toContain('class="messages-recorder__send"')
     expect(source).toContain('<ArrowUpCircle :size="27" :stroke-width="2.4" />')
-    expect(source).not.toContain('fill="currentColor" />\n      </SkyButton>')
+    expect(source).not.toContain('fill="currentColor" />\n      </AgentButton>')
     expect(source).toContain('const recordingStarting = ref(false)')
     expect(source).toContain('if (requestId !== recordingRequestId)')
     expect(source).toContain('requestedStream.getTracks().forEach')
@@ -197,7 +197,7 @@ describe('MessagesApp Agent UI contract', () => {
 
   it('opens contact sharing in a draggable Agent UI bottom sheet', () => {
     const sheetStart = source.indexOf('class="messages-media-picker-sheet"')
-    const sheetEnd = source.indexOf('</SkySheet>', sheetStart)
+    const sheetEnd = source.indexOf('</AgentSheet>', sheetStart)
     const sheet = source.slice(sheetStart, sheetEnd)
 
     expect(sheetStart).toBeGreaterThan(-1)
@@ -215,13 +215,13 @@ describe('MessagesApp Agent UI contract', () => {
     expect(sheet).toContain('@click="sendContact(contact)"')
     expect(source).toContain('function closeAttachmentPicker(): void')
     expect(styles).toMatch(
-      /\.messages-media-picker-sheet \.sky-sheet__panel\s*\{[^}]*border-radius:\s*30px 30px 0 0/s,
+      /\.messages-media-picker-sheet \.agent-sheet__panel\s*\{[^}]*border-radius:\s*30px 30px 0 0/s,
     )
   })
 
   it('uses a surface back target in the thread and a compact recipient row', () => {
     const threadStart = source.indexOf(
-      'class="messages-sky-page messages-sky-thread"',
+      'class="messages-agent-page messages-agent-thread"',
     )
     const contactProfileStart = source.indexOf(
       'v-if="contactDetailsOpen"',
@@ -229,14 +229,14 @@ describe('MessagesApp Agent UI contract', () => {
     )
     const threadHeader = source.slice(threadStart, contactProfileStart)
 
-    expect(threadHeader).toContain('class="messages-sky-thread-navbar"')
+    expect(threadHeader).toContain('class="messages-agent-thread-navbar"')
     expect(threadHeader).toContain('show-back')
     expect(threadHeader).toContain('back-appearance="surface"')
     expect(threadHeader).toContain('@back="goBack"')
     expect(source).toContain('class="messages-recipient-field"')
     expect(source).toContain('layout="inline"')
     expect(source).toMatch(
-      /\.messages-recipient-field :deep\(\.sky-field\)\s*\{[^}]*min-height:\s*52px/s,
+      /\.messages-recipient-field :deep\(\.agent-field\)\s*\{[^}]*min-height:\s*52px/s,
     )
   })
 
@@ -245,11 +245,11 @@ describe('MessagesApp Agent UI contract', () => {
       'class="messages-contact-overlay"',
     )
     const contactProfileStart = source.lastIndexOf(
-      '<SkyAppPage',
+      '<AgentAppPage',
       contactOverlayClass,
     )
     const threadScrollStart = source.indexOf(
-      'class="messages-sky-thread-scroll"',
+      'class="messages-agent-thread-scroll"',
       contactProfileStart,
     )
     const contactProfile = source.slice(contactProfileStart, threadScrollStart)
@@ -259,21 +259,21 @@ describe('MessagesApp Agent UI contract', () => {
     expect(contactProfile).toContain('component="section"')
     expect(contactProfile).toContain('back-appearance="surface"')
     expect(contactProfile).toContain('activeContact?.avatar_url')
-    expect(contactProfile).toContain('<SkySettingsGroup')
-    expect(contactProfile).toContain('<SkySettingsRow')
+    expect(contactProfile).toContain('<AgentSettingsGroup')
+    expect(contactProfile).toContain('<AgentSettingsRow')
     expect(contactProfile).toContain('activeContact?.organization')
     expect(contactProfile).toContain(':value="activeContact.organization"')
     expect(contactProfile).toContain('activeContact?.notes')
-    expect(contactProfile).not.toContain('<SkyField')
+    expect(contactProfile).not.toContain('<AgentField')
 
     expect(contactProfile).toMatch(
-      /<SkyButton\s+v-if="activeContact\?\.canCall !== false"\s+icon-only\s+rounded\s+tonal[\s\S]*?@click="callActiveContact"/,
+      /<AgentButton\s+v-if="activeContact\?\.canCall !== false"\s+icon-only\s+rounded\s+tonal[\s\S]*?@click="callActiveContact"/,
     )
     expect(contactProfile).toMatch(
-      /<SkyButton\s+v-if="activeCanMessage"\s+icon-only\s+rounded\s+tonal[\s\S]*?@click="contactDetailsOpen = false"/,
+      /<AgentButton\s+v-if="activeCanMessage"\s+icon-only\s+rounded\s+tonal[\s\S]*?@click="contactDetailsOpen = false"/,
     )
     expect(contactProfile).toMatch(
-      /<SkyButton\s+v-if="activeContactEmail"\s+icon-only\s+rounded\s+tonal[\s\S]*?@click="mailActiveContact"/,
+      /<AgentButton\s+v-if="activeContactEmail"\s+icon-only\s+rounded\s+tonal[\s\S]*?@click="mailActiveContact"/,
     )
     expect(contactProfile).toContain('<PhoneIcon :size="22" />')
     expect(contactProfile).toContain('<MessageCircle :size="22" />')
@@ -305,18 +305,18 @@ describe('MessagesApp Agent UI contract', () => {
       'class="messages-contact-overlay"',
     )
     const contactProfileStart = source.lastIndexOf(
-      '<SkyAppPage',
+      '<AgentAppPage',
       contactOverlayClass,
     )
     const threadScrollStart = source.indexOf(
-      'class="messages-sky-thread-scroll"',
+      'class="messages-agent-thread-scroll"',
       contactProfileStart,
     )
     const contactProfile = source.slice(contactProfileStart, threadScrollStart)
     const blockDialogOpened = source.indexOf(':opened="blockDialogOpened"')
-    const blockDialogStart = source.lastIndexOf('<SkyDialog', blockDialogOpened)
+    const blockDialogStart = source.lastIndexOf('<AgentDialog', blockDialogOpened)
     const notificationStart = source.indexOf(
-      '<SkyNotification',
+      '<AgentNotification',
       blockDialogStart,
     )
     const blockDialog = source.slice(blockDialogStart, notificationStart)
@@ -338,10 +338,10 @@ describe('MessagesApp Agent UI contract', () => {
 
   it('keeps SMS conversations and recipients in flat iMessage-style lists', () => {
     expect(source).not.toMatch(
-      /\.messages-sky-page\s*\{[^}]*--sky-page-gutter/s,
+      /\.messages-agent-page\s*\{[^}]*--agent-page-gutter/s,
     )
     expect(source).toMatch(
-      /v-if="filteredConversations.length"\s+flush\s+class="messages-sky-conversation-list"/,
+      /v-if="filteredConversations.length"\s+flush\s+class="messages-agent-conversation-list"/,
     )
     expect(source).toMatch(
       /class="messages-recipient-field"\s+density="compact"\s+flush/,

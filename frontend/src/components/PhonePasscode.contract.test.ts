@@ -20,15 +20,13 @@ describe('PhonePasscode iOS presentation contract', () => {
   it('renders the telephone letters and accessible native-size controls', () => {
     expect(source).toContain("{ digit: 2, letters: 'ABC' }")
     expect(source).toContain("{ digit: 7, letters: 'PQRS' }")
-    expect(source).toContain('min-height: var(--sky-touch-target)')
+    expect(source).toContain('min-height: var(--agent-touch-target)')
     expect(source).toContain('passcode-screen__footer')
     expect(source).toContain('--passcode-key-background: transparent')
     expect(source).toContain('@keydown="handleKeydown"')
   })
 
   it('keeps light, dark and reduced-motion treatments explicit', () => {
-    // `:global(x) y` est compile en `x` seul par @vue/compiler-sfc : la regle
-    // de theme clair doit rester une descendance simple pour s'appliquer.
     expect(source).toContain('.phone-app--light .passcode-screen--surface')
     expect(source).not.toMatch(/:global\([^)]*\)\s+[.#a-zA-Z]/)
     expect(source).toContain('@media (prefers-reduced-motion: reduce)')

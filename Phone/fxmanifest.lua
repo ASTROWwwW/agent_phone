@@ -4,10 +4,9 @@ lua54 'yes'
 node_version '22'
 use_experimental_fxv2_oal 'yes'
 
-author 'Sky-Systems'
+author 'Agent Team'
 description 'Agent Phone'
 version '0.3.3'
-
 
 shared_scripts {
     'config/init.lua',
@@ -50,12 +49,10 @@ client_scripts {
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'config/config.lua',
-    -- Secrets serveur, jamais en client_scripts. Charge apres config.lua pour
-    -- ecraser les valeurs vides par defaut. Absent du depot : voir
-    -- config/secrets.example.lua.
     'config/secrets.lua',
     'config/media.lua',
     'config/locales/en.lua',
+    'config/locales/fr.lua',
     'config/locales/de.lua',
     'config/locales/es.lua',
     'source/shared/config_default.lua',

@@ -7,9 +7,9 @@ const source = readFileSync(new URL('./MapApp.vue', import.meta.url), 'utf8')
 describe('MapApp interaction contract', () => {
   it('uses Agent UI controls and the central EasyShare store', () => {
     expect(source).not.toContain("from 'konsta/vue'")
-    expect(source).toContain('<SkyAppPage')
-    expect(source).toContain('<SkyFab')
-    expect(source).toContain('<SkyGlass')
+    expect(source).toContain('<AgentAppPage')
+    expect(source).toContain('<AgentFab')
+    expect(source).toContain('<AgentGlass')
     expect(source).toContain('easyShare.open({')
     expect(source).toContain('subtitle: coordinates')
     expect(source).not.toContain('<EasyShareSheet')
@@ -23,7 +23,7 @@ describe('MapApp interaction contract', () => {
     expect(controls.match(/variant="glass"/g)).toHaveLength(4)
     expect(controls).not.toContain('variant="neutral"')
     expect(controls).not.toContain('variant="primary"')
-    expect(source).toContain('--sky-glass: rgb(247 247 248 / 72%);')
+    expect(source).toContain('--agent-glass: rgb(247 247 248 / 72%);')
   })
 
   it('keeps zoom and panning inside scale-aware map bounds', () => {

@@ -1,11 +1,11 @@
 import { inject, provide, type InjectionKey } from 'vue'
 
-const skyNavbarKey: InjectionKey<boolean> = Symbol('sky-ui-navbar')
+const agentNavbarKey: InjectionKey<boolean> = Symbol('agent-ui-navbar')
 
-export function provideSkyNavbar(): void {
-  provide(skyNavbarKey, true)
+export function provideAgentNavbar(): void {
+  provide(agentNavbarKey, true)
 }
 
-export function useSkyNavbar(): boolean {
-  return inject(skyNavbarKey, false)
+export function useAgentNavbar(): boolean {
+  return inject(agentNavbarKey, false)
 }

@@ -12,12 +12,12 @@ const testserverSource = readFileSync(
 )
 const requestListClassIndex = source.indexOf('company-request-list')
 const requestListStart = source.lastIndexOf(
-  '<SkyListCard',
+  '<AgentListCard',
   requestListClassIndex,
 )
 const requestListSource = source.slice(
   requestListStart,
-  source.indexOf('</SkyListCard>', requestListStart) + '</SkyListCard>'.length,
+  source.indexOf('</AgentListCard>', requestListStart) + '</AgentListCard>'.length,
 )
 
 describe('CompaniesApp request card contract', () => {
@@ -42,10 +42,10 @@ describe('CompaniesApp request card contract', () => {
 
   it('uses separate token-based request surfaces instead of hardcoded colors', () => {
     expect(source).toMatch(
-      /\.company-request-list \{[\s\S]*?display: grid;[\s\S]*?gap: var\(--sky-space-2\);[\s\S]*?background: transparent;[\s\S]*?\}/,
+      /\.company-request-list \{[\s\S]*?display: grid;[\s\S]*?gap: var\(--agent-space-2\);[\s\S]*?background: transparent;[\s\S]*?\}/,
     )
     expect(source).toMatch(
-      /\.company-request-list :deep\(\.sky-list-item\) \{[\s\S]*?border: 1px solid var\(--company-border\);[\s\S]*?border-radius: var\(--sky-radius-card\);[\s\S]*?background: var\(--company-surface\);[\s\S]*?\}/,
+      /\.company-request-list :deep\(\.agent-list-item\) \{[\s\S]*?border: 1px solid var\(--company-border\);[\s\S]*?border-radius: var\(--agent-radius-card\);[\s\S]*?background: var\(--company-surface\);[\s\S]*?\}/,
     )
   })
 

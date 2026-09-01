@@ -13,11 +13,11 @@ describe('PhoneApp EasyShare contract', () => {
     expect(source).not.toContain("kind: 'profile'")
   })
 
-  it('uses the shared full-width Sky tab bar for phone sections', () => {
-    expect(source).toContain('<sky-tab-bar')
-    expect(source).toContain('<sky-tab-button')
+  it('uses the shared full-width Agent tab bar for phone sections', () => {
+    expect(source).toContain('<agent-tab-bar')
+    expect(source).toContain('<agent-tab-button')
     expect(source).toContain(
-      'calc(var(--sky-tabbar-height) + var(--sky-safe-area-bottom) + 16px);',
+      'calc(var(--agent-tabbar-height) + var(--agent-safe-area-bottom) + 16px);',
     )
     expect(source).not.toMatch(
       /\.phone-contacts\s*\{[^}]*padding-bottom:\s*20px;/s,
@@ -26,10 +26,10 @@ describe('PhoneApp EasyShare contract', () => {
 
   it('uses shared interactive liquid glass surfaces for phone controls', () => {
     expect(source).toMatch(
-      /<sky-button\s+glass\s+rounded\s+class="phone-detail-header-button phone-detail-back"/,
+      /<agent-button\s+glass\s+rounded\s+class="phone-detail-header-button phone-detail-back"/,
     )
     expect(source).toMatch(
-      /<sky-button\s+glass\s+v-for="action in contactProfileActions"[\s\S]*?icon-only[\s\S]*?class="phone-profile-action"/,
+      /<agent-button\s+glass\s+v-for="action in contactProfileActions"[\s\S]*?icon-only[\s\S]*?class="phone-profile-action"/,
     )
     expect(source).toContain(
       'width: var(--phone-profile-action-size) !important;',
@@ -38,21 +38,21 @@ describe('PhoneApp EasyShare contract', () => {
       'height: var(--phone-profile-action-size) !important;',
     )
     expect(source).toMatch(
-      /<sky-glass\s+v-for="key in keypadKeys"[\s\S]*?component="button"[\s\S]*?class="phone-keypad-key"/,
+      /<agent-glass\s+v-for="key in keypadKeys"[\s\S]*?component="button"[\s\S]*?class="phone-keypad-key"/,
     )
     expect(source).toContain('class="phone-contacts-add"')
     expect(source).toContain('class="phone-recents-search"')
 
     const recentsFilter = source.slice(
-      source.indexOf('<sky-segmented'),
-      source.indexOf('</sky-segmented>') + '</sky-segmented>'.length,
+      source.indexOf('<agent-segmented'),
+      source.indexOf('</agent-segmented>') + '</agent-segmented>'.length,
     )
     expect(recentsFilter).toContain('class="phone-recents-filter"')
     expect(recentsFilter).toContain('navigation')
     expect(recentsFilter).toContain('strong')
-    expect(recentsFilter.match(/<sky-segmented-button/g)).toHaveLength(2)
+    expect(recentsFilter.match(/<agent-segmented-button/g)).toHaveLength(2)
     expect(source).toContain(
-      'background: var(--sky-tabbar-highlight-background);',
+      'background: var(--agent-tabbar-highlight-background);',
     )
     expect(source).toContain(
       'grid-template-columns: 52px minmax(0, 1fr) auto 44px;',
@@ -65,16 +65,16 @@ describe('PhoneApp EasyShare contract', () => {
 
   it('keeps contact profiles readable in light mode', () => {
     expect(source).toMatch(
-      /\.phone-app--light\.phone-calls-app--profile\s*\{[^}]*color:\s*var\(--sky-text\);[^}]*background:\s*var\(--sky-bg\) !important;/s,
+      /\.phone-app--light\.phone-calls-app--profile\s*\{[^}]*color:\s*var\(--agent-text\);[^}]*background:\s*var\(--agent-bg\) !important;/s,
     )
     expect(source).toMatch(
-      /\.phone-app--light \.phone-profile-action\s*\{[^}]*color:\s*var\(--sky-text\) !important;/s,
+      /\.phone-app--light \.phone-profile-action\s*\{[^}]*color:\s*var\(--agent-text\) !important;/s,
     )
     expect(source).toMatch(
-      /\.phone-app--light \.phone-profile-action:disabled\s*\{[^}]*color:\s*var\(--sky-subtle\) !important;/s,
+      /\.phone-app--light \.phone-profile-action:disabled\s*\{[^}]*color:\s*var\(--agent-subtle\) !important;/s,
     )
     expect(source).toMatch(
-      /\.phone-app--light \.phone-profile-card,[\s\S]*?\.phone-app--light \.phone-history-card\s*\{[^}]*color:\s*var\(--sky-text\);[^}]*background:\s*var\(--sky-glass\);/,
+      /\.phone-app--light \.phone-profile-card,[\s\S]*?\.phone-app--light \.phone-history-card\s*\{[^}]*color:\s*var\(--agent-text\);[^}]*background:\s*var\(--agent-glass\);/,
     )
   })
 

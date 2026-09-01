@@ -55,7 +55,7 @@ import citymarktIcon from '@/assets/img/app-icons/citymarkt.svg'
 import flareIcon from '@/assets/img/app-icons/flare.webp'
 import flipTokIcon from '@/assets/img/app-icons/fliptok.webp'
 import picstagramIcon from '@/assets/img/app-icons/picstagram.svg'
-import skyRideIcon from '@/assets/img/app-icons/agentride.webp'
+import agentRideIcon from '@/assets/img/app-icons/agentride.webp'
 import musicIcon from '@/assets/img/app-icons/music.svg'
 import featherIcon from '@/assets/img/app-icons/feather.webp'
 import companiesIcon from '@/assets/img/app-icons/companies.webp'
@@ -247,7 +247,7 @@ export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
     gridOrder: 25,
     icon: markRaw(CarTaxiFront),
     iconClass: 'app-icon--agentride',
-    iconImage: skyRideIcon,
+    iconImage: agentRideIcon,
     id: 'agentride',
     labelKey: 'Apps.agentride.name',
     route: '/apps/agentride',
@@ -451,7 +451,7 @@ export const PHONE_APPS = shallowReactive<PhoneAppDefinition[]>([
   {
     category: 'games',
     component: markRaw(
-      defineAsyncComponent(() => import('@/views/apps/SkyFlappyApp.vue')),
+      defineAsyncComponent(() => import('@/views/apps/AgentFlappyApp.vue')),
     ),
     dockOrder: null,
     gridOrder: 17,

@@ -41,7 +41,8 @@ base : il lisait la ressource de logement via un pont, retiré avec l'app.
 
 **Renommage complet.** L'identité technique et les marques visibles par les
 joueurs sont passées de « Sky » à « Agent » : événements, tables, globals Lua,
-libellés des trois locales, et le contrat NUI des deux côtés.
+libellés des locales, et le contrat NUI des deux côtés. Ne subsistent que le
+ciel météo, la sonnerie Skyline et l'attribution de licence ci-dessous.
 
 **Secrets sortis du fichier client.** Voir plus bas.
 
@@ -108,4 +109,5 @@ corepack use pnpm@10.15.0
 ## Licence
 
 GPL-3.0, comme l'amont. Voir `LICENSE`. L'attribution d'origine à
-Sky-Systems est conservée dans `Phone/fxmanifest.lua`.
+Sky-Systems, éditeur de Sky Phone 0.3.3 dont ce dépôt dérive, est déclarée en
+tête de ce fichier et dans `LICENSE`.

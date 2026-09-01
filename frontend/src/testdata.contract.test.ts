@@ -12,8 +12,8 @@ const testData = readResourceFile('source/server/testdata.lua')
 describe('test data seeding contracts', () => {
   it('keeps test data disabled while retaining the development phone command', () => {
     expect(config).toContain('DevelopmentCommand = true')
-    expect(config).toContain(
-      'Enabled = false, -- development/test servers only',
+    expect(config).toMatch(
+      /Config\.TestData = \{[^}]*\bEnabled = false\b/,
     )
   })
 

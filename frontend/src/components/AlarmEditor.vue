@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {
-  SkyBlockTitle as kBlockTitle,
-  SkyButton as kButton,
-  SkyField as kListInput,
-  SkyLink as kLink,
-  SkyList as kList,
-  SkyListItem as kListItem,
-  SkyNavbar as kNavbar,
-  SkyScrollArea as kScrollArea,
-  SkySheet as kSheet,
+  AgentBlockTitle as kBlockTitle,
+  AgentButton as kButton,
+  AgentField as kListInput,
+  AgentLink as kLink,
+  AgentList as kList,
+  AgentListItem as kListItem,
+  AgentNavbar as kNavbar,
+  AgentScrollArea as kScrollArea,
+  AgentSheet as kSheet,
 } from '@/ui'
 import { ChevronRight, Check, X } from 'lucide-vue-next'
 import { reactive, ref } from 'vue'
@@ -84,7 +84,7 @@ function toggleWeekday(weekday: number): void {
       <template v-else>
         <k-navbar
           class="clock-alarm-sheet-navbar"
-          data-sky-sheet-drag-handle
+          data-agent-sheet-drag-handle
           :title="phone.t('Apps.clock.tabs.alarm')"
         >
           <template #left>

@@ -53,7 +53,7 @@ import type {
   AdminDevice,
 } from '@/types/admin'
 import type { LaunchablePhoneAppDefinition } from '@/types/apps'
-import { SkyButton } from '@/ui'
+import { AgentButton } from '@/ui'
 import {
   configuratorPathName,
   describeConfiguratorValue,
@@ -2188,12 +2188,12 @@ onBeforeUnmount(() => {
           <p>{{ t('credentials.revealBody') }}</p>
         </div>
         <div class="admin-panel-dialog__actions">
-          <SkyButton variant="secondary" @click="revealDialogImei = ''">
+          <AgentButton variant="secondary" @click="revealDialogImei = ''">
             {{ t('credentials.cancel') }}
-          </SkyButton>
-          <SkyButton class="is-primary" @click="revealPassword">
+          </AgentButton>
+          <AgentButton class="is-primary" @click="revealPassword">
             <Eye :size="15" />{{ t('credentials.confirmReveal') }}
-          </SkyButton>
+          </AgentButton>
         </div>
       </section>
     </div>
@@ -2244,10 +2244,10 @@ onBeforeUnmount(() => {
           />
         </label>
         <div class="admin-panel-dialog__actions">
-          <SkyButton variant="secondary" @click="cancelDeviceAction">
+          <AgentButton variant="secondary" @click="cancelDeviceAction">
             {{ t('moderation.cancel') }}
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             :class="{ 'is-danger': deviceAction === 'factory-reset' }"
             :variant="deviceAction === 'factory-reset' ? 'danger' : 'primary'"
             :disabled="
@@ -2264,7 +2264,7 @@ onBeforeUnmount(() => {
               class="is-spinning"
             />
             {{ t(`moderation.confirm.${deviceAction}`) }}
-          </SkyButton>
+          </AgentButton>
         </div>
       </section>
     </div>
@@ -2279,16 +2279,16 @@ onBeforeUnmount(() => {
           <p>{{ t('editor.discardBody') }}</p>
         </div>
         <div class="admin-panel-dialog__actions">
-          <SkyButton variant="secondary" @click="cancelDiscard">
+          <AgentButton variant="secondary" @click="cancelDiscard">
             {{ t('editor.keepEditing') }}
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             class="is-danger"
             variant="danger"
             @click="discardAndContinue"
           >
             {{ t('editor.discard') }}
-          </SkyButton>
+          </AgentButton>
         </div>
       </section>
     </div>
@@ -2332,7 +2332,7 @@ onBeforeUnmount(() => {
   padding: 2.5vh 2.5vw;
   color: var(--admin-text);
   background: transparent;
-  font-family: var(--sky-font-family, Inter, sans-serif);
+  font-family: var(--agent-font-family, Inter, sans-serif);
   pointer-events: auto;
 }
 

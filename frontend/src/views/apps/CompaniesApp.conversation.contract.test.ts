@@ -11,14 +11,14 @@ const requestBranchStart = source.indexOf(
   '<template v-else-if="screen === \'request\'">',
 )
 const requestBranchEnd = source.indexOf(
-  "<SkyScrollArea\n      v-else-if=\"screen === 'manager'",
+  "<AgentScrollArea\n      v-else-if=\"screen === 'manager'",
   requestBranchStart,
 )
 const requestBranchSource = source.slice(requestBranchStart, requestBranchEnd)
-const requestScrollStart = requestBranchSource.indexOf('<SkyScrollArea')
+const requestScrollStart = requestBranchSource.indexOf('<AgentScrollArea')
 const requestScrollEnd =
-  requestBranchSource.indexOf('</SkyScrollArea>', requestScrollStart) +
-  '</SkyScrollArea>'.length
+  requestBranchSource.indexOf('</AgentScrollArea>', requestScrollStart) +
+  '</AgentScrollArea>'.length
 const requestScrollSource = requestBranchSource.slice(
   requestScrollStart,
   requestScrollEnd,
@@ -40,19 +40,19 @@ describe('CompaniesApp request conversation contract', () => {
   it('keeps one registered scroll owner and a separate fixed conversation dock', () => {
     expect(requestBranchStart).toBeGreaterThan(-1)
     expect(requestBranchEnd).toBeGreaterThan(requestBranchStart)
-    expect(requestBranchSource.match(/<SkyScrollArea\b/g)).toHaveLength(1)
+    expect(requestBranchSource.match(/<AgentScrollArea\b/g)).toHaveLength(1)
     expect(requestScrollSource).toContain(
       'class="companies-content request-thread"',
     )
 
     expect(requestDockStart).toBeGreaterThan(requestScrollEnd)
     expect(requestScrollSource).not.toContain('request-thread-actions')
-    expect(requestScrollSource).not.toContain('<SkyMessagebar')
+    expect(requestScrollSource).not.toContain('<AgentMessagebar')
     expect(requestDockSource).toContain('class="request-thread-dock"')
     expect(requestDockSource).toContain('class="request-thread-actions"')
-    expect(requestDockSource).toContain('<SkyMessagebar')
+    expect(requestDockSource).toContain('<AgentMessagebar')
     expect(requestDockSource.indexOf('request-thread-actions')).toBeLessThan(
-      requestDockSource.indexOf('<SkyMessagebar'),
+      requestDockSource.indexOf('<AgentMessagebar'),
     )
   })
 

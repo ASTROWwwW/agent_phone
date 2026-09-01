@@ -107,7 +107,6 @@ function AgentPhoneFocus.Resolve(state)
         return { block_game = false, block_look = false, cursor = false, focused = true, game_input = true, keep_input = true }
     end
     if state.camera_active then
-        -- Forward controls so disabled inputs remain readable while the NUI cursor owns focus.
         return { block_game = true, block_look = true, cursor = true, focused = true, game_input = false, keep_input = true }
     end
     local game_input = state.is_open
@@ -156,7 +155,6 @@ function AgentPhoneFocus.Reapply()
 end
 
 function AgentPhoneFocus.BeginNuiHydration()
-    -- Browser-owned focus claims cannot survive a CEF reload.
     state.notification_focus = false
     state.look_passthrough = false
     state.text_input_focused = false

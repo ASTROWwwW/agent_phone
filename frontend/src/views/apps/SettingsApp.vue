@@ -57,24 +57,24 @@ import {
 import { nuiCall } from '@/utils/nui'
 import { formatPhoneNumber } from '@/utils/phone'
 import {
-  SkyAppPage,
-  SkyBlock,
-  SkyButton,
-  SkyDialog,
-  SkyDialogButton,
-  SkyField,
-  SkyLink,
-  SkyNavbar,
-  SkyScrollArea,
-  SkySearchbar,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySettingsGroup,
-  SkySettingsIcon,
-  SkySettingsRangeRow,
-  SkySettingsRow,
-  SkySpinner,
-  SkyNotification,
+  AgentAppPage,
+  AgentBlock,
+  AgentButton,
+  AgentDialog,
+  AgentDialogButton,
+  AgentField,
+  AgentLink,
+  AgentNavbar,
+  AgentScrollArea,
+  AgentSearchbar,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSettingsGroup,
+  AgentSettingsIcon,
+  AgentSettingsRangeRow,
+  AgentSettingsRow,
+  AgentSpinner,
+  AgentNotification,
 } from '@/ui'
 import {
   APPEARANCE_MODE_IDS,
@@ -285,9 +285,9 @@ const preferenceRows = [
   },
 ]
 
-function openSkyUiKitchenSink(): void {
+function openAgentUiKitchenSink(): void {
   if (!isDevelopment) return
-  void router.push({ name: 'development-sky-ui' })
+  void router.push({ name: 'development-agent-ui' })
 }
 
 function openWallpaperMedia(app: 'photos' | 'camera'): void {
@@ -771,14 +771,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     class="settings-app"
     accent="#0a84ff"
     accent-soft="rgba(10, 132, 255, 0.16)"
     :dark="phone.isDarkMode"
     :label="phone.t('Apps.settings.name')"
   >
-    <SkyNavbar
+    <AgentNavbar
       class="settings-navbar"
       :title="
         activeView === 'root' ? phone.t('Apps.settings.name') : activeTitle
@@ -790,7 +790,7 @@ onBeforeUnmount(() => {
       @back="goBack"
     >
       <template v-if="activeView === 'account' && !account.email" #right>
-        <SkyLink
+        <AgentLink
           @click="accountMode = accountMode === 'login' ? 'register' : 'login'"
         >
           {{
@@ -800,11 +800,11 @@ onBeforeUnmount(() => {
                 : 'Apps.mail.login',
             )
           }}
-        </SkyLink>
+        </AgentLink>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
-    <SkyScrollArea
+    <AgentScrollArea
       ref="settingsPage"
       padded
       class="settings-content"
@@ -812,7 +812,7 @@ onBeforeUnmount(() => {
     >
       <template v-if="activeView === 'root'">
         <div class="settings-search" role="search">
-          <SkySearchbar
+          <AgentSearchbar
             v-model="query"
             :clear-label="phone.t('Common.clear')"
             :label="phone.t('Apps.settings.searchPlaceholder')"
@@ -820,26 +820,26 @@ onBeforeUnmount(() => {
           />
         </div>
 
-        <SkySettingsGroup :aria-label="phone.t('Apps.settings.accountName')">
-          <SkySettingsRow
+        <AgentSettingsGroup :aria-label="phone.t('Apps.settings.accountName')">
+          <AgentSettingsRow
             kind="navigation"
             :title="phone.t('Apps.settings.accountName')"
             :description="phone.t('Apps.settings.accountDetail')"
             @activate="openView('account')"
           >
             <template #leading>
-              <SkySettingsIcon color="#8e8e93">
+              <AgentSettingsIcon color="#8e8e93">
                 <UserRound aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup
+        <AgentSettingsGroup
           v-if="visibleToggleRows.length"
           :aria-label="phone.t('Apps.settings.name')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             v-for="row in visibleToggleRows"
             :key="row.key"
             kind="toggle"
@@ -848,18 +848,18 @@ onBeforeUnmount(() => {
             @update:model-value="setRootSetting(row.key, $event)"
           >
             <template #leading>
-              <SkySettingsIcon :color="row.iconColor">
+              <AgentSettingsIcon :color="row.iconColor">
                 <component :is="row.icon" aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup
+        <AgentSettingsGroup
           v-if="visibleServiceRows.length"
           :aria-label="phone.t('Apps.settings.notifications')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             v-for="row in visibleServiceRows"
             :key="row.key"
             kind="navigation"
@@ -867,18 +867,18 @@ onBeforeUnmount(() => {
             @activate="openView(row.view)"
           >
             <template #leading>
-              <SkySettingsIcon :color="row.iconColor">
+              <AgentSettingsIcon :color="row.iconColor">
                 <component :is="row.icon" aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup
+        <AgentSettingsGroup
           v-if="visiblePreferenceRows.length"
           :aria-label="phone.t('Apps.settings.name')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             v-for="row in visiblePreferenceRows"
             :key="row.key"
             kind="navigation"
@@ -897,35 +897,35 @@ onBeforeUnmount(() => {
             @activate="openView(row.view)"
           >
             <template #leading>
-              <SkySettingsIcon :color="row.iconColor">
+              <AgentSettingsIcon :color="row.iconColor">
                 <component :is="row.icon" aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup
+        <AgentSettingsGroup
           v-if="isDevelopment && matchesSearch('development')"
           :title="phone.t('Apps.settings.development')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             kind="navigation"
             :title="phone.t('Apps.settings.agentUiKitchenSink')"
             :description="phone.t('Apps.settings.agentUiKitchenSinkDescription')"
-            @activate="openSkyUiKitchenSink"
+            @activate="openAgentUiKitchenSink"
           >
             <template #leading>
-              <SkySettingsIcon color="#5856d6">
+              <AgentSettingsIcon color="#5856d6">
                 <PanelsTopLeft aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
       </template>
 
       <template v-else-if="activeView === 'account'">
         <template v-if="!account.email">
-          <SkyBlock class="settings-copy">
+          <AgentBlock class="settings-copy">
             {{
               phone.t(
                 accountMode === 'login'
@@ -933,11 +933,11 @@ onBeforeUnmount(() => {
                   : 'Apps.mail.passwordWarning',
               )
             }}
-          </SkyBlock>
+          </AgentBlock>
 
-          <SkySettingsGroup :aria-label="phone.t('Apps.settings.accountName')">
-            <SkyField
-              id="sky-cloud-email"
+          <AgentSettingsGroup :aria-label="phone.t('Apps.settings.accountName')">
+            <AgentField
+              id="agent-cloud-email"
               :model-value="accountEmail"
               :label="
                 phone.t(
@@ -961,32 +961,32 @@ onBeforeUnmount(() => {
               <template v-if="accountMode === 'register'" #trailing>
                 <span class="settings-account-suffix">@ifruit.com</span>
               </template>
-            </SkyField>
-            <SkyField
-              id="sky-cloud-password"
+            </AgentField>
+            <AgentField
+              id="agent-cloud-password"
               v-model="accountPassword"
               type="password"
               :label="phone.t('Apps.mail.password')"
               autocomplete="current-password"
             />
-            <SkyField
+            <AgentField
               v-if="accountMode === 'register'"
-              id="sky-cloud-confirm-password"
+              id="agent-cloud-confirm-password"
               v-model="accountConfirm"
               type="password"
               :label="phone.t('Apps.mail.confirmPassword')"
               autocomplete="new-password"
             />
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
 
           <div class="settings-primary-action">
-            <SkyButton
+            <AgentButton
               block
               large
               :disabled="accountSubmitting"
               @click="submitAccount"
             >
-              <SkySpinner v-if="accountSubmitting" :size="18" />
+              <AgentSpinner v-if="accountSubmitting" :size="18" />
               <template v-else>
                 {{
                   phone.t(
@@ -996,27 +996,27 @@ onBeforeUnmount(() => {
                   )
                 }}
               </template>
-            </SkyButton>
+            </AgentButton>
           </div>
         </template>
 
         <template v-else>
-          <SkySettingsGroup :aria-label="account.email">
-            <SkySettingsRow
+          <AgentSettingsGroup :aria-label="account.email">
+            <AgentSettingsRow
               :title="account.email"
               :description="phone.t('Apps.settings.accountCloudDetail')"
             >
               <template #leading>
-                <SkySettingsIcon color="#0a84ff">
+                <AgentSettingsIcon color="#0a84ff">
                   <UserRound aria-hidden="true" />
-                </SkySettingsIcon>
+                </AgentSettingsIcon>
               </template>
-            </SkySettingsRow>
-          </SkySettingsGroup>
+            </AgentSettingsRow>
+          </AgentSettingsGroup>
 
-          <SkySettingsGroup :title="phone.t('Apps.settings.linkedDevices')">
+          <AgentSettingsGroup :title="phone.t('Apps.settings.linkedDevices')">
             <template v-for="device in account.devices" :key="device.imei">
-              <SkySettingsRow
+              <AgentSettingsRow
                 :title="device.device_name"
                 :description="device.imei"
                 :value="
@@ -1028,8 +1028,8 @@ onBeforeUnmount(() => {
                 <template #leading>
                   <Smartphone :size="20" aria-hidden="true" />
                 </template>
-              </SkySettingsRow>
-              <SkySettingsRow
+              </AgentSettingsRow>
+              <AgentSettingsRow
                 v-if="!device.current"
                 kind="action"
                 tone="danger"
@@ -1037,68 +1037,68 @@ onBeforeUnmount(() => {
                 @activate="requestRemoveDevice(device.imei)"
               />
             </template>
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
 
-          <SkySettingsGroup :aria-label="phone.t('Apps.settings.signOut')">
-            <SkySettingsRow
+          <AgentSettingsGroup :aria-label="phone.t('Apps.settings.signOut')">
+            <AgentSettingsRow
               kind="action"
               tone="danger"
               :title="phone.t('Apps.settings.signOut')"
               @activate="logoutAccount"
             />
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
         </template>
       </template>
 
       <template v-else-if="activeView === 'security'">
-        <SkyBlock class="settings-copy">
+        <AgentBlock class="settings-copy">
           {{ phone.t('Apps.settings.passcode.description') }}
-        </SkyBlock>
+        </AgentBlock>
 
         <template v-if="!phone.security.enabled">
-          <SkySettingsGroup
+          <AgentSettingsGroup
             :title="phone.t('Apps.settings.passcode.codeLength')"
           >
             <li class="settings-segmented-row">
-              <SkySegmented
+              <AgentSegmented
                 :aria-label="phone.t('Apps.settings.passcode.codeLength')"
               >
-                <SkySegmentedButton
+                <AgentSegmentedButton
                   :active="passcodeLength === 6"
                   @click="passcodeLength = 6"
                 >
                   {{ phone.t('Apps.settings.passcode.sixDigit') }}
-                </SkySegmentedButton>
-                <SkySegmentedButton
+                </AgentSegmentedButton>
+                <AgentSegmentedButton
                   :active="passcodeLength === 4"
                   @click="passcodeLength = 4"
                 >
                   {{ phone.t('Apps.settings.passcode.fourDigit') }}
-                </SkySegmentedButton>
-              </SkySegmented>
+                </AgentSegmentedButton>
+              </AgentSegmented>
             </li>
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
 
-          <SkySettingsGroup
+          <AgentSettingsGroup
             :aria-label="phone.t('Apps.settings.passcode.turnOn')"
           >
-            <SkySettingsRow
+            <AgentSettingsRow
               kind="action"
               :title="phone.t('Apps.settings.passcode.turnOn')"
               @activate="beginSetPasscode"
             />
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
         </template>
 
         <template v-else>
-          <SkySettingsGroup
+          <AgentSettingsGroup
             :aria-label="phone.t('Apps.settings.passcode.status')"
           >
-            <SkySettingsRow
+            <AgentSettingsRow
               :title="phone.t('Apps.settings.passcode.status')"
               :value="phone.t('Apps.settings.on')"
             />
-            <SkySettingsRow
+            <AgentSettingsRow
               :title="phone.t('Apps.settings.passcode.codeLength')"
               :value="
                 phone.t(
@@ -1108,50 +1108,50 @@ onBeforeUnmount(() => {
                 )
               "
             />
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
 
-          <SkySettingsGroup
+          <AgentSettingsGroup
             :title="phone.t('Apps.settings.passcode.codeLength')"
           >
             <li class="settings-segmented-row">
-              <SkySegmented
+              <AgentSegmented
                 :aria-label="phone.t('Apps.settings.passcode.codeLength')"
               >
-                <SkySegmentedButton
+                <AgentSegmentedButton
                   :active="passcodeLength === 6"
                   @click="passcodeLength = 6"
                 >
                   {{ phone.t('Apps.settings.passcode.sixDigit') }}
-                </SkySegmentedButton>
-                <SkySegmentedButton
+                </AgentSegmentedButton>
+                <AgentSegmentedButton
                   :active="passcodeLength === 4"
                   @click="passcodeLength = 4"
                 >
                   {{ phone.t('Apps.settings.passcode.fourDigit') }}
-                </SkySegmentedButton>
-              </SkySegmented>
+                </AgentSegmentedButton>
+              </AgentSegmented>
             </li>
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
 
-          <SkySettingsGroup :aria-label="phone.t('Apps.settings.security')">
-            <SkySettingsRow
+          <AgentSettingsGroup :aria-label="phone.t('Apps.settings.security')">
+            <AgentSettingsRow
               kind="action"
               :title="phone.t('Apps.settings.passcode.change')"
               @activate="beginChangePasscode"
             />
-            <SkySettingsRow
+            <AgentSettingsRow
               kind="action"
               tone="danger"
               :title="phone.t('Apps.settings.passcode.turnOff')"
               @activate="beginDisablePasscode"
             />
-          </SkySettingsGroup>
+          </AgentSettingsGroup>
         </template>
       </template>
 
       <template v-else-if="activeView === 'notifications'">
-        <SkySettingsGroup :aria-label="phone.t('Apps.settings.notifications')">
-          <SkySettingsRow
+        <AgentSettingsGroup :aria-label="phone.t('Apps.settings.notifications')">
+          <AgentSettingsRow
             v-for="app in notificationApps"
             :key="app.id"
             kind="navigation"
@@ -1173,8 +1173,8 @@ onBeforeUnmount(() => {
                 draggable="false"
               />
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
       </template>
 
       <template
@@ -1182,10 +1182,10 @@ onBeforeUnmount(() => {
           activeView === 'notification-detail' && selectedNotificationApp
         "
       >
-        <SkySettingsGroup
+        <AgentSettingsGroup
           :aria-label="getPhoneAppLabel(selectedNotificationApp, phone.t)"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             :title="getPhoneAppLabel(selectedNotificationApp, phone.t)"
           >
             <template #leading>
@@ -1196,11 +1196,11 @@ onBeforeUnmount(() => {
                 draggable="false"
               />
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :aria-label="phone.t('Apps.settings.notifications')">
-          <SkySettingsRow
+        <AgentSettingsGroup :aria-label="phone.t('Apps.settings.notifications')">
+          <AgentSettingsRow
             kind="toggle"
             :model-value="
               phone.preferences.settings.notifications[
@@ -1216,7 +1216,7 @@ onBeforeUnmount(() => {
               )
             "
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             kind="toggle"
             :disabled="
               !phone.preferences.settings.notifications[
@@ -1237,12 +1237,12 @@ onBeforeUnmount(() => {
               )
             "
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
       </template>
 
       <template v-else-if="activeView === 'sounds'">
-        <SkySettingsGroup :aria-label="phone.t('Apps.settings.sounds')">
-          <SkySettingsRangeRow
+        <AgentSettingsGroup :aria-label="phone.t('Apps.settings.sounds')">
+          <AgentSettingsRangeRow
             :model-value="phone.preferences.settings.ringtoneVolume"
             :title="phone.t('Apps.settings.ringtoneVolume')"
             :value-label="phone.preferences.settings.ringtoneVolume + '%'"
@@ -1255,8 +1255,8 @@ onBeforeUnmount(() => {
           >
             <template #leading><Volume1 /></template>
             <template #trailing><Volume2 /></template>
-          </SkySettingsRangeRow>
-          <SkySettingsRangeRow
+          </AgentSettingsRangeRow>
+          <AgentSettingsRangeRow
             :model-value="phone.preferences.settings.notificationVolume"
             :title="phone.t('Apps.settings.notificationVolume')"
             :value-label="phone.preferences.settings.notificationVolume + '%'"
@@ -1271,11 +1271,11 @@ onBeforeUnmount(() => {
           >
             <template #leading><Volume1 /></template>
             <template #trailing><Volume2 /></template>
-          </SkySettingsRangeRow>
-        </SkySettingsGroup>
+          </AgentSettingsRangeRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.ringtone')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.ringtone')">
+          <AgentSettingsRow
             v-for="ringtone in RINGTONE_IDS"
             :key="ringtone"
             kind="choice"
@@ -1283,10 +1283,10 @@ onBeforeUnmount(() => {
             :title="phone.t('Apps.settings.ringtones.' + ringtone)"
             @activate="selectRingtone(ringtone)"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.notificationSound')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.notificationSound')">
+          <AgentSettingsRow
             v-for="sound in NOTIFICATION_SOUND_IDS"
             :key="sound"
             kind="choice"
@@ -1294,15 +1294,15 @@ onBeforeUnmount(() => {
             :title="phone.t('Apps.settings.notificationSoundsList.' + sound)"
             @activate="selectNotificationSound(sound)"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
       </template>
 
       <template v-else-if="activeView === 'connectivity'">
-        <SkySettingsGroup
+        <AgentSettingsGroup
           :title="phone.t('Apps.settings.connections')"
           :footer="phone.t('Apps.settings.connectivityDescription')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             v-for="row in connectivityRows"
             :key="row.key"
             kind="toggle"
@@ -1312,39 +1312,39 @@ onBeforeUnmount(() => {
             @update:model-value="setRootSetting(row.preferenceKey, $event)"
           >
             <template #leading>
-              <SkySettingsIcon :color="row.iconColor">
+              <AgentSettingsIcon :color="row.iconColor">
                 <component :is="row.icon" aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
       </template>
 
       <template v-else-if="activeView === 'focus'">
-        <SkySettingsGroup
+        <AgentSettingsGroup
           :footer="phone.t('Apps.settings.focusDescription')"
           :aria-label="phone.t('Apps.settings.focusMode')"
         >
-          <SkySettingsRow
+          <AgentSettingsRow
             kind="toggle"
             :model-value="phone.preferences.settings.focusMode"
             :title="phone.t('Apps.settings.focusMode')"
             @update:model-value="setRootSetting('focusMode', $event)"
           >
             <template #leading>
-              <SkySettingsIcon color="#5856d6">
+              <AgentSettingsIcon color="#5856d6">
                 <Moon aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
       </template>
 
       <template v-else-if="activeView === 'general'">
-        <SkySettingsGroup
+        <AgentSettingsGroup
           :aria-label="phone.t('Apps.settings.notificationDuration')"
         >
-          <SkySettingsRangeRow
+          <AgentSettingsRangeRow
             :model-value="
               phone.preferences.settings.notificationDurationSeconds
             "
@@ -1370,33 +1370,33 @@ onBeforeUnmount(() => {
               updateNumberPreference('notificationDurationSeconds', $event)
             "
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.about')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.about')">
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.deviceName')"
             :value="phone.t('Apps.settings.deviceNameValue')"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.softwareVersion')"
             value="0.1.0"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.language')"
             :value="phone.t('Apps.settings.languageValue')"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.localStorage')"
             :value="phone.t('Apps.settings.localStorageValue')"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.deviceInformation')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.deviceInformation')">
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.imei')"
             :value="phone.device?.imei ?? '—'"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.simNumber')"
             :value="
               phone.device?.sim
@@ -1404,7 +1404,7 @@ onBeforeUnmount(() => {
                 : phone.t('Apps.settings.noSim')
             "
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             v-if="phone.device?.sim?.removable"
             :title="phone.t('Apps.settings.simType')"
             :value="
@@ -1415,29 +1415,29 @@ onBeforeUnmount(() => {
               )
             "
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             v-if="phone.device?.sim?.removable"
             kind="action"
             tone="danger"
             :title="phone.t('Apps.settings.ejectSim')"
             @activate="simEjectOpened = true"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup>
-          <SkySettingsRow
+        <AgentSettingsGroup>
+          <AgentSettingsRow
             kind="navigation"
             :title="phone.t('Apps.settings.transferOrReset')"
             :description="phone.t('Apps.settings.transferOrResetDescription')"
             @activate="openView('reset')"
           >
             <template #leading>
-              <SkySettingsIcon color="#8e8e93">
+              <AgentSettingsIcon color="#8e8e93">
                 <RotateCcw :size="18" aria-hidden="true" />
-              </SkySettingsIcon>
+              </AgentSettingsIcon>
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
       </template>
 
       <template v-else-if="activeView === 'reset'">
@@ -1449,41 +1449,41 @@ onBeforeUnmount(() => {
           <p>{{ phone.t('Apps.settings.resetHeroBody') }}</p>
         </section>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.erasedFromPhone')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.erasedFromPhone')">
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.eraseDeviceSettings')"
           />
-          <SkySettingsRow :title="phone.t('Apps.settings.eraseLocalContent')" />
-          <SkySettingsRow :title="phone.t('Apps.settings.eraseLocalApps')" />
-        </SkySettingsGroup>
+          <AgentSettingsRow :title="phone.t('Apps.settings.eraseLocalContent')" />
+          <AgentSettingsRow :title="phone.t('Apps.settings.eraseLocalApps')" />
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.keptSafe')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.keptSafe')">
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.keepSimData')"
             :description="phone.t('Apps.settings.keepSimDataBody')"
           />
-          <SkySettingsRow
+          <AgentSettingsRow
             :title="phone.t('Apps.settings.keepCloudData')"
             :description="phone.t('Apps.settings.keepCloudDataBody')"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup>
-          <SkySettingsRow
+        <AgentSettingsGroup>
+          <AgentSettingsRow
             kind="action"
             tone="danger"
             :title="phone.t('Apps.settings.factoryReset')"
             @activate="resetOpened = true"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
         <p class="settings-reset-footnote">
           {{ phone.t('Apps.settings.resetSetupAssistant') }}
         </p>
       </template>
 
       <template v-else-if="activeView === 'appearance'">
-        <SkySettingsGroup :title="phone.t('Apps.settings.graphicsMode')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.graphicsMode')">
+          <AgentSettingsRow
             v-for="mode in GRAPHICS_MODE_IDS"
             :key="mode"
             kind="choice"
@@ -1492,10 +1492,10 @@ onBeforeUnmount(() => {
             :description="phone.t('Apps.settings.' + mode + 'ModeDescription')"
             @activate="selectGraphicsMode(mode)"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.appearanceMode')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.appearanceMode')">
+          <AgentSettingsRow
             v-for="mode in APPEARANCE_MODE_IDS"
             :key="mode"
             kind="choice"
@@ -1503,12 +1503,12 @@ onBeforeUnmount(() => {
             :title="phone.t('Apps.settings.' + mode)"
             @activate="selectAppearanceMode(mode)"
           />
-        </SkySettingsGroup>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup
+        <AgentSettingsGroup
           :aria-label="phone.t('Apps.settings.screenBrightness')"
         >
-          <SkySettingsRangeRow
+          <AgentSettingsRangeRow
             :model-value="phone.preferences.settings.screenBrightness"
             :title="phone.t('Apps.settings.screenBrightness')"
             :value-label="phone.preferences.settings.screenBrightness + '%'"
@@ -1521,11 +1521,11 @@ onBeforeUnmount(() => {
           >
             <template #leading><Sun /></template>
             <template #trailing><Sun /></template>
-          </SkySettingsRangeRow>
-        </SkySettingsGroup>
+          </AgentSettingsRangeRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :aria-label="phone.t('Apps.settings.phoneScale')">
-          <SkySettingsRangeRow
+        <AgentSettingsGroup :aria-label="phone.t('Apps.settings.phoneScale')">
+          <AgentSettingsRangeRow
             :model-value="phone.preferences.settings.phoneScale"
             :title="phone.t('Apps.settings.phoneScale')"
             :value-label="phone.preferences.settings.phoneScale + '%'"
@@ -1537,11 +1537,11 @@ onBeforeUnmount(() => {
           >
             <template #leading><Smartphone /></template>
             <template #trailing><Smartphone /></template>
-          </SkySettingsRangeRow>
-        </SkySettingsGroup>
+          </AgentSettingsRangeRow>
+        </AgentSettingsGroup>
 
-        <SkySettingsGroup :title="phone.t('Apps.settings.phoneFrame')">
-          <SkySettingsRow
+        <AgentSettingsGroup :title="phone.t('Apps.settings.phoneFrame')">
+          <AgentSettingsRow
             kind="navigation"
             :title="phone.t('Apps.settings.phoneFrame')"
             @activate="framePickerOpened = true"
@@ -1553,12 +1553,12 @@ onBeforeUnmount(() => {
                 aria-hidden="true"
               />
             </template>
-          </SkySettingsRow>
-        </SkySettingsGroup>
+          </AgentSettingsRow>
+        </AgentSettingsGroup>
       </template>
 
       <template v-else-if="activeView === 'wallpaper'">
-        <SkySegmented
+        <AgentSegmented
           class="settings-wallpaper-target"
           strong
           rounded
@@ -1566,19 +1566,19 @@ onBeforeUnmount(() => {
           :item-count="2"
           :aria-label="phone.t('Apps.settings.wallpaperTarget')"
         >
-          <SkySegmentedButton
+          <AgentSegmentedButton
             :active="wallpaperTarget === 'home'"
             @click="wallpaperTarget = 'home'"
           >
             {{ phone.t('Apps.settings.wallpaperHomeScreen') }}
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             :active="wallpaperTarget === 'lock'"
             @click="wallpaperTarget = 'lock'"
           >
             {{ phone.t('Apps.settings.wallpaperLockScreen') }}
-          </SkySegmentedButton>
-        </SkySegmented>
+          </AgentSegmentedButton>
+        </AgentSegmented>
 
         <section class="settings-wallpaper-actions">
           <button type="button" @click="openWallpaperMedia('photos')">
@@ -1687,7 +1687,7 @@ onBeforeUnmount(() => {
           </div>
         </section>
       </template>
-    </SkyScrollArea>
+    </AgentScrollArea>
 
     <PhonePasscode
       v-if="passcodeFlow"
@@ -1748,7 +1748,7 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <SkyDialog
+    <AgentDialog
       :opened="framePickerOpened"
       :title="phone.t('Apps.settings.phoneFrame')"
       @backdropclick="framePickerOpened = false"
@@ -1785,42 +1785,42 @@ onBeforeUnmount(() => {
         </button>
       </div>
       <template #buttons>
-        <SkyDialogButton @click="framePickerOpened = false">
+        <AgentDialogButton @click="framePickerOpened = false">
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkyDialog
+    <AgentDialog
       :opened="removeDeviceOpened"
       :title="phone.t('Apps.settings.removeDevice')"
       :content="phone.t('Apps.settings.removeDeviceBody')"
       @backdropclick="removeDeviceOpened = false"
       @escape="removeDeviceOpened = false"
     >
-      <SkySettingsGroup :aria-label="phone.t('Apps.mail.password')">
-        <SkyField
+      <AgentSettingsGroup :aria-label="phone.t('Apps.mail.password')">
+        <AgentField
           v-model="removeDevicePassword"
           type="password"
           :label="phone.t('Apps.mail.password')"
           autocomplete="current-password"
         />
-      </SkySettingsGroup>
+      </AgentSettingsGroup>
       <template #buttons>
-        <SkyDialogButton @click="removeDeviceOpened = false">
+        <AgentDialogButton @click="removeDeviceOpened = false">
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton
+        </AgentDialogButton>
+        <AgentDialogButton
           class="settings-dialog-button--danger"
           strong
           @click="confirmRemoveDevice"
         >
           {{ phone.t('Apps.settings.removeDevice') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkyDialog
+    <AgentDialog
       v-if="phone.device?.sim?.removable"
       :opened="simEjectOpened"
       :title="phone.t('Apps.settings.ejectSim')"
@@ -1829,20 +1829,20 @@ onBeforeUnmount(() => {
       @escape="simEjectOpened = false"
     >
       <template #buttons>
-        <SkyDialogButton @click="simEjectOpened = false">
+        <AgentDialogButton @click="simEjectOpened = false">
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton
+        </AgentDialogButton>
+        <AgentDialogButton
           class="settings-dialog-button--danger"
           strong
           @click="confirmSimEject"
         >
           {{ phone.t('Apps.settings.ejectSim') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkyDialog
+    <AgentDialog
       :opened="resetOpened"
       :title="phone.t('Apps.settings.factoryReset')"
       :content="phone.t('Apps.settings.factoryResetBody')"
@@ -1850,44 +1850,44 @@ onBeforeUnmount(() => {
       @escape="resetOpened = false"
     >
       <template #buttons>
-        <SkyDialogButton @click="resetOpened = false">
+        <AgentDialogButton @click="resetOpened = false">
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton
+        </AgentDialogButton>
+        <AgentDialogButton
           class="settings-dialog-button--danger"
           strong
           @click="confirmFactoryReset"
         >
           {{ phone.t('Common.reset') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkyNotification
+    <AgentNotification
       :opened="Boolean(accountToast)"
       :text="accountToast"
       @click="accountToast = ''"
     />
-  </SkyAppPage>
+  </AgentAppPage>
 </template>
 
 <style scoped>
-:deep(.settings-navbar.sky-navbar--large) {
+:deep(.settings-navbar.agent-navbar--large) {
   min-height: calc(
-    var(--sky-navbar-safe-area-top) + var(--sky-navbar-large-title-height)
+    var(--agent-navbar-safe-area-top) + var(--agent-navbar-large-title-height)
   );
 }
 
-:deep(.settings-navbar.sky-navbar--large.sky-navbar--no-navigation) {
-  padding-top: calc(var(--sky-navbar-safe-area-top) + var(--sky-space-3));
+:deep(.settings-navbar.agent-navbar--large.agent-navbar--no-navigation) {
+  padding-top: calc(var(--agent-navbar-safe-area-top) + var(--agent-space-3));
 }
 
 .settings-search {
-  margin-bottom: var(--sky-space-4);
+  margin-bottom: var(--agent-space-4);
 }
 
 .settings-content {
-  padding-top: var(--sky-space-2);
+  padding-top: var(--agent-space-2);
 }
 
 .settings-content--subpage {
@@ -1927,7 +1927,7 @@ onBeforeUnmount(() => {
 
 .settings-reset-hero p,
 .settings-reset-footnote {
-  color: var(--sky-color-text-secondary);
+  color: var(--agent-color-text-secondary);
   font-size: 12px;
   line-height: 1.45;
 }
@@ -1942,25 +1942,25 @@ onBeforeUnmount(() => {
 }
 
 .settings-copy {
-  margin: 0 var(--sky-space-1) var(--sky-space-4);
-  color: var(--sky-muted);
+  margin: 0 var(--agent-space-1) var(--agent-space-4);
+  color: var(--agent-muted);
   font-size: 13px;
   line-height: 18px;
 }
 
 .settings-primary-action {
-  margin-bottom: var(--sky-space-5);
+  margin-bottom: var(--agent-space-5);
 }
 
 .settings-account-suffix {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 14px;
   white-space: nowrap;
 }
 
 .settings-segmented-row {
   min-width: 0;
-  padding: var(--sky-space-2) var(--sky-space-3);
+  padding: var(--agent-space-2) var(--agent-space-3);
   list-style: none;
 }
 
@@ -1976,20 +1976,20 @@ onBeforeUnmount(() => {
   height: 28px;
   display: block;
   flex: none;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
   box-shadow: 0 1px 3px rgb(0 0 0 / 18%);
 }
 
 .settings-wallpaper-target {
-  margin-bottom: var(--sky-space-4);
+  margin-bottom: var(--agent-space-4);
 }
 
 .settings-wallpaper-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sky-space-2);
-  margin-bottom: var(--sky-space-5);
+  gap: var(--agent-space-2);
+  margin-bottom: var(--agent-space-5);
 }
 
 .settings-wallpaper-actions > button {
@@ -1998,12 +1998,12 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--sky-space-3);
-  padding: var(--sky-space-4);
-  border: 1px solid var(--sky-hairline);
+  gap: var(--agent-space-3);
+  padding: var(--agent-space-4);
+  border: 1px solid var(--agent-hairline);
   border-radius: 20px;
-  background: var(--sky-surface);
-  color: var(--sky-text);
+  background: var(--agent-surface);
+  color: var(--agent-text);
   text-align: left;
   box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
   cursor: pointer;
@@ -2013,7 +2013,7 @@ onBeforeUnmount(() => {
 }
 
 .settings-wallpaper-actions > button:hover {
-  background: var(--sky-surface-muted);
+  background: var(--agent-surface-muted);
 }
 
 .settings-wallpaper-actions > button:active {
@@ -2028,7 +2028,7 @@ onBeforeUnmount(() => {
 .settings-wallpaper-actions > button:focus-visible,
 .settings-wallpaper-history > button:focus-visible,
 .settings-wallpaper-choice:focus-visible {
-  outline: 2px solid var(--sky-app-accent);
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: 2px;
 }
 
@@ -2038,7 +2038,7 @@ onBeforeUnmount(() => {
   display: grid;
   place-items: center;
   border-radius: 12px;
-  background: var(--sky-surface-muted);
+  background: var(--agent-surface-muted);
   color: #fff;
 }
 
@@ -2059,18 +2059,18 @@ onBeforeUnmount(() => {
 
 .settings-wallpaper-actions small {
   margin-top: 3px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 11px;
   line-height: 14px;
 }
 
 .settings-wallpaper-section {
-  margin-bottom: var(--sky-space-5);
+  margin-bottom: var(--agent-space-5);
 }
 
 .settings-wallpaper-section > h2 {
-  margin: 0 var(--sky-space-1) var(--sky-space-2);
-  color: var(--sky-muted);
+  margin: 0 var(--agent-space-1) var(--agent-space-2);
+  color: var(--agent-muted);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -2079,9 +2079,9 @@ onBeforeUnmount(() => {
 
 .settings-wallpaper-history {
   display: flex;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
   overflow-x: auto;
-  padding: 2px var(--sky-space-1) var(--sky-space-2);
+  padding: 2px var(--agent-space-1) var(--agent-space-2);
   scrollbar-width: none;
 }
 
@@ -2122,27 +2122,27 @@ onBeforeUnmount(() => {
   z-index: 1;
   padding: 4px;
   border-radius: 50%;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
   stroke-width: 3;
 }
 
 .settings-wallpaper-history__item--selected {
-  border-color: var(--sky-app-accent) !important;
+  border-color: var(--agent-app-accent) !important;
 }
 
 .settings-wallpaper-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sky-space-3);
+  gap: var(--agent-space-3);
 }
 
 .settings-wallpaper-choice {
   min-width: 0;
-  padding: 0 0 var(--sky-space-2);
+  padding: 0 0 var(--agent-space-2);
   border: 0;
   border-radius: 21px;
-  background: var(--sky-surface);
-  color: var(--sky-text);
+  background: var(--agent-surface);
+  color: var(--agent-text);
   text-align: left;
   box-shadow: 0 8px 20px rgb(0 0 0 / 8%);
   cursor: pointer;
@@ -2187,7 +2187,7 @@ onBeforeUnmount(() => {
   height: 26px;
   padding: 5px;
   border-radius: 50%;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
   color: #ffffff;
   stroke-width: 3;
 }
@@ -2195,22 +2195,22 @@ onBeforeUnmount(() => {
 .settings-wallpaper-choice > strong {
   display: block;
   overflow: hidden;
-  padding: var(--sky-space-2) var(--sky-space-3) 0;
+  padding: var(--agent-space-2) var(--agent-space-3) 0;
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .settings-wallpaper-choice--selected .settings-wallpaper-choice__preview {
-  border-color: var(--sky-app-accent);
+  border-color: var(--agent-app-accent);
 }
 
 .settings-frame-grid {
   display: grid;
   grid-template-columns: repeat(3, 52px);
   justify-content: center;
-  gap: var(--sky-space-2);
-  margin-top: var(--sky-space-4);
+  gap: var(--agent-space-2);
+  margin-top: var(--agent-space-4);
 }
 
 .settings-frame-choice {
@@ -2220,7 +2220,7 @@ onBeforeUnmount(() => {
   display: grid;
   place-items: center;
   border: 0;
-  border-radius: var(--sky-radius-control);
+  border-radius: var(--agent-radius-control);
   background: transparent;
   color: #ffffff;
   cursor: pointer;
@@ -2228,19 +2228,19 @@ onBeforeUnmount(() => {
 }
 
 .settings-frame-choice:focus-visible {
-  outline: 2px solid var(--sky-app-accent);
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: 1px;
 }
 
 .settings-frame-choice:active {
-  background: var(--sky-app-accent-soft);
+  background: var(--agent-app-accent-soft);
 }
 
 .settings-frame-choice__swatch {
   width: 40px;
   height: 40px;
   display: block;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
   box-shadow: 0 1px 4px rgb(0 0 0 / 22%);
 }
@@ -2251,8 +2251,8 @@ onBeforeUnmount(() => {
 
 .settings-frame-choice--selected .settings-frame-choice__swatch {
   box-shadow:
-    0 0 0 2px var(--sky-surface),
-    0 0 0 4px var(--sky-app-accent);
+    0 0 0 2px var(--agent-surface),
+    0 0 0 4px var(--agent-app-accent);
 }
 
 .settings-reset-overlay {
@@ -2520,7 +2520,6 @@ onBeforeUnmount(() => {
   line-height: 14px;
 }
 
-/* Factory reset stays intentionally quiet: white, direct and system-like. */
 .settings-reset-hero__icon {
   border: 0;
   border-radius: 50%;
@@ -2617,7 +2616,7 @@ onBeforeUnmount(() => {
 }
 
 .settings-dialog-button--danger:not(:disabled) {
-  background: var(--sky-danger);
+  background: var(--agent-danger);
   color: #ffffff;
 }
 

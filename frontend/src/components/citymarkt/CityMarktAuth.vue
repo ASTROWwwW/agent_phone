@@ -93,7 +93,7 @@ const phone = usePhoneStore()
 <style scoped>
 .citymarkt-auth {
   --auth-accent: var(--yellow);
-  --sky-app-accent: var(--yellow);
+  --agent-app-accent: var(--yellow);
 }
 .citymarkt-auth :deep(.app-profile-auth__card) {
   display: grid;
@@ -138,11 +138,11 @@ const phone = usePhoneStore()
   overflow: visible;
   background: transparent !important;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields > .sky-list__items) {
+.citymarkt-auth :deep(.app-profile-auth__fields > .agent-list__items) {
   display: grid;
   gap: 9px;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field) {
   min-height: 60px;
   margin: 0;
   padding: 0 13px;
@@ -151,22 +151,22 @@ const phone = usePhoneStore()
   background: #ffffff0a;
   color: inherit;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field:focus-within) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field:focus-within) {
   border-color: color-mix(in srgb, var(--yellow) 68%, transparent);
   background: #ffffff10;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__border) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__border) {
   display: none;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__media) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__media) {
   margin-right: 11px;
   padding: 0;
   color: var(--yellow);
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__inner) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__inner) {
   padding: 8px 0;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__label) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__label) {
   display: block;
   margin: 0;
   color: var(--muted);
@@ -174,16 +174,16 @@ const phone = usePhoneStore()
   font-weight: 750;
   line-height: 14px;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__label-text) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__label-text) {
   position: static;
   margin: 0;
   padding: 0;
   background: transparent;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__control) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__control) {
   margin: 0;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__input) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__input) {
   height: 28px;
   min-height: 28px;
   color: inherit;
@@ -191,12 +191,12 @@ const phone = usePhoneStore()
   line-height: 20px;
 }
 .citymarkt-auth
-  :deep(.app-profile-auth__email-field .sky-field__input) {
+  :deep(.app-profile-auth__email-field .agent-field__input) {
   color: var(--muted);
   font-weight: 650;
 }
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__help),
-.citymarkt-auth :deep(.app-profile-auth__fields .sky-field__error) {
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__help),
+.citymarkt-auth :deep(.app-profile-auth__fields .agent-field__error) {
   margin-top: 2px;
   font-size: 9px;
   line-height: 12px;

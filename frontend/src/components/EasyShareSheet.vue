@@ -30,13 +30,13 @@ import {
   openEasySharePayload,
 } from '@/utils/easyshare'
 import {
-  SkyButton,
-  SkyGlass,
-  SkyLink,
-  SkyList,
-  SkyListItem,
-  SkySheet,
-  SkySpinner,
+  AgentButton,
+  AgentGlass,
+  AgentLink,
+  AgentList,
+  AgentListItem,
+  AgentSheet,
+  AgentSpinner,
 } from '@/ui'
 import { consumeEscape } from '@/utils/keyboard'
 
@@ -274,7 +274,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
     }"
     :style="hostStyle"
   >
-    <SkySheet
+    <AgentSheet
       :opened="easyShare.opened"
       :aria-label="label('name')"
       @backdropclick="close"
@@ -381,12 +381,12 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
           <div class="easyshare-detail__toolbar">
             <span aria-hidden="true"></span>
             <strong>{{ label('nearby') }}</strong>
-            <SkyLink component="button" icon-only @click="easyShare.showHistory"
+            <AgentLink component="button" icon-only @click="easyShare.showHistory"
               ><History :size="18"
-            /></SkyLink>
+            /></AgentLink>
           </div>
 
-          <SkyGlass
+          <AgentGlass
             v-if="easyShare.incomingTransfer"
             class="easyshare-incoming"
           >
@@ -400,21 +400,21 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
               <small>{{ easyShare.incomingTransfer.payload.title }}</small>
             </div>
             <div class="easyshare-incoming__actions">
-              <SkyButton
+              <AgentButton
                 rounded
                 tonal
                 @click="respond(easyShare.incomingTransfer, false)"
                 ><X
-              /></SkyButton>
-              <SkyButton
+              /></AgentButton>
+              <AgentButton
                 rounded
                 @click="respond(easyShare.incomingTransfer, true)"
                 ><Check
-              /></SkyButton>
+              /></AgentButton>
             </div>
-          </SkyGlass>
+          </AgentGlass>
 
-          <SkyGlass v-if="easyShare.activeTransfer" class="easyshare-transfer">
+          <AgentGlass v-if="easyShare.activeTransfer" class="easyshare-transfer">
             <div>
               <strong>{{ easyShare.activeTransfer.otherName }}</strong>
               <small>{{ statusLabel(easyShare.activeTransfer) }}</small>
@@ -424,7 +424,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
                 :style="{ width: `${easyShare.activeTransfer.progress}%` }"
               ></i>
             </div>
-            <SkyButton
+            <AgentButton
               v-if="
                 ['pending', 'transferring'].includes(
                   easyShare.activeTransfer.status,
@@ -433,20 +433,20 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
               clear
               rounded
               @click="cancelTransfer(easyShare.activeTransfer)"
-              >{{ label('cancel') }}</SkyButton
+              >{{ label('cancel') }}</AgentButton
             >
-          </SkyGlass>
+          </AgentGlass>
 
           <div v-if="easyShare.loading" class="easyshare-loading">
-            <SkySpinner :label="label('name')" />
+            <AgentSpinner :label="label('name')" />
           </div>
-          <SkyList
+          <AgentList
             v-else-if="easyShare.targets.length"
             inset
             strong
             class="easyshare-targets"
           >
-            <SkyListItem
+            <AgentListItem
               v-for="target in easyShare.targets"
               :key="target.id"
               link
@@ -460,23 +460,23 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
                 ><span><UserRound /></span
               ></template>
               <template #after><Share2 :size="18" /></template>
-            </SkyListItem>
-          </SkyList>
+            </AgentListItem>
+          </AgentList>
           <p v-else class="easyshare-empty">{{ label('noNearby') }}</p>
         </section>
 
         <section v-else class="easyshare-detail">
           <div class="easyshare-detail__toolbar">
-            <SkyLink
+            <AgentLink
               component="button"
               @click="easyShare.historyOpened = false"
-              >{{ phone.t('Common.back') }}</SkyLink
+              >{{ phone.t('Common.back') }}</AgentLink
             >
             <strong>{{ label('history') }}</strong>
             <span></span>
           </div>
-          <SkyList inset strong class="easyshare-history">
-            <SkyListItem
+          <AgentList inset strong class="easyshare-history">
+            <AgentListItem
               v-for="transfer in easyShare.history"
               :key="transfer.id"
               link
@@ -490,16 +490,16 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
               <template #after>{{
                 transfer.direction === 'incoming' ? '↓' : '↑'
               }}</template>
-            </SkyListItem>
+            </AgentListItem>
             <p v-if="!easyShare.history.length" class="easyshare-empty">
               {{ label('noHistory') }}
             </p>
-          </SkyList>
+          </AgentList>
         </section>
 
         <p v-if="feedback" class="easyshare-feedback">{{ feedback }}</p>
       </div>
-    </SkySheet>
+    </AgentSheet>
   </div>
 </template>
 
@@ -524,9 +524,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   position: relative;
   max-height: 78cqh;
   overflow: hidden;
-  padding: 8px 14px calc(18px + var(--sky-safe-area-bottom));
-  border-radius: var(--sky-radius-sheet) var(--sky-radius-sheet) 0 0;
-  color: var(--sky-text);
+  padding: 8px 14px calc(18px + var(--agent-safe-area-bottom));
+  border-radius: var(--agent-radius-sheet) var(--agent-radius-sheet) 0 0;
+  color: var(--agent-text);
   background: var(--easyshare-solid-surface) !important;
 }
 .easyshare-grabber {
@@ -534,7 +534,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   height: 5px;
   margin: 0 auto 10px;
   border-radius: 999px;
-  background: var(--sky-muted);
+  background: var(--agent-muted);
   opacity: 0.55;
   cursor: grab;
   touch-action: none;
@@ -548,7 +548,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   align-items: center;
   gap: 11px;
   padding: 5px 2px 14px;
-  border-bottom: 1px solid var(--sky-hairline);
+  border-bottom: 1px solid var(--agent-hairline);
 }
 .easyshare-header > img,
 .easyshare-header__fallback {
@@ -558,7 +558,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   display: grid;
   place-items: center;
   object-fit: cover;
-  background: var(--sky-app-accent, #0a84ff);
+  background: var(--agent-app-accent, #0a84ff);
   color: white;
 }
 .easyshare-header div {
@@ -575,7 +575,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
 }
 .easyshare-header small {
   font-size: 11px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 .easyshare-header strong {
   font-size: 17px;
@@ -583,7 +583,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
 .easyshare-header p {
   margin-top: 2px;
   font-size: 12px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 .easyshare-row {
   display: flex;
@@ -596,7 +596,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   display: none;
 }
 .easyshare-row + .easyshare-row {
-  border-top: 1px solid var(--sky-hairline);
+  border-top: 1px solid var(--agent-hairline);
 }
 .easyshare-row--people {
   min-height: 114px;
@@ -690,7 +690,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   border-radius: 15px;
   display: grid;
   place-items: center;
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
 }
 .easyshare-action__icon svg {
   width: 27px;
@@ -733,7 +733,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   margin: 8px 0 12px;
   padding: 10px 12px;
   border-radius: 14px;
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
 }
 .easyshare-visibility select {
   min-width: 0;
@@ -760,7 +760,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
 .easyshare-incoming small,
 .easyshare-transfer small {
   display: block;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 .easyshare-incoming__actions {
   grid-column: 1/-1;
@@ -768,7 +768,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
-.easyshare-incoming__actions :deep(.sky-button) {
+.easyshare-incoming__actions :deep(.agent-button) {
   margin: 0;
 }
 .easyshare-transfer {
@@ -779,13 +779,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   height: 6px;
   overflow: hidden;
   border-radius: 999px;
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
 }
 .easyshare-progress i {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--sky-accent);
+  background: var(--agent-accent);
   transition: width 0.25s ease;
 }
 .easyshare-targets {
@@ -801,7 +801,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   padding: 9px 10px;
   border-radius: 14px;
   color: inherit;
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
   text-align: left;
 }
 .easyshare-targets button > span,
@@ -811,7 +811,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--sky-accent);
+  background: var(--agent-accent);
   color: white;
 }
 .easyshare-targets strong,
@@ -822,7 +822,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
 }
 .easyshare-targets small,
 .easyshare-history small {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 11px;
 }
 .easyshare-history {
@@ -834,23 +834,23 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
 .easyshare-loading {
   padding: 35px 10px;
   text-align: center;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 .easyshare-feedback {
   margin: 8px 0 0;
   text-align: center;
-  color: var(--sky-accent);
+  color: var(--agent-accent);
   font-size: 12px;
 }
-.easyshare-host :deep(.sky-sheet) {
+.easyshare-host :deep(.agent-sheet) {
   z-index: 9500;
 }
-.easyshare-host :deep(.sky-sheet__panel) {
+.easyshare-host :deep(.agent-sheet__panel) {
   max-height: 78cqh;
   overflow: hidden;
   background: var(--easyshare-solid-surface) !important;
 }
-.easyshare-host--dragging :deep(.sky-sheet__panel) {
+.easyshare-host--dragging :deep(.agent-sheet__panel) {
   transform: translateY(var(--easyshare-drag-offset, 0px));
   transition-duration: 0ms;
 }
@@ -888,15 +888,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   background: var(--easyshare-list-surface) !important;
   color: var(--easyshare-text) !important;
 }
-.easyshare-history :deep(.sky-list-item),
-.easyshare-history :deep(.sky-list-item__row),
-.easyshare-history :deep(.sky-list-item__title) {
+.easyshare-history :deep(.agent-list-item),
+.easyshare-history :deep(.agent-list-item__row),
+.easyshare-history :deep(.agent-list-item__title) {
   background: transparent !important;
   color: var(--easyshare-text) !important;
 }
-.easyshare-history :deep(.sky-list-item__subtitle),
-.easyshare-history :deep(.sky-list-item__after),
-.easyshare-history :deep(.sky-list-item__chevron) {
+.easyshare-history :deep(.agent-list-item__subtitle),
+.easyshare-history :deep(.agent-list-item__after),
+.easyshare-history :deep(.agent-list-item__chevron) {
   color: var(--easyshare-secondary) !important;
 }
 @supports (container-type: size) {

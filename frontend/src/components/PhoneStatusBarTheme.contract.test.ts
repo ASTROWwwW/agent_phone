@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 const appSource = readFileSync(new URL('../App.vue', import.meta.url), 'utf8')
 const kitchenSinkSource = readFileSync(
-  new URL('../views/development/SkyUiKitchenSinkView.vue', import.meta.url),
+  new URL('../views/development/AgentUiKitchenSinkView.vue', import.meta.url),
   'utf8',
 )
 const indicatorsSource = readFileSync(

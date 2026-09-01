@@ -8,7 +8,7 @@ import {
   Share2,
   UserRound,
 } from 'lucide-vue-next'
-import { SkyButton, SkyGlass, SkyIcon } from '@/ui'
+import { AgentButton, AgentGlass, AgentIcon } from '@/ui'
 import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 
 import { usePhoneStore } from '@/stores/phone'
@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyGlass :highlight="false" class="feather-post-glass">
+  <AgentGlass :highlight="false" class="feather-post-glass">
     <article class="feather-post" @click="$emit('open', post)">
       <button
         class="feather-avatar"
@@ -120,7 +120,7 @@ onBeforeUnmount(() => {
               @{{ post.handle }} · {{ relativeTime(post.created_at) }}
             </span>
           </button>
-          <SkyButton
+          <AgentButton
             v-if="!post.is_owner && !post.is_following"
             outline
             inline
@@ -130,8 +130,8 @@ onBeforeUnmount(() => {
             @click.stop="$emit('follow', post)"
           >
             {{ phone.t('Apps.feather.follow') }}
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             icon-only
             rounded
             small
@@ -140,8 +140,8 @@ onBeforeUnmount(() => {
             :aria-label="phone.t('Apps.feather.moreActions')"
             @click.stop="$emit('menu', post)"
           >
-            <SkyIcon><MoreHorizontal :size="18" /></SkyIcon>
-          </SkyButton>
+            <AgentIcon><MoreHorizontal :size="18" /></AgentIcon>
+          </AgentButton>
         </header>
 
         <p v-if="post.body" class="feather-post__text">
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
         </footer>
       </div>
     </article>
-  </SkyGlass>
+  </AgentGlass>
 </template>
 
 <style scoped>
@@ -306,8 +306,8 @@ onBeforeUnmount(() => {
   color: #438cf5;
 }
 .feather-follow {
-  --sky-app-accent: var(--feather-blue, #1d9bf0);
-  --sky-app-accent-soft: color-mix(
+  --agent-app-accent: var(--feather-blue, #1d9bf0);
+  --agent-app-accent-soft: color-mix(
     in srgb,
     var(--feather-blue, #1d9bf0) 14%,
     transparent
@@ -332,8 +332,8 @@ onBeforeUnmount(() => {
   letter-spacing: 0.1px;
 }
 .feather-more {
-  --sky-app-accent: #71767b;
-  --sky-app-accent-soft: color-mix(in srgb, currentColor 10%, transparent);
+  --agent-app-accent: #71767b;
+  --agent-app-accent-soft: color-mix(in srgb, currentColor 10%, transparent);
   flex: 0 0 auto;
   margin-left: 0;
   width: 27px;

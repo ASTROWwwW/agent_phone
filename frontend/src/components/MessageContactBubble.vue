@@ -9,7 +9,7 @@ import {
 import { computed, ref, watch } from 'vue'
 
 import type { SmsSharedContact } from '@/types/messages'
-import { SkyButton } from '@/ui'
+import { AgentButton } from '@/ui'
 
 const props = defineProps<{
   addLabel: string
@@ -61,11 +61,11 @@ const initials = computed(() =>
       <ChevronRight :size="20" class="message-contact-card__chevron" />
     </div>
     <div class="message-contact-card__actions">
-      <SkyButton rounded small tonal @click.stop="emit('message')">
+      <AgentButton rounded small tonal @click.stop="emit('message')">
         <MessageCircle :size="17" />
         {{ messageLabel }}
-      </SkyButton>
-      <SkyButton
+      </AgentButton>
+      <AgentButton
         rounded
         small
         tonal
@@ -75,7 +75,7 @@ const initials = computed(() =>
         <Check v-if="saved" :size="17" />
         <UserPlus v-else :size="17" />
         {{ saved ? savedLabel : addLabel }}
-      </SkyButton>
+      </AgentButton>
     </div>
   </div>
 </template>
@@ -85,13 +85,13 @@ const initials = computed(() =>
   width: min(258px, 100%);
   width: min(258px, 72cqw);
   overflow: hidden;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 21px;
-  color: var(--sky-text);
+  color: var(--agent-text);
   background: linear-gradient(
     155deg,
-    var(--sky-surface-tint),
-    var(--sky-surface)
+    var(--agent-surface-tint),
+    var(--agent-surface)
   );
   box-shadow: 0 8px 24px rgb(0 0 0 / 16%);
 }
@@ -113,7 +113,7 @@ const initials = computed(() =>
   display: grid;
   place-items: center;
   color: #ffffff;
-  background: linear-gradient(145deg, var(--sky-success), #248a3d);
+  background: linear-gradient(145deg, var(--agent-success), #248a3d);
   box-shadow: 0 4px 14px rgb(52 199 89 / 24%);
 }
 
@@ -148,23 +148,23 @@ const initials = computed(() =>
 
 .message-contact-card__identity small {
   margin-top: 3px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 11.5px;
 }
 
 .message-contact-card__chevron {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
 .message-contact-card__actions {
   display: grid;
   gap: 1px;
   padding: 8px;
-  border-top: 1px solid var(--sky-hairline);
-  background: var(--sky-surface-muted);
+  border-top: 1px solid var(--agent-hairline);
+  background: var(--agent-surface-muted);
 }
 
-.message-contact-card__actions :deep(.sky-button) {
+.message-contact-card__actions :deep(.agent-button) {
   width: 100%;
   margin: 0;
   min-height: 36px;

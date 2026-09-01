@@ -32,22 +32,22 @@ import type {
   InvoiceSummary,
 } from '@/types/billing'
 import {
-  SkyAppPage,
-  SkyBadge,
-  SkyButton,
-  SkyCard,
-  SkyGlass,
-  SkyLink,
-  SkyNavbar,
-  SkyNavbarBackLink,
-  SkySearchbar,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySheet,
-  SkySpinner,
-  SkyTabBar,
-  SkyTabButton,
-  SkyNotification,
+  AgentAppPage,
+  AgentBadge,
+  AgentButton,
+  AgentCard,
+  AgentGlass,
+  AgentLink,
+  AgentNavbar,
+  AgentNavbarBackLink,
+  AgentSearchbar,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSheet,
+  AgentSpinner,
+  AgentTabBar,
+  AgentTabButton,
+  AgentNotification,
 } from '@/ui'
 import { isTrustedRootMessageSource } from '@/utils/windowMessages'
 
@@ -243,7 +243,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     class="billing-app native-app"
     :label="t('name')"
     :dark="phone.isDarkMode"
@@ -255,9 +255,9 @@ onBeforeUnmount(() => {
       'billing-app--light': !phone.isDarkMode,
     }"
   >
-    <SkyNavbar class="billing-navbar" :title="t('name')">
+    <AgentNavbar class="billing-navbar" :title="t('name')">
       <template v-if="screen === 'detail'" #left>
-        <SkyNavbarBackLink :ariaLabel="t('back')" @click="goBack" />
+        <AgentNavbarBackLink :ariaLabel="t('back')" @click="goBack" />
       </template>
       <template #title>
         <span class="billing-navbar__brand">
@@ -265,15 +265,15 @@ onBeforeUnmount(() => {
           <strong>{{ t('name') }}</strong>
         </span>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
     <section v-if="screen === 'detail'" class="billing-scroll billing-detail">
       <div v-if="billing.isLoading && !billing.detail" class="billing-loading">
-        <SkySpinner :label="phone.t('Common.loading')" />
+        <AgentSpinner :label="phone.t('Common.loading')" />
         <span>{{ phone.t('Common.loading') }}</span>
       </div>
       <template v-else-if="billing.detail">
-        <SkyGlass
+        <AgentGlass
           :highlight="false"
           class="billing-detail__hero"
           :class="{
@@ -302,11 +302,11 @@ onBeforeUnmount(() => {
               <strong>{{ billing.detail.issuerLabel }}</strong>
               <span>#{{ billing.detail.id.slice(0, 13).toUpperCase() }}</span>
             </div>
-            <SkyBadge
+            <AgentBadge
               :class="`billing-status billing-status--${statusKey(billing.detail)}`"
             >
               {{ t(`status.${statusKey(billing.detail)}`) }}
-            </SkyBadge>
+            </AgentBadge>
             <div class="billing-detail__amount">
               <span>{{ t('detail.total') }}</span>
               <strong>{{
@@ -314,18 +314,18 @@ onBeforeUnmount(() => {
               }}</strong>
             </div>
           </template>
-        </SkyGlass>
+        </AgentGlass>
 
         <div v-if="billing.detail.canPay" class="billing-detail__actions">
-          <SkyButton
+          <AgentButton
             class="billing-action billing-action--pay"
             @click="paymentOpen = true"
           >
             <WalletCards :size="15" />
             {{ t('payment.payNow') }}
             <ChevronRight class="billing-action-chevron" :size="15" />
-          </SkyButton>
-          <SkyButton
+          </AgentButton>
+          <AgentButton
             v-if="billing.detail.canDispute"
             class="billing-action billing-action--dispute"
             variant="secondary"
@@ -334,7 +334,7 @@ onBeforeUnmount(() => {
             <ShieldAlert :size="15" />
             {{ t('detail.dispute') }}
             <ChevronRight class="billing-action-chevron" :size="15" />
-          </SkyButton>
+          </AgentButton>
         </div>
 
         <div class="billing-detail__section-title">
@@ -347,7 +347,7 @@ onBeforeUnmount(() => {
           }}
         </div>
 
-        <SkyCard :content-wrap="false" class="billing-panel">
+        <AgentCard :content-wrap="false" class="billing-panel">
           <div
             v-if="billing.detail.status === 'paid'"
             class="billing-detail-row"
@@ -418,12 +418,12 @@ onBeforeUnmount(() => {
               <strong>#{{ billing.detail.id.toUpperCase() }}</strong>
             </span>
           </div>
-        </SkyCard>
+        </AgentCard>
 
-        <SkyCard v-if="billing.detail.description" class="billing-note">
+        <AgentCard v-if="billing.detail.description" class="billing-note">
           <span>{{ t('detail.note') }}</span>
           <p>{{ billing.detail.description }}</p>
-        </SkyCard>
+        </AgentCard>
 
       </template>
     </section>
@@ -433,16 +433,16 @@ onBeforeUnmount(() => {
         v-if="billing.isLoading && !billing.overview"
         class="billing-loading"
       >
-        <SkySpinner :label="phone.t('Common.loading')" />
+        <AgentSpinner :label="phone.t('Common.loading')" />
         <span>{{ phone.t('Common.loading') }}</span>
       </div>
 
       <div v-else-if="billing.error && !billing.overview" class="billing-empty">
         <AlertTriangle :size="39" />
         <strong>{{ t(`errors.${billing.error}`) }}</strong>
-        <SkyButton rounded @click="billing.loadOverview(direction)">
+        <AgentButton rounded @click="billing.loadOverview(direction)">
           {{ t('tryAgain') }}
-        </SkyButton>
+        </AgentButton>
       </div>
 
       <template v-else-if="tab === 'overview' && billing.overview">
@@ -485,8 +485,8 @@ onBeforeUnmount(() => {
           class="billing-filter-panel billing-filter-panel--overview"
         >
           <span class="billing-filter-label">{{ t('filters.scope') }}</span>
-          <SkySegmented class="billing-direction">
-            <SkySegmentedButton
+          <AgentSegmented class="billing-direction">
+            <AgentSegmentedButton
               type="button"
               :active="direction === 'inbox'"
               @click="selectDirection('inbox')"
@@ -499,16 +499,16 @@ onBeforeUnmount(() => {
               >
                 {{ Math.min(99, billing.overview.unreadCount) }}
               </b>
-            </SkySegmentedButton>
-            <SkySegmentedButton
+            </AgentSegmentedButton>
+            <AgentSegmentedButton
               type="button"
               :active="direction === 'sent'"
               @click="selectDirection('sent')"
             >
               <Send :size="15" />
               <span>{{ t('direction.sent') }}</span>
-            </SkySegmentedButton>
-          </SkySegmented>
+            </AgentSegmentedButton>
+          </AgentSegmented>
         </div>
 
         <div class="billing-section-heading">
@@ -516,9 +516,9 @@ onBeforeUnmount(() => {
             <span>{{ t('overview.eyebrow') }}</span>
             <h2>{{ t('overview.urgent') }}</h2>
           </div>
-          <SkyLink component="button" type="button" @click="selectTab('inbox')">
+          <AgentLink component="button" type="button" @click="selectTab('inbox')">
             {{ t('overview.viewAll') }}
-          </SkyLink>
+          </AgentLink>
         </div>
 
         <div
@@ -541,11 +541,11 @@ onBeforeUnmount(() => {
               >
             </span>
             <span class="billing-invoice-card__amount">
-              <SkyBadge
+              <AgentBadge
                 :class="`billing-status billing-status--${statusKey(invoice)}`"
               >
                 {{ t(`status.${statusKey(invoice)}`) }}
-              </SkyBadge>
+              </AgentBadge>
               <strong>{{
                 formatMoney(invoice.amount, invoice.currency)
               }}</strong>
@@ -577,8 +577,8 @@ onBeforeUnmount(() => {
           class="billing-filter-panel"
         >
           <span class="billing-filter-label">{{ t('filters.scope') }}</span>
-          <SkySegmented class="billing-direction">
-            <SkySegmentedButton
+          <AgentSegmented class="billing-direction">
+            <AgentSegmentedButton
               type="button"
               :active="direction === 'inbox'"
               @click="selectDirection('inbox')"
@@ -591,18 +591,18 @@ onBeforeUnmount(() => {
               >
                 {{ Math.min(99, billing.overview.unreadCount) }}
               </b>
-            </SkySegmentedButton>
-            <SkySegmentedButton
+            </AgentSegmentedButton>
+            <AgentSegmentedButton
               type="button"
               :active="direction === 'sent'"
               @click="selectDirection('sent')"
             >
               <Send :size="15" />
               <span>{{ t('direction.sent') }}</span>
-            </SkySegmentedButton>
-          </SkySegmented>
+            </AgentSegmentedButton>
+          </AgentSegmented>
         </div>
-        <SkySearchbar
+        <AgentSearchbar
           v-if="tab === 'inbox'"
           class="billing-search"
           :clear-label="phone.t('Common.clear')"
@@ -614,8 +614,8 @@ onBeforeUnmount(() => {
         <div v-if="tab === 'inbox'" class="billing-status-filter">
           <span class="billing-filter-label">{{ t('filters.status') }}</span>
           <div class="billing-status-filter__scroll">
-            <SkySegmented class="billing-filters">
-              <SkySegmentedButton
+            <AgentSegmented class="billing-filters">
+              <AgentSegmentedButton
                 v-for="entry in filters"
                 :key="entry"
                 type="button"
@@ -624,8 +624,8 @@ onBeforeUnmount(() => {
               >
                 <component :is="filterIcons[entry]" :size="14" />
                 <span>{{ t(`filters.${entry}`) }}</span>
-              </SkySegmentedButton>
-            </SkySegmented>
+              </AgentSegmentedButton>
+            </AgentSegmented>
           </div>
         </div>
 
@@ -633,7 +633,7 @@ onBeforeUnmount(() => {
           v-if="billing.isLoading"
           class="billing-loading billing-loading--list"
         >
-          <SkySpinner :label="phone.t('Common.loading')" />
+          <AgentSpinner :label="phone.t('Common.loading')" />
         </div>
         <div v-else-if="visibleInvoices.length" class="billing-list">
           <button
@@ -656,17 +656,17 @@ onBeforeUnmount(() => {
               >
             </span>
             <span class="billing-list-row__meta">
-              <SkyBadge
+              <AgentBadge
                 :class="`billing-status billing-status--${statusKey(invoice)}`"
               >
                 {{ t(`status.${statusKey(invoice)}`) }}
-              </SkyBadge>
+              </AgentBadge>
               <strong>{{
                 formatMoney(invoice.amount, invoice.currency)
               }}</strong>
             </span>
           </button>
-          <SkyButton
+          <AgentButton
             v-if="billing.hasMore"
             clear
             :disabled="billing.isLoadingMore"
@@ -680,12 +680,12 @@ onBeforeUnmount(() => {
               )
             "
           >
-            <SkySpinner
+            <AgentSpinner
               v-if="billing.isLoadingMore"
               :label="phone.t('Common.loading')"
             />
             <span v-else>{{ t('loadMore') }}</span>
-          </SkyButton>
+          </AgentButton>
         </div>
         <div v-else class="billing-empty billing-empty--list">
           <SearchX :size="39" />
@@ -695,14 +695,14 @@ onBeforeUnmount(() => {
       </template>
     </section>
 
-    <SkyTabBar
+    <AgentTabBar
       v-if="screen === 'main'"
       icons
       labels
       class="billing-tabbar"
       :label="t('navigation')"
     >
-      <SkyTabButton
+      <AgentTabButton
         class="billing-tab-button"
         :active="tab === 'overview'"
         :label="t('tabs.overview')"
@@ -714,8 +714,8 @@ onBeforeUnmount(() => {
             :fill="tab === 'overview' ? 'currentColor' : 'none'"
           />
         </template>
-      </SkyTabButton>
-      <SkyTabButton
+      </AgentTabButton>
+      <AgentTabButton
         class="billing-tab-button"
         :active="tab === 'inbox'"
         :label="t('tabs.inbox')"
@@ -732,18 +732,18 @@ onBeforeUnmount(() => {
             }}</b>
           </span>
         </template>
-      </SkyTabButton>
-      <SkyTabButton
+      </AgentTabButton>
+      <AgentTabButton
         class="billing-tab-button"
         :active="tab === 'history'"
         :label="t('tabs.history')"
         @click="selectTab('history')"
       >
         <template #icon><History :size="20" /></template>
-      </SkyTabButton>
-    </SkyTabBar>
+      </AgentTabButton>
+    </AgentTabBar>
 
-    <SkySheet
+    <AgentSheet
       :opened="paymentOpen"
       class="billing-payment-sheet"
       :ariaLabelledby="billing.detail ? 'billing-payment-title' : undefined"
@@ -756,46 +756,40 @@ onBeforeUnmount(() => {
         /></span>
         <h2 id="billing-payment-title">{{ t('payment.title') }}</h2>
         <p>{{ t('payment.body', { issuer: billing.detail.issuerLabel }) }}</p>
-        <SkyGlass :highlight="false" class="billing-payment-total">
+        <AgentGlass :highlight="false" class="billing-payment-total">
           <span>{{ billing.detail.title }}</span>
           <strong>{{
             formatMoney(billing.detail.amount, billing.detail.currency)
           }}</strong>
-        </SkyGlass>
-        <SkyButton
+        </AgentGlass>
+        <AgentButton
           block
           rounded
           large
           :disabled="billing.isPaying"
           @click="payInvoice"
         >
-          <SkySpinner
+          <AgentSpinner
             v-if="billing.isPaying"
             :label="phone.t('Common.loading')"
           />
           <span v-else>{{ t('payment.confirm') }}</span>
-        </SkyButton>
-        <SkyLink component="button" type="button" @click="paymentOpen = false">
+        </AgentButton>
+        <AgentLink component="button" type="button" @click="paymentOpen = false">
           {{ t('payment.cancel') }}
-        </SkyLink>
+        </AgentLink>
       </section>
-    </SkySheet>
+    </AgentSheet>
 
-    <SkyNotification
+    <AgentNotification
       :opened="toastOpen"
       :text="toastText"
       class="billing-notification"
     />
-  </SkyAppPage>
+  </AgentAppPage>
 </template>
 
 <style scoped>
-/* -------------------------------------------------------------------------
-   Jetons et fond. Meme grammaire que la banque : des halos radiaux sur une
-   base profonde, mais une teinte propre a Billing, tiree du corail de son
-   icone, pour que les deux applications ne se confondent pas.
-   ------------------------------------------------------------------------- */
-
 .billing-app {
   --billing-blue: #1784ff;
   --billing-accent: #bcdc74;
@@ -823,18 +817,12 @@ onBeforeUnmount(() => {
     radial-gradient(78% 42% at 90% 4%, rgb(201 242 76 / 13%), transparent 56%),
     radial-gradient(96% 46% at 2% 98%, rgb(74 150 226 / 11%), transparent 62%),
     linear-gradient(180deg, #14201a 0%, #101815 26%, #0b0e0d 60%, #070808 100%);
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   isolation: isolate;
 }
-
-/* SkyAppPage peint un fond opaque dans .sky-app-page__backdrop, place en
-   z-index -1 : sans cette neutralisation il masque tout le degrade. */
-.billing-app > :deep(.sky-app-page__backdrop) {
+.billing-app > :deep(.agent-app-page__backdrop) {
   background: transparent;
 }
-
-/* Voile clair sous la barre d'etat : le degrade seul laisse le haut trop
-   sature sous le texte blanc. */
 .billing-app::before {
   position: absolute;
   z-index: -1;
@@ -843,7 +831,6 @@ onBeforeUnmount(() => {
   content: '';
   pointer-events: none;
 }
-
 .billing-app--light {
   --billing-accent: #41601f;
   --billing-border: rgb(16 26 20 / 10%);
@@ -863,44 +850,29 @@ onBeforeUnmount(() => {
     radial-gradient(90% 42% at 2% 96%, rgb(74 150 226 / 9%), transparent 62%),
     linear-gradient(180deg, #f3f8ef 0%, #eff4ee 44%, #eaefea 100%);
 }
-
 .billing-app--light::before {
   background: linear-gradient(180deg, rgb(255 255 255 / 55%), transparent 26%);
 }
 
-/* -------------------------------------------------------------------------
-   Bandeau
-   ------------------------------------------------------------------------- */
-
-/* Le bandeau ne porte plus de fond ni de fondu : il flotte sur le degrade,
-   et la zone defilante rogne son contenu a son propre bord. */
 .billing-navbar {
-  --sky-navbar-glass: transparent;
+  --agent-navbar-glass: transparent;
   flex: 0 0 auto;
   color: inherit;
 }
-
 .billing-navbar__brand {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   color: inherit;
 }
-
 .billing-navbar__brand svg {
   color: var(--billing-accent);
 }
-
 .billing-navbar__brand strong {
   font-size: 16px;
   font-weight: 650;
   letter-spacing: 0.6px;
 }
-
-/* -------------------------------------------------------------------------
-   Colonnes defilantes
-   ------------------------------------------------------------------------- */
-
 .billing-scroll {
   display: flex;
   min-height: 0;
@@ -914,28 +886,21 @@ onBeforeUnmount(() => {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
-
 .billing-scroll::-webkit-scrollbar {
   display: none;
 }
-
-/* La colonne est un conteneur flex : sans cette regle les enfants sont
-   compressibles et la carte-releve s'ecrase. */
 .billing-scroll > * {
   flex: 0 0 auto;
 }
-
 .billing-scroll.billing-detail {
-  padding-bottom: calc(var(--sky-safe-area-bottom, 0px) + 22px);
+  padding-bottom: calc(var(--agent-safe-area-bottom, 0px) + 22px);
 }
-
 .billing-view-heading {
   display: flex;
   align-items: center;
   gap: 11px;
   padding: 2px 2px 0;
 }
-
 .billing-view-heading__icon {
   display: grid;
   width: 38px;
@@ -956,14 +921,12 @@ onBeforeUnmount(() => {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
 .billing-view-heading h1 {
   margin: 1px 0 0;
   font-size: 23px;
   font-weight: 680;
   letter-spacing: -0.5px;
 }
-
 .billing-loading {
   display: flex;
   align-items: center;
@@ -974,17 +937,10 @@ onBeforeUnmount(() => {
   color: var(--billing-muted);
   font-size: 13px;
 }
-
 .billing-loading--list {
   height: auto;
   padding: 40px 0;
 }
-
-/* -------------------------------------------------------------------------
-   Carte-releve : element signature, construit comme la carte de debit de la
-   banque. Elle porte les trois chiffres que trois tuiles plates portaient.
-   ------------------------------------------------------------------------- */
-
 .billing-statement {
   position: relative;
   display: flex;
@@ -1005,7 +961,6 @@ onBeforeUnmount(() => {
     inset 0 1px 0 rgb(255 255 255 / 8%);
   color: #fff;
 }
-
 .billing-app--light .billing-statement {
   border-color: rgb(16 26 20 / 8%);
   background:
@@ -1019,7 +974,6 @@ onBeforeUnmount(() => {
     0 12px 26px rgb(20 40 26 / 20%),
     inset 0 1px 0 rgb(255 255 255 / 12%);
 }
-
 .billing-statement::after {
   position: absolute;
   right: -54px;
@@ -1035,14 +989,12 @@ onBeforeUnmount(() => {
   content: '';
   pointer-events: none;
 }
-
 .billing-statement__top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
-
 .billing-statement__label {
   display: flex;
   align-items: center;
@@ -1053,7 +1005,6 @@ onBeforeUnmount(() => {
   letter-spacing: 1.1px;
   text-transform: uppercase;
 }
-
 .billing-statement__amount {
   display: block;
   margin-top: 4px;
@@ -1062,7 +1013,6 @@ onBeforeUnmount(() => {
   letter-spacing: -0.6px;
   line-height: 1.1;
 }
-
 .billing-statement__mark {
   display: grid;
   width: 38px;
@@ -1078,7 +1028,6 @@ onBeforeUnmount(() => {
   );
   color: var(--billing-accent);
 }
-
 .billing-statement__bottom {
   display: flex;
   align-items: flex-end;
@@ -1086,7 +1035,6 @@ onBeforeUnmount(() => {
   gap: 12px;
   margin-top: 20px;
 }
-
 .billing-statement__figure strong {
   display: block;
   margin-top: 2px;
@@ -1094,38 +1042,27 @@ onBeforeUnmount(() => {
   font-weight: 650;
   letter-spacing: -0.2px;
 }
-
 .billing-statement__figure--overdue {
   text-align: right;
 }
-
 .billing-statement__figure--overdue .billing-statement__label,
 .billing-statement__figure--overdue strong {
   justify-content: flex-end;
   color: #ff9d8f;
 }
-
-/* Zero facture en retard n'est pas une alerte : la ligne redevient neutre. */
 .billing-statement__figure--overdue.is-clear .billing-statement__label,
 .billing-statement__figure--overdue.is-clear strong {
   color: rgb(255 255 255 / 58%);
 }
-
 .billing-statement__figure--overdue.is-clear strong {
   color: #fff;
 }
-
-/* -------------------------------------------------------------------------
-   Panneaux de filtres et selecteurs
-   ------------------------------------------------------------------------- */
-
 .billing-filter-panel,
 .billing-status-filter {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
 .billing-filter-label {
   padding: 0 4px;
   color: var(--billing-muted);
@@ -1134,7 +1071,6 @@ onBeforeUnmount(() => {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
 .billing-direction :deep(button),
 .billing-filters :deep(button) {
   display: inline-flex;
@@ -1143,25 +1079,18 @@ onBeforeUnmount(() => {
   font-size: 12.5px;
   font-weight: 600;
 }
-
-/* Un filtre n'est pas l'action principale de la page : sa pastille active
-   redevient une surface neutre et le libelle au repos suit la couleur du
-   texte, au lieu de reprendre le vert de l'application. */
 .billing-direction,
 .billing-filters {
-  --sky-app-accent: rgb(255 255 255 / 15%);
+  --agent-app-accent: rgb(255 255 255 / 15%);
 }
-
 .billing-app--light .billing-direction,
 .billing-app--light .billing-filters {
-  --sky-app-accent: #2f4322;
+  --agent-app-accent: #2f4322;
 }
-
-.billing-direction :deep(.sky-segmented-button),
-.billing-filters :deep(.sky-segmented-button) {
+.billing-direction :deep(.agent-segmented-button),
+.billing-filters :deep(.agent-segmented-button) {
   color: var(--billing-muted);
 }
-
 .billing-filter-count {
   display: inline-grid;
   min-width: 17px;
@@ -1174,25 +1103,17 @@ onBeforeUnmount(() => {
   font-size: 10px;
   font-weight: 700;
 }
-
 .billing-status-filter__scroll {
   overflow-x: auto;
   scrollbar-width: none;
 }
-
 .billing-status-filter__scroll::-webkit-scrollbar {
   display: none;
 }
-
-.billing-search :deep(.sky-searchbar__control) {
+.billing-search :deep(.agent-searchbar__control) {
   border: 1px solid var(--billing-border);
   background: var(--billing-surface);
 }
-
-/* -------------------------------------------------------------------------
-   Titre de section : un intitule nu au-dessus du contenu, comme la banque
-   ------------------------------------------------------------------------- */
-
 .billing-section-heading {
   display: flex;
   align-items: flex-end;
@@ -1216,25 +1137,18 @@ onBeforeUnmount(() => {
   font-weight: 650;
   letter-spacing: -0.3px;
 }
-
-.billing-section-heading :deep(.sky-link) {
+.billing-section-heading :deep(.agent-link) {
   color: inherit;
   font-size: 12px;
   font-weight: 500;
   opacity: 0.72;
 }
-
-/* -------------------------------------------------------------------------
-   Cartes de facture
-   ------------------------------------------------------------------------- */
-
 .billing-card-list,
 .billing-list {
   display: flex;
   flex-direction: column;
   gap: 9px;
 }
-
 .billing-invoice-card,
 .billing-list-row {
   display: flex;
@@ -1254,18 +1168,15 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
-
 .billing-invoice-card:active,
 .billing-list-row:active {
   transform: scale(0.985);
   background: var(--billing-surface-strong);
 }
-
 .billing-invoice-card {
   min-height: 88px;
   padding: 11px 13px;
 }
-
 .billing-issuer-mark {
   display: grid;
   width: 40px;
@@ -1281,7 +1192,6 @@ onBeforeUnmount(() => {
   );
   color: #e6f8bd;
 }
-
 .billing-app--light .billing-issuer-mark {
   background: linear-gradient(
     180deg,
@@ -1290,7 +1200,6 @@ onBeforeUnmount(() => {
   );
   color: var(--billing-accent);
 }
-
 .billing-invoice-card__copy,
 .billing-list-row__copy {
   display: flex;
@@ -1299,7 +1208,6 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 2px;
 }
-
 .billing-invoice-card__copy strong {
   overflow: hidden;
   font-size: 14px;
@@ -1308,7 +1216,6 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .billing-invoice-card__copy small {
   overflow: hidden;
   color: var(--billing-muted);
@@ -1316,11 +1223,9 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .billing-invoice-card__copy small:last-child {
   color: var(--billing-sub);
 }
-
 .billing-invoice-card__amount {
   display: grid;
   flex: 0 0 auto;
@@ -1330,26 +1235,18 @@ onBeforeUnmount(() => {
   row-gap: 5px;
   column-gap: 4px;
 }
-
 .billing-invoice-card__amount .billing-status {
   grid-column: 1 / -1;
 }
-
 .billing-invoice-card__amount strong {
   font-size: 15px;
   font-weight: 680;
   letter-spacing: -0.3px;
   white-space: nowrap;
 }
-
 .billing-invoice-card__amount svg {
   color: var(--billing-sub);
 }
-
-/* -------------------------------------------------------------------------
-   Pastilles d'etat
-   ------------------------------------------------------------------------- */
-
 .billing-status {
   padding: 2px 8px;
   border: 1px solid currentcolor;
@@ -1360,27 +1257,21 @@ onBeforeUnmount(() => {
   letter-spacing: 0.02em;
   text-transform: none;
 }
-
 .billing-status--open {
   color: #6db3ff;
 }
-
 .billing-status--overdue {
   color: #ff9d8f;
 }
-
 .billing-status--processing {
   color: #ffc46b;
 }
-
 .billing-status--paid {
   color: #6fd398;
 }
-
 .billing-status--disputed {
   color: #d0a6ff;
 }
-
 .billing-status--cancelled,
 .billing-status--refunded {
   color: var(--billing-muted);
@@ -1406,23 +1297,15 @@ onBeforeUnmount(() => {
   color: #6b3fa8;
 }
 
-/* -------------------------------------------------------------------------
-   Liste detaillee
-   ------------------------------------------------------------------------- */
-
 .billing-list-row {
   min-height: 74px;
   padding: 11px 13px;
 }
-
-/* Une facture non lue porte un liseré, pas un fond different : la couleur de
-   surface reste unique pour toute la liste. */
 .billing-list-row.is-unread {
   box-shadow:
     inset 3px 0 0 var(--billing-accent),
     inset 0 1px 0 rgb(255 255 255 / 7%);
 }
-
 .billing-list-row__icon {
   display: grid;
   width: 36px;
@@ -1434,7 +1317,6 @@ onBeforeUnmount(() => {
   background: var(--billing-surface-strong);
   color: var(--billing-muted);
 }
-
 .billing-list-row__copy strong {
   overflow: hidden;
   font-size: 13.5px;
@@ -1455,7 +1337,6 @@ onBeforeUnmount(() => {
   color: var(--billing-sub);
   font-size: 10px;
 }
-
 .billing-list-row__meta {
   display: flex;
   flex: 0 0 auto;
@@ -1463,23 +1344,17 @@ onBeforeUnmount(() => {
   align-items: flex-end;
   gap: 5px;
 }
-
 .billing-list-row__meta strong {
   font-size: 14px;
   font-weight: 680;
   white-space: nowrap;
 }
-
 .billing-load-more {
   align-self: center;
   margin-top: 2px;
   color: inherit;
   opacity: 0.75;
 }
-
-/* -------------------------------------------------------------------------
-   Etats vides
-   ------------------------------------------------------------------------- */
 
 .billing-empty {
   display: flex;
@@ -1491,18 +1366,15 @@ onBeforeUnmount(() => {
   color: var(--billing-muted);
   text-align: center;
 }
-
 .billing-empty svg {
   color: var(--billing-accent);
   opacity: 0.8;
 }
-
 .billing-empty strong {
   color: inherit;
   font-size: 15px;
   font-weight: 650;
 }
-
 .billing-app:not(.billing-app--light) .billing-empty strong {
   color: #fff;
 }
@@ -1513,15 +1385,9 @@ onBeforeUnmount(() => {
   font-size: 12px;
   line-height: 1.5;
 }
-
 .billing-empty--list {
   padding: 34px 26px;
 }
-
-/* -------------------------------------------------------------------------
-   Ecran de detail
-   ------------------------------------------------------------------------- */
-
 .billing-detail__hero {
   display: flex;
   flex-direction: column;
@@ -1541,7 +1407,6 @@ onBeforeUnmount(() => {
     inset 0 1px 0 rgb(255 255 255 / 8%);
   color: #fff;
 }
-
 .billing-detail__hero--paid {
   align-items: center;
   gap: 6px;
@@ -1550,7 +1415,6 @@ onBeforeUnmount(() => {
     linear-gradient(180deg, rgb(18 40 30 / 92%), rgb(8 14 11 / 96%));
   text-align: center;
 }
-
 .billing-paid-mark {
   display: grid;
   width: 62px;
@@ -1561,7 +1425,6 @@ onBeforeUnmount(() => {
   background: rgb(111 211 152 / 14%);
   color: #6fd398;
 }
-
 .billing-paid-title {
   color: #6fd398;
   font-size: 12px;
@@ -1569,25 +1432,21 @@ onBeforeUnmount(() => {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-
 .billing-paid-amount {
   font-size: 30px;
   font-weight: 650;
   letter-spacing: -0.6px;
 }
-
 .billing-paid-date {
   color: rgb(255 255 255 / 60%);
   font-size: 11.5px;
 }
-
 .billing-detail__identity {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 2px;
 }
-
 .billing-detail__identity strong {
   overflow: hidden;
   font-size: 16px;
@@ -1595,7 +1454,6 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .billing-detail__identity span {
   color: rgb(255 255 255 / 52%);
   font-size: 10.5px;
@@ -1605,7 +1463,6 @@ onBeforeUnmount(() => {
 .billing-detail__hero .billing-status {
   align-self: flex-start;
 }
-
 .billing-detail__amount {
   display: flex;
   align-items: baseline;
@@ -1615,7 +1472,6 @@ onBeforeUnmount(() => {
   padding-top: 13px;
   border-top: 1px solid rgb(255 255 255 / 9%);
 }
-
 .billing-detail__amount span {
   color: rgb(255 255 255 / 58%);
   font-size: 9px;
@@ -1623,19 +1479,16 @@ onBeforeUnmount(() => {
   letter-spacing: 1.1px;
   text-transform: uppercase;
 }
-
 .billing-detail__amount strong {
   font-size: 26px;
   font-weight: 680;
   letter-spacing: -0.6px;
 }
-
 .billing-detail__hero .billing-issuer-mark {
   width: 42px;
   height: 42px;
   border-radius: 13px;
 }
-
 .billing-detail__section-title {
   padding: 0 4px;
   color: var(--billing-muted);
@@ -1644,9 +1497,6 @@ onBeforeUnmount(() => {
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
-/* Le panneau et la note s'alignent sur les bords du bandeau de detail : la
-   carte SkyCard pose sinon ses propres marges laterales. */
 .billing-panel,
 .billing-note {
   margin-right: 0;
@@ -1660,7 +1510,6 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
-
 .billing-detail-row {
   display: flex;
   align-items: center;
@@ -1672,7 +1521,6 @@ onBeforeUnmount(() => {
 .billing-detail-row:last-child {
   border-bottom: 0;
 }
-
 .billing-detail-row__icon {
   display: grid;
   width: 32px;
@@ -1684,14 +1532,12 @@ onBeforeUnmount(() => {
   background: var(--billing-surface-strong);
   color: var(--billing-muted);
 }
-
 .billing-detail-row__copy {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 2px;
 }
-
 .billing-detail-row__copy small {
   color: var(--billing-muted);
   font-size: 10px;
@@ -1699,22 +1545,18 @@ onBeforeUnmount(() => {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-
 .billing-detail-row__copy strong {
   font-size: 14px;
   font-weight: 600;
 }
-
 .billing-detail-row__reference {
   overflow-wrap: anywhere;
-  font-family: var(--sky-font-mono, ui-monospace, monospace);
+  font-family: var(--agent-font-mono, ui-monospace, monospace);
   font-size: 12.5px;
 }
-
 .billing-note {
   padding: 14px;
 }
-
 .billing-note span {
   display: block;
   margin-bottom: 5px;
@@ -1731,23 +1573,12 @@ onBeforeUnmount(() => {
   line-height: 1.5;
 }
 
-/* -------------------------------------------------------------------------
-   Actions du detail : une paire assortie, payer en clair, contester en creux
-   ------------------------------------------------------------------------- */
-
-/* Les actions sont placees juste sous l'en-tete, avant le detail de la
-   facture : le bouton principal est visible sans defiler et rien n'est
-   superpose au contenu, donc aucune bande a raccorder au fond. */
 .billing-detail__actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
-
-/* Deux boutons cote a cote dans la largeur du telephone laissent 139 px
-   chacun : au-dela de 12 px le libelle passe sur deux lignes et deborde de la
-   hauteur fixe. */
-.billing-detail__actions :deep(.sky-button) {
+.billing-detail__actions :deep(.agent-button) {
   display: inline-flex;
   width: 100%;
   height: 44px;
@@ -1764,10 +1595,9 @@ onBeforeUnmount(() => {
     box-shadow 0.14s ease;
 }
 
-.billing-detail__actions :deep(.sky-button svg) {
+.billing-detail__actions :deep(.agent-button svg) {
   flex: 0 0 auto;
 }
-
 .billing-detail__actions :deep(.billing-action--pay) {
   border: 0;
   background: linear-gradient(180deg, #d6f766 0%, #bce33f 100%);
@@ -1776,7 +1606,6 @@ onBeforeUnmount(() => {
     inset 0 1px 0 rgb(255 255 255 / 55%);
   color: #14200c;
 }
-
 .billing-detail__actions :deep(.billing-action--dispute) {
   border: 1px solid var(--billing-border);
   background: var(--billing-surface);
@@ -1790,15 +1619,12 @@ onBeforeUnmount(() => {
     inset 0 1px 0 rgb(255 255 255 / 12%);
   color: #eaf7c8;
 }
-
 .billing-app--light .billing-detail__actions :deep(.billing-action--dispute) {
   background: rgb(255 255 255 / 82%);
 }
-
 .billing-action-chevron {
   transition: transform 0.14s ease;
 }
-
 @media (hover: hover) {
   .billing-detail__actions :deep(.billing-action:hover) {
     transform: translateY(-2px);
@@ -1822,14 +1648,9 @@ onBeforeUnmount(() => {
   }
 }
 
-/* -------------------------------------------------------------------------
-   Barre d'onglets
-   ------------------------------------------------------------------------- */
-
 .billing-tab-label {
   font-size: 10px;
 }
-
 .billing-tab-icon {
   position: relative;
   display: inline-grid;
@@ -1851,11 +1672,6 @@ onBeforeUnmount(() => {
   font-size: 9px;
   font-weight: 700;
 }
-
-/* -------------------------------------------------------------------------
-   Feuille de paiement
-   ------------------------------------------------------------------------- */
-
 .billing-payment-sheet__content {
   display: grid;
   justify-items: center;
@@ -1879,14 +1695,12 @@ onBeforeUnmount(() => {
   );
   color: var(--billing-accent);
 }
-
 .billing-payment-sheet h2 {
   margin: 0;
   font-size: 20px;
   font-weight: 680;
   letter-spacing: -0.3px;
 }
-
 .billing-payment-sheet p {
   margin: 0;
   max-width: 260px;
@@ -1915,7 +1729,6 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .billing-payment-total strong {
   font-size: 19px;
   font-weight: 680;
@@ -1923,22 +1736,19 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
-.billing-payment-sheet :deep(.sky-button) {
+.billing-payment-sheet :deep(.agent-button) {
   width: 100%;
 }
-
 .billing-notification {
   z-index: 50;
 }
-
-/* Sans color-mix, les surfaces translucides retombent sur un aplat. */
 @supports not (color: color-mix(in srgb, white, black)) {
   .billing-invoice-card,
   .billing-list-row,
   .billing-panel,
   .billing-note,
   .billing-payment-total,
-  .billing-search :deep(.sky-searchbar__control) {
+  .billing-search :deep(.agent-searchbar__control) {
     background: var(--billing-panel);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;

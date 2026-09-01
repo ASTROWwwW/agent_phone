@@ -21,9 +21,9 @@ describe('GalleryApp import action', () => {
   })
 
   it('keeps import available as a header button', () => {
-    expect(headerActions).toContain('<SkyToolbarPane')
+    expect(headerActions).toContain('<AgentToolbarPane')
     expect(headerActions).toContain('gallery-header-tool--icon')
-    expect(headerActions).toContain('<SkyButton')
+    expect(headerActions).toContain('<AgentButton')
     expect(headerActions).toContain('clear')
     expect(headerActions).toContain(
       '<Download :size="21" aria-hidden="true" />',
@@ -37,7 +37,7 @@ describe('GalleryApp import action', () => {
   })
 
   it('renders an iPhone-style large library header with filtered counts', () => {
-    expect(source).toContain('<SkyNavbar')
+    expect(source).toContain('<AgentNavbar')
     expect(source).toContain('variant="large"')
     expect(source).toContain(':title="phone.t(\'Apps.photos.library\')"')
     expect(source).toContain(':subtitle="countText"')
@@ -45,31 +45,31 @@ describe('GalleryApp import action', () => {
     expect(source).toContain('`Apps.photos.counts.${translationKey}`')
     expect(source).toContain('gridColumnStart: bottomRightGridPosition(')
     expect(source).toContain('gridRowStart: bottomRightGridPosition(')
-    expect(source).toContain('var(--sky-navbar-large-title-height) - 30px')
+    expect(source).toContain('var(--agent-navbar-large-title-height) - 30px')
     expect(source).toContain(
       'grid-template-columns: minmax(0, 1fr) 0 max-content;',
     )
     expect(source).toMatch(
-      /\.gallery-library-navbar :deep\(\.sky-navbar__right\)\s*\{[^}]*overflow:\s*visible;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none;[^}]*backdrop-filter:\s*none;/s,
+      /\.gallery-library-navbar :deep\(\.agent-navbar__right\)\s*\{[^}]*overflow:\s*visible;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none;[^}]*backdrop-filter:\s*none;/s,
     )
     expect(source).toMatch(
-      /\.gallery-header-tool\s*\{[^}]*height:\s*var\(--sky-touch-target\);/s,
+      /\.gallery-header-tool\s*\{[^}]*height:\s*var\(--agent-touch-target\);/s,
     )
   })
 
   it('uses the shared app tab bar for gallery filters', () => {
-    expect(source).toContain('<SkyTabBar')
+    expect(source).toContain('<AgentTabBar')
     expect(source).toContain('class="gallery-filter-tabbar"')
     expect(source).toContain('icons')
     expect(source).toContain('<Images :size="21" />')
     expect(source).toContain('<Image :size="21" />')
     expect(source).toContain('<Video :size="21" />')
-    expect(source).toContain('<SkyTabButton')
+    expect(source).toContain('<AgentTabButton')
     expect(source).toContain(':active="filter === \'all\'"')
     expect(source).toContain(':active="filter === \'photo\'"')
     expect(source).toContain(':active="filter === \'video\'"')
     expect(source).not.toContain('gallery-filter-navbar')
-    expect(source).not.toContain('<sky-segmented')
+    expect(source).not.toContain('<agent-segmented')
   })
 
   it('opens an accessible sort menu from the large header', () => {
@@ -77,7 +77,7 @@ describe('GalleryApp import action', () => {
     expect(headerActions).toContain('aria-haspopup="menu"')
     expect(headerActions).toContain(':aria-expanded="sortMenuOpened"')
     expect(headerActions).toContain('@click="openSortMenu"')
-    expect(source).toContain('<SkyDropdown')
+    expect(source).toContain('<AgentDropdown')
     expect(source).toContain(':target="sortMenuTarget"')
     expect(source).toContain(':items="sortMenuItems"')
     expect(source).toContain("id: 'sort-newest'")
@@ -111,17 +111,17 @@ describe('GalleryApp import action', () => {
     expect(source).toContain('selectedCountText')
     expect(source).toContain('shareSelection')
     expect(
-      source.match(/<SkyToolbarPane class="gallery-selection-action">/g),
+      source.match(/<AgentToolbarPane class="gallery-selection-action">/g),
     ).toHaveLength(2)
     expect(source).toContain('<div class="gallery-selection-actions">')
     expect(source).toMatch(
-      /\.gallery-selection-actions\s*\{[^}]*display:\s*flex;[^}]*gap:\s*var\(--sky-space-2\);/s,
+      /\.gallery-selection-actions\s*\{[^}]*display:\s*flex;[^}]*gap:\s*var\(--agent-space-2\);/s,
     )
     expect(source).toMatch(
       /\.gallery-selection-action\s*\{[^}]*width:\s*48px;[^}]*flex:\s*0 0 48px;/s,
     )
     expect(source).toMatch(
-      /\.gallery-selection-action :deep\(\.sky-button\)\s*\{[^}]*color:\s*#fff;/s,
+      /\.gallery-selection-action :deep\(\.agent-button\)\s*\{[^}]*color:\s*#fff;/s,
     )
     expect(source).toContain("kind: 'media'")
     expect(source).toContain("nuiCall('gallery:delete-many'")
@@ -137,9 +137,9 @@ describe('GalleryApp import action', () => {
     expect(source).toContain("nuiCall<FavoriteResult>('gallery:favorite'")
     expect(source).toContain('<Heart')
     expect(source).toContain('gallery-detail-toolbar')
-    expect(source).toContain('<SkyToolbarPane class="gallery-detail-action">')
+    expect(source).toContain('<AgentToolbarPane class="gallery-detail-action">')
     expect(source).toMatch(
-      /<SkyButton\s+icon-only\s+rounded\s+clear\s+class="gallery-detail-back"/,
+      /<AgentButton\s+icon-only\s+rounded\s+clear\s+class="gallery-detail-back"/,
     )
     expect(source).toMatch(
       /\.gallery-detail-navbar :deep\(\.gallery-detail-back\)\s*\{[^}]*color:\s*#fff;/s,
@@ -152,7 +152,7 @@ describe('GalleryApp import action', () => {
       /\.gallery-detail-action\s*\{[^}]*width:\s*48px;[^}]*flex:\s*0 0 48px;/s,
     )
     expect(source).toMatch(
-      /\.gallery-detail-toolbar :deep\(\.sky-button\)\s*\{[^}]*color:\s*#fff;/s,
+      /\.gallery-detail-toolbar :deep\(\.agent-button\)\s*\{[^}]*color:\s*#fff;/s,
     )
     expect(source).toContain('shareSelected')
     expect(source).toContain('deleteDialogOpened = true')

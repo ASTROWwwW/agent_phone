@@ -1,43 +1,43 @@
-.sky-settings-group {
+.agent-settings-group {
   min-width: 0;
   margin: 0 0 32px;
 }
 
-.sky-settings-group__title {
+.agent-settings-group__title {
   margin: 32px 16px 8px;
   padding: 0;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 13px;
   font-weight: 400;
   line-height: 18px;
 }
 
-.sky-settings-group:first-child > .sky-settings-group__title:first-child {
+.agent-settings-group:first-child > .agent-settings-group__title:first-child {
   margin-top: 0;
 }
 
-.sky-settings-group__list {
+.agent-settings-group__list {
   min-width: 0;
   margin: 0;
   padding: 0;
   overflow: hidden;
   border: 0;
-  border-radius: var(--sky-radius-card);
-  background: var(--sky-surface);
-  color: var(--sky-text);
+  border-radius: var(--agent-radius-card);
+  background: var(--agent-surface);
+  color: var(--agent-text);
   list-style: none;
 }
 
-.sky-settings-group__footer {
+.agent-settings-group__footer {
   margin: 8px 16px 0;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 13px;
   line-height: 18px;
 }
 
-.sky-settings-row,
-.sky-settings-range-row,
-.sky-settings-group__list > .sky-field {
+.agent-settings-row,
+.agent-settings-range-row,
+.agent-settings-group__list > .agent-field {
   position: relative;
   min-width: 0;
   margin: 0;
@@ -46,7 +46,7 @@
   list-style: none;
 }
 
-.sky-settings-group__list > li + li::before {
+.agent-settings-group__list > li + li::before {
   position: absolute;
   z-index: 2;
   top: 0;
@@ -54,23 +54,23 @@
   left: 16px;
   height: 1px;
   content: '';
-  background: var(--sky-hairline);
+  background: var(--agent-hairline);
   pointer-events: none;
-  transform: scaleY(var(--sky-hairline-scale, 1));
+  transform: scaleY(var(--agent-hairline-scale, 1));
   transform-origin: center top;
 }
 
-.sky-settings-group__list
-  > .sky-settings-row--has-media
-  + .sky-settings-row::before,
-.sky-settings-group__list
-  > .sky-settings-row
-  + .sky-settings-row--has-media::before {
+.agent-settings-group__list
+  > .agent-settings-row--has-media
+  + .agent-settings-row::before,
+.agent-settings-group__list
+  > .agent-settings-row
+  + .agent-settings-row--has-media::before {
   left: 50px;
 }
 
-.sky-settings-row__frame,
-.sky-settings-range-row__frame {
+.agent-settings-row__frame,
+.agent-settings-range-row__frame {
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -84,7 +84,7 @@
   border-radius: 0;
   appearance: none;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font: inherit;
   text-align: left;
   transition:
@@ -94,36 +94,36 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-button.sky-settings-row__frame {
+button.agent-settings-row__frame {
   cursor: pointer;
 }
 
-button.sky-settings-row__frame:active:not(:disabled) {
-  background: var(--sky-pressed);
+button.agent-settings-row__frame:active:not(:disabled) {
+  background: var(--agent-pressed);
   transform: scale(0.995);
   transition-duration: 0ms;
 }
 
-button.sky-settings-row__frame:focus-visible {
-  outline: 2px solid var(--sky-app-accent);
+button.agent-settings-row__frame:focus-visible {
+  outline: 2px solid var(--agent-app-accent);
   outline-offset: -2px;
 }
 
-.sky-settings-row__leading,
-.sky-settings-row__accessory,
-.sky-settings-row__trailing {
+.agent-settings-row__leading,
+.agent-settings-row__accessory,
+.agent-settings-row__trailing {
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
 }
 
-.sky-settings-row__leading {
+.agent-settings-row__leading {
   width: 25px;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
-.sky-settings-row__content {
+.agent-settings-row__content {
   min-width: 0;
   display: flex;
   flex: 1 1 auto;
@@ -131,7 +131,7 @@ button.sky-settings-row__frame:focus-visible {
   gap: 2px;
 }
 
-.sky-settings-row__title {
+.agent-settings-row__title {
   min-width: 0;
   color: inherit;
   font-size: 17px;
@@ -140,23 +140,23 @@ button.sky-settings-row__frame:focus-visible {
   overflow-wrap: anywhere;
 }
 
-label.sky-settings-row__title {
+label.agent-settings-row__title {
   cursor: pointer;
 }
 
-.sky-settings-row__description {
-  color: var(--sky-muted);
+.agent-settings-row__description {
+  color: var(--agent-muted);
   font-size: 14px;
   line-height: 18px;
 }
 
-.sky-settings-row__accessory {
+.agent-settings-row__accessory {
   min-width: 0;
   gap: 4px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
-.sky-settings-row__value {
+.agent-settings-row__value {
   max-width: 126px;
   overflow: hidden;
   font-size: 17px;
@@ -166,30 +166,30 @@ label.sky-settings-row__title {
   white-space: nowrap;
 }
 
-.sky-settings-row__chevron {
+.agent-settings-row__chevron {
   opacity: 0.62;
 }
 
-.sky-settings-row__check {
-  color: var(--sky-app-accent);
+.agent-settings-row__check {
+  color: var(--agent-app-accent);
 }
 
-.sky-settings-row--accent .sky-settings-row__title,
-.sky-settings-row--action.sky-settings-row--default .sky-settings-row__title {
-  color: var(--sky-app-accent);
+.agent-settings-row--accent .agent-settings-row__title,
+.agent-settings-row--action.agent-settings-row--default .agent-settings-row__title {
+  color: var(--agent-app-accent);
 }
 
-.sky-settings-row--danger .sky-settings-row__title {
-  color: var(--sky-danger);
+.agent-settings-row--danger .agent-settings-row__title {
+  color: var(--agent-danger);
 }
 
-.sky-settings-row--disabled,
-.sky-settings-row--pending,
-.sky-settings-range-row--disabled {
+.agent-settings-row--disabled,
+.agent-settings-row--pending,
+.agent-settings-range-row--disabled {
   opacity: 0.46;
 }
 
-.sky-settings-range-row__frame {
+.agent-settings-range-row__frame {
   min-height: 88px;
   padding-top: 12px;
   padding-bottom: 14px;
@@ -198,76 +198,76 @@ label.sky-settings-row__title {
   gap: 10px;
 }
 
-.sky-settings-group--compact .sky-settings-row__frame,
-.sky-settings-group--compact .sky-settings-range-row__frame {
+.agent-settings-group--compact .agent-settings-row__frame,
+.agent-settings-group--compact .agent-settings-range-row__frame {
   min-height: 76px;
   padding-top: 6px;
   padding-bottom: 6px;
 }
 
-.sky-settings-range-row__header,
-.sky-settings-range-row__control {
+.agent-settings-range-row__header,
+.agent-settings-range-row__control {
   min-width: 0;
   display: flex;
   align-items: center;
 }
 
-.sky-settings-range-row__header {
+.agent-settings-range-row__header {
   justify-content: space-between;
   gap: 16px;
 }
 
-.sky-settings-range-row__title,
-.sky-settings-range-row__value {
+.agent-settings-range-row__title,
+.agent-settings-range-row__value {
   font-size: 17px;
   line-height: 22px;
 }
 
-.sky-settings-range-row__title {
+.agent-settings-range-row__title {
   min-width: 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
   overflow-wrap: anywhere;
 }
 
-.sky-settings-range-row__value {
+.agent-settings-range-row__value {
   flex: none;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.sky-settings-range-row__control {
+.agent-settings-range-row__control {
   min-height: 28px;
   gap: 12px;
 }
 
-.sky-settings-range-row__control .sky-range {
+.agent-settings-range-row__control .agent-range {
   width: 100%;
   flex: 1 1 auto;
 }
 
-.sky-settings-range-row__endpoint {
+.agent-settings-range-row__endpoint {
   width: 24px;
   height: 28px;
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
-.sky-settings-range-row__endpoint > svg {
+.agent-settings-range-row__endpoint > svg {
   width: 22px;
   height: 22px;
   display: block;
 }
 
-.sky-settings-range-row__endpoint--leading > svg {
+.agent-settings-range-row__endpoint--leading > svg {
   width: 17px;
   height: 17px;
 }
 
-.sky-settings-icon {
+.agent-settings-icon {
   width: 28px;
   height: 28px;
   display: inline-flex;
@@ -276,81 +276,81 @@ label.sky-settings-row__title {
   justify-content: center;
   overflow: hidden;
   border-radius: 7px;
-  background: var(--sky-settings-icon-color, var(--sky-app-accent));
+  background: var(--agent-settings-icon-color, var(--agent-app-accent));
   color: #ffffff;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 35%),
     0 1px 2px rgb(0 0 0 / 25%);
 }
 
-.sky-settings-icon > svg {
+.agent-settings-icon > svg {
   width: 17px;
   height: 17px;
   display: block;
 }
 
-.sky-settings-group__list > .sky-field {
+.agent-settings-group__list > .agent-field {
   min-height: 52px;
-  padding: var(--sky-space-1) 16px;
+  padding: var(--agent-space-1) 16px;
 }
 
-.sky-settings-group__list > .sky-field .sky-field__inner {
+.agent-settings-group__list > .agent-field .agent-field__inner {
   padding: 0;
 }
 
-.sky-settings-group__list
-  > .sky-field:not(.sky-field--has-label)
-  .sky-field__inner {
+.agent-settings-group__list
+  > .agent-field:not(.agent-field--has-label)
+  .agent-field__inner {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.sky-settings-group__list
-  > .sky-field:not(.sky-field--has-label)
-  .sky-field__control {
+.agent-settings-group__list
+  > .agent-field:not(.agent-field--has-label)
+  .agent-field__control {
   margin: 0;
 }
 
-.sky-settings-group__list > .sky-field .sky-field__label {
+.agent-settings-group__list > .agent-field .agent-field__label {
   font-size: 13px;
   line-height: 18px;
 }
 
-.sky-settings-group__list > .sky-field .sky-field__input {
+.agent-settings-group__list > .agent-field .agent-field__input {
   font-size: 17px;
 }
 
-.sky-settings-group__list > .sky-field--inline {
+.agent-settings-group__list > .agent-field--inline {
   display: flex;
 }
 
-.sky-settings-group__list > .sky-field--inline .sky-field__inner {
+.agent-settings-group__list > .agent-field--inline .agent-field__inner {
   display: grid;
   grid-template-columns: minmax(0, 42%) minmax(0, 58%);
   align-items: center;
   column-gap: 12px;
 }
 
-.sky-settings-group__list > .sky-field--inline .sky-field__label {
+.agent-settings-group__list > .agent-field--inline .agent-field__label {
   margin: 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 17px;
   font-weight: 400;
   line-height: 22px;
 }
 
-.sky-settings-group__list > .sky-field--inline .sky-field__control {
+.agent-settings-group__list > .agent-field--inline .agent-field__control {
   justify-content: flex-end;
   margin: 0;
 }
 
-.sky-settings-group__list > .sky-field--inline .sky-field__input {
+.agent-settings-group__list > .agent-field--inline .agent-field__input {
   text-align: right;
 }
 
-.sky-settings-group__list > .sky-field--inline .sky-field__help,
-.sky-settings-group__list > .sky-field--inline .sky-field__error,
-.sky-settings-group__list > .sky-field--inline .sky-field__info {
+.agent-settings-group__list > .agent-field--inline .agent-field__help,
+.agent-settings-group__list > .agent-field--inline .agent-field__error,
+.agent-settings-group__list > .agent-field--inline .agent-field__info {
   grid-column: 1 / -1;
 }

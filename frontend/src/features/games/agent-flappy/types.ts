@@ -1,7 +1,7 @@
-export type SkyFlappyStatus = 'over' | 'paused' | 'playing' | 'ready'
-export type SkyFlappyDesign = 'dawn' | 'neon' | 'storm'
+export type AgentFlappyStatus = 'over' | 'paused' | 'playing' | 'ready'
+export type AgentFlappyDesign = 'dawn' | 'neon' | 'storm'
 
-export type SkyFlappyObstacle = {
+export type AgentFlappyObstacle = {
   gapHeight: number
   gapTop: number
   id: number
@@ -9,11 +9,11 @@ export type SkyFlappyObstacle = {
   x: number
 }
 
-export type SkyFlappyGameState = {
+export type AgentFlappyGameState = {
   nextObstacleId: number
-  obstacles: SkyFlappyObstacle[]
+  obstacles: AgentFlappyObstacle[]
   playerVelocity: number
   playerY: number
   score: number
-  status: SkyFlappyStatus
+  status: AgentFlappyStatus
 }

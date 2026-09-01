@@ -7,8 +7,8 @@ const source = readFileSync(
   'utf8',
 )
 const navigationSource = source.slice(
-  source.indexOf('<SkyPillNavigation'),
-  source.indexOf('</SkyPillNavigation>') + '</SkyPillNavigation>'.length,
+  source.indexOf('<AgentPillNavigation'),
+  source.indexOf('</AgentPillNavigation>') + '</AgentPillNavigation>'.length,
 )
 const requestFilterSource = source.slice(
   source.indexOf('<div class="companies-segment-wrap">'),
@@ -19,22 +19,22 @@ const requestFilterSource = source.slice(
 )
 const availabilitySources =
   source.match(
-    /<SkySegmented\s+class=\x22availability-segmented\x22[\s\S]*?<\/SkySegmented>/g,
+    /<AgentSegmented\s+class=\x22availability-segmented\x22[\s\S]*?<\/AgentSegmented>/g,
   ) ?? []
 
-describe('CompaniesApp Sky pill navigation contract', () => {
+describe('CompaniesApp Agent pill navigation contract', () => {
   it('uses the full-width sliding glass navigation on the root screen', () => {
-    expect(source).not.toContain('<SkyTabBar')
-    expect(source).not.toContain('<SkyTabButton')
-    expect(source).toContain('<SkyPillNavigation')
+    expect(source).not.toContain('<AgentTabBar')
+    expect(source).not.toContain('<AgentTabButton')
+    expect(source).toContain('<AgentPillNavigation')
     expect(source).toContain('v-if="screen === \'root\'"')
     expect(source).toContain('layout="full"')
-    expect(source).toContain('<SkySegmented')
+    expect(source).toContain('<AgentSegmented')
     expect(source).toContain('navigation')
     expect(source).toContain(':active-index="activeTabIndex"')
     expect(source).toContain(':data-active-tab="activeTab"')
     expect(source).toContain(':item-count="3"')
-    expect(navigationSource.match(/<SkySegmentedButton\b/g)).toHaveLength(3)
+    expect(navigationSource.match(/<AgentSegmentedButton\b/g)).toHaveLength(3)
     expect(navigationSource).not.toContain('compact')
   })
 
@@ -54,7 +54,7 @@ describe('CompaniesApp Sky pill navigation contract', () => {
   })
 
   it('uses the shared sliding Glass system for the request-state filter', () => {
-    expect(requestFilterSource).toContain('<SkySegmented')
+    expect(requestFilterSource).toContain('<AgentSegmented')
     expect(requestFilterSource).toContain('compact')
     expect(requestFilterSource).toContain('navigation')
     expect(requestFilterSource).toContain('strong')
@@ -65,7 +65,7 @@ describe('CompaniesApp Sky pill navigation contract', () => {
     expect(requestFilterSource).toContain(
       ':aria-label="phone.t(\'Apps.companies.tabs.requests\')"',
     )
-    expect(requestFilterSource.match(/<SkySegmentedButton\b/g)).toHaveLength(2)
+    expect(requestFilterSource.match(/<AgentSegmentedButton\b/g)).toHaveLength(2)
   })
 
   it('uses compact sliding Glass for both availability controls', () => {

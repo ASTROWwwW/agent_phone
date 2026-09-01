@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {
-  SkyButton as kButton,
-  SkyField as kListInput,
-  SkyList as kList,
-  SkySegmented as kSegmented,
-  SkySegmentedButton as kSegmentedButton,
-  SkySpinner as kPreloader,
+  AgentButton as kButton,
+  AgentField as kListInput,
+  AgentList as kList,
+  AgentSegmented as kSegmented,
+  AgentSegmentedButton as kSegmentedButton,
+  AgentSpinner as kPreloader,
 } from '@/ui'
 import { computed, ref } from 'vue'
 
@@ -170,7 +170,7 @@ async function submit(): Promise<void> {
   text-align: center;
 }
 .ifruit-app-auth > small {
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;

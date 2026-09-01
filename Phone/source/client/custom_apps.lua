@@ -420,7 +420,7 @@ local function normalize_external_definition_value(owner_resource, adapter_resou
     end
 
     local bridge_mode = definition.bridgeMode or "legacy"
-    if bridge_mode ~= "sky" and bridge_mode ~= "legacy" then
+    if bridge_mode ~= "agent" and bridge_mode ~= "legacy" then
         return nil, "invalid_bridge_mode"
     end
 

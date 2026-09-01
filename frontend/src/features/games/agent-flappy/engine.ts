@@ -1,4 +1,4 @@
-import type { SkyFlappyGameState, SkyFlappyObstacle } from './types'
+import type { AgentFlappyGameState, AgentFlappyObstacle } from './types'
 
 export const FLAPPY_PLAYER_X = 23
 export const FLAPPY_PLAYER_RADIUS = 3.2
@@ -12,7 +12,7 @@ export const FLAPPY_MAX_GAP_TOP = 56
 export const FLAPPY_BASE_SPEED = 20.5
 export const FLAPPY_MAX_SPEED = 40
 
-export function getSkyFlappyDifficulty(score: number): {
+export function getAgentFlappyDifficulty(score: number): {
   gapHeight: number
   speed: number
 } {
@@ -22,7 +22,7 @@ export function getSkyFlappyDifficulty(score: number): {
   }
 }
 
-export function createSkyFlappyGame(): SkyFlappyGameState {
+export function createAgentFlappyGame(): AgentFlappyGameState {
   return {
     nextObstacleId: 1,
     obstacles: [],
@@ -33,7 +33,7 @@ export function createSkyFlappyGame(): SkyFlappyGameState {
   }
 }
 
-export function flapSkyGlider(state: SkyFlappyGameState): SkyFlappyGameState {
+export function flapAgentGlider(state: AgentFlappyGameState): AgentFlappyGameState {
   if (state.status === 'over' || state.status === 'paused') return state
   return { ...state, playerVelocity: FLAPPY_IMPULSE, status: 'playing' }
 }
@@ -42,7 +42,7 @@ function createObstacle(
   id: number,
   gapHeight: number,
   random: () => number,
-): SkyFlappyObstacle {
+): AgentFlappyObstacle {
   return {
     gapHeight,
     gapTop:
@@ -57,7 +57,7 @@ function createObstacle(
 
 function collidesWithObstacle(
   playerY: number,
-  obstacle: SkyFlappyObstacle,
+  obstacle: AgentFlappyObstacle,
 ): boolean {
   const horizontalCollision =
     FLAPPY_PLAYER_X + FLAPPY_PLAYER_RADIUS > obstacle.x &&
@@ -71,14 +71,14 @@ function collidesWithObstacle(
   )
 }
 
-export function stepSkyFlappy(
-  state: SkyFlappyGameState,
+export function stepAgentFlappy(
+  state: AgentFlappyGameState,
   elapsedSeconds: number,
   random: () => number = Math.random,
-): SkyFlappyGameState {
+): AgentFlappyGameState {
   if (state.status !== 'playing' || elapsedSeconds <= 0) return state
 
-  const difficulty = getSkyFlappyDifficulty(state.score)
+  const difficulty = getAgentFlappyDifficulty(state.score)
   const playerVelocity = state.playerVelocity + FLAPPY_GRAVITY * elapsedSeconds
   const playerY = state.playerY + playerVelocity * elapsedSeconds
   let nextObstacleId = state.nextObstacleId
@@ -124,14 +124,14 @@ export function stepSkyFlappy(
   }
 }
 
-export function pauseSkyFlappy(
-  state: SkyFlappyGameState,
-): SkyFlappyGameState {
+export function pauseAgentFlappy(
+  state: AgentFlappyGameState,
+): AgentFlappyGameState {
   return state.status === 'playing' ? { ...state, status: 'paused' } : state
 }
 
-export function resumeSkyFlappy(
-  state: SkyFlappyGameState,
-): SkyFlappyGameState {
+export function resumeAgentFlappy(
+  state: AgentFlappyGameState,
+): AgentFlappyGameState {
   return state.status === 'paused' ? { ...state, status: 'playing' } : state
 }

@@ -39,10 +39,10 @@ describe('FlareApp profile editing contract', () => {
 
   it('uses the central anchored AgentDropdown for photo sources while editing', () => {
     const triggerClass = source.indexOf('class="flare-photo-add"')
-    const triggerStart = source.lastIndexOf('<sky-button', triggerClass)
-    const triggerEnd = source.indexOf('</sky-button>', triggerClass)
+    const triggerStart = source.lastIndexOf('<agent-button', triggerClass)
+    const triggerEnd = source.indexOf('</agent-button>', triggerClass)
     const trigger = source.slice(triggerStart, triggerEnd)
-    const dropdownStart = source.search(/<SkyDropdown\b/)
+    const dropdownStart = source.search(/<AgentDropdown\b/)
     const dropdownEnd = source.indexOf('/>', dropdownStart)
     const dropdown = source.slice(dropdownStart, dropdownEnd)
     const pickerStart = source.indexOf('function openPhotoSourcePicker')
@@ -91,7 +91,7 @@ describe('FlareApp profile editing contract', () => {
 
     expect(source).not.toContain('flare-photo-source-sheet')
     expect(source).not.toMatch(
-      /<sky-action-sheet\b[\s\S]*?openProfileMediaApp\(['"](?:photos|camera)['"]\)[\s\S]*?<\/sky-action-sheet>/i,
+      /<agent-action-sheet\b[\s\S]*?openProfileMediaApp\(['"](?:photos|camera)['"]\)[\s\S]*?<\/agent-action-sheet>/i,
     )
     expect(mediaAppStart).toBeGreaterThan(-1)
     expect(mediaAppEnd).toBeGreaterThan(mediaAppStart)
@@ -120,7 +120,7 @@ describe('FlareApp profile editing contract', () => {
     )
     expect(
       source.match(
-        /<sky-link\s+v-if="draftPhotos\.length > 1"[\s\S]*?class="flare-photo-remove"/g,
+        /<agent-link\s+v-if="draftPhotos\.length > 1"[\s\S]*?class="flare-photo-remove"/g,
       ),
     ).toHaveLength(2)
     expect(source.match(/Apps\.flare\.profilePhotoRequired/g)).toHaveLength(2)
@@ -149,8 +149,8 @@ describe('FlareApp profile editing contract', () => {
 
   it('opens the relationship goal editor from the profile summary card', () => {
     const cardClass = source.indexOf('class="flare-profile-card"')
-    const cardStart = source.lastIndexOf('<sky-card', cardClass)
-    const cardEnd = source.indexOf('</sky-card>', cardClass)
+    const cardStart = source.lastIndexOf('<agent-card', cardClass)
+    const cardEnd = source.indexOf('</agent-card>', cardClass)
     const card = source.slice(cardStart, cardEnd)
 
     expect(cardClass).toBeGreaterThan(-1)
@@ -166,10 +166,10 @@ describe('FlareApp profile editing contract', () => {
     )
   })
 
-  it('uses the central surfaced SkyNavbar back action for profile screens', () => {
+  it('uses the central surfaced AgentNavbar back action for profile screens', () => {
     const mainNavbarStart =
-      source.match(/<template v-else>\s*<sky-navbar/)?.index ?? -1
-    const mainNavbarEnd = source.indexOf('</sky-navbar>', mainNavbarStart)
+      source.match(/<template v-else>\s*<agent-navbar/)?.index ?? -1
+    const mainNavbarEnd = source.indexOf('</agent-navbar>', mainNavbarStart)
     const navbar = source.slice(mainNavbarStart, mainNavbarEnd)
 
     expect(mainNavbarStart).toBeGreaterThan(-1)
@@ -191,7 +191,7 @@ describe('FlareApp profile editing contract', () => {
   })
 
   it('exposes confirmed sign-out and destructive Flare account deletion', () => {
-    expect(source).toContain('<sky-settings-group')
+    expect(source).toContain('<agent-settings-group')
     expect(source).toContain('@activate="signOutDialogOpened = true"')
     expect(source).toContain('@activate="deleteAccountDialogOpened = true"')
     expect(source).toContain(':opened="deleteAccountDialogOpened"')

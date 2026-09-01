@@ -17,12 +17,12 @@ describe('Picstagram app layout', () => {
     expect(source).toContain('count(post.comment_count)')
     expect(source).toContain('class="ps-home-navbar"')
     expect(source).toMatch(
-      /\.ps-home-navbar :deep\(\.sky-navbar__inner\)\s*\{[^}]*margin-bottom:\s*2px;[^}]*translateY\(-3px\)/s,
+      /\.ps-home-navbar :deep\(\.agent-navbar__inner\)\s*\{[^}]*margin-bottom:\s*2px;[^}]*translateY\(-3px\)/s,
     )
   })
 
   it('uses the central anchored dropdown for image actions', () => {
-    expect(source).toContain('<SkyDropdown')
+    expect(source).toContain('<AgentDropdown')
     expect(source).toContain(':target="postMenuTarget"')
     expect(source).toContain('@select="selectPostMenuItem"')
     expect(source).toContain('showPostActions($event, post)')

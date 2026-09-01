@@ -33,29 +33,29 @@ import {
   X,
 } from 'lucide-vue-next'
 import {
-  SkyBlock,
-  SkyButton,
-  SkyFab,
-  SkyGlass,
-  SkyIcon,
-  SkyLink,
-  SkyList,
-  SkyField,
-  SkyListItem,
-  SkyNavbar,
-  SkyNavbarBackLink,
-  SkyPillNavigation,
-  SkyAppPage,
-  SkyScrollArea,
-  SkyScrollRail,
-  SkySpinner,
-  SkySearchbar,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySheet,
-  SkyNotification,
-  SkyToggle,
-  SkyMessagebar,
+  AgentBlock,
+  AgentButton,
+  AgentFab,
+  AgentGlass,
+  AgentIcon,
+  AgentLink,
+  AgentList,
+  AgentField,
+  AgentListItem,
+  AgentNavbar,
+  AgentNavbarBackLink,
+  AgentPillNavigation,
+  AgentAppPage,
+  AgentScrollArea,
+  AgentScrollRail,
+  AgentSpinner,
+  AgentSearchbar,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSheet,
+  AgentNotification,
+  AgentToggle,
+  AgentMessagebar,
 } from '@/ui'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -929,7 +929,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     component="main"
     class="feather-app"
     :class="{
@@ -951,7 +951,7 @@ onMounted(async () => {
       'feather-app--compact': compactMode,
     }"
   >
-    <SkyNavbar
+    <AgentNavbar
       v-if="feather.onboarded && isAuthenticated"
       class="feather-navbar"
       :subtitle="screen === 'main' && tab === 'home' ? undefined : t('name')"
@@ -965,13 +965,13 @@ onMounted(async () => {
         />
       </template>
       <template v-if="screen !== 'main'" #left>
-        <SkyNavbarBackLink
+        <AgentNavbarBackLink
           v-if="screen === 'profile'"
           :text="t('back')"
           :show-text="false"
           @click="goBack"
         />
-        <SkyLink
+        <AgentLink
           v-else-if="screen === 'composer'"
           component="button"
           class="feather-composer-close"
@@ -980,8 +980,8 @@ onMounted(async () => {
           @click="goBack"
         >
           <X :size="16" />
-        </SkyLink>
-        <SkyNavbarBackLink
+        </AgentLink>
+        <AgentNavbarBackLink
           v-else
           :class="{ 'feather-edit__navbar-back': screen === 'edit' }"
           :text="t('back')"
@@ -990,7 +990,7 @@ onMounted(async () => {
         />
       </template>
       <template #right>
-        <SkyButton
+        <AgentButton
           v-if="screen === 'composer'"
           rounded
           small
@@ -1000,8 +1000,8 @@ onMounted(async () => {
           @click="publish"
         >
           {{ busy ? t('posting') : t('post') }}
-        </SkyButton>
-        <SkyButton
+        </AgentButton>
+        <AgentButton
           v-else-if="screen === 'edit'"
           icon-only
           rounded
@@ -1011,10 +1011,10 @@ onMounted(async () => {
           :aria-label="busy ? t('loading') : t('saveProfile')"
           @click="saveProfile"
         >
-          <SkySpinner v-if="busy" :size="15" />
+          <AgentSpinner v-if="busy" :size="15" />
           <Check v-else :size="16" :stroke-width="2.8" />
-        </SkyButton>
-        <SkyButton
+        </AgentButton>
+        <AgentButton
           v-else-if="
             ((screen === 'main' && tab === 'profile') ||
               screen === 'profile') &&
@@ -1028,12 +1028,12 @@ onMounted(async () => {
           @click="logoutDialogOpen = true"
         >
           <LogOut :size="16" />
-        </SkyButton>
+        </AgentButton>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
     <div v-if="feather.loading && !feather.onboarded" class="feather-loading">
-      <SkySpinner class="text-[#438cf5]" />
+      <AgentSpinner class="text-[#438cf5]" />
       <span>{{ t('loading') }}</span>
     </div>
 
@@ -1082,8 +1082,8 @@ onMounted(async () => {
             <p>{{ t('profileDetailsHint') }}</p>
           </div>
         </div>
-        <SkyList strong inset class="feather-onboarding__fields">
-          <SkyField
+        <AgentList strong inset class="feather-onboarding__fields">
+          <AgentField
             :value="onboarding.displayName"
             :label="t('displayName')"
             :placeholder="t('displayNamePlaceholder')"
@@ -1091,8 +1091,8 @@ onMounted(async () => {
             @input="onboarding.displayName = inputValue($event)"
           >
             <template #media><UserRound :size="18" /></template>
-          </SkyField>
-          <SkyField
+          </AgentField>
+          <AgentField
             :value="onboarding.handle"
             :label="t('handle')"
             :placeholder="t('handlePlaceholder')"
@@ -1101,8 +1101,8 @@ onMounted(async () => {
             @input="onboarding.handle = inputValue($event)"
           >
             <template #media><AtSign :size="18" /></template>
-          </SkyField>
-          <SkyField
+          </AgentField>
+          <AgentField
             :value="onboarding.bio"
             type="textarea"
             :label="t('bio')"
@@ -1112,10 +1112,10 @@ onMounted(async () => {
             @input="onboarding.bio = inputValue($event)"
           >
             <template #media><AlignLeft :size="18" /></template>
-          </SkyField>
-        </SkyList>
+          </AgentField>
+        </AgentList>
       </div>
-      <SkyButton
+      <AgentButton
         large
         rounded
         :disabled="!canCreateProfile"
@@ -1123,8 +1123,8 @@ onMounted(async () => {
         @click="createProfile"
       >
         {{ t('start') }}
-      </SkyButton>
-      <SkyButton
+      </AgentButton>
+      <AgentButton
         large
         rounded
         outline
@@ -1133,7 +1133,7 @@ onMounted(async () => {
       >
         <LogOut :size="16" />
         {{ phone.t('Common.signOut') }}
-      </SkyButton>
+      </AgentButton>
     </section>
 
     <template v-else>
@@ -1141,7 +1141,7 @@ onMounted(async () => {
         <p v-if="replyTo" class="feather-replying">
           {{ t('replyingTo', { handle: replyTo.handle }) }}
         </p>
-        <SkyGlass :highlight="false" class="feather-composer-card">
+        <AgentGlass :highlight="false" class="feather-composer-card">
           <div class="feather-composer-card__inner">
             <div class="feather-composer__identity">
               <div class="feather-compose-avatar">
@@ -1174,7 +1174,7 @@ onMounted(async () => {
               }}</b>
             </div>
           </div>
-        </SkyGlass>
+        </AgentGlass>
 
         <section class="feather-composer-media">
           <header>
@@ -1186,7 +1186,7 @@ onMounted(async () => {
             <b>{{ photos.length }} / 4</b>
           </header>
           <div class="feather-composer-media__actions">
-            <SkyGlass :highlight="false">
+            <AgentGlass :highlight="false">
               <button
                 type="button"
                 :disabled="photos.length >= 4"
@@ -1196,8 +1196,8 @@ onMounted(async () => {
                 <strong>{{ t('chooseGallery') }}</strong>
                 <small>{{ t('chooseGalleryBody') }}</small>
               </button>
-            </SkyGlass>
-            <SkyGlass :highlight="false">
+            </AgentGlass>
+            <AgentGlass :highlight="false">
               <button
                 type="button"
                 :disabled="photos.length >= 4"
@@ -1207,7 +1207,7 @@ onMounted(async () => {
                 <strong>{{ t('takePhoto') }}</strong>
                 <small>{{ t('takePhotoBody') }}</small>
               </button>
-            </SkyGlass>
+            </AgentGlass>
           </div>
           <div v-if="photos.length" class="feather-composer-media__selected">
             <div class="feather-composer-media__selected-head">
@@ -1254,19 +1254,19 @@ onMounted(async () => {
         <div class="feather-edit__photo">
           <strong>{{ t('chooseAvatar') }}</strong>
           <div class="feather-edit__photo-actions">
-            <SkyButton tonal rounded @click="openProfileMedia('photos')">
+            <AgentButton tonal rounded @click="openProfileMedia('photos')">
               <Images :size="16" />
               <span>{{ t('chooseGallery') }}</span>
-            </SkyButton>
-            <SkyButton tonal rounded @click="openProfileMedia('camera')">
+            </AgentButton>
+            <AgentButton tonal rounded @click="openProfileMedia('camera')">
               <Camera :size="16" />
               <span>{{ t('takePhoto') }}</span>
-            </SkyButton>
+            </AgentButton>
           </div>
         </div>
 
-        <SkyList strong inset class="feather-edit__fields">
-          <SkyField
+        <AgentList strong inset class="feather-edit__fields">
+          <AgentField
             :value="editing.displayName"
             :label="t('displayName')"
             :placeholder="t('displayNamePlaceholder')"
@@ -1275,8 +1275,8 @@ onMounted(async () => {
             @input="editing.displayName = inputValue($event)"
           >
             <template #media><UserRound :size="18" /></template>
-          </SkyField>
-          <SkyField
+          </AgentField>
+          <AgentField
             :value="editing.bio"
             type="textarea"
             :label="t('bio')"
@@ -1286,40 +1286,40 @@ onMounted(async () => {
             @input="editing.bio = inputValue($event)"
           >
             <template #media><AlignLeft :size="18" /></template>
-          </SkyField>
-        </SkyList>
+          </AgentField>
+        </AgentList>
       </section>
 
-      <SkyScrollArea
+      <AgentScrollArea
         v-else-if="screen === 'connections' && activeProfile"
         class="feather-scroll feather-connections"
       >
-        <SkySegmented class="feather-connections__tabs">
-          <SkySegmentedButton
+        <AgentSegmented class="feather-connections__tabs">
+          <AgentSegmentedButton
             type="button"
             :active="connectionMode === 'followers'"
             :class="{ 'is-active': connectionMode === 'followers' }"
             @click="openConnections('followers')"
           >
             {{ t('followers') }}
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             type="button"
             :active="connectionMode === 'following'"
             :class="{ 'is-active': connectionMode === 'following' }"
             @click="openConnections('following')"
           >
             {{ t('followingCount') }}
-          </SkySegmentedButton>
-        </SkySegmented>
+          </AgentSegmentedButton>
+        </AgentSegmented>
 
         <div
           v-if="feather.connectionLoading"
           class="feather-connections__loading"
         >
-          <SkySpinner />
+          <AgentSpinner />
         </div>
-        <SkyBlock
+        <AgentBlock
           v-else-if="!feather.connections.length"
           strong
           inset
@@ -1328,9 +1328,9 @@ onMounted(async () => {
           <UsersRound :size="30" />
           <strong>{{ t('noConnections') }}</strong>
           <p>{{ t('noConnectionsBody') }}</p>
-        </SkyBlock>
-        <SkyList v-else strong inset class="feather-connections__list">
-          <SkyListItem
+        </AgentBlock>
+        <AgentList v-else strong inset class="feather-connections__list">
+          <AgentListItem
             v-for="person in feather.connections"
             :key="person.id"
             :title="person.display_name"
@@ -1354,7 +1354,7 @@ onMounted(async () => {
               </button>
             </template>
             <template #after>
-              <SkyButton
+              <AgentButton
                 v-if="activeProfile.is_owner"
                 outline
                 rounded
@@ -1364,8 +1364,8 @@ onMounted(async () => {
               >
                 <UserMinus :size="13" />
                 <span>{{ t('removeConnection') }}</span>
-              </SkyButton>
-              <SkyButton
+              </AgentButton>
+              <AgentButton
                 v-else-if="!person.is_owner"
                 rounded
                 small
@@ -1378,13 +1378,13 @@ onMounted(async () => {
                 @click="followProfile(person)"
               >
                 {{ person.is_following ? t('following') : t('follow') }}
-              </SkyButton>
+              </AgentButton>
             </template>
-          </SkyListItem>
-        </SkyList>
-      </SkyScrollArea>
+          </AgentListItem>
+        </AgentList>
+      </AgentScrollArea>
 
-      <SkyScrollArea
+      <AgentScrollArea
         v-else-if="screen === 'thread' && feather.thread"
         class="feather-scroll feather-thread"
       >
@@ -1496,7 +1496,7 @@ onMounted(async () => {
             <span>{{
               t('replyingTo', { handle: threadReplyTarget.handle })
             }}</span>
-            <SkyButton
+            <AgentButton
               icon-only
               rounded
               tonal
@@ -1505,10 +1505,10 @@ onMounted(async () => {
               @click="clearThreadReplyTarget"
             >
               <X :size="13" />
-            </SkyButton>
+            </AgentButton>
           </div>
           <form ref="threadReplyInput" @submit.prevent="publishThreadReply">
-            <SkyMessagebar
+            <AgentMessagebar
               v-model="threadReplyBody"
               :aria-label="t('addComment')"
               embedded
@@ -1526,7 +1526,7 @@ onMounted(async () => {
                 </span>
               </template>
               <template #right>
-                <SkyButton
+                <AgentButton
                   icon-only
                   rounded
                   type="submit"
@@ -1535,9 +1535,9 @@ onMounted(async () => {
                   :aria-label="t('postComment')"
                 >
                   <Send :size="16" />
-                </SkyButton>
+                </AgentButton>
               </template>
-            </SkyMessagebar>
+            </AgentMessagebar>
           </form>
           <span
             v-if="threadReplyBody.length > 320"
@@ -1545,9 +1545,9 @@ onMounted(async () => {
             >{{ 360 - threadReplyBody.length }}</span
           >
         </div>
-      </SkyScrollArea>
+      </AgentScrollArea>
 
-      <SkyScrollArea
+      <AgentScrollArea
         v-else-if="
           (screen === 'profile' || (screen === 'main' && tab === 'profile')) &&
           activeProfile
@@ -1555,7 +1555,7 @@ onMounted(async () => {
         class="feather-scroll feather-profile-screen"
         :with-tabbar="screen === 'main'"
       >
-        <SkyGlass :highlight="false" class="feather-profile-glass">
+        <AgentGlass :highlight="false" class="feather-profile-glass">
           <div class="feather-profile">
             <div class="feather-profile__cover">
               <span class="feather-profile__cover-title">
@@ -1572,7 +1572,7 @@ onMounted(async () => {
                 />
                 <UserRound v-else :size="29" />
               </div>
-              <SkyButton
+              <AgentButton
                 v-if="!activeProfile.is_owner"
                 rounded
                 small
@@ -1585,11 +1585,11 @@ onMounted(async () => {
                 }"
                 @click="followProfile(activeProfile)"
               >
-                <SkyIcon v-if="!activeProfile.is_following"
+                <AgentIcon v-if="!activeProfile.is_following"
                   ><UserPlus :size="14"
-                /></SkyIcon>
+                /></AgentIcon>
                 {{ activeProfile.is_following ? t('following') : t('follow') }}
-              </SkyButton>
+              </AgentButton>
             </div>
             <div class="feather-profile__identity">
               <h1>
@@ -1622,7 +1622,7 @@ onMounted(async () => {
               </button>
             </div>
             <div v-if="activeProfile.is_owner" class="feather-profile__actions">
-              <SkyButton
+              <AgentButton
                 outline
                 rounded
                 class="feather-profile-action"
@@ -1630,36 +1630,36 @@ onMounted(async () => {
               >
                 <Share2 :size="15" />
                 <span>{{ t('shareProfile') }}</span>
-              </SkyButton>
-              <SkyButton
+              </AgentButton>
+              <AgentButton
                 rounded
                 class="feather-primary feather-profile-action"
                 @click="openEdit"
               >
                 <PencilLine :size="15" />
                 <span>{{ t('editProfile') }}</span>
-              </SkyButton>
+              </AgentButton>
             </div>
           </div>
-        </SkyGlass>
-        <SkySegmented class="feather-profile-tabs" rounded strong>
-          <SkySegmentedButton
+        </AgentGlass>
+        <AgentSegmented class="feather-profile-tabs" rounded strong>
+          <AgentSegmentedButton
             type="button"
             :active="profileView === 'posts'"
             :class="{ 'is-active': profileView === 'posts' }"
             @click="selectProfileView('posts')"
           >
             <AlignLeft :size="16" /> {{ t('posts') }}
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             type="button"
             :active="profileView === 'replies'"
             :class="{ 'is-active': profileView === 'replies' }"
             @click="selectProfileView('replies')"
           >
             <AtSign :size="17" />
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             v-if="activeProfile.is_owner"
             type="button"
             :active="profileView === 'bookmarks'"
@@ -1669,13 +1669,13 @@ onMounted(async () => {
             @click="selectProfileView('bookmarks')"
           >
             <Bookmark :size="17" />
-          </SkySegmentedButton>
-        </SkySegmented>
+          </AgentSegmentedButton>
+        </AgentSegmented>
         <div
           v-if="profileView === 'bookmarks' && feather.bookmarksLoading"
           class="feather-network-loading"
         >
-          <SkySpinner />
+          <AgentSpinner />
         </div>
         <div
           v-else-if="
@@ -1711,7 +1711,7 @@ onMounted(async () => {
           class="feather-profile-suggestions"
         >
           <h2>{{ t('people') }}</h2>
-          <SkyScrollRail
+          <AgentScrollRail
             class="feather-profile-suggestions__rail"
             :label="t('people')"
           >
@@ -1739,7 +1739,7 @@ onMounted(async () => {
                   <p>{{ person.bio || t('noBio') }}</p>
                 </span>
               </button>
-              <SkyButton
+              <AgentButton
                 rounded
                 small
                 :tonal="person.is_following"
@@ -1751,34 +1751,34 @@ onMounted(async () => {
                 @click="followProfile(person)"
               >
                 {{ person.is_following ? t('following') : t('follow') }}
-              </SkyButton>
+              </AgentButton>
             </article>
-          </SkyScrollRail>
+          </AgentScrollRail>
         </section>
-      </SkyScrollArea>
+      </AgentScrollArea>
 
       <section v-else-if="screen === 'main'" class="feather-main">
         <div v-if="tab === 'home'" class="feather-feed-tabs">
-          <SkySegmented class="feather-context-tabs">
-            <SkySegmentedButton
+          <AgentSegmented class="feather-context-tabs">
+            <AgentSegmentedButton
               type="button"
               :active="feather.mode === 'for-you'"
               :class="{ 'is-active': feather.mode === 'for-you' }"
               @click="setFeedMode('for-you')"
-              >{{ t('forYou') }}</SkySegmentedButton
+              >{{ t('forYou') }}</AgentSegmentedButton
             >
-            <SkySegmentedButton
+            <AgentSegmentedButton
               type="button"
               :active="feather.mode === 'following'"
               :class="{ 'is-active': feather.mode === 'following' }"
               @click="setFeedMode('following')"
-              >{{ t('following') }}</SkySegmentedButton
+              >{{ t('following') }}</AgentSegmentedButton
             >
-          </SkySegmented>
+          </AgentSegmented>
         </div>
 
         <div v-if="tab === 'explore'" class="feather-explore-head">
-          <SkySearchbar
+          <AgentSearchbar
             :value="search"
             class="feather-explore-search"
             :placeholder="t('postSearchPlaceholder')"
@@ -1786,7 +1786,7 @@ onMounted(async () => {
             @input="search = inputValue($event)"
             @keyup.enter="runSearch"
           />
-          <SkySegmented
+          <AgentSegmented
             class="feather-explore-tabs"
             :active-index="exploreViewIndex"
             :aria-label="t('explore')"
@@ -1794,7 +1794,7 @@ onMounted(async () => {
             rounded
             strong
           >
-            <SkySegmentedButton
+            <AgentSegmentedButton
               v-for="category in exploreCategories"
               :key="category"
               type="button"
@@ -1803,37 +1803,37 @@ onMounted(async () => {
               @click="exploreView = category"
             >
               {{ t(`exploreTabs.${category}`) }}
-            </SkySegmentedButton>
-          </SkySegmented>
+            </AgentSegmentedButton>
+          </AgentSegmented>
         </div>
 
         <div v-if="tab === 'activity'" class="feather-activity-head">
-          <SkySegmented class="feather-context-tabs">
-            <SkySegmentedButton
+          <AgentSegmented class="feather-context-tabs">
+            <AgentSegmentedButton
               type="button"
               :active="activityView === 'all'"
               :class="{ 'is-active': activityView === 'all' }"
               @click="activityView = 'all'"
             >
               {{ t('all') }}
-            </SkySegmentedButton>
-            <SkySegmentedButton
+            </AgentSegmentedButton>
+            <AgentSegmentedButton
               type="button"
               :active="activityView === 'mentions'"
               :class="{ 'is-active': activityView === 'mentions' }"
               @click="activityView = 'mentions'"
             >
               {{ t('mentions') }}
-            </SkySegmentedButton>
-          </SkySegmented>
+            </AgentSegmentedButton>
+          </AgentSegmented>
         </div>
 
-        <SkyScrollArea
+        <AgentScrollArea
           v-if="tab === 'network'"
           class="feather-scroll feather-network"
           with-tabbar
         >
-          <SkyGlass :highlight="false" class="feather-network-glass">
+          <AgentGlass :highlight="false" class="feather-network-glass">
             <header class="feather-network__hero">
               <div>
                 <small>{{ t('network') }}</small>
@@ -1842,8 +1842,8 @@ onMounted(async () => {
               </div>
               <UsersRound :size="35" />
             </header>
-          </SkyGlass>
-          <SkySearchbar
+          </AgentGlass>
+          <AgentSearchbar
             :value="networkSearch"
             class="feather-network-search"
             :placeholder="t('networkSearchPlaceholder')"
@@ -1852,7 +1852,7 @@ onMounted(async () => {
             @keyup.enter="runNetworkSearch"
           />
           <div v-if="feather.networkLoading" class="feather-network-loading">
-            <SkySpinner />
+            <AgentSpinner />
           </div>
           <template v-else>
             <section
@@ -1861,7 +1861,7 @@ onMounted(async () => {
               class="feather-network-section"
             >
               <h2 class="feather-section-title">{{ section.title }}</h2>
-              <SkyBlock
+              <AgentBlock
                 v-if="!section.profiles.length"
                 strong
                 inset
@@ -1880,9 +1880,9 @@ onMounted(async () => {
                       : t('noSuggestionsBody')
                   }}
                 </p>
-              </SkyBlock>
-              <SkyList v-else strong inset class="feather-network-list">
-                <SkyListItem
+              </AgentBlock>
+              <AgentList v-else strong inset class="feather-network-list">
+                <AgentListItem
                   v-for="person in section.profiles"
                   :key="person.id"
                   class="feather-network-person"
@@ -1945,7 +1945,7 @@ onMounted(async () => {
                     </span>
                   </template>
                   <template #after>
-                    <SkyButton
+                    <AgentButton
                       inline
                       rounded
                       small
@@ -1957,20 +1957,20 @@ onMounted(async () => {
                       }"
                       @click="followProfile(person)"
                     >
-                      <SkyIcon>
+                      <AgentIcon>
                         <CheckCircle2 v-if="person.is_following" :size="13" />
                         <UserPlus v-else :size="13" />
-                      </SkyIcon>
+                      </AgentIcon>
                       {{ person.is_following ? t('following') : t('follow') }}
-                    </SkyButton>
+                    </AgentButton>
                   </template>
-                </SkyListItem>
-              </SkyList>
+                </AgentListItem>
+              </AgentList>
             </section>
           </template>
-        </SkyScrollArea>
+        </AgentScrollArea>
 
-        <SkyScrollArea
+        <AgentScrollArea
           v-else-if="tab === 'explore' && !search.trim()"
           class="feather-scroll feather-trends"
           with-tabbar
@@ -1992,9 +1992,9 @@ onMounted(async () => {
             <small>{{ t('postsCount', { count: String(topic.count) }) }}</small>
             <b>•••</b>
           </button>
-        </SkyScrollArea>
+        </AgentScrollArea>
 
-        <SkyScrollArea
+        <AgentScrollArea
           v-else-if="tab === 'activity'"
           class="feather-scroll"
           with-tabbar
@@ -2026,14 +2026,14 @@ onMounted(async () => {
               {{ t(`activityKinds.${item.kind}`) }}
             </p>
           </button>
-        </SkyScrollArea>
+        </AgentScrollArea>
 
-        <SkyScrollArea v-else class="feather-scroll" with-tabbar>
+        <AgentScrollArea v-else class="feather-scroll" with-tabbar>
           <div
             v-if="tab === 'explore' && feather.exploreLoading"
             class="feather-network-loading"
           >
-            <SkySpinner />
+            <AgentSpinner />
           </div>
           <div
             v-else-if="!displayedPosts.length && !feather.loading"
@@ -2082,7 +2082,7 @@ onMounted(async () => {
                 <strong>{{ person.display_name }}</strong
                 ><span>@{{ person.handle }}</span>
               </button>
-              <SkyButton
+              <AgentButton
                 rounded
                 small
                 :tonal="person.is_following"
@@ -2093,23 +2093,23 @@ onMounted(async () => {
                 }"
                 @click="followProfile(person)"
               >
-                <SkyIcon v-if="!person.is_following"
+                <AgentIcon v-if="!person.is_following"
                   ><UserPlus :size="14"
-                /></SkyIcon>
+                /></AgentIcon>
                 {{ person.is_following ? t('following') : t('follow') }}
-              </SkyButton>
+              </AgentButton>
             </div>
           </template>
-        </SkyScrollArea>
+        </AgentScrollArea>
       </section>
 
-      <SkyPillNavigation
+      <AgentPillNavigation
         v-if="screen === 'main'"
         class="feather-navigation"
         :label="t('name')"
         layout="full"
       >
-        <SkySegmented
+        <AgentSegmented
           class="feather-navigation__segments"
           :active-index="tabIndex"
           :aria-label="t('name')"
@@ -2117,23 +2117,23 @@ onMounted(async () => {
           navigation
           strong
         >
-          <SkySegmentedButton
+          <AgentSegmentedButton
             :active="tab === 'home'"
             class="feather-navigation__button"
             @click="selectTab('home')"
           >
             <Home :size="20" :fill="tab === 'home' ? 'currentColor' : 'none'" />
             <small>{{ t('home') }}</small>
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             :active="tab === 'explore'"
             class="feather-navigation__button"
             @click="selectTab('explore')"
           >
             <Search :size="20" />
             <small>{{ t('explore') }}</small>
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             :active="tab === 'network'"
             class="feather-navigation__button"
             @click="selectTab('network')"
@@ -2143,8 +2143,8 @@ onMounted(async () => {
               :fill="tab === 'network' ? 'currentColor' : 'none'"
             />
             <small>{{ t('network') }}</small>
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             :active="tab === 'activity'"
             class="feather-navigation__button"
             @click="selectTab('activity')"
@@ -2157,8 +2157,8 @@ onMounted(async () => {
               <b v-if="unreadActivities">{{ unreadActivities }}</b>
             </span>
             <small>{{ t('activityNav') }}</small>
-          </SkySegmentedButton>
-          <SkySegmentedButton
+          </AgentSegmentedButton>
+          <AgentSegmentedButton
             :active="tab === 'profile'"
             class="feather-navigation__button"
             @click="selectTab('profile')"
@@ -2168,10 +2168,10 @@ onMounted(async () => {
               :fill="tab === 'profile' ? 'currentColor' : 'none'"
             />
             <small>{{ t('profile') }}</small>
-          </SkySegmentedButton>
-        </SkySegmented>
-      </SkyPillNavigation>
-      <SkyFab
+          </AgentSegmentedButton>
+        </AgentSegmented>
+      </AgentPillNavigation>
+      <AgentFab
         v-if="screen === 'main'"
         component="button"
         type="button"
@@ -2181,7 +2181,7 @@ onMounted(async () => {
         @click="openComposer()"
       >
         <template #icon><Plus :size="20" /></template>
-      </SkyFab>
+      </AgentFab>
     </template>
 
     <AccountLogoutDialog
@@ -2190,45 +2190,45 @@ onMounted(async () => {
       :app-name="t('name')"
     />
 
-    <SkySheet :opened="settingsOpen" @backdropclick="settingsOpen = false">
-      <SkyBlock strong inset class="feather-settings-sheet">
+    <AgentSheet :opened="settingsOpen" @backdropclick="settingsOpen = false">
+      <AgentBlock strong inset class="feather-settings-sheet">
         <header>
           <div>
             <span>{{ t('settingsEyebrow') }}</span>
             <h2>{{ t('settings') }}</h2>
           </div>
-          <SkyButton clear rounded @click="settingsOpen = false">
+          <AgentButton clear rounded @click="settingsOpen = false">
             {{ t('done') }}
-          </SkyButton>
+          </AgentButton>
         </header>
-        <SkyList strong inset>
-          <SkyListItem :title="t('compactMode')" :text="t('compactModeBody')">
+        <AgentList strong inset>
+          <AgentListItem :title="t('compactMode')" :text="t('compactModeBody')">
             <template #after>
-              <SkyToggle
+              <AgentToggle
                 :checked="compactMode"
                 :aria-label="t('compactMode')"
                 @change="compactMode = !compactMode"
               />
             </template>
-          </SkyListItem>
-          <SkyListItem
+          </AgentListItem>
+          <AgentListItem
             :title="t('showSuggestions')"
             :text="t('showSuggestionsBody')"
           >
             <template #after>
-              <SkyToggle
+              <AgentToggle
                 :checked="showSuggestions"
                 :aria-label="t('showSuggestions')"
                 @change="showSuggestions = !showSuggestions"
               />
             </template>
-          </SkyListItem>
-        </SkyList>
-      </SkyBlock>
-    </SkySheet>
+          </AgentListItem>
+        </AgentList>
+      </AgentBlock>
+    </AgentSheet>
 
     <div class="feather-post-menu">
-      <SkySheet
+      <AgentSheet
         :opened="menuPost !== null && !reportOpen"
         :aria-label="t('moreActions')"
         swipe-to-close
@@ -2240,12 +2240,12 @@ onMounted(async () => {
         @swipeclose="closePostMenu"
       >
         <section v-if="menuPost" class="feather-post-menu__content">
-          <header class="feather-post-menu__header" data-sky-sheet-drag-handle>
+          <header class="feather-post-menu__header" data-agent-sheet-drag-handle>
             <span>@{{ menuPost.handle }}</span>
             <h2>{{ t('moreActions') }}</h2>
           </header>
           <div class="feather-post-menu__group">
-            <SkyButton
+            <AgentButton
               v-if="menuPost?.is_owner"
               block
               clear
@@ -2254,9 +2254,9 @@ onMounted(async () => {
             >
               <Trash2 :size="18" />
               <span>{{ t('delete') }}</span>
-            </SkyButton>
+            </AgentButton>
             <template v-else>
-              <SkyButton
+              <AgentButton
                 block
                 clear
                 class="feather-post-menu__action"
@@ -2264,8 +2264,8 @@ onMounted(async () => {
               >
                 <Flag :size="18" />
                 <span>{{ t('report') }}</span>
-              </SkyButton>
-              <SkyButton
+              </AgentButton>
+              <AgentButton
                 block
                 clear
                 class="feather-post-menu__action feather-post-menu__action--danger"
@@ -2275,15 +2275,15 @@ onMounted(async () => {
                 <span>{{
                   t('block', { handle: menuPost?.handle ?? '' })
                 }}</span>
-              </SkyButton>
+              </AgentButton>
             </template>
           </div>
         </section>
-      </SkySheet>
+      </AgentSheet>
     </div>
 
-    <SkySheet :opened="reportOpen" @backdropclick="closePostReport">
-      <SkyBlock strong inset class="feather-report">
+    <AgentSheet :opened="reportOpen" @backdropclick="closePostReport">
+      <AgentBlock strong inset class="feather-report">
         <h2>{{ t('reportTitle') }}</h2>
         <p>{{ t('reportBody') }}</p>
         <select v-model="reportReason">
@@ -2306,18 +2306,18 @@ onMounted(async () => {
           maxlength="500"
           :placeholder="t('bioPlaceholder')"
         ></textarea>
-        <SkyButton
+        <AgentButton
           large
           rounded
           class="feather-primary"
           @click="submitReport"
-          >{{ t('reportSubmit') }}</SkyButton
+          >{{ t('reportSubmit') }}</AgentButton
         >
-        <SkyButton large clear @click="closePostReport">
+        <AgentButton large clear @click="closePostReport">
           {{ t('cancel') }}
-        </SkyButton>
-      </SkyBlock>
-    </SkySheet>
+        </AgentButton>
+      </AgentBlock>
+    </AgentSheet>
 
     <div
       v-if="mediaPreview && previewMedia"
@@ -2333,7 +2333,7 @@ onMounted(async () => {
         @click.stop
       />
       <template v-if="mediaPreview.items.length > 1">
-        <SkyButton
+        <AgentButton
           glass
           icon-only
           rounded
@@ -2342,8 +2342,8 @@ onMounted(async () => {
           @click.stop="moveMediaPreview(-1)"
         >
           <ChevronLeft :size="20" :stroke-width="2.8" />
-        </SkyButton>
-        <SkyButton
+        </AgentButton>
+        <AgentButton
           glass
           icon-only
           rounded
@@ -2352,23 +2352,23 @@ onMounted(async () => {
           @click.stop="moveMediaPreview(1)"
         >
           <ChevronRight :size="20" :stroke-width="2.8" />
-        </SkyButton>
+        </AgentButton>
         <span class="feather-media-preview__count">
           {{ mediaPreview.index + 1 }} / {{ mediaPreview.items.length }}
         </span>
       </template>
     </div>
 
-    <SkyNotification :opened="Boolean(feedback)" :text="feedback" />
-  </SkyAppPage>
+    <AgentNotification :opened="Boolean(feedback)" :text="feedback" />
+  </AgentAppPage>
 </template>
 
 <style scoped>
 .feather-app {
   --feather-blue: #438cf5;
   --feather-blue-dark: #2867d8;
-  --sky-app-accent: var(--feather-blue);
-  --sky-app-accent-soft: rgba(67, 140, 245, 0.15);
+  --agent-app-accent: var(--feather-blue);
+  --agent-app-accent-soft: rgba(67, 140, 245, 0.15);
   --color-primary: var(--feather-blue);
   background: #fff;
   color: #111923;
@@ -2394,7 +2394,7 @@ onMounted(async () => {
   cursor: default;
 }
 .feather-media-preview__arrow {
-  --sky-button-text: #fff;
+  --agent-button-text: #fff;
   position: absolute;
   top: 50%;
   width: 44px !important;
@@ -2430,14 +2430,14 @@ onMounted(async () => {
   color: #f4f7fa;
 }
 .feather-navbar {
-  --sky-navbar-glass: color-mix(in srgb, #fff 91%, transparent);
-  --sky-safe-area-top: 46px;
+  --agent-navbar-glass: color-mix(in srgb, #fff 91%, transparent);
+  --agent-safe-area-top: 46px;
   flex: 0 0 auto;
   border-bottom: 0.5px solid color-mix(in srgb, currentColor 12%, transparent);
   backdrop-filter: blur(18px);
 }
 .dark .feather-navbar {
-  --sky-navbar-glass: color-mix(in srgb, #090d12 91%, transparent);
+  --agent-navbar-glass: color-mix(in srgb, #090d12 91%, transparent);
 }
 .feather-explore-search {
   width: auto;
@@ -2447,8 +2447,8 @@ onMounted(async () => {
   min-height: 32px;
 }
 .feather-primary {
-  --sky-app-accent: var(--feather-blue);
-  --sky-button-text: #fff;
+  --agent-app-accent: var(--feather-blue);
+  --agent-button-text: #fff;
 }
 .feather-loading,
 .feather-welcome {
@@ -2548,7 +2548,7 @@ onMounted(async () => {
 .feather-auth__modes {
   margin-bottom: 14px;
 }
-.feather-auth__modes :deep(.sky-segmented-button--active) {
+.feather-auth__modes :deep(.agent-segmented-button--active) {
   color: var(--feather-blue);
 }
 .feather-auth__copy {
@@ -2568,7 +2568,7 @@ onMounted(async () => {
 .feather-auth__fields {
   margin: 4px 0 10px;
 }
-.feather-auth__fields :deep(.sky-list-item__media) {
+.feather-auth__fields :deep(.agent-list-item__media) {
   color: var(--feather-blue);
 }
 .feather-auth__photo {
@@ -2600,7 +2600,7 @@ onMounted(async () => {
   flex: 1;
   gap: 6px;
 }
-.feather-auth__photo :deep(.sky-button) {
+.feather-auth__photo :deep(.agent-button) {
   min-height: 34px;
   justify-content: flex-start;
   gap: 6px;
@@ -2682,8 +2682,8 @@ onMounted(async () => {
   box-shadow: 0 10px 24px rgb(67 140 245 / 24%);
 }
 .feather-onboarding__button:disabled {
-  --sky-app-accent: rgb(67 140 245 / 13%);
-  --sky-button-text: #71839a;
+  --agent-app-accent: rgb(67 140 245 / 13%);
+  --agent-button-text: #71839a;
   color: #71839a !important;
   background: rgb(67 140 245 / 13%) !important;
   opacity: 1;
@@ -2764,10 +2764,10 @@ onMounted(async () => {
 .feather-onboarding__fields {
   margin: 0;
 }
-.feather-onboarding__fields :deep(.sky-list-item__media) {
+.feather-onboarding__fields :deep(.agent-list-item__media) {
   color: #72b5ff;
 }
-.feather-onboarding__fields :deep(.sky-field .text-xs) {
+.feather-onboarding__fields :deep(.agent-field .text-xs) {
   font-size: 12px;
   line-height: 1.35;
 }
@@ -2807,8 +2807,8 @@ onMounted(async () => {
 .feather-profile-tabs {
   background: transparent;
 }
-.feather-context-tabs :deep(.sky-button),
-.feather-profile-tabs :deep(.sky-button) {
+.feather-context-tabs :deep(.agent-button),
+.feather-profile-tabs :deep(.agent-button) {
   min-height: 41px;
   overflow: visible;
   border-radius: 0;
@@ -2817,13 +2817,13 @@ onMounted(async () => {
   font-size: 12px;
   font-weight: 650;
 }
-.feather-context-tabs :deep(.sky-button.is-active),
-.feather-profile-tabs :deep(.sky-button.is-active) {
+.feather-context-tabs :deep(.agent-button.is-active),
+.feather-profile-tabs :deep(.agent-button.is-active) {
   color: currentColor;
   font-weight: 750;
 }
-.feather-context-tabs :deep(.sky-button.is-active)::after,
-.feather-profile-tabs :deep(.sky-button.is-active)::after {
+.feather-context-tabs :deep(.agent-button.is-active)::after,
+.feather-profile-tabs :deep(.agent-button.is-active)::after {
   position: absolute;
   right: 22%;
   bottom: 0;
@@ -2980,7 +2980,7 @@ onMounted(async () => {
   color: #7e8996;
   font-size: 10px;
 }
-.feather-composer__tools :deep(.sky-button) {
+.feather-composer__tools :deep(.agent-button) {
   color: var(--feather-blue);
   font-size: 11px;
 }
@@ -3004,7 +3004,7 @@ onMounted(async () => {
   height: 50px;
   padding: 0 14px;
 }
-.feather-profile__top :deep(.sky-button) {
+.feather-profile__top :deep(.agent-button) {
   margin-top: 9px;
 }
 .feather-profile__avatar {
@@ -3191,7 +3191,6 @@ onMounted(async () => {
   resize: none;
 }
 
-/* Feather's signed-in product surface follows the supplied X iOS references. */
 .dark.feather-app {
   --feather-blue: #1d9bf0;
   --feather-border: #2f3336;
@@ -3204,8 +3203,8 @@ onMounted(async () => {
   color: #e7e9ea;
 }
 .dark.feather-app .feather-navbar {
-  --sky-navbar-glass: color-mix(in srgb, #000 90%, transparent);
-  --sky-safe-area-top: 46px;
+  --agent-navbar-glass: color-mix(in srgb, #000 90%, transparent);
+  --agent-safe-area-top: 46px;
   border-bottom-color: var(--feather-border);
   background: color-mix(in srgb, #000 88%, transparent);
   backdrop-filter: blur(18px);
@@ -3244,8 +3243,8 @@ onMounted(async () => {
   min-width: 100%;
   padding: 0;
 }
-.dark.feather-app .feather-context-tabs :deep(.sky-button),
-.dark.feather-app .feather-profile-tabs :deep(.sky-button) {
+.dark.feather-app .feather-context-tabs :deep(.agent-button),
+.dark.feather-app .feather-profile-tabs :deep(.agent-button) {
   min-height: 46px;
   border-radius: 0;
   color: var(--feather-muted);
@@ -3254,12 +3253,12 @@ onMounted(async () => {
   font-weight: 750;
   white-space: nowrap;
 }
-.dark.feather-app .feather-context-tabs :deep(.sky-button.is-active),
-.dark.feather-app .feather-profile-tabs :deep(.sky-button.is-active) {
+.dark.feather-app .feather-context-tabs :deep(.agent-button.is-active),
+.dark.feather-app .feather-profile-tabs :deep(.agent-button.is-active) {
   color: #e7e9ea;
 }
-.dark.feather-app .feather-context-tabs :deep(.sky-button.is-active)::after,
-.dark.feather-app .feather-profile-tabs :deep(.sky-button.is-active)::after {
+.dark.feather-app .feather-context-tabs :deep(.agent-button.is-active)::after,
+.dark.feather-app .feather-profile-tabs :deep(.agent-button.is-active)::after {
   right: 20%;
   left: 20%;
   height: 3px;
@@ -3272,7 +3271,7 @@ onMounted(async () => {
   overflow-y: hidden !important;
   scrollbar-width: none;
 }
-.dark.feather-app .feather-explore-tabs :deep(.sky-button) {
+.dark.feather-app .feather-explore-tabs :deep(.agent-button) {
   width: auto !important;
   min-width: 92px;
   flex: 0 0 auto !important;
@@ -3348,9 +3347,9 @@ onMounted(async () => {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
-.dark.feather-app .feather-person > :deep(.sky-button) {
-  --sky-app-accent: #eff3f4;
-  --sky-button-text: #0f1419;
+.dark.feather-app .feather-person > :deep(.agent-button) {
+  --agent-app-accent: #eff3f4;
+  --agent-button-text: #0f1419;
   min-width: 66px;
   font-weight: 800;
 }
@@ -3457,14 +3456,14 @@ onMounted(async () => {
   gap: 8px;
   padding: 0 14px 16px;
 }
-.dark.feather-app .feather-profile__actions :deep(.sky-button) {
+.dark.feather-app .feather-profile__actions :deep(.agent-button) {
   min-height: 39px;
   border-color: #536471;
   color: #e7e9ea;
   font-size: 13px;
   font-weight: 800;
 }
-.dark.feather-app .feather-profile-tabs :deep(.sky-button) {
+.dark.feather-app .feather-profile-tabs :deep(.agent-button) {
   min-width: 62px;
   gap: 5px;
 }
@@ -3530,13 +3529,13 @@ onMounted(async () => {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
-.dark.feather-app .feather-profile-suggestion > :deep(.sky-button) {
+.dark.feather-app .feather-profile-suggestion > :deep(.agent-button) {
   position: absolute;
   right: 10px;
   bottom: 74px;
   z-index: 2;
-  --sky-app-accent: #eff3f4;
-  --sky-button-text: #0f1419;
+  --agent-app-accent: #eff3f4;
+  --agent-button-text: #0f1419;
   min-width: 67px;
   font-weight: 800;
 }
@@ -3562,8 +3561,8 @@ onMounted(async () => {
   margin: 1px 0 0;
   font-size: 21px;
 }
-.dark.feather-app .feather-settings-sheet :deep(.sky-list),
-.dark.feather-app .feather-settings-sheet :deep(.sky-list-item) {
+.dark.feather-app .feather-settings-sheet :deep(.agent-list),
+.dark.feather-app .feather-settings-sheet :deep(.agent-list-item) {
   color: #e7e9ea;
   background: #16181c;
 }
@@ -3574,7 +3573,6 @@ onMounted(async () => {
   font-size: 12.5px;
 }
 
-/* Signed-in Feather mirrors the compact, card-led Local Pages shell. */
 .feather-app--active {
   --feather-blue: #58a6ff;
   --feather-blue-dark: #2778dc;
@@ -3588,7 +3586,7 @@ onMounted(async () => {
   overflow: hidden;
   background: #12171b !important;
   color: #f7f8f4;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
 }
 .feather-app--active.feather-app--light {
   --feather-panel: #f0f1ec;
@@ -3604,8 +3602,8 @@ onMounted(async () => {
   font: inherit;
 }
 .feather-app--active .feather-navbar {
-  --sky-navbar-glass: color-mix(in srgb, #12171b 91%, transparent);
-  --sky-safe-area-top: 46px;
+  --agent-navbar-glass: color-mix(in srgb, #12171b 91%, transparent);
+  --agent-safe-area-top: 46px;
   position: absolute;
   z-index: 8;
   top: 0;
@@ -3617,7 +3615,7 @@ onMounted(async () => {
   backdrop-filter: blur(18px);
 }
 .feather-app--active.feather-app--light .feather-navbar {
-  --sky-navbar-glass: color-mix(in srgb, #fbfbf6 91%, transparent);
+  --agent-navbar-glass: color-mix(in srgb, #fbfbf6 91%, transparent);
   background: color-mix(in srgb, #fbfbf6 88%, transparent);
 }
 .feather-app--active.feather-app--section .feather-navbar {
@@ -3752,8 +3750,8 @@ onMounted(async () => {
   padding: 0;
   background: transparent;
 }
-.feather-app--active .feather-context-tabs :deep(.sky-button),
-.feather-app--active .feather-profile-tabs :deep(.sky-button) {
+.feather-app--active .feather-context-tabs :deep(.agent-button),
+.feather-app--active .feather-profile-tabs :deep(.agent-button) {
   min-height: 34px;
   overflow: hidden;
   border-radius: 9px;
@@ -3763,21 +3761,21 @@ onMounted(async () => {
   font-weight: 750;
   white-space: nowrap;
 }
-.feather-app--active .feather-context-tabs :deep(.sky-button.is-active),
-.feather-app--active .feather-profile-tabs :deep(.sky-button.is-active) {
+.feather-app--active .feather-context-tabs :deep(.agent-button.is-active),
+.feather-app--active .feather-profile-tabs :deep(.agent-button.is-active) {
   color: #fff;
   background: var(--feather-blue-dark);
 }
 .feather-app--active.feather-app--light
   .feather-context-tabs
-  :deep(.sky-button.is-active),
+  :deep(.agent-button.is-active),
 .feather-app--active.feather-app--light
   .feather-profile-tabs
-  :deep(.sky-button.is-active) {
+  :deep(.agent-button.is-active) {
   color: #fff;
 }
-.feather-app--active .feather-context-tabs :deep(.sky-button.is-active)::after,
-.feather-app--active .feather-profile-tabs :deep(.sky-button.is-active)::after {
+.feather-app--active .feather-context-tabs :deep(.agent-button.is-active)::after,
+.feather-app--active .feather-profile-tabs :deep(.agent-button.is-active)::after {
   display: none;
 }
 .feather-app--active .feather-feed-tabs {
@@ -3796,7 +3794,7 @@ onMounted(async () => {
 .feather-app--active
   .feather-feed-tabs
   .feather-context-tabs
-  :deep(.sky-button) {
+  :deep(.agent-button) {
   position: relative;
   min-height: 42px;
   overflow: visible;
@@ -3808,14 +3806,14 @@ onMounted(async () => {
 .feather-app--active
   .feather-feed-tabs
   .feather-context-tabs
-  :deep(.sky-button.is-active) {
+  :deep(.agent-button.is-active) {
   color: inherit;
   background: transparent !important;
 }
 .feather-app--active
   .feather-feed-tabs
   .feather-context-tabs
-  :deep(.sky-button.is-active)::after {
+  :deep(.agent-button.is-active)::after {
   position: absolute;
   right: 24%;
   bottom: -1px;
@@ -3827,7 +3825,7 @@ onMounted(async () => {
   content: '';
 }
 .feather-app--active .feather-explore-tabs {
-  --sky-segmented-strong-highlight: #f7f9fc;
+  --agent-segmented-strong-highlight: #f7f9fc;
   display: flex;
   width: 100%;
   min-height: 40px;
@@ -3835,26 +3833,26 @@ onMounted(async () => {
   gap: 4px;
   overflow: hidden !important;
   border: 1px solid var(--feather-border);
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   padding: 3px;
   background: rgba(127, 127, 127, 0.1);
 }
 .feather-app--active.feather-app--light .feather-explore-tabs {
-  --sky-segmented-strong-highlight: #fff;
+  --agent-segmented-strong-highlight: #fff;
 }
-.feather-app--active .feather-explore-tabs :deep(.sky-segmented-button) {
+.feather-app--active .feather-explore-tabs :deep(.agent-segmented-button) {
   width: 0 !important;
   min-width: 0;
   min-height: 32px;
   flex: 1 1 0 !important;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   color: var(--feather-muted);
   font-size: 10.5px;
   font-weight: 800;
 }
 .feather-app--active
   .feather-explore-tabs
-  :deep(.sky-segmented-button--active) {
+  :deep(.agent-segmented-button--active) {
   color: var(--feather-blue-dark);
 }
 .feather-app--active .feather-main > .feather-scroll {
@@ -3884,8 +3882,8 @@ onMounted(async () => {
   color: var(--feather-muted);
 }
 .feather-app--active :deep(.feather-follow) {
-  --sky-app-accent: var(--feather-blue);
-  --sky-app-accent-soft: color-mix(
+  --agent-app-accent: var(--feather-blue);
+  --agent-app-accent-soft: color-mix(
     in srgb,
     var(--feather-blue) 14%,
     transparent
@@ -4137,7 +4135,7 @@ onMounted(async () => {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
-.feather-app--active .feather-person > :deep(.sky-button) {
+.feather-app--active .feather-person > :deep(.agent-button) {
   min-width: 72px;
   font-size: 10.5px;
   font-weight: 800;
@@ -4155,18 +4153,18 @@ onMounted(async () => {
     box-shadow 160ms ease,
     background-color 160ms ease;
 }
-.feather-app--active .feather-follow-button :deep(.sky-icon) {
+.feather-app--active .feather-follow-button :deep(.agent-icon) {
   margin-right: 4px;
 }
 .feather-app--active .feather-follow-button--pending {
-  --sky-app-accent: var(--feather-blue);
-  --sky-button-text: #fff;
+  --agent-app-accent: var(--feather-blue);
+  --agent-button-text: #fff;
   border-color: color-mix(in srgb, var(--feather-blue) 76%, #fff);
   box-shadow: 0 4px 12px rgb(29 155 240 / 24%);
 }
 .feather-app--active .feather-follow-button--following {
-  --sky-app-accent: var(--feather-blue);
-  --sky-app-accent-soft: rgba(29, 155, 240, 0.14);
+  --agent-app-accent: var(--feather-blue);
+  --agent-app-accent-soft: rgba(29, 155, 240, 0.14);
   border-color: color-mix(in srgb, currentColor 22%, transparent);
   color: var(--feather-blue);
   box-shadow: none;
@@ -4365,7 +4363,7 @@ onMounted(async () => {
   border-top: 1px solid var(--feather-border);
   border-radius: 0;
   padding: 7px 2px 5px;
-  background: var(--sky-bg, #12171b);
+  background: var(--agent-bg, #12171b);
   box-shadow: 0 -8px 18px rgb(0 0 0 / 8%);
 }
 .feather-comment-composer__target {
@@ -4385,22 +4383,22 @@ onMounted(async () => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.feather-comment-composer__target :deep(.sky-button) {
-  --sky-app-accent: var(--feather-muted);
-  --sky-app-accent-soft: rgba(127, 127, 127, 0.12);
+.feather-comment-composer__target :deep(.agent-button) {
+  --agent-app-accent: var(--feather-muted);
+  --agent-app-accent-soft: rgba(127, 127, 127, 0.12);
   width: 28px;
   height: 28px;
 }
-.feather-comment-composer :deep(.sky-messagebar) {
+.feather-comment-composer :deep(.agent-messagebar) {
   margin: 0;
   border: 0;
   padding: 0;
   background: transparent;
   box-shadow: none;
 }
-.feather-comment-composer :deep(.sky-messagebar__area) {
+.feather-comment-composer :deep(.agent-messagebar__area) {
   border: 1px solid var(--feather-border);
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   background: var(--feather-panel);
   box-shadow: none;
 }
@@ -4417,8 +4415,8 @@ onMounted(async () => {
   flex-basis: 36px;
 }
 .feather-comment-composer__send {
-  --sky-app-accent: var(--feather-blue);
-  --sky-button-text: #fff;
+  --agent-app-accent: var(--feather-blue);
+  --agent-button-text: #fff;
   width: 36px;
   height: 36px;
   min-height: 36px;
@@ -4458,7 +4456,7 @@ onMounted(async () => {
   font-size: 12px;
 }
 .feather-navigation {
-  --sky-app-accent: var(--feather-blue);
+  --agent-app-accent: var(--feather-blue);
 }
 .feather-navigation__segments {
   width: 100%;
@@ -4570,9 +4568,9 @@ onMounted(async () => {
   flex: none;
 }
 .feather-app--active .feather-profile__logout {
-  --sky-app-accent: #fff;
-  --sky-app-accent-soft: rgba(255, 255, 255, 0.14);
-  --sky-button-text: #fff;
+  --agent-app-accent: #fff;
+  --agent-app-accent-soft: rgba(255, 255, 255, 0.14);
+  --agent-button-text: #fff;
   width: 34px;
   height: 34px;
   border: 1px solid rgb(255 255 255 / 24%);
@@ -4642,7 +4640,7 @@ onMounted(async () => {
   gap: 7px;
   padding: 0 13px 13px;
 }
-.feather-app--active .feather-profile__actions :deep(.sky-button) {
+.feather-app--active .feather-profile__actions :deep(.agent-button) {
   width: 100%;
   min-width: 0;
   min-height: 36px;
@@ -4700,7 +4698,7 @@ onMounted(async () => {
 }
 .feather-app.feather-app--active
   .feather-profile-suggestions__rail::-webkit-scrollbar-thumb {
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   background: rgba(113, 118, 123, 0.68);
 }
 .feather-app.feather-app--active .feather-profile-suggestion {
@@ -4763,7 +4761,7 @@ onMounted(async () => {
 }
 .feather-app.feather-app--active
   .feather-profile-suggestion
-  > :deep(.sky-button) {
+  > :deep(.agent-button) {
   position: absolute;
   top: 10px;
   right: 9px;
@@ -4790,7 +4788,7 @@ onMounted(async () => {
   background: transparent;
 }
 .feather-app--active.feather-app--composer .feather-navbar {
-  --sky-safe-area-top: 54px;
+  --agent-safe-area-top: 54px;
 }
 .feather-app--active.feather-app--composer > .feather-composer {
   top: 112px;
@@ -4808,7 +4806,7 @@ onMounted(async () => {
   background: var(--feather-panel);
 }
 .feather-composer-publish {
-  --sky-surface-muted: color-mix(
+  --agent-surface-muted: color-mix(
     in srgb,
     var(--feather-panel) 86%,
     currentColor 14%
@@ -4838,7 +4836,7 @@ onMounted(async () => {
 .feather-edit__navbar-save :deep(svg) {
   display: block;
 }
-.feather-edit__navbar-back :deep(.sky-navbar-back-link__icon) {
+.feather-edit__navbar-back :deep(.agent-navbar-back-link__icon) {
   transform: translateX(2px);
 }
 .feather-composer-card {
@@ -5154,7 +5152,7 @@ onMounted(async () => {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
-.feather-edit__photo-actions :deep(.sky-button) {
+.feather-edit__photo-actions :deep(.agent-button) {
   min-width: 0;
   min-height: 35px;
   gap: 6px;
@@ -5171,7 +5169,7 @@ onMounted(async () => {
   background: color-mix(in srgb, var(--feather-panel) 96%, transparent);
   box-shadow: 0 10px 28px rgb(0 0 0 / 7%);
 }
-.feather-edit__fields :deep(.sky-list-item__media) {
+.feather-edit__fields :deep(.agent-list-item__media) {
   align-self: flex-start;
   margin-top: 20px;
   color: var(--feather-blue);
@@ -5185,7 +5183,7 @@ onMounted(async () => {
   min-height: 128px;
   resize: none;
 }
-.feather-edit__fields :deep(.sky-field__info) {
+.feather-edit__fields :deep(.agent-field__info) {
   color: var(--feather-muted);
   font-size: 9px;
 }
@@ -5242,10 +5240,10 @@ onMounted(async () => {
   border-radius: 18px;
   background: color-mix(in srgb, var(--feather-panel) 96%, transparent);
 }
-.feather-connections__list :deep(.sky-list-item__content) {
+.feather-connections__list :deep(.agent-list-item__content) {
   min-height: 62px;
 }
-.feather-connections__list :deep(.sky-list-item__title) {
+.feather-connections__list :deep(.agent-list-item__title) {
   max-width: 108px;
   overflow: hidden;
   font-size: 12px;
@@ -5253,7 +5251,7 @@ onMounted(async () => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.feather-connections__list :deep(.sky-list-item__text) {
+.feather-connections__list :deep(.agent-list-item__text) {
   max-width: 108px;
   overflow: hidden;
   color: var(--feather-muted);
@@ -5285,7 +5283,7 @@ onMounted(async () => {
   background: var(--feather-panel);
 }
 .feather-post-menu__content {
-  padding: 0 14px calc(var(--sky-safe-area-bottom) + 14px);
+  padding: 0 14px calc(var(--agent-safe-area-bottom) + 14px);
 }
 .feather-post-menu__header {
   padding: 0 2px 11px;
@@ -5323,29 +5321,29 @@ onMounted(async () => {
   border-top: 1px solid var(--feather-border);
 }
 .feather-post-menu__action--danger {
-  color: var(--sky-danger);
+  color: var(--agent-danger);
 }
 .feather-post-menu__action svg {
   flex: none;
 }
 @supports not (color: color-mix(in srgb, white, black)) {
   .feather-navbar {
-    --sky-navbar-glass: rgb(255 255 255 / 91%);
+    --agent-navbar-glass: rgb(255 255 255 / 91%);
     border-bottom-color: rgb(127 127 127 / 18%);
   }
   .dark .feather-navbar {
-    --sky-navbar-glass: rgb(9 13 18 / 91%);
+    --agent-navbar-glass: rgb(9 13 18 / 91%);
   }
   .dark.feather-app .feather-navbar {
-    --sky-navbar-glass: rgb(0 0 0 / 90%);
+    --agent-navbar-glass: rgb(0 0 0 / 90%);
     background: rgb(0 0 0 / 88%);
   }
   .feather-app--active .feather-navbar {
-    --sky-navbar-glass: rgb(18 23 27 / 91%);
+    --agent-navbar-glass: rgb(18 23 27 / 91%);
     background: rgb(18 23 27 / 88%);
   }
   .feather-app--active.feather-app--light .feather-navbar {
-    --sky-navbar-glass: rgb(251 251 246 / 91%);
+    --agent-navbar-glass: rgb(251 251 246 / 91%);
     background: rgb(251 251 246 / 88%);
   }
   .feather-feed-tabs,
@@ -5399,8 +5397,8 @@ onMounted(async () => {
   }
   .feather-network-person__avatar .feather-avatar,
   .feather-app--active .feather-follow-button--pending,
-  .feather-app--active .feather-profile__actions :deep(.sky-button),
-  .feather-edit__photo-actions :deep(.sky-button) {
+  .feather-app--active .feather-profile__actions :deep(.agent-button),
+  .feather-edit__photo-actions :deep(.agent-button) {
     border-color: var(--feather-blue);
   }
   .feather-edit__avatar {

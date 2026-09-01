@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import {
-  SkyButton,
-  SkyDialog,
-  SkyDialogButton,
-  SkyFab,
-  SkyField,
-  SkyLink,
-  SkyNavbar,
-  SkyNavbarBackLink,
-  SkySearchbar,
-  SkyAppPage,
-  SkySheet,
-  SkySpinner,
-  SkyNotification,
-  SkyToolbar,
-  SkyToolbarPane,
+  AgentButton,
+  AgentDialog,
+  AgentDialogButton,
+  AgentFab,
+  AgentField,
+  AgentLink,
+  AgentNavbar,
+  AgentNavbarBackLink,
+  AgentSearchbar,
+  AgentAppPage,
+  AgentSheet,
+  AgentSpinner,
+  AgentNotification,
+  AgentToolbar,
+  AgentToolbarPane,
 } from '@/ui'
 import {
   AtSign,
@@ -1007,7 +1007,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     v-if="!authenticated"
     class="mail-page mail-page--auth"
     :aria-label="phone.t('Apps.mail.loginTitle')"
@@ -1018,7 +1018,7 @@ onBeforeUnmount(() => {
           <span class="mail-auth__badge">
             <img :src="mailIcon" alt="" />
           </span>
-          <h1 class="sky-type-display">
+          <h1 class="agent-type-display">
             {{ phone.t('Apps.mail.loginTitle') }}
           </h1>
           <p>
@@ -1138,7 +1138,7 @@ onBeforeUnmount(() => {
             type="submit"
             :disabled="submitting"
           >
-            <sky-spinner v-if="submitting" />
+            <agent-spinner v-if="submitting" />
             <template v-else>
               {{
                 phone.t(
@@ -1157,32 +1157,32 @@ onBeforeUnmount(() => {
         </form>
       </div>
     </div>
-  </sky-app-page>
+  </agent-app-page>
 
-  <sky-app-page
+  <agent-app-page
     v-else-if="screen === 'folders'"
     class="mail-page"
     :aria-label="phone.t('Apps.mail.mailboxes')"
   >
     <div class="mail-screen mail-screen--toolbar">
-      <sky-navbar
+      <agent-navbar
         class="mail-navbar mail-folders-navbar"
         large
         :title="phone.t('Apps.mail.mailboxes')"
         :subtitle="mail.accountEmail"
       >
         <template #left>
-          <sky-link
+          <agent-link
             component="button"
             icon-only
             :aria-label="phone.t('Apps.mail.logout')"
             @click="signOut"
           >
             <LogOut :size="20" />
-          </sky-link>
+          </agent-link>
         </template>
         <template #right>
-          <sky-link
+          <agent-link
             class="mail-folders-navbar__edit"
             component="button"
             @click="toggleMailboxEditing"
@@ -1192,9 +1192,9 @@ onBeforeUnmount(() => {
                 editingMailboxes ? 'Common.done' : 'Apps.mail.editMailboxes',
               )
             }}
-          </sky-link>
+          </agent-link>
         </template>
-      </sky-navbar>
+      </agent-navbar>
 
       <main class="mail-folders">
         <div class="mail-folders__card">
@@ -1247,7 +1247,7 @@ onBeforeUnmount(() => {
               v-if="editingMailboxes"
               class="mail-folder-row mail-folder-row--editing"
             >
-              <sky-button
+              <agent-button
                 class="mail-folder-row__delete"
                 variant="plain"
                 icon-only
@@ -1257,7 +1257,7 @@ onBeforeUnmount(() => {
                 @click="requestMailboxDelete(mailbox)"
               >
                 <Trash2 :size="18" />
-              </sky-button>
+              </agent-button>
               <strong>{{ mailbox.name }}</strong>
               <span>{{ mailbox.count || '' }}</span>
               <span aria-hidden="true" />
@@ -1277,7 +1277,7 @@ onBeforeUnmount(() => {
         </div>
       </main>
 
-      <sky-toolbar
+      <agent-toolbar
         component="footer"
         class="mail-bottom-toolbar mail-folders-toolbar"
         :aria-label="
@@ -1286,7 +1286,7 @@ onBeforeUnmount(() => {
           )
         "
       >
-        <sky-fab
+        <agent-fab
           v-if="editingMailboxes"
           component="button"
           type="button"
@@ -1296,8 +1296,8 @@ onBeforeUnmount(() => {
           @click="beginMailboxCreate"
         >
           <template #icon><Folder :size="21" /></template>
-        </sky-fab>
-        <sky-fab
+        </agent-fab>
+        <agent-fab
           v-else
           component="button"
           type="button"
@@ -1306,18 +1306,18 @@ onBeforeUnmount(() => {
           @click="beginCompose()"
         >
           <template #icon><SquarePen :size="22" /></template>
-        </sky-fab>
-      </sky-toolbar>
+        </agent-fab>
+      </agent-toolbar>
     </div>
-  </sky-app-page>
+  </agent-app-page>
 
-  <sky-app-page
+  <agent-app-page
     v-else-if="screen === 'list'"
     class="mail-page"
     :aria-label="folderTitle"
   >
     <div class="mail-screen mail-screen--toolbar">
-      <sky-navbar
+      <agent-navbar
         class="mail-navbar mail-list-navbar"
         large
         :title="folderTitle"
@@ -1330,7 +1330,7 @@ onBeforeUnmount(() => {
         "
       >
         <template #left>
-          <sky-navbar-back-link
+          <agent-navbar-back-link
             component="button"
             :text="phone.t('Apps.mail.mailboxes')"
             :aria-label="phone.t('Apps.mail.mailboxes')"
@@ -1339,7 +1339,7 @@ onBeforeUnmount(() => {
         </template>
         <template v-if="mail.items.length" #right>
           <div class="mail-navbar__actions">
-            <sky-link
+            <agent-link
               v-if="mail.folder === 'trash' && !selecting"
               component="button"
               icon-only
@@ -1347,21 +1347,21 @@ onBeforeUnmount(() => {
               @click="emptyTrashOpened = true"
             >
               <Trash2 :size="19" />
-            </sky-link>
-            <sky-link
+            </agent-link>
+            <agent-link
               class="mail-navbar__select"
               component="button"
               :disabled="deletingSelected"
               @click="toggleMailSelection"
             >
               {{ phone.t(selecting ? 'Common.done' : 'Apps.mail.select') }}
-            </sky-link>
+            </agent-link>
           </div>
         </template>
-      </sky-navbar>
+      </agent-navbar>
 
       <main class="mail-list">
-        <div v-if="mail.loading" class="mail-loading"><sky-spinner /></div>
+        <div v-if="mail.loading" class="mail-loading"><agent-spinner /></div>
         <template v-else-if="visibleItems.length">
           <div
             v-for="(item, index) in visibleItems"
@@ -1459,13 +1459,13 @@ onBeforeUnmount(() => {
         </div>
       </main>
 
-      <sky-toolbar
+      <agent-toolbar
         v-if="!selecting"
         component="footer"
         class="mail-bottom-toolbar mail-list-toolbar"
         :aria-label="phone.t('Apps.mail.toolbar')"
       >
-        <sky-fab
+        <agent-fab
           v-if="hasActiveFilters"
           component="button"
           type="button"
@@ -1486,8 +1486,8 @@ onBeforeUnmount(() => {
               </strong>
             </span>
           </template>
-        </sky-fab>
-        <sky-fab
+        </agent-fab>
+        <agent-fab
           v-else
           component="button"
           type="button"
@@ -1499,8 +1499,8 @@ onBeforeUnmount(() => {
           @click="openMailFilters"
         >
           <template #icon><ListFilter :size="21" /></template>
-        </sky-fab>
-        <sky-searchbar
+        </agent-fab>
+        <agent-searchbar
           :model-value="mail.search"
           :clear-label="phone.t('Common.clear')"
           :label="phone.t('Apps.mail.search')"
@@ -1508,7 +1508,7 @@ onBeforeUnmount(() => {
           @clear="clearMailSearch"
           @update:model-value="updateSearch"
         />
-        <sky-fab
+        <agent-fab
           component="button"
           type="button"
           variant="glass"
@@ -1516,16 +1516,16 @@ onBeforeUnmount(() => {
           @click="beginCompose()"
         >
           <template #icon><SquarePen :size="21" /></template>
-        </sky-fab>
-      </sky-toolbar>
-      <sky-toolbar
+        </agent-fab>
+      </agent-toolbar>
+      <agent-toolbar
         v-else
         component="footer"
         class="mail-bottom-toolbar mail-selection-toolbar"
         inner-class="mail-selection-toolbar__inner"
         :outline="false"
       >
-        <sky-toolbar-pane class="mail-selection-toolbar__pane">
+        <agent-toolbar-pane class="mail-selection-toolbar__pane">
           <span>
             {{
               phone.t('Apps.mail.selectedCount', {
@@ -1533,29 +1533,29 @@ onBeforeUnmount(() => {
               })
             }}
           </span>
-          <sky-link
+          <agent-link
             component="button"
             :disabled="deletingSelected || !selectedItems.length"
             @click="deleteSelectedMessages"
           >
-            <sky-spinner v-if="deletingSelected" />
+            <agent-spinner v-if="deletingSelected" />
             <Trash2 v-else :size="18" />
             {{ phone.t('Apps.mail.deleteSelected') }}
-          </sky-link>
-        </sky-toolbar-pane>
-      </sky-toolbar>
+          </agent-link>
+        </agent-toolbar-pane>
+      </agent-toolbar>
     </div>
-  </sky-app-page>
+  </agent-app-page>
 
-  <sky-app-page
+  <agent-app-page
     v-else-if="screen === 'message' && selectedMessage"
     class="mail-page"
     :aria-label="selectedMessage.subject"
   >
     <div class="mail-screen mail-screen--toolbar">
-      <sky-navbar class="mail-navbar" :title="folderTitle">
+      <agent-navbar class="mail-navbar" :title="folderTitle">
         <template #left>
-          <sky-navbar-back-link
+          <agent-navbar-back-link
             component="button"
             :text="folderTitle"
             :aria-label="folderTitle"
@@ -1563,16 +1563,16 @@ onBeforeUnmount(() => {
           />
         </template>
         <template #right>
-          <sky-link
+          <agent-link
             component="button"
             icon-only
             :aria-label="phone.t('Apps.mail.compose')"
             @click="beginCompose()"
           >
             <SquarePen :size="20" />
-          </sky-link>
+          </agent-link>
         </template>
-      </sky-navbar>
+      </agent-navbar>
 
       <article class="mail-message">
         <div class="mail-message__sender">
@@ -1600,14 +1600,14 @@ onBeforeUnmount(() => {
         </div>
       </article>
 
-      <sky-toolbar
+      <agent-toolbar
         component="footer"
         class="mail-bottom-toolbar mail-action-bar"
         inner-class="mail-action-bar__inner"
         :outline="false"
       >
-        <sky-toolbar-pane class="mail-action-bar__pane">
-          <sky-link
+        <agent-toolbar-pane class="mail-action-bar__pane">
+          <agent-link
             component="button"
             icon-only
             type="button"
@@ -1615,8 +1615,8 @@ onBeforeUnmount(() => {
             @click="shareMessage"
           >
             <Share2 :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             component="button"
             icon-only
             type="button"
@@ -1624,8 +1624,8 @@ onBeforeUnmount(() => {
             @click="composeReply(false)"
           >
             <Reply :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             component="button"
             icon-only
             type="button"
@@ -1633,8 +1633,8 @@ onBeforeUnmount(() => {
             @click="composeReply(true)"
           >
             <ReplyAll :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             component="button"
             icon-only
             type="button"
@@ -1642,8 +1642,8 @@ onBeforeUnmount(() => {
             @click="composeForward"
           >
             <Forward :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             v-if="canMoveMessage && !selectedMessage.trashed_at"
             component="button"
             icon-only
@@ -1652,8 +1652,8 @@ onBeforeUnmount(() => {
             @click="mailboxMoveOpened = true"
           >
             <Folder :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             v-if="selectedMessage.trashed_at"
             component="button"
             icon-only
@@ -1662,8 +1662,8 @@ onBeforeUnmount(() => {
             @click="mutateSelected('mail:restore')"
           >
             <RotateCcw :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             v-else
             component="button"
             icon-only
@@ -1673,8 +1673,8 @@ onBeforeUnmount(() => {
             @click="mutateSelected('mail:trash')"
           >
             <Trash2 :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             v-if="selectedMessage.trashed_at"
             component="button"
             icon-only
@@ -1684,8 +1684,8 @@ onBeforeUnmount(() => {
             @click="mutateSelected('mail:delete-forever')"
           >
             <Trash2 :size="20" />
-          </sky-link>
-          <sky-link
+          </agent-link>
+          <agent-link
             v-else
             component="button"
             icon-only
@@ -1694,20 +1694,20 @@ onBeforeUnmount(() => {
             @click="mutateSelected('mail:set-read', { read: false })"
           >
             <MailOpen :size="20" />
-          </sky-link>
-        </sky-toolbar-pane>
-      </sky-toolbar>
+          </agent-link>
+        </agent-toolbar-pane>
+      </agent-toolbar>
     </div>
-  </sky-app-page>
+  </agent-app-page>
 
-  <sky-app-page v-else-if="screen === 'compose'" class="mail-page">
+  <agent-app-page v-else-if="screen === 'compose'" class="mail-page">
     <div class="mail-screen mail-compose">
-      <sky-navbar
+      <agent-navbar
         class="mail-navbar mail-compose__navbar"
         :title="phone.t('Apps.mail.compose')"
       >
         <template #left>
-          <sky-link
+          <agent-link
             component="button"
             icon-only
             type="button"
@@ -1715,10 +1715,10 @@ onBeforeUnmount(() => {
             @click="closeCompose"
           >
             <X :size="21" />
-          </sky-link>
+          </agent-link>
         </template>
         <template #right>
-          <sky-link
+          <agent-link
             component="button"
             icon-only
             type="button"
@@ -1727,9 +1727,9 @@ onBeforeUnmount(() => {
             @click="sendMessage"
           >
             <Send :size="20" />
-          </sky-link>
+          </agent-link>
         </template>
-      </sky-navbar>
+      </agent-navbar>
 
       <div class="mail-compose__fields">
         <label>
@@ -1774,9 +1774,9 @@ onBeforeUnmount(() => {
         </span>
       </div>
     </div>
-  </sky-app-page>
+  </agent-app-page>
 
-  <sky-sheet
+  <agent-sheet
     class="mail-modal mail-mailbox-modal"
     :opened="mailboxCreateOpened"
     :aria-label="phone.t('Apps.mail.newMailbox')"
@@ -1790,7 +1790,7 @@ onBeforeUnmount(() => {
   >
     <section class="mail-modal__surface mail-mailbox-create">
       <header class="mail-modal__navbar">
-        <sky-button
+        <agent-button
           class="mail-modal__nav-button"
           icon-only
           inline
@@ -1801,9 +1801,9 @@ onBeforeUnmount(() => {
           @click="cancelMailboxCreate"
         >
           <X :size="20" />
-        </sky-button>
+        </agent-button>
         <h2>{{ phone.t('Apps.mail.newMailbox') }}</h2>
-        <sky-button
+        <agent-button
           class="mail-modal__nav-button"
           :disabled="!canCreateMailbox"
           icon-only
@@ -1815,11 +1815,11 @@ onBeforeUnmount(() => {
           @click="createMailbox"
         >
           <Check :size="20" />
-        </sky-button>
+        </agent-button>
       </header>
 
       <form class="mail-mailbox-create__form" @submit.prevent="createMailbox">
-        <sky-field
+        <agent-field
           v-model="mailboxName"
           class="mail-mailbox-create__name"
           component="div"
@@ -1841,9 +1841,9 @@ onBeforeUnmount(() => {
         </section>
       </form>
     </section>
-  </sky-sheet>
+  </agent-sheet>
 
-  <sky-sheet
+  <agent-sheet
     class="mail-modal mail-filter-modal"
     :opened="filtersOpened"
     :aria-label="phone.t('Apps.mail.filterTitle')"
@@ -1859,7 +1859,7 @@ onBeforeUnmount(() => {
       <header class="mail-modal__navbar mail-filters__navbar">
         <span aria-hidden="true"></span>
         <h2>{{ phone.t('Apps.mail.filterTitle') }}</h2>
-        <sky-link
+        <agent-link
           class="mail-filters__done"
           component="button"
           icon-only
@@ -1867,14 +1867,14 @@ onBeforeUnmount(() => {
           @click="applyMailFilters"
         >
           <Check :size="22" />
-        </sky-link>
+        </agent-link>
       </header>
 
       <main class="mail-filters__content">
         <section class="mail-filter-section">
           <h2>{{ phone.t('Apps.mail.filterStatus') }}</h2>
           <div class="mail-filter-card">
-            <sky-button
+            <agent-button
               block
               class="mail-filter-row"
               type="button"
@@ -1889,8 +1889,8 @@ onBeforeUnmount(() => {
                 :size="20"
                 class="mail-filter-row__check"
               />
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               block
               class="mail-filter-row"
               type="button"
@@ -1905,14 +1905,14 @@ onBeforeUnmount(() => {
                 :size="20"
                 class="mail-filter-row__check"
               />
-            </sky-button>
+            </agent-button>
           </div>
         </section>
 
         <section class="mail-filter-section">
           <h2>{{ phone.t('Apps.mail.filterAddressed') }}</h2>
           <div class="mail-filter-card">
-            <sky-button
+            <agent-button
               block
               class="mail-filter-row"
               type="button"
@@ -1927,8 +1927,8 @@ onBeforeUnmount(() => {
                 :size="20"
                 class="mail-filter-row__check"
               />
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               block
               class="mail-filter-row"
               type="button"
@@ -1943,7 +1943,7 @@ onBeforeUnmount(() => {
                 :size="20"
                 class="mail-filter-row__check"
               />
-            </sky-button>
+            </agent-button>
           </div>
         </section>
 
@@ -1953,7 +1953,7 @@ onBeforeUnmount(() => {
         >
           <h2>{{ phone.t('Apps.mail.filterDirection') }}</h2>
           <div class="mail-filter-card">
-            <sky-button
+            <agent-button
               block
               class="mail-filter-row"
               type="button"
@@ -1968,8 +1968,8 @@ onBeforeUnmount(() => {
                 :size="20"
                 class="mail-filter-row__check"
               />
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               block
               class="mail-filter-row"
               type="button"
@@ -1984,14 +1984,14 @@ onBeforeUnmount(() => {
                 :size="20"
                 class="mail-filter-row__check"
               />
-            </sky-button>
+            </agent-button>
           </div>
         </section>
 
         <section class="mail-filter-section">
           <h2>{{ phone.t('Apps.mail.filterOther') }}</h2>
           <div class="mail-filter-card">
-            <sky-button
+            <agent-button
               block
               class="mail-filter-row"
               type="button"
@@ -2006,14 +2006,14 @@ onBeforeUnmount(() => {
                 :size="20"
                 class="mail-filter-row__check"
               />
-            </sky-button>
+            </agent-button>
           </div>
         </section>
       </main>
     </section>
-  </sky-sheet>
+  </agent-sheet>
 
-  <sky-dialog
+  <agent-dialog
     class="mail-dialog"
     :opened="emptyTrashOpened"
     @backdropclick="emptyTrashOpened = false"
@@ -2021,23 +2021,23 @@ onBeforeUnmount(() => {
     <template #title>{{ phone.t('Apps.mail.emptyTrashTitle') }}</template>
     <p>{{ phone.t('Apps.mail.emptyTrashBody') }}</p>
     <template #buttons>
-      <sky-dialog-button @click="emptyTrashOpened = false">
+      <agent-dialog-button @click="emptyTrashOpened = false">
         {{ phone.t('Common.cancel') }}
-      </sky-dialog-button>
-      <sky-dialog-button strong @click="confirmEmptyTrash">
+      </agent-dialog-button>
+      <agent-dialog-button strong @click="confirmEmptyTrash">
         {{ phone.t('Apps.mail.emptyTrash') }}
-      </sky-dialog-button>
+      </agent-dialog-button>
     </template>
-  </sky-dialog>
+  </agent-dialog>
 
-  <sky-dialog
+  <agent-dialog
     class="mail-dialog"
     :opened="mailboxMoveOpened"
     @backdropclick="mailboxMoveOpened = false"
   >
     <template #title>{{ phone.t('Apps.mail.moveToMailbox') }}</template>
     <div class="mail-mailbox-picker">
-      <sky-button
+      <agent-button
         v-if="mailboxIdFromFolder(mail.folder) && selectedMessage"
         block
         type="button"
@@ -2047,8 +2047,8 @@ onBeforeUnmount(() => {
         <Inbox v-if="selectedMessage.folder === 'inbox'" :size="18" />
         <Send v-else :size="18" />
         <span>{{ phone.t(`Apps.mail.${selectedMessage.folder}`) }}</span>
-      </sky-button>
-      <sky-button
+      </agent-button>
+      <agent-button
         v-for="mailbox in availableMoveMailboxes"
         :key="mailbox.id"
         block
@@ -2058,16 +2058,16 @@ onBeforeUnmount(() => {
       >
         <Folder :size="18" />
         <span>{{ mailbox.name }}</span>
-      </sky-button>
+      </agent-button>
     </div>
     <template #buttons>
-      <sky-dialog-button @click="mailboxMoveOpened = false">
+      <agent-dialog-button @click="mailboxMoveOpened = false">
         {{ phone.t('Common.cancel') }}
-      </sky-dialog-button>
+      </agent-dialog-button>
     </template>
-  </sky-dialog>
+  </agent-dialog>
 
-  <sky-dialog
+  <agent-dialog
     class="mail-dialog"
     :opened="Boolean(mailboxDeleteTarget)"
     @backdropclick="mailboxDeleteTarget = null"
@@ -2081,16 +2081,16 @@ onBeforeUnmount(() => {
       }}
     </p>
     <template #buttons>
-      <sky-dialog-button @click="mailboxDeleteTarget = null">
+      <agent-dialog-button @click="mailboxDeleteTarget = null">
         {{ phone.t('Common.cancel') }}
-      </sky-dialog-button>
-      <sky-dialog-button strong @click="confirmMailboxDelete">
+      </agent-dialog-button>
+      <agent-dialog-button strong @click="confirmMailboxDelete">
         {{ phone.t('Common.delete') }}
-      </sky-dialog-button>
+      </agent-dialog-button>
     </template>
-  </sky-dialog>
+  </agent-dialog>
 
-  <sky-notification
+  <agent-notification
     :opened="toastOpened"
     :text="toastText"
     @click="toastOpened = false"
@@ -2101,17 +2101,17 @@ onBeforeUnmount(() => {
 .mail-page,
 .mail-modal {
   --mail-blue: #0a84ff;
-  --mail-border: var(--sky-hairline);
-  --mail-muted: var(--sky-muted);
-  --mail-surface: var(--sky-surface);
+  --mail-border: var(--agent-hairline);
+  --mail-muted: var(--agent-muted);
+  --mail-surface: var(--agent-surface);
 }
 
 .mail-page {
   min-height: 0 !important;
   padding: 0 !important;
   overflow: hidden;
-  background: var(--sky-bg) !important;
-  color: var(--sky-text);
+  background: var(--agent-bg) !important;
+  color: var(--agent-text);
 }
 
 .mail-screen {
@@ -2119,7 +2119,7 @@ onBeforeUnmount(() => {
   height: 100%;
   min-height: 0;
   overflow: hidden;
-  background: var(--sky-bg);
+  background: var(--agent-bg);
   animation: mail-screen-enter 240ms cubic-bezier(0.22, 0.8, 0.3, 1) both;
 }
 
@@ -2145,22 +2145,22 @@ button {
   padding: 8px 15px 24px;
 }
 
-.mail-folders-navbar :deep(.sky-navbar__left),
-.mail-folders-navbar :deep(.sky-navbar__right) {
-  min-width: var(--sky-touch-target);
+.mail-folders-navbar :deep(.agent-navbar__left),
+.mail-folders-navbar :deep(.agent-navbar__right) {
+  min-width: var(--agent-touch-target);
 }
 
-.mail-folders-navbar :deep(.mail-folders-navbar__edit.sky-link),
-.mail-modal__navbar :deep(.sky-link) {
+.mail-folders-navbar :deep(.mail-folders-navbar__edit.agent-link),
+.mail-modal__navbar :deep(.agent-link) {
   width: auto;
-  min-width: var(--sky-touch-target);
-  padding: 0 var(--sky-space-3);
+  min-width: var(--agent-touch-target);
+  padding: 0 var(--agent-space-3);
   color: #fff;
   font-size: 15px;
 }
 
-.mail-folders-navbar :deep(.mail-folders-navbar__edit.sky-link:focus-visible),
-.mail-modal__navbar :deep(.sky-link:focus-visible) {
+.mail-folders-navbar :deep(.mail-folders-navbar__edit.agent-link:focus-visible),
+.mail-modal__navbar :deep(.agent-link:focus-visible) {
   outline: 0;
   box-shadow: inset 0 0 0 1px #fff;
 }
@@ -2237,24 +2237,24 @@ button {
 }
 
 .mail-modal {
-  --sky-overlay-layer: 85;
+  --agent-overlay-layer: 85;
 }
 
-.mail-modal :deep(.sky-overlay-backdrop) {
+.mail-modal :deep(.agent-overlay-backdrop) {
   background: rgba(0, 0, 0, 0.58);
 }
 
-.mail-modal :deep(.sky-sheet__panel) {
+.mail-modal :deep(.agent-sheet__panel) {
   height: calc(100% - 48px);
   max-height: calc(100% - 48px);
   overflow: hidden;
   border-radius: 26px 26px 0 0;
-  background: var(--sky-bg);
+  background: var(--agent-bg);
 }
 
-.mail-mailbox-modal :deep(.sky-sheet__panel) {
+.mail-mailbox-modal :deep(.agent-sheet__panel) {
   height: auto;
-  background: var(--sky-surface);
+  background: var(--agent-surface);
 }
 
 .mail-modal__surface {
@@ -2262,12 +2262,12 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  background: var(--sky-bg);
+  background: var(--agent-bg);
 }
 
 .mail-mailbox-create {
   height: auto;
-  background: var(--sky-surface);
+  background: var(--agent-surface);
 }
 
 .mail-modal__navbar {
@@ -2275,15 +2275,15 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: var(--sky-space-2);
-  padding: 0 var(--sky-space-3);
+  gap: var(--agent-space-2);
+  padding: 0 var(--agent-space-3);
   border-bottom: 1px solid var(--mail-border);
 }
 
 .mail-modal__navbar h2 {
   overflow: hidden;
   margin: 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 16px;
   font-weight: 650;
   text-align: center;
@@ -2299,17 +2299,17 @@ button {
   justify-self: end;
 }
 
-.mail-filters__navbar :deep(.mail-filters__done.sky-link) {
-  width: var(--sky-touch-target);
-  min-width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
-  min-height: var(--sky-touch-target);
+.mail-filters__navbar :deep(.mail-filters__done.agent-link) {
+  width: var(--agent-touch-target);
+  min-width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
+  min-height: var(--agent-touch-target);
   border-radius: 50%;
   background: var(--mail-blue);
   color: #fff;
 }
 
-.mail-filters__navbar :deep(.mail-filters__done.sky-link:focus-visible) {
+.mail-filters__navbar :deep(.mail-filters__done.agent-link:focus-visible) {
   outline: 0;
   box-shadow: inset 0 0 0 1px #fff;
 }
@@ -2318,15 +2318,15 @@ button {
   min-height: 0;
   flex: 1;
   overflow-y: auto;
-  padding: var(--sky-space-4) var(--sky-page-gutter) 28px;
+  padding: var(--agent-space-4) var(--agent-page-gutter) 28px;
 }
 
 .mail-filter-section + .mail-filter-section {
-  margin-top: var(--sky-space-6);
+  margin-top: var(--agent-space-6);
 }
 
 .mail-filter-section h2 {
-  margin: 0 0 var(--sky-space-2) var(--sky-space-3);
+  margin: 0 0 var(--agent-space-2) var(--agent-space-3);
   color: var(--mail-muted);
   font-size: 14px;
   font-weight: 600;
@@ -2339,17 +2339,17 @@ button {
   background: var(--mail-surface);
 }
 
-.mail-filter-card :deep(.mail-filter-row.sky-button) {
+.mail-filter-card :deep(.mail-filter-row.agent-button) {
   position: relative;
   width: 100%;
   min-height: 52px;
   display: grid;
   grid-template-columns: 28px minmax(0, 1fr) 24px;
   align-items: center;
-  gap: var(--sky-space-3);
+  gap: var(--agent-space-3);
   border: 0;
   border-radius: 0;
-  padding: 0 var(--sky-space-4);
+  padding: 0 var(--agent-space-4);
   background: transparent;
   color: #fff;
   font-size: 15px;
@@ -2361,7 +2361,7 @@ button {
 .mail-filter-card :deep(.mail-filter-row + .mail-filter-row::before) {
   position: absolute;
   top: 0;
-  right: var(--sky-space-4);
+  right: var(--agent-space-4);
   left: 52px;
   height: 1px;
   background: var(--mail-border);
@@ -2380,27 +2380,27 @@ button {
   min-height: 0;
   display: grid;
   align-content: start;
-  gap: var(--sky-space-6);
+  gap: var(--agent-space-6);
   flex: 1;
   overflow-y: auto;
-  padding: var(--sky-space-6) var(--sky-page-gutter)
-    calc(24px + var(--sky-safe-area-bottom));
+  padding: var(--agent-space-6) var(--agent-page-gutter)
+    calc(24px + var(--agent-safe-area-bottom));
 }
 
-.mail-modal__navbar :deep(.mail-modal__nav-button.sky-button) {
-  width: var(--sky-touch-target);
-  min-width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
-  min-height: var(--sky-touch-target);
+.mail-modal__navbar :deep(.mail-modal__nav-button.agent-button) {
+  width: var(--agent-touch-target);
+  min-width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
+  min-height: var(--agent-touch-target);
   padding: 0;
-  border: 1px solid var(--sky-hairline);
-  background: var(--sky-surface-tint);
+  border: 1px solid var(--agent-hairline);
+  background: var(--agent-surface-tint);
   color: #fff;
   font-size: 14px;
   font-weight: 550;
 }
 
-.mail-modal__navbar :deep(.mail-modal__nav-button.sky-button:focus-visible) {
+.mail-modal__navbar :deep(.mail-modal__nav-button.agent-button:focus-visible) {
   outline: 0;
   box-shadow: inset 0 0 0 1px #fff;
 }
@@ -2410,37 +2410,37 @@ button {
   padding-left: 0;
   border: 1px solid #ffffff0d;
   border-radius: 17px;
-  background: var(--sky-surface-variant);
+  background: var(--agent-surface-variant);
 }
 
 .mail-mailbox-create__name:focus-within {
   border-color: #ffffff38;
 }
 
-.mail-mailbox-create__form :deep(.mail-mailbox-create__name .sky-field__inner) {
+.mail-mailbox-create__form :deep(.mail-mailbox-create__name .agent-field__inner) {
   align-self: auto;
-  padding: 0 var(--sky-space-4);
+  padding: 0 var(--agent-space-4);
 }
 
-.mail-mailbox-create__form :deep(.mail-mailbox-create__name .sky-field__control) {
+.mail-mailbox-create__form :deep(.mail-mailbox-create__name .agent-field__control) {
   min-height: 52px;
   margin: 0;
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
 
-.mail-mailbox-create__form :deep(.mail-mailbox-create__name .sky-field__input) {
+.mail-mailbox-create__form :deep(.mail-mailbox-create__name .agent-field__input) {
   height: 52px;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 15px;
 }
 
-.mail-mailbox-create__form :deep(.mail-mailbox-create__name .sky-field__input::placeholder) {
+.mail-mailbox-create__form :deep(.mail-mailbox-create__name .agent-field__input::placeholder) {
   color: var(--mail-muted);
   opacity: 1;
 }
 
 .mail-mailbox-create__location h3 {
-  margin: 0 0 var(--sky-space-2) var(--sky-space-3);
+  margin: 0 0 var(--agent-space-2) var(--agent-space-3);
   color: var(--mail-muted);
   font-size: 14px;
   font-weight: 600;
@@ -2451,12 +2451,12 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--sky-space-3);
-  padding: 0 var(--sky-space-4);
+  gap: var(--agent-space-3);
+  padding: 0 var(--agent-space-4);
   border: 1px solid #ffffff0d;
   border-radius: 17px;
-  background: var(--sky-surface-variant);
-  color: var(--sky-text);
+  background: var(--agent-surface-variant);
+  color: var(--agent-text);
   font-size: 15px;
 }
 
@@ -2477,7 +2477,7 @@ button {
   white-space: nowrap;
 }
 
-.mail-navbar__actions :deep(.sky-link) {
+.mail-navbar__actions :deep(.agent-link) {
   border: 0;
   padding: 4px 0;
   background: transparent;
@@ -2485,25 +2485,25 @@ button {
   font-size: 12px;
 }
 
-.mail-navbar__actions :deep(.sky-link:disabled) {
+.mail-navbar__actions :deep(.agent-link:disabled) {
   opacity: 0.4;
 }
 
 .mail-list-navbar
   .mail-navbar__actions
-  :deep(.mail-navbar__select.sky-link) {
+  :deep(.mail-navbar__select.agent-link) {
   width: auto;
-  height: var(--sky-touch-target);
+  height: var(--agent-touch-target);
   min-width: 0;
-  min-height: var(--sky-touch-target);
-  padding: 0 var(--sky-space-3);
+  min-height: var(--agent-touch-target);
+  padding: 0 var(--agent-space-3);
   color: #fff;
   font-size: 15px;
 }
 
 .mail-list-navbar
   .mail-navbar__actions
-  :deep(.mail-navbar__select.sky-link:focus-visible) {
+  :deep(.mail-navbar__select.agent-link:focus-visible) {
   outline: 0;
   box-shadow: inset 0 0 0 1px #fff;
 }
@@ -2580,8 +2580,8 @@ button {
   gap: 10px;
   border: 0;
   padding: 8px 13px 8px 19px;
-  background: var(--sky-bg);
-  color: var(--sky-text);
+  background: var(--agent-bg);
+  color: var(--agent-text);
   text-align: left;
   cursor: pointer;
   transform: translate3d(var(--mail-row-offset), 0, 0);
@@ -2713,7 +2713,7 @@ button {
 }
 
 .mail-row__subject {
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 13px;
 }
 
@@ -2728,69 +2728,69 @@ button {
 
 .mail-bottom-toolbar {
   flex: none;
-  padding-bottom: calc(var(--sky-safe-area-bottom, 0px) + var(--sky-space-6));
+  padding-bottom: calc(var(--agent-safe-area-bottom, 0px) + var(--agent-space-6));
 }
 
-.mail-folders-toolbar :deep(.sky-toolbar__inner) {
+.mail-folders-toolbar :deep(.agent-toolbar__inner) {
   width: 100%;
   justify-content: flex-end;
 }
 
-.mail-folders-toolbar :deep(.sky-fab) {
+.mail-folders-toolbar :deep(.agent-fab) {
   flex: none;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   color: #fff;
 }
 
-.mail-folders-toolbar :deep(.sky-fab--with-text) {
+.mail-folders-toolbar :deep(.agent-fab--with-text) {
   width: auto;
-  min-width: var(--sky-touch-target);
-  padding-inline: var(--sky-space-5);
+  min-width: var(--agent-touch-target);
+  padding-inline: var(--agent-space-5);
 }
 
 .mail-mailbox-picker {
   display: grid;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
   max-height: 260px;
   overflow-y: auto;
 }
 
-.mail-mailbox-picker :deep(.sky-button) {
-  min-height: var(--sky-touch-target);
+.mail-mailbox-picker :deep(.agent-button) {
+  min-height: var(--agent-touch-target);
   justify-content: flex-start;
-  gap: var(--sky-space-3);
+  gap: var(--agent-space-3);
   color: #fff;
   text-align: left;
 }
 
-.mail-dialog :deep(.sky-dialog-button) {
+.mail-dialog :deep(.agent-dialog-button) {
   color: #fff;
 }
 
-.mail-list-toolbar :deep(.sky-toolbar__inner) {
+.mail-list-toolbar :deep(.agent-toolbar__inner) {
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 
-.mail-list-toolbar :deep(.sky-searchbar) {
+.mail-list-toolbar :deep(.agent-searchbar) {
   min-width: 0;
   flex: 1;
 }
 
-.mail-list-toolbar :deep(.sky-fab) {
+.mail-list-toolbar :deep(.agent-fab) {
   flex: none;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
 }
 
 .mail-list-toolbar :deep(.mail-filter-fab--active) {
   width: min(145px, 43%);
   min-width: 112px;
   flex: 0 1 145px;
-  padding: 0 var(--sky-space-3);
+  padding: 0 var(--agent-space-3);
   text-transform: none;
 }
 
-.mail-list-toolbar :deep(.mail-filter-fab--active .sky-fab__icon) {
+.mail-list-toolbar :deep(.mail-filter-fab--active .agent-fab__icon) {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -2798,7 +2798,7 @@ button {
   color: #fff;
 }
 
-.mail-list-toolbar :deep(.mail-filter-fab--active .sky-fab__text) {
+.mail-list-toolbar :deep(.mail-filter-fab--active .agent-fab__text) {
   min-width: 0;
   overflow: hidden;
 }
@@ -2846,21 +2846,21 @@ button {
 
 .mail-selection-toolbar :deep(.mail-selection-toolbar__pane > span) {
   overflow: hidden;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 12px;
   font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.mail-selection-toolbar :deep(.sky-link) {
+.mail-selection-toolbar :deep(.agent-link) {
   gap: 6px;
   color: #ff453a;
   font-size: 12px;
   font-weight: 650;
 }
 
-.mail-selection-toolbar :deep(.sky-link:disabled) {
+.mail-selection-toolbar :deep(.agent-link:disabled) {
   opacity: 0.4;
 }
 
@@ -2881,7 +2881,7 @@ button {
 
 .mail-empty h2 {
   margin: 13px 0 4px;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 20px;
 }
 
@@ -2905,23 +2905,23 @@ button {
 }
 
 .mail-navbar {
-  --sky-safe-area-top: calc(46px + var(--sky-space-2));
-  color: var(--sky-text);
+  --agent-safe-area-top: calc(46px + var(--agent-space-2));
+  color: var(--agent-text);
 }
 
-.mail-navbar :deep(.sky-link) {
+.mail-navbar :deep(.agent-link) {
   color: #fff;
 }
 
-.mail-navbar :deep(.sky-navbar-back-link) {
+.mail-navbar :deep(.agent-navbar-back-link) {
   color: #fff;
 }
 
-.mail-navbar :deep(.sky-link:disabled) {
+.mail-navbar :deep(.agent-link:disabled) {
   opacity: 0.4;
 }
 
-.mail-navbar :deep(.sky-navbar-back-link__icon) {
+.mail-navbar :deep(.agent-navbar-back-link__icon) {
   transform: translateX(2px);
 }
 
@@ -2990,12 +2990,12 @@ button {
   width: 100%;
 }
 
-.mail-action-bar :deep(.sky-link) {
+.mail-action-bar :deep(.agent-link) {
   position: relative;
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
 
-.mail-action-bar :deep(.sky-link::after) {
+.mail-action-bar :deep(.agent-link::after) {
   position: absolute;
   bottom: calc(100% + 9px);
   left: 50%;
@@ -3017,12 +3017,12 @@ button {
   white-space: nowrap;
 }
 
-.mail-action-bar :deep(.sky-link:focus-visible) {
+.mail-action-bar :deep(.agent-link:focus-visible) {
   outline: 2px solid var(--mail-blue);
   outline-offset: 2px;
 }
 
-.mail-action-bar :deep(.sky-link:focus-visible::after) {
+.mail-action-bar :deep(.agent-link:focus-visible::after) {
   opacity: 1;
   transform: translate(-50%, 0) scale(1);
 }
@@ -3032,7 +3032,7 @@ button {
     background: #ffffff0b;
   }
 
-  .mail-action-bar :deep(.sky-link:hover) {
+  .mail-action-bar :deep(.agent-link:hover) {
     color: #fff;
   }
 
@@ -3040,7 +3040,7 @@ button {
     color: #ff6961;
   }
 
-  .mail-action-bar :deep(.sky-link:hover::after) {
+  .mail-action-bar :deep(.agent-link:hover::after) {
     opacity: 1;
     transform: translate(-50%, 0) scale(1);
   }
@@ -3072,7 +3072,7 @@ button {
   outline: 0;
   padding: 0 16px 0 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 14px;
   font-weight: 400;
 }
@@ -3117,7 +3117,7 @@ button {
   padding: 44px 22px 34px;
   background:
     radial-gradient(circle at 50% 4%, rgb(10 132 255 / 22%), transparent 46%),
-    var(--sky-bg);
+    var(--agent-bg);
 }
 
 .mail-auth__inner {
@@ -3132,8 +3132,6 @@ button {
   text-align: center;
 }
 
-/* La pastille porte l'ombre coloree : l'icone reste nette meme si le fichier
-   source change de format. */
 .mail-auth__badge {
   display: grid;
   width: 74px;
@@ -3143,20 +3141,17 @@ button {
   box-shadow: 0 14px 32px rgb(10 132 255 / 34%);
   place-items: center;
 }
-
 .mail-auth__badge img {
   width: 100%;
   height: 100%;
   border-radius: inherit;
 }
-
 .mail-auth__hero h1 {
   margin: 0;
   font-size: 28px;
   font-weight: 700;
   line-height: 1.1;
 }
-
 .mail-auth__hero p {
   max-width: 268px;
   min-height: 34px;
@@ -3166,7 +3161,6 @@ button {
   line-height: 1.4;
 }
 
-/* Segment iOS : un seul curseur qui glisse, pas un fond par onglet. */
 .mail-auth__segment {
   position: relative;
   display: grid;
@@ -3174,10 +3168,9 @@ button {
   margin: 22px 0 16px;
   padding: 2px;
   border-radius: 9px;
-  background: var(--sky-surface-muted);
+  background: var(--agent-surface-muted);
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 5%);
 }
-
 .mail-auth__segment-thumb {
   position: absolute;
   z-index: 0;
@@ -3186,17 +3179,15 @@ button {
   width: calc(50% - 2px);
   height: calc(100% - 4px);
   border-radius: 7px;
-  background: var(--sky-surface-tint);
+  background: var(--agent-surface-tint);
   box-shadow:
     0 1px 3px rgb(0 0 0 / 14%),
     0 0 0 0.5px rgb(0 0 0 / 4%);
-  transition: transform 260ms var(--sky-ease-out);
+  transition: transform 260ms var(--agent-ease-out);
 }
-
 .mail-auth__segment-thumb.is-register {
   transform: translate3d(100%, 0, 0);
 }
-
 .mail-auth__segment button {
   position: relative;
   z-index: 1;
@@ -3210,26 +3201,21 @@ button {
   letter-spacing: -0.1px;
   transition: color 200ms ease;
 }
-
 .mail-auth__segment button.is-active {
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
-
 .mail-auth__form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* Liste groupee facon Reglages : une carte, des filets internes, pas de
-   libelle flottant au-dessus de chaque champ. */
 .mail-auth__group {
   overflow: hidden;
   border-radius: 14px;
-  background: var(--sky-surface);
+  background: var(--agent-surface);
   box-shadow: 0 1px 3px rgb(0 0 0 / 6%);
 }
-
 .mail-auth__row {
   position: relative;
   height: 50px;
@@ -3239,40 +3225,35 @@ button {
   padding: 0 14px;
   color: var(--mail-muted);
 }
-
 .mail-auth__row + .mail-auth__row::before {
   position: absolute;
   top: 0;
   right: 0;
   left: 44px;
   height: 1px;
-  background: var(--sky-hairline);
+  background: var(--agent-hairline);
   content: '';
-  transform: scaleY(var(--sky-hairline-scale));
+  transform: scaleY(var(--agent-hairline-scale));
   transform-origin: top;
 }
-
 .mail-auth__row input {
   min-width: 0;
   flex: 1;
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 16px;
   letter-spacing: -0.3px;
 }
-
 .mail-auth__row input::placeholder {
   color: var(--mail-muted);
   opacity: 0.72;
 }
-
 .mail-auth__row small {
   color: var(--mail-muted);
   font-size: 13px;
 }
-
 .mail-auth__reveal {
   display: grid;
   width: 28px;
@@ -3283,11 +3264,9 @@ button {
   background: transparent;
   place-items: center;
 }
-
 .mail-auth__reveal:active {
-  background: var(--sky-pressed);
+  background: var(--agent-pressed);
 }
-
 .mail-auth__submit {
   height: 50px;
   display: grid;
@@ -3301,84 +3280,71 @@ button {
   letter-spacing: -0.3px;
   place-items: center;
   transition:
-    transform 160ms var(--sky-ease-out),
+    transform 160ms var(--agent-ease-out),
     opacity 160ms ease;
 }
-
 .mail-auth__submit:active:not(:disabled) {
   transform: scale(0.98);
 }
-
 .mail-auth__submit:disabled {
   opacity: 0.55;
 }
-
 .mail-auth__note {
   display: flex;
   align-items: flex-start;
   gap: 8px;
   margin: 0 4px;
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 14px;
   font-weight: 500;
   line-height: 19px;
 }
-
 .mail-auth__note svg {
   flex: 0 0 auto;
   margin-top: 1px;
 }
-
 @keyframes mail-screen-enter {
   from {
     opacity: 0;
     transform: translate3d(10px, 0, 0);
   }
-
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
 }
-
 @keyframes mail-row-enter {
   from {
     opacity: 0;
     transform: translate3d(0, 7px, 0);
   }
-
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
 }
-
 @keyframes mail-action-bar-enter {
   from {
     opacity: 0;
     transform: translate3d(0, 12px, 0) scale(0.97);
   }
-
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .mail-screen,
   .mail-row-shell,
   .mail-action-bar {
     animation: none;
   }
-
   .mail-row,
   .mail-row-action,
   .mail-folder-row {
     transition-duration: 0.01ms;
   }
-
-  .mail-action-bar :deep(.sky-link) {
+  .mail-action-bar :deep(.agent-link) {
     transition-duration: 0.01ms;
   }
 }

@@ -29,21 +29,21 @@ import {
 import { handleEnterAction } from '@/utils/keyboard'
 import { formatPhoneNumber, normalizePhoneNumber } from '@/utils/phone'
 import {
-  SkyAppPage,
-  SkyButton,
-  SkyCard,
-  SkyEmptyState,
-  SkyField,
-  SkyGlass,
-  SkyLink,
-  SkyList,
-  SkyListItem,
-  SkyNavbar,
-  SkySheet,
-  SkySpinner,
-  SkyTabBar,
-  SkyTabButton,
-  SkyNotification,
+  AgentAppPage,
+  AgentButton,
+  AgentCard,
+  AgentEmptyState,
+  AgentField,
+  AgentGlass,
+  AgentLink,
+  AgentList,
+  AgentListItem,
+  AgentNavbar,
+  AgentSheet,
+  AgentSpinner,
+  AgentTabBar,
+  AgentTabButton,
+  AgentNotification,
 } from '@/ui'
 
 type BankingTab = 'home' | 'activity'
@@ -131,8 +131,6 @@ const chart = computed(() => {
   }))
 })
 
-// Graduation de l'axe vertical : quatre paliers sur le maximum reel de la
-// semaine, arrondis pour rester lisibles.
 const chartScale = computed(() => {
   const maximum = Math.max(
     1,
@@ -169,8 +167,6 @@ const filteredTransactions = computed(() => {
   })
 })
 
-// Numero de compte affiche sur la carte. Le backend n'en expose pas : on le
-// derive de l'identifiant du joueur, stable pour un meme personnage.
 const accountNumber = computed(() => {
   const id = banking.overview?.playerId
   return id === undefined ? '—' : `FLE-${String(id).padStart(4, '0')}`
@@ -180,9 +176,6 @@ const cardHolder = computed(() =>
   (banking.overview?.playerName ?? '').toUpperCase(),
 )
 
-// Teinte de la pastille, derivee du nom : une bande etroite autour du violet
-// de l'application, assez pour distinguer deux contacts sans partir en
-// arc-en-ciel. Le hachage reste stable d'une session a l'autre.
 const AVATAR_HUE_BASE = 236
 const AVATAR_HUE_SPREAD = 60
 
@@ -361,9 +354,6 @@ watch(
 watch(action, async (currentAction) => {
   if (currentAction) {
     await nextTick()
-    // preventScroll obligatoire : .sky-app-page est en overflow hidden, ce qui
-    // n'empeche pas le navigateur de la faire defiler pour amener l'element au
-    // premier plan. La page sautait de la hauteur du panneau puis revenait.
     document.getElementById('banking-transfer-target')?.focus({
       preventScroll: true,
     })
@@ -376,7 +366,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     class="banking-app pb-safe-24"
     :label="phone.t('Apps.banking.name')"
     :dark="phone.isDarkMode"
@@ -385,7 +375,7 @@ onBeforeUnmount(() => {
       phone.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(29, 26, 46, 0.09)'
     "
   >
-    <SkyNavbar
+    <AgentNavbar
       class="banking-navbar"
       :aria-hidden="overlayOpened"
       :inert="overlayOpened"
@@ -396,7 +386,7 @@ onBeforeUnmount(() => {
           <span class="banking-brand__sub">B A N K</span>
         </span>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
     <div
       v-if="!banking.overview && banking.isLoading"
@@ -404,11 +394,11 @@ onBeforeUnmount(() => {
       :aria-hidden="overlayOpened"
       :inert="overlayOpened"
     >
-      <SkySpinner :label="phone.t('Common.loading')" />
+      <AgentSpinner :label="phone.t('Common.loading')" />
       <span>{{ phone.t('Common.loading') }}</span>
     </div>
 
-    <SkyEmptyState
+    <AgentEmptyState
       v-else-if="!banking.overview"
       class="banking-empty"
       :aria-hidden="overlayOpened"
@@ -418,11 +408,11 @@ onBeforeUnmount(() => {
     >
       <template #icon><Landmark :size="34" /></template>
       <template #actions>
-        <SkyButton rounded @click="banking.load(true)">
+        <AgentButton rounded @click="banking.load(true)">
           {{ phone.t('Apps.banking.tryAgain') }}
-        </SkyButton>
+        </AgentButton>
       </template>
-    </SkyEmptyState>
+    </AgentEmptyState>
 
     <div
       v-else
@@ -442,7 +432,7 @@ onBeforeUnmount(() => {
         :style="{ transform: `translateY(${pullDistance - pullThreshold}px)` }"
         aria-live="polite"
       >
-        <SkySpinner :label="phone.t('Common.loading')" />
+        <AgentSpinner :label="phone.t('Common.loading')" />
       </div>
 
       <template v-if="activeTab === 'home'">
@@ -498,7 +488,7 @@ onBeforeUnmount(() => {
           class="banking-stats"
           :aria-label="phone.t('Apps.banking.recentPeriod')"
         >
-          <SkyGlass class="banking-stat">
+          <AgentGlass class="banking-stat">
             <span class="banking-stat__icon"><ArrowDownLeft :size="17" /></span>
             <span class="banking-stat__label">{{
               phone.t('Apps.banking.totalIncome')
@@ -506,15 +496,15 @@ onBeforeUnmount(() => {
             <b class="banking-stat__amount is-incoming">{{
               formatMoney(totals.incoming)
             }}</b>
-          </SkyGlass>
-          <SkyGlass class="banking-stat">
+          </AgentGlass>
+          <AgentGlass class="banking-stat">
             <span class="banking-stat__icon"><ArrowUpRight :size="17" /></span>
             <span class="banking-stat__label">{{
               phone.t('Apps.banking.totalExpenses')
             }}</span>
             <b class="banking-stat__amount">{{ formatMoney(totals.outgoing) }}</b>
-          </SkyGlass>
-          <SkyGlass class="banking-stat">
+          </AgentGlass>
+          <AgentGlass class="banking-stat">
             <span class="banking-stat__icon"
               ><ArrowLeftRight :size="17"
             /></span>
@@ -524,10 +514,10 @@ onBeforeUnmount(() => {
             <b class="banking-stat__amount">{{
               formatMoney(totals.transfers)
             }}</b>
-          </SkyGlass>
+          </AgentGlass>
         </section>
 
-        <SkyButton
+        <AgentButton
           block
           large
           rounded
@@ -536,26 +526,26 @@ onBeforeUnmount(() => {
         >
           <Send :size="17" aria-hidden="true" />
           {{ phone.t('Apps.banking.quickTransfer') }}
-        </SkyButton>
+        </AgentButton>
 
         <section class="banking-panel">
           <div class="banking-panel__head">
             <h2>{{ phone.t('Apps.banking.latestTransactions') }}</h2>
-            <SkyLink
+            <AgentLink
               component="button"
               type="button"
               @click="selectTab('activity')"
             >
               {{ phone.t('Apps.banking.viewAll') }}
-            </SkyLink>
+            </AgentLink>
           </div>
-          <SkyList
+          <AgentList
             v-if="transactions.length"
             inset
             strong
             class="banking-transaction-list"
           >
-            <SkyListItem
+            <AgentListItem
               v-for="transaction in transactions.slice(0, 5)"
               :key="transaction.id"
               :subtitle="formatDate(transaction.createdAt)"
@@ -579,8 +569,8 @@ onBeforeUnmount(() => {
                   }}
                 </b>
               </template>
-            </SkyListItem>
-          </SkyList>
+            </AgentListItem>
+          </AgentList>
           <p v-else class="banking-no-transactions">
             {{ phone.t('Apps.banking.noTransactions') }}
           </p>
@@ -588,7 +578,7 @@ onBeforeUnmount(() => {
       </template>
 
       <template v-else>
-        <SkyCard :content-wrap="false" class="banking-analytics">
+        <AgentCard :content-wrap="false" class="banking-analytics">
           <div class="banking-analytics__head">
             <h2>{{ phone.t('Apps.banking.analytics') }}</h2>
             <span class="banking-analytics__period">{{
@@ -634,7 +624,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </div>
-        </SkyCard>
+        </AgentCard>
 
         <label class="banking-search">
           <Search :size="16" aria-hidden="true" />
@@ -673,13 +663,13 @@ onBeforeUnmount(() => {
               filteredTransactions.length
             }}</span>
           </div>
-          <SkyList
+          <AgentList
             v-if="filteredTransactions.length"
             inset
             strong
             class="banking-transaction-list"
           >
-            <SkyListItem
+            <AgentListItem
               v-for="transaction in filteredTransactions"
               :key="transaction.id"
               :subtitle="formatDate(transaction.createdAt)"
@@ -703,8 +693,8 @@ onBeforeUnmount(() => {
                   }}
                 </b>
               </template>
-            </SkyListItem>
-          </SkyList>
+            </AgentListItem>
+          </AgentList>
           <p v-else class="banking-no-transactions">
             {{
               transactions.length
@@ -716,7 +706,7 @@ onBeforeUnmount(() => {
       </template>
     </div>
 
-    <SkyTabBar
+    <AgentTabBar
       v-if="banking.overview"
       icons
       labels
@@ -725,23 +715,23 @@ onBeforeUnmount(() => {
       :inert="overlayOpened"
       :label="phone.t('Apps.banking.navigation')"
     >
-      <SkyTabButton
+      <AgentTabButton
         :active="activeTab === 'home'"
         :label="phone.t('Apps.banking.home')"
         @click="selectTab('home')"
       >
         <template #icon><House :size="25" /></template>
-      </SkyTabButton>
-      <SkyTabButton
+      </AgentTabButton>
+      <AgentTabButton
         :active="activeTab === 'activity'"
         :label="phone.t('Apps.banking.activity')"
         @click="selectTab('activity')"
       >
         <template #icon><BarChart3 :size="25" /></template>
-      </SkyTabButton>
-    </SkyTabBar>
+      </AgentTabButton>
+    </AgentTabBar>
 
-    <SkySheet
+    <AgentSheet
       :opened="overlayOpened"
       :ariaLabelledby="
         action
@@ -773,7 +763,7 @@ onBeforeUnmount(() => {
           <span class="banking-send__label">
             {{ phone.t('Apps.banking.recipient') }}
           </span>
-          <SkyField
+          <AgentField
             class="banking-send__number"
             input-id="banking-transfer-target"
             inputmode="tel"
@@ -836,7 +826,7 @@ onBeforeUnmount(() => {
           </p>
         </div>
 
-        <SkyButton
+        <AgentButton
           block
           large
           rounded
@@ -844,7 +834,7 @@ onBeforeUnmount(() => {
           :disabled="banking.isLoading"
           @click="submitAction"
         >
-          <SkySpinner
+          <AgentSpinner
             v-if="banking.isLoading"
             :label="phone.t('Common.loading')"
             :size="20"
@@ -853,7 +843,7 @@ onBeforeUnmount(() => {
             {{ phone.t(`Apps.banking.forms.${action}.submit`) }}
             <ArrowRight :size="17" />
           </template>
-        </SkyButton>
+        </AgentButton>
       </section>
       <section
         v-else-if="selectedTransaction"
@@ -891,12 +881,12 @@ onBeforeUnmount(() => {
             )
           }}
         </strong>
-        <SkyList inset strong class="banking-transaction-detail__list">
-          <SkyListItem
+        <AgentList inset strong class="banking-transaction-detail__list">
+          <AgentListItem
             :title="phone.t('Apps.banking.transactionDate')"
             :after="formatDate(selectedTransaction.createdAt)"
           />
-          <SkyListItem
+          <AgentListItem
             :title="phone.t('Apps.banking.transactionDirection')"
             :after="
               phone.t(
@@ -906,19 +896,19 @@ onBeforeUnmount(() => {
               )
             "
           />
-          <SkyListItem
+          <AgentListItem
             v-if="selectedTransaction.reference"
             :title="phone.t('Apps.banking.transactionReference')"
             :subtitle="selectedTransaction.reference"
           />
-        </SkyList>
+        </AgentList>
       </section>
-    </SkySheet>
+    </AgentSheet>
 
-    <SkyNotification
+    <AgentNotification
       :opened="cooldownToastOpened"
       :text="errorMessage('reload_cooldown')"
       @click="closeCooldownToast"
     />
-  </SkyAppPage>
+  </AgentAppPage>
 </template>

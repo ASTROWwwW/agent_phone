@@ -41,7 +41,7 @@ const phone = usePhoneStore()
 .app-store-action--icon {
   width: 28px;
   height: 28px;
-  color: var(--sky-app-accent);
+  color: var(--agent-app-accent);
 }
 
 .app-store-action__progress {
@@ -63,11 +63,11 @@ const phone = usePhoneStore()
 }
 
 .app-store-action__track {
-  stroke: var(--sky-app-accent-soft);
+  stroke: var(--agent-app-accent-soft);
 }
 
 .app-store-action__value {
-  stroke: var(--sky-app-accent);
+  stroke: var(--agent-app-accent);
   stroke-linecap: round;
   stroke-dasharray: 69.2;
   stroke-dashoffset: 69.2;
@@ -80,7 +80,7 @@ const phone = usePhoneStore()
   width: 7px;
   height: 7px;
   border-radius: 1.5px;
-  background: var(--sky-app-accent);
+  background: var(--agent-app-accent);
 }
 
 @keyframes app-store-download-progress {

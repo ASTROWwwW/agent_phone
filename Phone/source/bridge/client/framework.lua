@@ -1,5 +1,3 @@
--- Meme resolution que cote serveur : ESX Legacy peut tourner sous un autre nom
--- de ressource que 'es_extended'.
 local ESX_RESOURCES = { "es_extended", "Agent" }
 
 local framework_name

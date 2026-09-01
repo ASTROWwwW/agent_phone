@@ -4,11 +4,11 @@ import crashUrl from '@/assets/audio/agent-flappy/crash.wav?url'
 import flapUrl from '@/assets/audio/agent-flappy/flap.wav?url'
 import pointUrl from '@/assets/audio/agent-flappy/point.wav?url'
 
-export type SkyFlappySound = 'crash' | 'flap' | 'point'
-const urls: Record<SkyFlappySound, string> = { crash: crashUrl, flap: flapUrl, point: pointUrl }
-const pools = new Map<SkyFlappySound, HTMLAudioElement[]>()
+export type AgentFlappySound = 'crash' | 'flap' | 'point'
+const urls: Record<AgentFlappySound, string> = { crash: crashUrl, flap: flapUrl, point: pointUrl }
+const pools = new Map<AgentFlappySound, HTMLAudioElement[]>()
 
-export function playSkyFlappySound(sound: SkyFlappySound, enabled: boolean): void {
+export function playAgentFlappySound(sound: AgentFlappySound, enabled: boolean): void {
   if (!enabled) return
   let players = pools.get(sound)
   if (!players) {

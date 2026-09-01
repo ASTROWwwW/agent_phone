@@ -79,7 +79,7 @@ function track(id: string, extension: 'mp3' | 'ogg' = 'ogg'): MusicTrack {
     id,
     source: 'server',
     title: id,
-    url: `https://cfx-nui-sky_phone/config/music/${id}.${extension}`,
+    url: `https://cfx-nui-agent_phone/config/music/${id}.${extension}`,
   }
 }
 
@@ -96,7 +96,7 @@ beforeAll(async () => {
   vi.stubGlobal('fetch', fetchMock)
   vi.stubGlobal('window', {
     location: {
-      href: 'https://cfx-nui-sky_phone/source/html/index.html#/music',
+      href: 'https://cfx-nui-agent_phone/source/html/index.html#/music',
     },
   })
   Object.defineProperty(URL, 'createObjectURL', {
@@ -118,7 +118,7 @@ beforeEach(() => {
   fakeAudio.reset()
   fetchMock.mockReset()
   createObjectUrlMock.mockReset()
-  createObjectUrlMock.mockReturnValue('blob:sky-music')
+  createObjectUrlMock.mockReturnValue('blob:agent-music')
   revokeObjectUrlMock.mockReset()
   vi.mocked(nuiCall).mockReset()
 })
@@ -135,12 +135,12 @@ describe('music server playback', () => {
     await music.play(track('night-drive'), [track('night-drive')])
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://cfx-nui-sky_phone/config/music/night-drive.ogg',
+      'https://cfx-nui-agent_phone/config/music/night-drive.ogg',
       { signal: expect.any(AbortSignal) },
     )
     expect(createObjectUrlMock).toHaveBeenCalledOnce()
     expect(createObjectUrlMock.mock.calls[0]?.[0].type).toBe('audio/ogg')
-    expect(fakeAudio.src).toBe('blob:sky-music')
+    expect(fakeAudio.src).toBe('blob:agent-music')
     expect(music.isPlaying).toBe(true)
   })
 
@@ -174,7 +174,7 @@ describe('music server playback', () => {
     music.stop()
 
     expect(revokeObjectUrlMock).toHaveBeenCalledOnce()
-    expect(revokeObjectUrlMock).toHaveBeenCalledWith('blob:sky-music')
+    expect(revokeObjectUrlMock).toHaveBeenCalledWith('blob:agent-music')
     expect(fakeAudio.src).toBe('')
   })
 
@@ -198,7 +198,7 @@ describe('music server playback', () => {
     await firstPlay
 
     expect(music.currentTrack?.id).toBe('second')
-    expect(fakeAudio.src).toBe('blob:sky-music')
+    expect(fakeAudio.src).toBe('blob:agent-music')
     expect(createObjectUrlMock).toHaveBeenCalledOnce()
   })
 })

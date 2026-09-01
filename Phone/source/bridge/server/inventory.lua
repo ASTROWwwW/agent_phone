@@ -1,6 +1,3 @@
--- Seul l adaptateur ox est livre dans cette build. Garder les autres entrees
--- serait un piege : l auto-detection pourrait en selectionner un dont le
--- fichier n existe plus, et Bridge.Inventory resterait sans implementation.
 local inventory_adapters = {
     { name = "ox", resource = "ox_inventory" },
 }

@@ -472,7 +472,7 @@ onBeforeUnmount(() => {
             :highlight="false"
           >
             <div class="control-center__media-copy">
-              <span class="sky-type-eyebrow">{{
+              <span class="agent-type-eyebrow">{{
                 phone.t('ControlCenter.media')
               }}</span>
               <strong>{{
@@ -618,7 +618,7 @@ onBeforeUnmount(() => {
             @click="togglePreference('focusMode')"
           >
             <Moon aria-hidden="true" />
-            <span class="sky-type-display">{{
+            <span class="agent-type-display">{{
               phone.t('ControlCenter.focus')
             }}</span>
           </k-glass>
@@ -973,21 +973,17 @@ onBeforeUnmount(() => {
   transform: scale(0.96);
 }
 
-/* Le croissant est un glyphe plein : a diametre egal il pese plus lourd que
-   les traits voisins, d'ou une taille nettement plus basse que les autres. */
 .control-center__focus-button svg {
   width: 18px;
   height: 18px;
   fill: currentcolor;
 }
-
 .control-center__round-button svg,
 .control-center__quick-button svg {
   width: 27px;
   height: 27px;
   stroke-width: 2;
 }
-
 .control-center__slider {
   position: relative;
   grid-row: 1 / span 2;
@@ -997,15 +993,12 @@ onBeforeUnmount(() => {
   cursor: pointer;
   touch-action: none;
 }
-
 .control-center__slider--brightness {
   grid-column: 3;
 }
-
 .control-center__slider--volume {
   grid-column: 4;
 }
-
 .control-center__slider-level {
   position: absolute;
   z-index: 0;
@@ -1017,11 +1010,9 @@ onBeforeUnmount(() => {
   transition: height 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: height;
 }
-
 .control-center--slider-dragging .control-center__slider-level {
   transition: none;
 }
-
 .control-center__range {
   position: absolute;
   z-index: 2;
@@ -1032,23 +1023,18 @@ onBeforeUnmount(() => {
   transform: translate(-50%, -50%) rotate(-90deg);
   pointer-events: none;
 }
-
 .control-center__range :deep(span) {
   opacity: 0;
 }
-
 .control-center__range :deep(input) {
   height: 58px !important;
 }
-
 .control-center__range :deep(input::-webkit-slider-thumb) {
   opacity: 0;
 }
-
 .control-center__range :deep(input::-moz-range-thumb) {
   opacity: 0;
 }
-
 .control-center__slider-icon {
   position: absolute;
   z-index: 3;
@@ -1060,38 +1046,29 @@ onBeforeUnmount(() => {
   transform: translateX(-50%);
   pointer-events: none;
 }
-
 .control-center__quick-button.control-center__quick-button--flashlight-active {
   color: #bf5af2 !important;
 }
 
-/* Torche dessinee a la main : le glyphe lucide etait une boite droite, celui-ci
-   reprend la tete evasee des reglages iOS et sort un faisceau une fois allume. */
 .control-center__flashlight-glyph {
   width: 26px;
   height: 26px;
   fill: currentcolor;
 }
-
-/* Les coins de la tete sont arrondis par la jointure du trait plutot que par
-   des arcs : le glyphe reste net a 26 px sans path illisible. */
 .control-center__flashlight-head {
   stroke: currentcolor;
   stroke-linejoin: round;
   stroke-width: 1.1;
 }
-
 .control-center__slider--brightness .control-center__slider-icon {
   color: #ffd60a;
 }
-
 .control-center__quick-actions {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   pointer-events: auto;
 }
-
 .control-center__quick-button {
   display: flex;
   align-items: center;
@@ -1103,34 +1080,27 @@ onBeforeUnmount(() => {
   color: #fff;
   transition: transform 160ms ease;
 }
-
 .control-center__quick-button:disabled {
   opacity: 0.72;
 }
-
 .control-center-enter-active,
 .control-center-leave-active {
   transition: opacity 280ms ease;
 }
-
 .control-center-enter-active .control-center__panel {
   transition: transform 440ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .control-center-leave-active .control-center__panel {
   transition: transform 260ms cubic-bezier(0.7, 0, 0.84, 0);
 }
-
 .control-center-enter-from,
 .control-center-leave-to {
   opacity: 0;
 }
-
 .control-center-enter-from .control-center__panel,
 .control-center-leave-to .control-center__panel {
   transform: translate3d(28px, -22px, 0) scale(0.84);
 }
-
 @media (prefers-reduced-motion: reduce) {
   .control-center-enter-active,
   .control-center-leave-active,

@@ -34,18 +34,18 @@ import {
   X,
 } from 'lucide-vue-next'
 import {
-  SkyBadge,
-  SkyButton,
-  SkyGlass,
-  SkyIcon,
-  SkyLink,
-  SkyNotification,
-  SkyNavbar,
-  SkyAppPage,
-  SkySearchbar,
-  SkyTabBar,
-  SkyTabButton,
-  SkyToolbarPane,
+  AgentBadge,
+  AgentButton,
+  AgentGlass,
+  AgentIcon,
+  AgentLink,
+  AgentNotification,
+  AgentNavbar,
+  AgentAppPage,
+  AgentSearchbar,
+  AgentTabBar,
+  AgentTabButton,
+  AgentToolbarPane,
 } from '@/ui'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -360,7 +360,6 @@ function formatPrice(item: {
     : phone.t('Apps.citymarkt.money', { price: formatted })
 }
 
-/** Montant seul, sans la mention de negociation : la carte l'affiche a part. */
 function formatAmount(item: {
   price?: number | string | null
   price_type?: MarketplacePriceType | null
@@ -1008,12 +1007,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     component="main"
     class="citymarkt pb-safe-24"
     :class="{ 'citymarkt--light': !phone.isDarkMode }"
   >
-    <sky-navbar
+    <agent-navbar
       v-if="screen === 'main' && onboardingReady && isAuthenticated"
       class="citymarkt-navbar"
       :subtitle="
@@ -1030,7 +1029,7 @@ onMounted(async () => {
       "
     >
       <template v-if="tab === 'profile'" #right>
-        <sky-link
+        <agent-link
           component="button"
           icon-only
           type="button"
@@ -1039,9 +1038,9 @@ onMounted(async () => {
           @click="logoutDialogOpen = true"
         >
           <LogOut :size="18" />
-        </sky-link>
+        </agent-link>
       </template>
-    </sky-navbar>
+    </agent-navbar>
 
     <div v-if="!onboardingReady" class="citymarkt__gate-loading">
       {{ phone.t('Common.loading') }}
@@ -1052,7 +1051,7 @@ onMounted(async () => {
       :class="{ 'citymarkt__content--auth': !isAuthenticated }"
     >
       <template v-if="tab === 'discover' || tab === 'search'">
-        <sky-searchbar
+        <agent-searchbar
           component="form"
           :value="search"
           :placeholder="phone.t('Apps.citymarkt.searchPlaceholder')"
@@ -1069,9 +1068,9 @@ onMounted(async () => {
             type="button"
             @click="toggleCategory(item.id)"
           >
-            <sky-glass class="citymarkt__category-icon">
+            <agent-glass class="citymarkt__category-icon">
               <component :is="item.icon" :size="19" />
-            </sky-glass>
+            </agent-glass>
             {{ label('categories', item.id) }}
           </button>
         </div>
@@ -1102,7 +1101,7 @@ onMounted(async () => {
                 {{ marketplace.items.length }}
                 {{ phone.t('Apps.citymarkt.offers') }}
               </small>
-              <sky-glass class="citymarkt-layout-toggle">
+              <agent-glass class="citymarkt-layout-toggle">
                 <button
                   type="button"
                   :aria-label="
@@ -1127,7 +1126,7 @@ onMounted(async () => {
                   <Rows3 v-if="listingLayout === 'compact'" :size="17" />
                   <LayoutGrid v-else :size="17" />
                 </button>
-              </sky-glass>
+              </agent-glass>
             </span>
           </div>
         </div>
@@ -1145,7 +1144,7 @@ onMounted(async () => {
           class="citymarkt__grid"
           :class="{ 'citymarkt__grid--wide': listingLayout === 'wide' }"
         >
-          <sky-glass
+          <agent-glass
             v-for="item in displayItems"
             :key="item.id"
             class="citymarkt-listing-card"
@@ -1208,7 +1207,7 @@ onMounted(async () => {
                 :fill="item.is_favorite ? 'currentColor' : 'none'"
               />
             </button>
-          </sky-glass>
+          </agent-glass>
         </div>
       </template>
 
@@ -1217,9 +1216,9 @@ onMounted(async () => {
           <UserRound :size="40" />
           <h2>{{ phone.t('Apps.citymarkt.signInTitle') }}</h2>
           <p>{{ phone.t('Apps.citymarkt.signInBody') }}</p>
-          <sky-button rounded @click="tab = 'profile'">
+          <agent-button rounded @click="tab = 'profile'">
             {{ phone.t('Apps.citymarkt.login') }}
-          </sky-button>
+          </agent-button>
         </div>
         <div v-else-if="!marketplace.inquiries.length" class="citymarkt__empty">
           <MessageCircle :size="36" /><strong>{{
@@ -1228,7 +1227,7 @@ onMounted(async () => {
           ><span>{{ phone.t('Apps.citymarkt.noMessagesBody') }}</span>
         </div>
         <div v-else class="citymarkt__inquiries citymarkt__glass-list">
-          <sky-glass v-for="item in marketplace.inquiries" :key="item.id">
+          <agent-glass v-for="item in marketplace.inquiries" :key="item.id">
             <button type="button" @click="openChat(item.id)">
               <span
                 :class="{ 'citymarkt__thumb--empty': !item.image }"
@@ -1243,7 +1242,7 @@ onMounted(async () => {
               <i v-if="Number(item.unread)">{{ item.unread }}</i
               ><ChevronRight :size="16" />
             </button>
-          </sky-glass>
+          </agent-glass>
         </div>
       </template>
 
@@ -1319,22 +1318,22 @@ onMounted(async () => {
             </div>
             <label
               >{{ phone.t('Apps.citymarkt.profileEmail')
-              }}<sky-glass><input :value="account.email" readonly /></sky-glass
+              }}<agent-glass><input :value="account.email" readonly /></agent-glass
             ></label>
             <label
               >{{ phone.t('Apps.citymarkt.displayName')
-              }}<sky-glass
+              }}<agent-glass
                 ><input
                   v-model="profileDraft.displayName"
-                  maxlength="40" /></sky-glass
+                  maxlength="40" /></agent-glass
             ></label>
             <label
               >{{ phone.t('Apps.citymarkt.profileBio')
-              }}<sky-glass>
+              }}<agent-glass>
                 <textarea
                   v-model="profileDraft.bio"
                   maxlength="160"
-                /></sky-glass
+                /></agent-glass
             ></label>
             <div class="citymarkt__profile-actions">
               <button
@@ -1354,7 +1353,7 @@ onMounted(async () => {
             </div>
           </section>
           <template v-else>
-            <sky-glass class="citymarkt__glass-profile">
+            <agent-glass class="citymarkt__glass-profile">
               <span>
                 <img
                   v-if="marketplace.profile?.avatar_url"
@@ -1379,8 +1378,8 @@ onMounted(async () => {
               >
                 <Pencil :size="16" />
               </button>
-            </sky-glass>
-            <sky-glass class="citymarkt__glass-segmented">
+            </agent-glass>
+            <agent-glass class="citymarkt__glass-segmented">
               <button
                 type="button"
                 :class="{ active: profileMode === 'own' }"
@@ -1399,14 +1398,14 @@ onMounted(async () => {
                 {{ phone.t('Apps.citymarkt.favorites') }}
                 <span>{{ marketplace.items.length }}</span>
               </button>
-            </sky-glass>
+            </agent-glass>
             <div v-if="!displayItems.length" class="citymarkt__empty">
               <Tag :size="34" /><strong>{{
                 phone.t('Apps.citymarkt.noProfileListings')
               }}</strong>
             </div>
             <div v-else class="citymarkt__list citymarkt__glass-list">
-              <sky-glass
+              <agent-glass
                 v-for="item in displayItems"
                 :key="item.id"
                 class="citymarkt-profile-listing"
@@ -1421,7 +1420,7 @@ onMounted(async () => {
                     <strong>{{ item.title }}</strong>
                     <small>{{ label('status', item.status) }}</small>
                   </div>
-                  <ChevronRight :size="17" /></button></sky-glass
+                  <ChevronRight :size="17" /></button></agent-glass
               >
             </div>
           </template>
@@ -1434,7 +1433,7 @@ onMounted(async () => {
       class="citymarkt__detail"
     >
       <div class="citymarkt__glass-actions">
-        <sky-link
+        <agent-link
           component="button"
           icon-only
           type="button"
@@ -1443,9 +1442,9 @@ onMounted(async () => {
           :title="phone.t('Common.back')"
           @click="screen = 'main'"
           ><ArrowLeft :size="19"
-        /></sky-link>
+        /></agent-link>
         <div>
-          <sky-glass
+          <agent-glass
             v-if="!selectedListing.is_owner"
             component="button"
             type="button"
@@ -1462,8 +1461,8 @@ onMounted(async () => {
             ><Heart
               :size="19"
               :fill="selectedListing.is_favorite ? 'currentColor' : 'none'"
-          /></sky-glass>
-          <sky-glass
+          /></agent-glass>
+          <agent-glass
             v-if="!selectedListing.is_owner"
             component="button"
             type="button"
@@ -1471,7 +1470,7 @@ onMounted(async () => {
             :aria-label="phone.t('Apps.citymarkt.reportListing')"
             @click="screen = 'report'"
             ><MoreHorizontal :size="20"
-          /></sky-glass>
+          /></agent-glass>
         </div>
       </div>
       <CityMarktGallery
@@ -1528,7 +1527,7 @@ onMounted(async () => {
             >
           </div>
         </div>
-        <sky-glass
+        <agent-glass
           v-if="selectedListing.phone_number"
           class="citymarkt__phone"
         >
@@ -1539,7 +1538,7 @@ onMounted(async () => {
               formatPhoneNumber(selectedListing.phone_number)
             }}</strong>
           </span>
-        </sky-glass>
+        </agent-glass>
         <button
           v-if="
             selectedListing.status === 'active' ||
@@ -1601,9 +1600,9 @@ onMounted(async () => {
             />
           </div>
         </template>
-        <sky-glass v-else class="citymarkt__glass-auth">{{
+        <agent-glass v-else class="citymarkt__glass-auth">{{
           phone.t('Apps.citymarkt.signInToMessage')
-        }}</sky-glass>
+        }}</agent-glass>
       </div>
       <button
         v-if="!selectedListing.is_owner && isAuthenticated"
@@ -1618,7 +1617,7 @@ onMounted(async () => {
     </section>
 
     <section v-else-if="screen === 'sell'" class="citymarkt__sell">
-      <sky-navbar
+      <agent-navbar
         class="citymarkt-create-navbar"
         center-title
         left-class="citymarkt-create-action citymarkt-create-action--close"
@@ -1663,7 +1662,7 @@ onMounted(async () => {
             }}
           </button>
         </template>
-      </sky-navbar>
+      </agent-navbar>
       <div class="citymarkt__progress">
         <i :style="{ width: `${sellStep * 25}%` }" />
       </div>
@@ -1673,20 +1672,20 @@ onMounted(async () => {
           <h2>{{ phone.t('Apps.citymarkt.addPhotos') }}</h2>
           <p>{{ phone.t('Apps.citymarkt.addPhotosBody') }}</p>
           <div class="citymarkt__photo-actions">
-            <sky-glass>
+            <agent-glass>
               <button type="button" @click="openMediaApp('photos')">
                 <span><Images :size="20" /></span>
                 <strong>{{ phone.t('Apps.citymarkt.chooseGallery') }}</strong>
                 <small>{{ phone.t('Apps.citymarkt.chooseGalleryBody') }}</small>
               </button>
-            </sky-glass>
-            <sky-glass>
+            </agent-glass>
+            <agent-glass>
               <button type="button" @click="openMediaApp('camera')">
                 <span><Camera :size="20" /></span>
                 <strong>{{ phone.t('Apps.citymarkt.takePhotos') }}</strong>
                 <small>{{ phone.t('Apps.citymarkt.takePhotosBody') }}</small>
               </button>
-            </sky-glass>
+            </agent-glass>
           </div>
           <div class="citymarkt__selected-heading">
             <strong>{{ phone.t('Apps.citymarkt.selectedPhotos') }}</strong>
@@ -1745,12 +1744,12 @@ onMounted(async () => {
                 }}</small
               >
             </span>
-            <sky-glass class="citymarkt__field-glass">
+            <agent-glass class="citymarkt__field-glass">
               <input
                 v-model="draft.title"
                 :maxlength="listingTextLimits.title.maximum"
               />
-            </sky-glass>
+            </agent-glass>
           </label>
           <label>
             <span class="citymarkt__field-heading">
@@ -1776,14 +1775,14 @@ onMounted(async () => {
                 }}</small
               >
             </span>
-            <sky-glass
+            <agent-glass
               class="citymarkt__field-glass citymarkt__field-glass--textarea"
             >
               <textarea
                 v-model="draft.description"
                 :maxlength="listingTextLimits.description.maximum"
               />
-            </sky-glass>
+            </agent-glass>
           </label>
           <label
             >{{ phone.t('Apps.citymarkt.category')
@@ -1813,13 +1812,13 @@ onMounted(async () => {
               @change="selectDraftPriceType" /></label
           ><label v-if="draft.priceType !== 'free'"
             >{{ phone.t('Apps.citymarkt.price') }}
-            <sky-glass class="citymarkt__field-glass">
+            <agent-glass class="citymarkt__field-glass">
               <input
                 v-model="draft.price"
                 inputmode="numeric"
                 type="number"
                 min="1"
-              /> </sky-glass></label
+              /> </agent-glass></label
           ><label
             >{{ phone.t('Apps.citymarkt.district')
             }}<CityMarktSelect
@@ -1863,7 +1862,7 @@ onMounted(async () => {
           ></template
         >
       </div>
-      <sky-glass
+      <agent-glass
         v-if="sellStep > 1"
         component="button"
         class="citymarkt-create-back"
@@ -1872,7 +1871,7 @@ onMounted(async () => {
       >
         <ArrowLeft :size="18" />
         {{ phone.t('Apps.citymarkt.previous') }}
-      </sky-glass>
+      </agent-glass>
     </section>
 
     <section
@@ -1880,7 +1879,7 @@ onMounted(async () => {
       class="citymarkt__chat"
     >
       <header>
-        <sky-button
+        <agent-button
           component="button"
           class="citymarkt__chat-back"
           clear
@@ -1889,7 +1888,7 @@ onMounted(async () => {
           :title="phone.t('Common.back')"
           @click="closeChat"
           ><ArrowLeft :size="19"
-        /></sky-button>
+        /></agent-button>
         <div>
           <strong>{{
             selectedChat.inquiry.seller_account_id === selectedChat.accountId
@@ -1899,12 +1898,12 @@ onMounted(async () => {
           ><small>{{ selectedChat.inquiry.title }}</small>
         </div>
       </header>
-      <sky-glass class="citymarkt__glass-chat-listing"
+      <agent-glass class="citymarkt__glass-chat-listing"
         ><div>
           <strong>{{ formatPrice(selectedChat.inquiry) }}</strong
           ><span>{{ selectedChat.inquiry.title }}</span>
         </div>
-        <i>{{ label('status', selectedChat.inquiry.status) }}</i></sky-glass
+        <i>{{ label('status', selectedChat.inquiry.status) }}</i></agent-glass
       >
       <div ref="chatMessages" class="citymarkt__messages">
         <template v-for="item in chatTimeline" :key="item.key">
@@ -1939,14 +1938,14 @@ onMounted(async () => {
             <small>{{ phone.t('Apps.citymarkt.offerFor') }}</small>
             <strong>{{ selectedChat.inquiry.title }}</strong>
           </div>
-          <sky-button
+          <agent-button
             component="button"
             clear
             rounded
             type="button"
             @click="offerPanelOpen = false"
             ><X :size="16"
-          /></sky-button>
+          /></agent-button>
         </header>
         <label>
           {{ phone.t('Apps.citymarkt.offerAmount') }}
@@ -2007,14 +2006,14 @@ onMounted(async () => {
       class="citymarkt__report"
     >
       <header>
-        <sky-button
+        <agent-button
           component="button"
           clear
           rounded
           :aria-label="phone.t('Common.back')"
           :title="phone.t('Common.back')"
           @click="screen = 'detail'"
-          ><ArrowLeft :size="19" /></sky-button
+          ><ArrowLeft :size="19" /></agent-button
         ><strong>{{ phone.t('Apps.citymarkt.reportListing') }}</strong>
       </header>
       <div>
@@ -2036,7 +2035,7 @@ onMounted(async () => {
       </div>
     </section>
 
-    <sky-tab-bar
+    <agent-tab-bar
       v-if="
         screen === 'main' &&
         onboardingReady &&
@@ -2051,8 +2050,8 @@ onMounted(async () => {
       inner-class="!w-full !max-w-none !gap-0 !px-1"
       :aria-label="phone.t('Apps.citymarkt.name')"
     >
-      <sky-toolbar-pane class="citymarkt__tab-pane">
-        <sky-tab-button
+      <agent-toolbar-pane class="citymarkt__tab-pane">
+        <agent-tab-button
           v-for="item in tabs"
           :key="item.id"
           component="button"
@@ -2070,26 +2069,26 @@ onMounted(async () => {
               class="citymarkt__tab-icon"
               :class="{ 'citymarkt__tab-icon--create': item.id === 'sell' }"
             >
-              <sky-icon>
+              <agent-icon>
                 <component :is="item.icon" :size="20" />
-              </sky-icon>
-              <sky-badge
+              </agent-icon>
+              <agent-badge
                 v-if="item.id === 'inbox' && marketplace.counts.unread"
               >
                 {{ marketplace.counts.unread }}
-              </sky-badge>
+              </agent-badge>
             </span>
           </template>
-        </sky-tab-button>
-      </sky-toolbar-pane>
-    </sky-tab-bar>
+        </agent-tab-button>
+      </agent-toolbar-pane>
+    </agent-tab-bar>
     <AccountLogoutDialog
       v-model:opened="logoutDialogOpen"
       app-id="citymarkt"
       :app-name="phone.t('Apps.citymarkt.name')"
     />
-    <SkyNotification :opened="Boolean(feedback)" :text="feedback" />
-  </sky-app-page>
+    <AgentNotification :opened="Boolean(feedback)" :text="feedback" />
+  </agent-app-page>
 </template>
 
 <style scoped>
@@ -2104,7 +2103,7 @@ onMounted(async () => {
   overflow: hidden;
   background: #151613;
   color: #f8f8f4;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
 }
 .citymarkt--light {
   --ink: #fff;
@@ -2536,13 +2535,13 @@ onMounted(async () => {
   background: #151613;
 }
 .citymarkt__detail {
-  padding-top: var(--sky-safe-area-top);
+  padding-top: var(--agent-safe-area-top);
   display: flex;
   flex-direction: column;
 }
 .citymarkt__chat {
-  padding-top: var(--sky-safe-area-top);
-  padding-bottom: calc(var(--sky-safe-area-bottom) + 4px);
+  padding-top: var(--agent-safe-area-top);
+  padding-bottom: calc(var(--agent-safe-area-bottom) + 4px);
   display: flex;
   flex-direction: column;
   isolation: isolate;
@@ -2588,7 +2587,7 @@ onMounted(async () => {
   overflow-y: auto;
 }
 .citymarkt__detail-body--contact {
-  padding-bottom: calc(var(--sky-safe-area-bottom) + 72px);
+  padding-bottom: calc(var(--agent-safe-area-bottom) + 72px);
 }
 .citymarkt__price-row {
   display: flex;
@@ -2719,15 +2718,13 @@ onMounted(async () => {
 .citymarkt__contact-fixed {
   position: absolute;
   z-index: 3;
-  right: calc(var(--sky-safe-area-right) + 15px);
-  bottom: calc(var(--sky-safe-area-bottom) + 10px);
-  left: calc(var(--sky-safe-area-left) + 15px);
+  right: calc(var(--agent-safe-area-right) + 15px);
+  bottom: calc(var(--agent-safe-area-bottom) + 10px);
+  left: calc(var(--agent-safe-area-left) + 15px);
   width: auto;
   min-height: 44px;
   margin: 0;
 }
-/* Un jaune a 45 % d'opacite passait pour un bouton casse plutot que pour une
-   action indisponible : fond neutre et libelle attenue a la place. */
 .citymarkt__contact-fixed:disabled {
   background: var(--panel);
   color: var(--muted);
@@ -3065,7 +3062,7 @@ onMounted(async () => {
   background: #fafaf7 !important;
 }
 .citymarkt-navbar {
-  --sky-safe-area-top: 46px;
+  --agent-safe-area-top: 46px;
   position: absolute;
   z-index: 5;
   top: 0;
@@ -3073,9 +3070,7 @@ onMounted(async () => {
   left: 0;
 }
 
-/* « Los Santos marketplace » depassait a la largeur reelle du telephone : le
-   sous-titre descend d'un cran et laisse la ligne entiere. */
-.citymarkt-navbar :deep(.sky-navbar__subtitle) {
+.citymarkt-navbar :deep(.agent-navbar__subtitle) {
   font-size: 12px;
   letter-spacing: -0.1px;
 }
@@ -3091,19 +3086,19 @@ onMounted(async () => {
   display: grid;
   place-items: center;
 }
-.citymarkt__navbar-action > .sky-badge {
+.citymarkt__navbar-action > .agent-badge {
   position: absolute;
   top: -7px;
   right: -9px;
   pointer-events: none;
 }
-.citymarkt__tab-icon > .sky-badge {
+.citymarkt__tab-icon > .agent-badge {
   position: absolute;
   top: -7px;
   right: -11px;
   pointer-events: none;
 }
-.citymarkt button.sky-link {
+.citymarkt button.agent-link {
   color: var(--color-primary);
 }
 .citymarkt__categories {
@@ -3707,8 +3702,6 @@ onMounted(async () => {
   color: var(--muted);
   font-size: 8px;
 }
-
-/* Keep marketplace copy readable at the physical phone scale. */
 .citymarkt__brand {
   font-size: 12px;
 }
@@ -3858,8 +3851,6 @@ onMounted(async () => {
   gap: 2px;
   padding: 0 4px;
 }
-/* Tuiles pleines a la place des pastilles de verre : sur fond clair, le cercle
-   translucide se lisait a peine et la grille perdait toute structure. */
 .citymarkt__category-icon {
   width: 44px;
   height: 44px;
@@ -3884,31 +3875,25 @@ onMounted(async () => {
 .citymarkt__categories button:hover .citymarkt__category-icon {
   transform: translateY(-1px);
 }
-
 .citymarkt__categories button:active .citymarkt__category-icon {
   transform: scale(0.94);
 }
-
-/* Prix et mention de negociation sur une meme ligne, la mention en pastille
-   pour qu'elle ne mange pas la largeur du montant. */
 .citymarkt-listing-card__price {
   display: flex;
   align-items: baseline;
   gap: 6px;
   min-width: 0;
 }
-
 .citymarkt-listing-card__price strong {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .citymarkt-listing-card__price em {
   flex: none;
   padding: 1px 6px;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   color: var(--yellow);
   background: rgb(239 185 17 / 18%);
   font-size: 9.5px;
@@ -3932,9 +3917,9 @@ onMounted(async () => {
 .citymarkt__glass-actions {
   position: absolute;
   z-index: 2;
-  top: calc(var(--sky-safe-area-top) + 8px);
-  right: calc(var(--sky-safe-area-right) + 12px);
-  left: calc(var(--sky-safe-area-left) + 12px);
+  top: calc(var(--agent-safe-area-top) + 8px);
+  right: calc(var(--agent-safe-area-right) + 12px);
+  left: calc(var(--agent-safe-area-left) + 12px);
   display: flex;
   justify-content: space-between;
 }
@@ -3965,12 +3950,12 @@ onMounted(async () => {
 .citymarkt-detail-action.active {
   color: var(--yellow);
 }
-.citymarkt__glass-list > .sky-glass {
+.citymarkt__glass-list > .agent-glass {
   width: 100%;
   flex: none;
   border-radius: 13px;
 }
-.citymarkt__glass-list > .sky-glass > button {
+.citymarkt__glass-list > .agent-glass > button {
   width: 100%;
   padding: 8px;
   border: 0;
@@ -3980,7 +3965,7 @@ onMounted(async () => {
   text-align: left;
   background: transparent;
 }
-.citymarkt__glass-list > .sky-glass > button > span {
+.citymarkt__glass-list > .agent-glass > button > span {
   width: 48px;
   height: 48px;
   flex: none;
@@ -4298,11 +4283,11 @@ onMounted(async () => {
   text-align: center;
   font-size: 12px;
 }
-.citymarkt__photo-actions > .sky-glass {
+.citymarkt__photo-actions > .agent-glass {
   min-width: 0;
   border-radius: 14px;
 }
-.citymarkt__photo-actions > .sky-glass > button {
+.citymarkt__photo-actions > .agent-glass > button {
   width: 100%;
   padding: 11px 9px;
   border: 0;
@@ -4312,7 +4297,7 @@ onMounted(async () => {
   text-align: left;
   background: transparent;
 }
-.citymarkt__photo-actions > .sky-glass > button > span {
+.citymarkt__photo-actions > .agent-glass > button > span {
   width: 34px;
   height: 34px;
   margin-bottom: 8px;
@@ -4375,15 +4360,15 @@ onMounted(async () => {
   background: var(--panel);
 }
 .citymarkt__chat-back {
-  width: var(--sky-touch-target);
-  min-width: var(--sky-touch-target);
-  max-width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
-  min-height: var(--sky-touch-target);
-  max-height: var(--sky-touch-target);
+  width: var(--agent-touch-target);
+  min-width: var(--agent-touch-target);
+  max-width: var(--agent-touch-target);
+  height: var(--agent-touch-target);
+  min-height: var(--agent-touch-target);
+  max-height: var(--agent-touch-target);
   padding: 0;
   border: 0;
-  flex: 0 0 var(--sky-touch-target);
+  flex: 0 0 var(--agent-touch-target);
   display: grid;
   place-items: center;
   background: var(--panel);
@@ -4460,7 +4445,7 @@ onMounted(async () => {
   font-size: 10px;
   font-weight: 700;
 }
-.citymarkt__profile-editor > label > .sky-glass {
+.citymarkt__profile-editor > label > .agent-glass {
   margin-top: 5px;
   border-radius: 11px;
 }
@@ -4543,7 +4528,7 @@ onMounted(async () => {
   position: absolute;
   z-index: 4;
   top: calc(
-    var(--sky-safe-area-top) + var(--sky-navbar-height) + var(--sky-space-3)
+    var(--agent-safe-area-top) + var(--agent-navbar-height) + var(--agent-space-3)
   );
   right: 0;
   left: 0;
@@ -4552,7 +4537,7 @@ onMounted(async () => {
 .citymarkt__sell > .citymarkt__sell-body {
   position: absolute;
   top: calc(
-    var(--sky-safe-area-top) + var(--sky-navbar-height) + var(--sky-space-3) +
+    var(--agent-safe-area-top) + var(--agent-navbar-height) + var(--agent-space-3) +
       3px
   );
   right: 0;
@@ -4614,7 +4599,6 @@ onMounted(async () => {
 .citymarkt__pages-share {
   border-color: transparent;
 }
-
 .citymarkt__tab-label {
   display: block;
   max-width: 52px;
@@ -4647,7 +4631,6 @@ onMounted(async () => {
   color: #171816;
   box-shadow: 0 4px 12px #00000030;
 }
-
 .citymarkt__content--auth {
   display: flex;
   align-items: center;

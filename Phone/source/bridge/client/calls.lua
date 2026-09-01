@@ -54,7 +54,6 @@ function Bridge.Calls.Join(channel)
     end
 
     if selected == "yaca" or selected == "saltychat" then
-        -- Yaca and SaltyChat call membership is owned by the server bridge.
         return true
     end
 

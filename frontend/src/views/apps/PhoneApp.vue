@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import {
-  SkyBlock,
-  SkyButton,
-  SkyDialog,
-  SkyDialogButton,
-  SkyGlass,
-  SkyList,
-  SkyField,
-  SkyAppPage,
-  SkySegmented,
-  SkySegmentedButton,
-  SkySheet,
-  SkyTabBar,
-  SkyTabButton,
+  AgentBlock,
+  AgentButton,
+  AgentDialog,
+  AgentDialogButton,
+  AgentGlass,
+  AgentList,
+  AgentField,
+  AgentAppPage,
+  AgentSegmented,
+  AgentSegmentedButton,
+  AgentSheet,
+  AgentTabBar,
+  AgentTabButton,
 } from '@/ui'
 import {
   Camera,
@@ -736,7 +736,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     class="native-app phone-calls-app"
     :class="{
       'phone-app--light': !phone.isDarkMode,
@@ -766,7 +766,7 @@ onBeforeUnmount(() => {
             class="phone-in-call-keypad"
           >
             <div class="phone-in-call-keypad__grid">
-              <sky-glass
+              <agent-glass
                 v-for="key in keypadKeys"
                 :key="key.digit"
                 component="button"
@@ -775,10 +775,10 @@ onBeforeUnmount(() => {
               >
                 <span>{{ key.digit }}</span>
                 <small>{{ key.letters }}</small>
-              </sky-glass>
+              </agent-glass>
             </div>
             <div class="phone-in-call-keypad__footer">
-              <sky-button
+              <agent-button
                 glass
                 rounded
                 class="phone-in-call-keypad__end"
@@ -786,13 +786,13 @@ onBeforeUnmount(() => {
                 @click="calls.hangup()"
               >
                 <PhoneOff />
-              </sky-button>
-              <sky-button
+              </agent-button>
+              <agent-button
                 glass
                 clear
                 class="phone-in-call-keypad__hide"
                 @click="callKeypadOpened = false"
-                >{{ phone.t('Apps.phone.hideKeypad') }}</sky-button
+                >{{ phone.t('Apps.phone.hideKeypad') }}</agent-button
               >
             </div>
           </div>
@@ -804,7 +804,7 @@ onBeforeUnmount(() => {
             @click.self="callMoreOpened = false"
           >
             <div class="phone-call-more__list">
-              <sky-button
+              <agent-button
                 glass
                 class="phone-call-more__item phone-call-more__contact-card"
                 @click="openCallContact"
@@ -822,18 +822,18 @@ onBeforeUnmount(() => {
                       : 'Apps.phone.addToContacts',
                   )
                 }}</strong>
-              </sky-button>
+              </agent-button>
 
-              <sky-button
+              <agent-button
                 glass
                 class="phone-call-more__item"
                 @click="messageActiveCaller"
               >
                 <MessageCircle />
                 <strong>{{ phone.t('Apps.phone.sendMessage') }}</strong>
-              </sky-button>
+              </agent-button>
 
-              <sky-button
+              <agent-button
                 glass
                 v-if="activeCallContact"
                 class="phone-call-more__item phone-call-more__item--danger"
@@ -841,21 +841,21 @@ onBeforeUnmount(() => {
               >
                 <Delete />
                 <strong>{{ phone.t('Apps.phone.removeContact') }}</strong>
-              </sky-button>
+              </agent-button>
 
-              <sky-button
+              <agent-button
                 glass
                 class="phone-call-more__item phone-call-more__item--danger"
                 @click="confirmBlockNumber(calls.activeCall.otherNumber)"
               >
                 <PhoneOff />
                 <strong>{{ phone.t('Apps.phone.blockCaller') }}</strong>
-              </sky-button>
+              </agent-button>
             </div>
           </div>
 
           <div v-else key="actions" class="phone-active-call__actions">
-            <sky-button
+            <agent-button
               glass
               rounded
               class="phone-call-action"
@@ -875,8 +875,8 @@ onBeforeUnmount(() => {
             >
               <Volume2 />
               <span>{{ phone.t('Apps.phone.speaker') }}</span>
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               glass
               rounded
               class="phone-call-action is-disabled"
@@ -884,8 +884,8 @@ onBeforeUnmount(() => {
             >
               <Video />
               <span>{{ phone.t('Apps.phone.faceTime') }}</span>
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               glass
               rounded
               class="phone-call-action"
@@ -906,10 +906,10 @@ onBeforeUnmount(() => {
             >
               <MicOff />
               <span>{{ phone.t('Apps.phone.mute') }}</span>
-            </sky-button>
+            </agent-button>
 
             <div class="phone-call-action-anchor">
-              <sky-button
+              <agent-button
                 glass
                 rounded
                 class="phone-call-action"
@@ -917,9 +917,9 @@ onBeforeUnmount(() => {
               >
                 <MoreHorizontal />
                 <span>{{ phone.t('Apps.phone.more') }}</span>
-              </sky-button>
+              </agent-button>
             </div>
-            <sky-button
+            <agent-button
               glass
               rounded
               class="phone-call-action phone-call-action--end"
@@ -940,8 +940,8 @@ onBeforeUnmount(() => {
                     : 'Apps.phone.hangup',
                 )
               }}</span>
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               glass
               v-if="
                 calls.activeCall.direction === 'incoming' &&
@@ -953,8 +953,8 @@ onBeforeUnmount(() => {
             >
               <Phone />
               <span>{{ phone.t('Apps.phone.answer') }}</span>
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               glass
               v-else
               rounded
@@ -963,7 +963,7 @@ onBeforeUnmount(() => {
             >
               <Grid3X3 />
               <span>{{ phone.t('Apps.phone.keypad') }}</span>
-            </sky-button>
+            </agent-button>
           </div>
         </Transition>
       </section>
@@ -975,15 +975,15 @@ onBeforeUnmount(() => {
         class="phone-call-content"
         :class="{ 'phone-call-content--profile': selectedNumber }"
       >
-        <sky-block v-if="!phone.device?.sim" class="text-center">
+        <agent-block v-if="!phone.device?.sim" class="text-center">
           <h2>{{ phone.t('Apps.phone.noSim') }}</h2>
           <p class="text-[#8e8e93]">{{ phone.t('Apps.phone.noSimBody') }}</p>
-        </sky-block>
+        </agent-block>
 
         <template v-else-if="selectedNumber">
           <section class="phone-contact-detail">
             <header class="phone-detail-header">
-              <sky-button
+              <agent-button
                 glass
                 rounded
                 class="phone-detail-header-button phone-detail-back"
@@ -991,11 +991,11 @@ onBeforeUnmount(() => {
                 @click="closeRecentDetail"
               >
                 <ChevronLeft :size="29" :stroke-width="2.4" />
-              </sky-button>
+              </agent-button>
 
               <span class="phone-detail-header-spacer" />
 
-              <sky-button
+              <agent-button
                 glass
                 v-if="!viewingOwnCard"
                 rounded
@@ -1009,7 +1009,7 @@ onBeforeUnmount(() => {
                     selectedContact ? 'Common.edit' : 'Apps.phone.addContact',
                   )
                 }}
-              </sky-button>
+              </agent-button>
               <span v-else class="phone-detail-edit-spacer" />
             </header>
 
@@ -1037,7 +1037,7 @@ onBeforeUnmount(() => {
               </p>
 
               <div class="phone-contact-actions">
-                <sky-button
+                <agent-button
                   glass
                   v-for="action in contactProfileActions"
                   :key="action.id"
@@ -1056,12 +1056,12 @@ onBeforeUnmount(() => {
                   @click="triggerContactAction(action.id)"
                 >
                   <component :is="action.icon" :size="23" fill="currentColor" />
-                </sky-button>
+                </agent-button>
               </div>
             </div>
 
             <section v-if="viewingOwnCard" class="phone-profile-content">
-              <sky-glass class="phone-own-profile-card">
+              <agent-glass class="phone-own-profile-card">
                 <div>
                   <span><Phone :size="19" /></span>
                   <p>
@@ -1076,16 +1076,16 @@ onBeforeUnmount(() => {
                     <strong>{{ phone.device?.name }}</strong>
                   </p>
                 </div>
-              </sky-glass>
-              <sky-glass class="phone-profile-card phone-profile-single-option">
+              </agent-glass>
+              <agent-glass class="phone-profile-card phone-profile-single-option">
                 <button type="button" @click="shareOwnProfile">
                   <span>{{ phone.t('Apps.easyShare.shareProfile') }}</span>
                 </button>
-              </sky-glass>
+              </agent-glass>
             </section>
 
             <section v-else class="phone-profile-content">
-              <sky-glass class="phone-profile-card phone-profile-info-card">
+              <agent-glass class="phone-profile-card phone-profile-info-card">
                 <button
                   type="button"
                   :disabled="selectedContact?.canCall === false"
@@ -1114,9 +1114,9 @@ onBeforeUnmount(() => {
                     {{ selectedContact.notes }}
                   </p>
                 </div>
-              </sky-glass>
+              </agent-glass>
 
-              <sky-glass class="phone-profile-card phone-profile-options-card">
+              <agent-glass class="phone-profile-card phone-profile-options-card">
                 <button
                   type="button"
                   :disabled="selectedContact?.canMessage === false"
@@ -1144,18 +1144,18 @@ onBeforeUnmount(() => {
                     )
                   }}</span>
                 </button>
-              </sky-glass>
+              </agent-glass>
 
-              <sky-glass class="phone-profile-card phone-profile-single-option">
+              <agent-glass class="phone-profile-card phone-profile-single-option">
                 <button
                   type="button"
                   @click="confirmBlockNumber(selectedNumber)"
                 >
                   <span>{{ phone.t('Apps.phone.blockContact') }}</span>
                 </button>
-              </sky-glass>
+              </agent-glass>
 
-              <sky-glass class="phone-history-card">
+              <agent-glass class="phone-history-card">
                 <h3>{{ phone.t('Apps.phone.callHistory') }}</h3>
                 <div
                   v-for="recent in selectedHistory"
@@ -1186,7 +1186,7 @@ onBeforeUnmount(() => {
                 <p v-if="!selectedHistory.length" class="phone-history-empty">
                   {{ phone.t('Apps.phone.noCallHistory') }}
                 </p>
-              </sky-glass>
+              </agent-glass>
             </section>
           </section>
         </template>
@@ -1194,7 +1194,7 @@ onBeforeUnmount(() => {
         <template v-else-if="tab === 'recents'">
           <section class="phone-recents">
             <header class="phone-recents-header">
-              <sky-segmented
+              <agent-segmented
                 :active-index="recentFilter === 'all' ? 0 : 1"
                 :aria-label="phone.t('Apps.phone.recents')"
                 class="phone-recents-filter"
@@ -1204,21 +1204,21 @@ onBeforeUnmount(() => {
                 rounded
                 strong
               >
-                <sky-segmented-button
+                <agent-segmented-button
                   :active="recentFilter === 'all'"
                   @click="recentFilter = 'all'"
                 >
                   {{ phone.t('Apps.phone.allCalls') }}
-                </sky-segmented-button>
-                <sky-segmented-button
+                </agent-segmented-button>
+                <agent-segmented-button
                   :active="recentFilter === 'missed'"
                   @click="recentFilter = 'missed'"
                 >
                   {{ phone.t('Apps.phone.missedCalls') }}
-                </sky-segmented-button>
-              </sky-segmented>
+                </agent-segmented-button>
+              </agent-segmented>
               <h1>{{ phone.t('Apps.phone.recents') }}</h1>
-              <sky-glass
+              <agent-glass
                 component="label"
                 :highlight="false"
                 class="phone-recents-search"
@@ -1230,7 +1230,7 @@ onBeforeUnmount(() => {
                   type="search"
                   @input="recentQuery = eventValue($event)"
                 />
-              </sky-glass>
+              </agent-glass>
             </header>
 
             <div v-if="visibleRecents.length" class="phone-recents-list">
@@ -1281,7 +1281,7 @@ onBeforeUnmount(() => {
                 <time class="phone-recent-date">{{
                   formatRecentDate(recent.created_at)
                 }}</time>
-                <sky-glass
+                <agent-glass
                   component="button"
                   class="phone-recent-info"
                   type="button"
@@ -1289,12 +1289,12 @@ onBeforeUnmount(() => {
                   @click="openRecentDetail(recent.other_number)"
                 >
                   <Info :size="21" />
-                </sky-glass>
+                </agent-glass>
               </article>
             </div>
-            <sky-block v-else class="text-center text-[#8e8e93]">{{
+            <agent-block v-else class="text-center text-[#8e8e93]">{{
               phone.t('Apps.phone.noRecents')
-            }}</sky-block>
+            }}</agent-block>
           </section>
         </template>
 
@@ -1304,7 +1304,7 @@ onBeforeUnmount(() => {
               <div class="phone-contacts-toolbar">
                 <span aria-hidden="true" />
                 <h1>{{ phone.t('Apps.phone.contacts') }}</h1>
-                <sky-glass
+                <agent-glass
                   component="button"
                   class="phone-contacts-add"
                   type="button"
@@ -1312,10 +1312,10 @@ onBeforeUnmount(() => {
                   @click="openContact()"
                 >
                   <Plus :size="28" />
-                </sky-glass>
+                </agent-glass>
               </div>
 
-              <sky-glass
+              <agent-glass
                 component="label"
                 :highlight="false"
                 class="phone-contacts-search"
@@ -1327,7 +1327,7 @@ onBeforeUnmount(() => {
                   type="search"
                   @input="query = eventValue($event)"
                 />
-              </sky-glass>
+              </agent-glass>
             </header>
 
             <button class="phone-my-card" type="button" @click="openMyCard">
@@ -1412,9 +1412,9 @@ onBeforeUnmount(() => {
                 </button>
               </section>
             </div>
-            <sky-block v-else class="text-center text-[#8e8e93]">{{
+            <agent-block v-else class="text-center text-[#8e8e93]">{{
               phone.t('Apps.phone.noContacts')
-            }}</sky-block>
+            }}</agent-block>
 
             <nav
               v-if="!query"
@@ -1449,7 +1449,7 @@ onBeforeUnmount(() => {
                 class="phone-keypad-suggestions"
                 aria-live="polite"
               >
-                <sky-glass
+                <agent-glass
                   v-for="contact in keypadSuggestions"
                   :key="contact.id"
                   component="button"
@@ -1471,14 +1471,14 @@ onBeforeUnmount(() => {
                     <strong>{{ contact.name }}</strong>
                     <small>{{ formatPhoneNumber(contact.phone_number) }}</small>
                   </span>
-                </sky-glass>
+                </agent-glass>
               </div>
             </Transition>
             <div class="phone-keypad-number" aria-live="polite">
               {{ keypadDisplay }}
             </div>
             <div class="phone-keypad-grid">
-              <sky-glass
+              <agent-glass
                 v-for="key in keypadKeys"
                 :key="key.digit"
                 component="button"
@@ -1490,18 +1490,18 @@ onBeforeUnmount(() => {
                 <small :class="{ 'phone-keypad-plus': key.digit === '0' }">
                   {{ key.letters }}
                 </small>
-              </sky-glass>
+              </agent-glass>
             </div>
             <div class="phone-keypad-actions">
-              <sky-glass
+              <agent-glass
                 component="button"
                 class="phone-keypad-call"
                 type="button"
                 @click="startCall(keypad)"
               >
                 <Phone :size="31" fill="currentColor" />
-              </sky-glass>
-              <sky-glass
+              </agent-glass>
+              <agent-glass
                 v-if="keypad"
                 component="button"
                 class="phone-keypad-delete"
@@ -1510,7 +1510,7 @@ onBeforeUnmount(() => {
                 @click="keypad = keypad.slice(0, -1)"
               >
                 <Delete :size="27" />
-              </sky-glass>
+              </agent-glass>
             </div>
           </section>
         </template>
@@ -1519,13 +1519,13 @@ onBeforeUnmount(() => {
           {{ error }}
         </p>
       </div>
-      <sky-tab-bar
+      <agent-tab-bar
         icons
         labels
         class="phone-bottom-tabbar"
         :aria-label="phone.t('Apps.phone.name')"
       >
-        <sky-tab-button
+        <agent-tab-button
           v-for="item in tabs"
           :key="item.id"
           :active="tab === item.id"
@@ -1536,13 +1536,13 @@ onBeforeUnmount(() => {
             <component :is="item.icon" aria-hidden="true" />
           </template>
           <template #label>{{ phone.t(`Apps.phone.${item.id}`) }}</template>
-        </sky-tab-button>
-      </sky-tab-bar>
+        </agent-tab-button>
+      </agent-tab-bar>
     </template>
-  </sky-app-page>
+  </agent-app-page>
 
   <div class="phone-contact-editor-sheet">
-    <sky-sheet :opened="editorOpened" @backdropclick="editorOpened = false">
+    <agent-sheet :opened="editorOpened" @backdropclick="editorOpened = false">
       <section
         class="phone-contact-editor"
         :class="{ 'phone-contact-editor--light': !phone.isDarkMode }"
@@ -1559,7 +1559,7 @@ onBeforeUnmount(() => {
         "
       >
         <header class="phone-contact-editor__header">
-          <sky-button
+          <agent-button
             glass
             rounded
             class="phone-contact-editor__header-button"
@@ -1567,7 +1567,7 @@ onBeforeUnmount(() => {
             @click="editorOpened = false"
           >
             <X :size="27" />
-          </sky-button>
+          </agent-button>
           <h2>
             {{
               phone.t(
@@ -1579,7 +1579,7 @@ onBeforeUnmount(() => {
               )
             }}
           </h2>
-          <sky-button
+          <agent-button
             glass
             v-if="!editingContact?.readonly"
             rounded
@@ -1588,7 +1588,7 @@ onBeforeUnmount(() => {
             @click="saveContact"
           >
             <Check :size="28" :stroke-width="2.2" />
-          </sky-button>
+          </agent-button>
         </header>
 
         <div class="phone-contact-editor__scroll">
@@ -1600,7 +1600,7 @@ onBeforeUnmount(() => {
                   contactAvatarUrl,
               }"
             >
-              <sky-glass
+              <agent-glass
                 component="button"
                 class="phone-contact-editor__avatar"
                 type="button"
@@ -1613,8 +1613,8 @@ onBeforeUnmount(() => {
                   contactEditorInitials
                 }}</span>
                 <UserRound v-else :size="72" :stroke-width="1.35" />
-              </sky-glass>
-              <sky-button
+              </agent-glass>
+              <agent-button
                 glass
                 v-if="contactAvatarUrl && !editingContact?.readonly"
                 rounded
@@ -1624,13 +1624,13 @@ onBeforeUnmount(() => {
               >
                 <Delete :size="25" />
                 <span>{{ phone.t('Apps.phone.removePhoto') }}</span>
-              </sky-button>
+              </agent-button>
             </div>
             <div
               v-if="!editingContact?.readonly"
               class="phone-contact-editor__photo-actions"
             >
-              <sky-button
+              <agent-button
                 glass
                 small
                 rounded
@@ -1639,8 +1639,8 @@ onBeforeUnmount(() => {
               >
                 <Images :size="18" />
                 {{ phone.t('Apps.phone.chooseGallery') }}
-              </sky-button>
-              <sky-button
+              </agent-button>
+              <agent-button
                 glass
                 small
                 rounded
@@ -1649,33 +1649,33 @@ onBeforeUnmount(() => {
               >
                 <Camera :size="18" />
                 {{ phone.t('Apps.phone.takePhoto') }}
-              </sky-button>
+              </agent-button>
             </div>
           </div>
 
-          <sky-list strong inset class="phone-contact-editor__name-list">
-            <sky-field
+          <agent-list strong inset class="phone-contact-editor__name-list">
+            <agent-field
               :value="contactFirstName"
               :placeholder="phone.t('Apps.phone.firstName')"
               autocomplete="given-name"
               :readonly="editingContact?.readonly"
               @input="contactFirstName = eventValue($event)"
             />
-            <sky-field
+            <agent-field
               :value="contactLastName"
               :placeholder="phone.t('Apps.phone.lastName')"
               autocomplete="family-name"
               :readonly="editingContact?.readonly"
               @input="contactLastName = eventValue($event)"
             />
-            <sky-field
+            <agent-field
               :value="contactOrganization"
               :placeholder="phone.t('Apps.phone.companyOrGroup')"
               autocomplete="organization"
               :readonly="editingContact?.readonly"
               @input="contactOrganization = eventValue($event)"
             />
-            <sky-field
+            <agent-field
               :value="contactEmail"
               type="email"
               :placeholder="phone.t('Apps.phone.mail')"
@@ -1683,10 +1683,10 @@ onBeforeUnmount(() => {
               :readonly="editingContact?.readonly"
               @input="contactEmail = eventValue($event)"
             />
-          </sky-list>
+          </agent-list>
 
-          <sky-list strong inset class="phone-contact-editor__number-list">
-            <sky-field
+          <agent-list strong inset class="phone-contact-editor__number-list">
+            <agent-field
               :value="contactNumber"
               :label="phone.t('Apps.phone.mobile')"
               :placeholder="phone.t('Apps.phone.phoneNumber')"
@@ -1700,11 +1700,11 @@ onBeforeUnmount(() => {
                   ><Plus :size="19"
                 /></span>
               </template>
-            </sky-field>
-          </sky-list>
+            </agent-field>
+          </agent-list>
 
-          <sky-list strong inset class="phone-contact-editor__notes-list">
-            <sky-field
+          <agent-list strong inset class="phone-contact-editor__notes-list">
+            <agent-field
               :value="contactNotes"
               type="textarea"
               :placeholder="phone.t('Apps.phone.notes')"
@@ -1713,24 +1713,24 @@ onBeforeUnmount(() => {
               :readonly="editingContact?.readonly"
               @input="contactNotes = eventValue($event)"
             />
-          </sky-list>
+          </agent-list>
 
           <p v-if="error" class="phone-contact-editor__error">{{ error }}</p>
 
-          <sky-button
+          <agent-button
             glass
             v-if="editingContact && !editingContact.readonly"
             class="phone-contact-editor__delete"
             @click="deleteEditedContact"
           >
             {{ phone.t('Apps.phone.deleteContact') }}
-          </sky-button>
+          </agent-button>
         </div>
       </section>
-    </sky-sheet>
+    </agent-sheet>
   </div>
 
-  <sky-dialog
+  <agent-dialog
     :opened="blockDialogOpened"
     @backdropclick="blockDialogOpened = false"
   >
@@ -1743,14 +1743,14 @@ onBeforeUnmount(() => {
       }}
     </p>
     <template #buttons>
-      <sky-dialog-button @click="blockDialogOpened = false">{{
+      <agent-dialog-button @click="blockDialogOpened = false">{{
         phone.t('Common.cancel')
-      }}</sky-dialog-button>
-      <sky-dialog-button strong @click="blockNumber">{{
+      }}</agent-dialog-button>
+      <agent-dialog-button strong @click="blockNumber">{{
         phone.t('Apps.phone.block')
-      }}</sky-dialog-button>
+      }}</agent-dialog-button>
     </template>
-  </sky-dialog>
+  </agent-dialog>
 </template>
 
 <style scoped>
@@ -1924,10 +1924,10 @@ onBeforeUnmount(() => {
   left: 50%;
   width: 80px;
   height: 80px;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   content: '';
   transform: translateX(-50%);
   transition:
@@ -1945,7 +1945,7 @@ onBeforeUnmount(() => {
   z-index: 1;
 }
 
-.phone-call-action.sky-glass::after {
+.phone-call-action.agent-glass::after {
   top: 1px;
   right: auto;
   bottom: auto;
@@ -2025,16 +2025,16 @@ onBeforeUnmount(() => {
   justify-content: flex-start !important;
   gap: 13px !important;
   padding: 0 27px !important;
-  border: 1px solid var(--sky-hairline) !important;
+  border: 1px solid var(--agent-hairline) !important;
   border-radius: 30px !important;
-  background: var(--sky-glass) !important;
+  background: var(--agent-glass) !important;
   color: white !important;
-  box-shadow: var(--sky-shadow-glass) !important;
+  box-shadow: var(--agent-shadow-glass) !important;
   text-transform: none !important;
 }
 
 .phone-call-more__item:active {
-  background: var(--sky-glass) !important;
+  background: var(--agent-glass) !important;
 }
 
 .phone-call-more__contact-card {
@@ -2101,10 +2101,10 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   color: white;
@@ -2235,7 +2235,7 @@ onBeforeUnmount(() => {
 }
 
 .phone-bottom-tabbar {
-  --sky-app-accent: #ffffff;
+  --agent-app-accent: #ffffff;
 }
 
 .phone-recents,
@@ -2243,7 +2243,7 @@ onBeforeUnmount(() => {
 .phone-contact-detail {
   min-height: 100%;
   padding: 8px 15px
-    calc(var(--sky-tabbar-height) + var(--sky-safe-area-bottom) + 16px);
+    calc(var(--agent-tabbar-height) + var(--agent-safe-area-bottom) + 16px);
 }
 
 .phone-contacts {
@@ -2275,10 +2275,10 @@ onBeforeUnmount(() => {
   height: 42px;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   color: inherit;
 }
 
@@ -2289,8 +2289,8 @@ onBeforeUnmount(() => {
   gap: 9px;
   padding: 0 14px;
   border-radius: 16px;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   color: #8e8e93;
 }
 
@@ -2440,7 +2440,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: flex-end;
   padding: 56px 24px
-    calc(var(--sky-tabbar-height) + var(--sky-safe-area-bottom) + 16px);
+    calc(var(--agent-tabbar-height) + var(--agent-safe-area-bottom) + 16px);
 }
 
 .phone-keypad-number {
@@ -2488,11 +2488,11 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 10px;
   padding: 5px 12px 5px 6px;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 18px;
   color: #fff;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   font: inherit;
   text-align: left;
   backdrop-filter: blur(16px) saturate(140%);
@@ -2573,10 +2573,10 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   padding: 0;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50%;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   color: white;
@@ -2654,9 +2654,9 @@ onBeforeUnmount(() => {
   left: calc(50% + 62px);
   width: 48px;
   height: 48px;
-  border: 1px solid var(--sky-hairline);
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  border: 1px solid var(--agent-hairline);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   color: #d1d1d6;
@@ -2671,7 +2671,7 @@ onBeforeUnmount(() => {
   .phone-keypad {
     padding-top: 20px;
     padding-bottom: calc(
-      var(--sky-tabbar-height) + var(--sky-safe-area-bottom) + 8px
+      var(--agent-tabbar-height) + var(--agent-safe-area-bottom) + 8px
     );
   }
 
@@ -2712,28 +2712,28 @@ onBeforeUnmount(() => {
 .phone-recents-filter {
   width: 174px;
   margin: 0 auto 14px;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-pill);
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  border: 1px solid var(--agent-hairline);
+  border-radius: var(--agent-radius-pill);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
 }
 
-.phone-recents-filter :deep(.sky-segmented-button) {
-  border-radius: var(--sky-radius-pill);
+.phone-recents-filter :deep(.agent-segmented-button) {
+  border-radius: var(--agent-radius-pill);
   color: #8e8e93;
   font-size: 13px;
   font-weight: 600;
   line-height: 1;
 }
 
-.phone-recents-filter :deep(.sky-segmented-button--active) {
-  color: var(--sky-text);
+.phone-recents-filter :deep(.agent-segmented-button--active) {
+  color: var(--agent-text);
 }
 
-.phone-recents-filter :deep(.sky-segmented__highlight) {
+.phone-recents-filter :deep(.agent-segmented__highlight) {
   top: 4px;
   bottom: 4px;
-  background: var(--sky-tabbar-highlight-background);
+  background: var(--agent-tabbar-highlight-background);
   box-shadow: none;
 }
 
@@ -2751,8 +2751,8 @@ onBeforeUnmount(() => {
   min-height: 42px;
   padding: 0 14px;
   border-radius: 16px;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   color: #8e8e93;
 }
 
@@ -3096,10 +3096,10 @@ onBeforeUnmount(() => {
   min-width: 0;
   height: 44px;
   padding: 0;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   color: #fff;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
 }
 
 .phone-detail-header-button {
@@ -3174,12 +3174,12 @@ onBeforeUnmount(() => {
   align-self: center;
   justify-self: center;
   padding: 0;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   border-radius: 50% !important;
   overflow: hidden;
   color: #fff !important;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
 }
 
 .phone-profile-action :deep(svg) {
@@ -3320,7 +3320,7 @@ onBeforeUnmount(() => {
   color: rgba(255, 255, 255, 0.62);
 }
 
-.phone-contact-editor-sheet :deep(.sky-sheet__panel) {
+.phone-contact-editor-sheet :deep(.agent-sheet__panel) {
   width: 100%;
   height: calc(100% - 52px);
   max-height: calc(100% - 52px);
@@ -3379,15 +3379,15 @@ onBeforeUnmount(() => {
   height: 46px;
   min-height: 46px;
   padding: 0;
-  border: 1px solid var(--sky-hairline);
+  border: 1px solid var(--agent-hairline);
   color: #fff;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
 }
 
 .phone-contact-editor__header-button:last-child {
   justify-self: end;
-  background: var(--sky-glass);
+  background: var(--agent-glass);
 }
 
 .phone-contact-editor__scroll {
@@ -3584,9 +3584,9 @@ onBeforeUnmount(() => {
 }
 
 .phone-contact-editor--light .phone-contact-editor__header-button {
-  border-color: var(--sky-hairline);
+  border-color: var(--agent-hairline);
   color: #111;
-  background: var(--sky-glass);
+  background: var(--agent-glass);
 }
 
 .phone-contact-editor--light .phone-contact-editor__name-list,
@@ -3635,7 +3635,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
 }
 
-.phone-recents-filter :deep(.sky-segmented-button),
+.phone-recents-filter :deep(.agent-segmented-button),
 .phone-recents-search,
 .phone-contacts-search,
 .phone-recent-row,
@@ -3711,14 +3711,14 @@ onBeforeUnmount(() => {
   }
 
   .phone-recents-filter
-    :deep(.sky-segmented-button:not(.sky-segmented-button--active):hover) {
+    :deep(.agent-segmented-button:not(.agent-segmented-button--active):hover) {
     background: rgba(118, 118, 128, 0.22);
   }
 
   .phone-recents-search:hover,
   .phone-contacts-search:hover {
-    background: var(--sky-glass);
-    box-shadow: var(--sky-shadow-glass);
+    background: var(--agent-glass);
+    box-shadow: var(--agent-shadow-glass);
   }
 
   .phone-recent-row:hover,
@@ -3766,22 +3766,22 @@ onBeforeUnmount(() => {
   }
 
   .phone-call-more__item:not(:disabled):hover {
-    border-color: var(--sky-hairline) !important;
-    background: var(--sky-glass) !important;
+    border-color: var(--agent-hairline) !important;
+    background: var(--agent-glass) !important;
     transform: translateY(-1px);
   }
 
   .phone-detail-header-button:not(:disabled):hover,
   .phone-detail-edit:not(:disabled):hover {
-    border-color: var(--sky-hairline);
-    background: var(--sky-glass);
+    border-color: var(--agent-hairline);
+    background: var(--agent-glass);
     transform: translateY(-1px);
   }
 
   .phone-profile-action:not(:disabled):hover {
-    border-color: var(--sky-hairline);
-    background: var(--sky-glass);
-    box-shadow: var(--sky-shadow-glass);
+    border-color: var(--agent-hairline);
+    background: var(--agent-glass);
+    box-shadow: var(--agent-shadow-glass);
     transform: translateY(-1px);
   }
 
@@ -3855,19 +3855,19 @@ onBeforeUnmount(() => {
 .phone-app--light .phone-contact-actions button,
 .phone-app--light .phone-own-profile-card,
 .phone-app--light .phone-history-card {
-  background: var(--sky-glass);
+  background: var(--agent-glass);
 }
 
 .phone-app--light.phone-calls-app--profile {
-  color: var(--sky-text);
-  background: var(--sky-bg) !important;
+  color: var(--agent-text);
+  background: var(--agent-bg) !important;
 }
 
 .phone-app--light .phone-call-content--profile,
 .phone-app--light .phone-contact-hero h2,
 .phone-app--light .phone-detail-header-button,
 .phone-app--light .phone-detail-edit {
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
 
 .phone-app--light .phone-contact-hero .phone-contact-organization,
@@ -3875,24 +3875,24 @@ onBeforeUnmount(() => {
 .phone-app--light .phone-history-copy small,
 .phone-app--light .phone-history-row time,
 .phone-app--light .phone-history-empty {
-  color: var(--sky-muted);
+  color: var(--agent-muted);
 }
 
 .phone-app--light .phone-profile-action {
-  color: var(--sky-text) !important;
+  color: var(--agent-text) !important;
 }
 
 .phone-app--light .phone-profile-action:disabled {
-  color: var(--sky-subtle) !important;
+  color: var(--agent-subtle) !important;
 }
 
 .phone-app--light .phone-profile-card,
 .phone-app--light .phone-own-profile-card,
 .phone-app--light .phone-history-card {
-  border-color: var(--sky-hairline);
-  color: var(--sky-text);
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  border-color: var(--agent-hairline);
+  color: var(--agent-text);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
 }
 
 .phone-app--light .phone-own-profile-card > div:not(:last-child),
@@ -3901,22 +3901,22 @@ onBeforeUnmount(() => {
 .phone-app--light .phone-profile-single-option > button,
 .phone-app--light .phone-profile-notes,
 .phone-app--light .phone-history-row {
-  border-color: var(--sky-hairline);
+  border-color: var(--agent-hairline);
 }
 
 .phone-app--light .phone-own-profile-card > div > span {
-  color: var(--sky-text);
-  background: var(--sky-pressed);
+  color: var(--agent-text);
+  background: var(--agent-pressed);
 }
 
 .phone-app--light .phone-profile-info-card > button > svg,
 .phone-app--light .phone-profile-notes > span,
 .phone-app--light .phone-history-card h3 {
-  color: var(--sky-text);
+  color: var(--agent-text);
 }
 
 .phone-app--light .phone-bottom-tabbar {
-  --sky-app-accent: #3a3a3c;
+  --agent-app-accent: #3a3a3c;
 }
 
 .phone-app--light .phone-contact-index button,
@@ -3932,10 +3932,10 @@ onBeforeUnmount(() => {
 }
 
 .phone-app--light .phone-keypad-suggestion {
-  border-color: var(--sky-hairline);
+  border-color: var(--agent-hairline);
   color: #111;
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
 }
 
 .phone-app--light .phone-keypad-suggestion__copy small {
@@ -3944,9 +3944,9 @@ onBeforeUnmount(() => {
 
 .phone-app--light .phone-keypad-key,
 .phone-app--light .phone-keypad-delete {
-  border-color: var(--sky-hairline);
-  background: var(--sky-glass);
-  box-shadow: var(--sky-shadow-glass);
+  border-color: var(--agent-hairline);
+  background: var(--agent-glass);
+  box-shadow: var(--agent-shadow-glass);
   color: #000;
 }
 

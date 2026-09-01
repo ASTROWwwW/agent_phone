@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {
-  SkyBlock,
-  SkyDialog,
-  SkyLink,
-  SkyList,
-  SkyField,
-  SkyListItem,
-  SkyNavbarBackLink,
-  SkyAppPage,
-  SkySpinner,
-  SkyNotification,
+  AgentBlock,
+  AgentDialog,
+  AgentLink,
+  AgentList,
+  AgentField,
+  AgentListItem,
+  AgentNavbarBackLink,
+  AgentAppPage,
+  AgentSpinner,
+  AgentNotification,
 } from '@/ui'
 import {
   ChevronLeft,
@@ -33,13 +33,13 @@ import { useMessageMediaStore } from '@/stores/messageMedia'
 import { usePhoneStore } from '@/stores/phone'
 import { useEasyShareStore } from '@/stores/easyshare'
 import {
-  SkyButton,
-  SkyDropdown,
-  SkyNavbar,
-  SkyTabBar,
-  SkyTabButton,
-  SkyToolbar,
-  SkyToolbarPane,
+  AgentButton,
+  AgentDropdown,
+  AgentNavbar,
+  AgentTabBar,
+  AgentTabButton,
+  AgentToolbar,
+  AgentToolbarPane,
 } from '@/ui'
 import type {
   DeleteManyResult,
@@ -243,7 +243,7 @@ function mockGalleryImage(
   landscape: string,
   accent: string,
 ): string {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${sky}"/><stop offset="1" stop-color="${accent}"/></linearGradient><linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${landscape}"/><stop offset="1" stop-color="#101114"/></linearGradient></defs><rect width="900" height="1200" fill="url(#sky)"/><circle cx="690" cy="260" r="105" fill="#fff" opacity=".72"/><path d="M0 690 210 440 390 650 585 360 900 720V1200H0Z" fill="${landscape}" opacity=".84"/><path d="M0 790 230 620 410 765 650 525 900 770V1200H0Z" fill="url(#land)"/><path d="M360 1200 475 690 560 690 690 1200Z" fill="${accent}" opacity=".48"/><text x="54" y="1100" fill="#fff" font-family="system-ui,sans-serif" font-size="62" font-weight="700">${title}</text><text x="57" y="1160" fill="#fff" opacity=".72" font-family="system-ui,sans-serif" font-size="30">Agent Phone test media</text></svg>`
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200"><defs><linearGradient id="agent" x1="0" y1="0" x2="0" y2="1"><stop stop-color="${sky}"/><stop offset="1" stop-color="${accent}"/></linearGradient><linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${landscape}"/><stop offset="1" stop-color="#101114"/></linearGradient></defs><rect width="900" height="1200" fill="url(#sky)"/><circle cx="690" cy="260" r="105" fill="#fff" opacity=".72"/><path d="M0 690 210 440 390 650 585 360 900 720V1200H0Z" fill="${landscape}" opacity=".84"/><path d="M0 790 230 620 410 765 650 525 900 770V1200H0Z" fill="url(#land)"/><path d="M360 1200 475 690 560 690 690 1200Z" fill="${accent}" opacity=".48"/><text x="54" y="1100" fill="#fff" font-family="system-ui,sans-serif" font-size="62" font-weight="700">${title}</text><text x="57" y="1160" fill="#fff" opacity=".72" font-family="system-ui,sans-serif" font-size="30">Agent Phone test media</text></svg>`
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`
 }
 
@@ -982,7 +982,6 @@ async function initializeVideo(event: Event): Promise<void> {
   try {
     await (event.currentTarget as HTMLVideoElement).play()
   } catch {
-    // The native controls remain visible when embedded CEF blocks autoplay.
   }
 }
 
@@ -1107,25 +1106,25 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     v-if="importMode === 'sources'"
     class="gallery-import-page !pt-[44px]"
     :aria-label="phone.t('Apps.photos.import.chooseSource')"
   >
-    <sky-navbar :title="phone.t('Apps.photos.import.title')">
+    <agent-navbar :title="phone.t('Apps.photos.import.title')">
       <template #left>
-        <sky-navbar-back-link
+        <agent-navbar-back-link
           component="button"
           :text="phone.t('Common.back')"
           @click="closeImport"
         />
       </template>
-    </sky-navbar>
-    <sky-block class="gallery-import-intro">
+    </agent-navbar>
+    <agent-block class="gallery-import-intro">
       {{ phone.t('Apps.photos.import.chooseSource') }}
-    </sky-block>
-    <sky-list inset strong>
-      <sky-list-item
+    </agent-block>
+    <agent-list inset strong>
+      <agent-list-item
         v-for="source in importSources"
         :key="source.id"
         link
@@ -1146,31 +1145,31 @@ onBeforeUnmount(() => {
       >
         <template #media><Globe2 :size="22" /></template>
         <template #after><ChevronRight :size="18" /></template>
-      </sky-list-item>
-    </sky-list>
-  </sky-app-page>
+      </agent-list-item>
+    </agent-list>
+  </agent-app-page>
 
-  <sky-app-page
+  <agent-app-page
     v-else-if="importMode === 'form' && importSource"
     class="gallery-import-page !pt-[44px]"
     :aria-label="phone.t('Apps.photos.import.title')"
   >
-    <sky-navbar :title="importSource.label">
+    <agent-navbar :title="importSource.label">
       <template #left>
-        <sky-navbar-back-link
+        <agent-navbar-back-link
           component="button"
           :text="phone.t('Common.back')"
           @click="backFromImportForm"
         />
       </template>
-    </sky-navbar>
+    </agent-navbar>
 
     <div class="gallery-import-form">
       <div class="gallery-import-form-icon"><Link2 :size="34" /></div>
       <h2>{{ phone.t('Apps.photos.import.linkTitle') }}</h2>
       <p>{{ phone.t('Apps.photos.import.linkBody') }}</p>
-      <sky-list inset strong class="gallery-import-url-list">
-        <sky-field
+      <agent-list inset strong class="gallery-import-url-list">
+        <agent-field
           outline
           input-id="gallery-import-url"
           inputmode="url"
@@ -1183,48 +1182,48 @@ onBeforeUnmount(() => {
           @input="updateImportUrl"
           @keyup.enter="commitUrlImport"
         />
-      </sky-list>
-      <sky-button
+      </agent-list>
+      <agent-button
         class="gallery-import-submit"
         large
         rounded
         :disabled="!importUrl.trim() || importing"
         @click="commitUrlImport"
       >
-        <sky-spinner v-if="importing" class="mr-2" />
+        <agent-spinner v-if="importing" class="mr-2" />
         {{ phone.t('Apps.photos.import.action') }}
-      </sky-button>
+      </agent-button>
     </div>
-  </sky-app-page>
+  </agent-app-page>
 
-  <sky-app-page
+  <agent-app-page
     v-else-if="!selected"
     class="gallery-page"
     :class="{ '!pt-[44px]': requestedMessageMedia }"
     :aria-label="phone.t('Apps.photos.name')"
   >
-    <sky-navbar
+    <agent-navbar
       v-if="requestedMessageMedia"
       :title="phone.t('Apps.photos.name')"
     >
       <template #left>
-        <sky-navbar-back-link
+        <agent-navbar-back-link
           component="button"
           :text="phone.t('Common.back')"
           @click="cancelMessageSelection"
         />
       </template>
       <template v-if="multipleSelection" #right>
-        <sky-link
+        <agent-link
           component="button"
           :disabled="!selectedMediaIds.length"
           @click="completeMultipleSelection"
         >
           {{ phone.t('Common.done') }}
-        </sky-link>
+        </agent-link>
       </template>
-    </sky-navbar>
-    <SkyNavbar
+    </agent-navbar>
+    <AgentNavbar
       v-else
       class="gallery-library-navbar"
       :scroll-el="null"
@@ -1236,24 +1235,24 @@ onBeforeUnmount(() => {
       <template #right>
         <div
           v-if="selectionMode"
-          class="gallery-header-actions sky-ui-provider sky-ui-provider--dark"
+          class="gallery-header-actions agent-ui-provider agent-ui-provider--dark"
         >
-          <SkyToolbarPane class="gallery-header-tool gallery-header-tool--text">
-            <SkyButton
+          <AgentToolbarPane class="gallery-header-tool gallery-header-tool--text">
+            <AgentButton
               clear
               class="gallery-header-action"
               @click="exitSelectionMode"
             >
               {{ phone.t('Common.cancel') }}
-            </SkyButton>
-          </SkyToolbarPane>
+            </AgentButton>
+          </AgentToolbarPane>
         </div>
         <div
           v-else
-          class="gallery-header-actions sky-ui-provider sky-ui-provider--dark"
+          class="gallery-header-actions agent-ui-provider agent-ui-provider--dark"
         >
-          <SkyToolbarPane class="gallery-header-tool gallery-header-tool--icon">
-            <SkyButton
+          <AgentToolbarPane class="gallery-header-tool gallery-header-tool--icon">
+            <AgentButton
               clear
               icon-only
               rounded
@@ -1265,13 +1264,13 @@ onBeforeUnmount(() => {
               @click="openSortMenu"
             >
               <ListFilter :size="21" aria-hidden="true" />
-            </SkyButton>
-          </SkyToolbarPane>
-          <SkyToolbarPane
+            </AgentButton>
+          </AgentToolbarPane>
+          <AgentToolbarPane
             v-if="importSources.length"
             class="gallery-header-tool gallery-header-tool--icon"
           >
-            <SkyButton
+            <AgentButton
               clear
               icon-only
               rounded
@@ -1281,29 +1280,29 @@ onBeforeUnmount(() => {
               @click="openImport"
             >
               <Download :size="21" aria-hidden="true" />
-            </SkyButton>
-          </SkyToolbarPane>
-          <SkyToolbarPane class="gallery-header-tool gallery-header-tool--text">
-            <SkyButton
+            </AgentButton>
+          </AgentToolbarPane>
+          <AgentToolbarPane class="gallery-header-tool gallery-header-tool--text">
+            <AgentButton
               clear
               class="gallery-header-action"
               @click="enterSelectionMode"
             >
               {{ phone.t('Apps.photos.selection.action') }}
-            </SkyButton>
-          </SkyToolbarPane>
+            </AgentButton>
+          </AgentToolbarPane>
         </div>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
     <div ref="galleryContent" class="gallery-content">
       <div v-if="loading" class="gallery-state">
-        <sky-spinner />
+        <agent-spinner />
         <span>{{ phone.t('Apps.photos.loading') }}</span>
       </div>
-      <sky-block v-else-if="loadError" strong inset class="gallery-error">
+      <agent-block v-else-if="loadError" strong inset class="gallery-error">
         {{ loadError }}
-      </sky-block>
+      </agent-block>
       <div v-else-if="!media.length" class="gallery-state gallery-empty">
         <strong>{{ phone.t('Apps.photos.emptyTitle') }}</strong>
         <span>{{ phone.t('Apps.photos.emptyBody') }}</span>
@@ -1376,49 +1375,49 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <SkyTabBar
+    <AgentTabBar
       v-if="!requestedMessageMedia && !selectionMode"
       icons
       labels
       class="gallery-filter-tabbar"
       :label="phone.t('Apps.photos.name')"
     >
-      <SkyTabButton
+      <AgentTabButton
         :active="filter === 'all'"
         :label="phone.t('Apps.photos.filters.all')"
         @click="filter = 'all'"
       >
         <template #icon><Images :size="21" /></template>
-      </SkyTabButton>
-      <SkyTabButton
+      </AgentTabButton>
+      <AgentTabButton
         :active="filter === 'photo'"
         :label="phone.t('Apps.photos.filters.photos')"
         @click="filter = 'photo'"
       >
         <template #icon><Image :size="21" /></template>
-      </SkyTabButton>
-      <SkyTabButton
+      </AgentTabButton>
+      <AgentTabButton
         :active="filter === 'video'"
         :label="phone.t('Apps.photos.filters.videos')"
         @click="filter = 'video'"
       >
         <template #icon><Video :size="21" /></template>
-      </SkyTabButton>
-    </SkyTabBar>
+      </AgentTabButton>
+    </AgentTabBar>
 
-    <SkyToolbar
+    <AgentToolbar
       v-if="selectionMode"
       :aria-label="phone.t('Apps.photos.selection.action')"
-      class="gallery-selection-toolbar sky-ui-provider"
-      :class="{ 'sky-ui-provider--dark': phone.isDarkMode }"
+      class="gallery-selection-toolbar agent-ui-provider"
+      :class="{ 'agent-ui-provider--dark': phone.isDarkMode }"
       component="nav"
     >
-      <SkyToolbarPane class="gallery-selection-count">
+      <AgentToolbarPane class="gallery-selection-count">
         {{ selectedCountText }}
-      </SkyToolbarPane>
+      </AgentToolbarPane>
       <div class="gallery-selection-actions">
-        <SkyToolbarPane class="gallery-selection-action">
-          <SkyButton
+        <AgentToolbarPane class="gallery-selection-action">
+          <AgentButton
             icon-only
             rounded
             clear
@@ -1427,10 +1426,10 @@ onBeforeUnmount(() => {
             @click="shareSelection"
           >
             <Share2 :size="20" aria-hidden="true" />
-          </SkyButton>
-        </SkyToolbarPane>
-        <SkyToolbarPane class="gallery-selection-action">
-          <SkyButton
+          </AgentButton>
+        </AgentToolbarPane>
+        <AgentToolbarPane class="gallery-selection-action">
+          <AgentButton
             icon-only
             rounded
             clear
@@ -1440,24 +1439,24 @@ onBeforeUnmount(() => {
             @click="deleteManyDialogOpened = true"
           >
             <Trash2 :size="20" aria-hidden="true" />
-          </SkyButton>
-        </SkyToolbarPane>
+          </AgentButton>
+        </AgentToolbarPane>
       </div>
-    </SkyToolbar>
-  </sky-app-page>
+    </AgentToolbar>
+  </agent-app-page>
 
-  <sky-app-page
+  <agent-app-page
     v-else
-    class="gallery-detail sky-ui-provider sky-ui-provider--dark"
+    class="gallery-detail agent-ui-provider agent-ui-provider--dark"
   >
-    <SkyNavbar
+    <AgentNavbar
       class="gallery-detail-navbar"
       :scroll-el="null"
       :subtitle="selectedCaptureTime"
       :title="selectedCaptureDay"
     >
       <template #left>
-        <SkyButton
+        <AgentButton
           icon-only
           rounded
           clear
@@ -1466,19 +1465,19 @@ onBeforeUnmount(() => {
           @click="closeMedia"
         >
           <ChevronLeft :size="24" aria-hidden="true" />
-        </SkyButton>
+        </AgentButton>
       </template>
       <template #right>
-        <SkyButton
+        <AgentButton
           v-if="requestedMessageMedia"
           rounded
           tonal
           @click="completeSingleSelection"
         >
           {{ phone.t('Common.use') }}
-        </SkyButton>
+        </AgentButton>
       </template>
-    </SkyNavbar>
+    </AgentNavbar>
 
     <div class="gallery-detail-stage">
       <div class="gallery-detail-media">
@@ -1507,7 +1506,7 @@ onBeforeUnmount(() => {
           @loadedmetadata="initializeVideo"
           @error="videoPlaybackError = true"
         ></video>
-        <sky-block
+        <agent-block
           v-if="selected.mediaType === 'video' && videoPlaybackError"
           strong
           inset
@@ -1515,18 +1514,18 @@ onBeforeUnmount(() => {
           role="alert"
         >
           {{ phone.t('Apps.photos.errors.unsupported') }}
-        </sky-block>
+        </agent-block>
       </div>
     </div>
 
-    <SkyToolbar
+    <AgentToolbar
       v-if="!requestedMessageMedia"
       :aria-label="phone.t('Apps.photos.name')"
       class="gallery-detail-toolbar"
       component="nav"
     >
-      <SkyToolbarPane class="gallery-detail-action">
-        <SkyButton
+      <AgentToolbarPane class="gallery-detail-action">
+        <AgentButton
           icon-only
           rounded
           clear
@@ -1534,10 +1533,10 @@ onBeforeUnmount(() => {
           @click="shareSelected"
         >
           <Share2 :size="21" aria-hidden="true" />
-        </SkyButton>
-      </SkyToolbarPane>
-      <SkyToolbarPane class="gallery-detail-tools">
-        <SkyButton
+        </AgentButton>
+      </AgentToolbarPane>
+      <AgentToolbarPane class="gallery-detail-tools">
+        <AgentButton
           icon-only
           rounded
           clear
@@ -1556,10 +1555,10 @@ onBeforeUnmount(() => {
             :fill="selected.favorite ? 'currentColor' : 'none'"
             aria-hidden="true"
           />
-        </SkyButton>
-      </SkyToolbarPane>
-      <SkyToolbarPane class="gallery-detail-action">
-        <SkyButton
+        </AgentButton>
+      </AgentToolbarPane>
+      <AgentToolbarPane class="gallery-detail-action">
+        <AgentButton
           icon-only
           rounded
           clear
@@ -1569,14 +1568,14 @@ onBeforeUnmount(() => {
           @click="deleteDialogOpened = true"
         >
           <Trash2 :size="21" aria-hidden="true" />
-        </SkyButton>
-      </SkyToolbarPane>
-    </SkyToolbar>
-  </sky-app-page>
+        </AgentButton>
+      </AgentToolbarPane>
+    </AgentToolbar>
+  </agent-app-page>
 
-  <SkyDropdown
-    class="gallery-sort-dropdown sky-ui-provider"
-    :class="{ 'sky-ui-provider--dark': phone.isDarkMode }"
+  <AgentDropdown
+    class="gallery-sort-dropdown agent-ui-provider"
+    :class="{ 'agent-ui-provider--dark': phone.isDarkMode }"
     :items="sortMenuItems"
     :label="phone.t('Apps.photos.sorting.title')"
     :opened="sortMenuOpened"
@@ -1586,7 +1585,7 @@ onBeforeUnmount(() => {
     @select="selectSortMenuItem"
   />
 
-  <sky-dialog
+  <agent-dialog
     :opened="deleteManyDialogOpened"
     @backdropclick="deleteManyDialogOpened = false"
   >
@@ -1595,42 +1594,42 @@ onBeforeUnmount(() => {
     </template>
     <p>{{ phone.t('Apps.photos.selection.deleteBody') }}</p>
     <template #buttons>
-      <sky-button
+      <agent-button
         large
         rounded
         variant="secondary"
         @click="deleteManyDialogOpened = false"
       >
         {{ phone.t('Common.cancel') }}
-      </sky-button>
-      <sky-button large rounded variant="danger" @click="deleteSelection">
+      </agent-button>
+      <agent-button large rounded variant="danger" @click="deleteSelection">
         {{ phone.t('Common.delete') }}
-      </sky-button>
+      </agent-button>
     </template>
-  </sky-dialog>
+  </agent-dialog>
 
-  <sky-dialog
+  <agent-dialog
     :opened="deleteDialogOpened"
     @backdropclick="deleteDialogOpened = false"
   >
     <template #title>{{ phone.t('Apps.photos.deleteTitle') }}</template>
     <p>{{ phone.t('Apps.photos.deleteBody') }}</p>
     <template #buttons>
-      <sky-button
+      <agent-button
         large
         rounded
         variant="secondary"
         @click="deleteDialogOpened = false"
       >
         {{ phone.t('Common.cancel') }}
-      </sky-button>
-      <sky-button large rounded variant="danger" @click="deleteSelected">
+      </agent-button>
+      <agent-button large rounded variant="danger" @click="deleteSelected">
         {{ phone.t('Common.delete') }}
-      </sky-button>
+      </agent-button>
     </template>
-  </sky-dialog>
+  </agent-dialog>
 
-  <sky-notification
+  <agent-notification
     :opened="toastOpened"
     :text="toastText"
     @click="toastOpened = false"
@@ -1709,44 +1708,44 @@ onBeforeUnmount(() => {
 }
 .gallery-library-navbar {
   min-height: calc(
-    var(--sky-safe-area-top) + var(--sky-navbar-height) +
-      var(--sky-navbar-large-title-height) - 30px
+    var(--agent-safe-area-top) + var(--agent-navbar-height) +
+      var(--agent-navbar-large-title-height) - 30px
   );
 }
-.gallery-library-navbar :deep(.sky-navbar__right) {
+.gallery-library-navbar :deep(.agent-navbar__right) {
   z-index: 2;
   overflow: visible;
   background: transparent;
   box-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  transform: translateY(calc(var(--sky-navbar-height) - 30px));
+  transform: translateY(calc(var(--agent-navbar-height) - 30px));
 }
-.gallery-library-navbar :deep(.sky-navbar__inner) {
+.gallery-library-navbar :deep(.agent-navbar__inner) {
   grid-template-columns: minmax(0, 1fr) 0 max-content;
   margin-bottom: 0;
 }
-.gallery-library-navbar :deep(.sky-navbar__title-container) {
-  padding-right: calc(200px + var(--sky-safe-area-right));
-  transform: translateY(calc(0px - var(--sky-navbar-collapse-offset) - 30px));
+.gallery-library-navbar :deep(.agent-navbar__title-container) {
+  padding-right: calc(200px + var(--agent-safe-area-right));
+  transform: translateY(calc(0px - var(--agent-navbar-collapse-offset) - 30px));
 }
 .gallery-header-actions {
   width: max-content;
   flex: none;
   display: flex;
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 .gallery-header-tool {
   flex: none;
-  height: var(--sky-touch-target);
+  height: var(--agent-touch-target);
 }
 .gallery-header-tool--icon {
-  width: var(--sky-touch-target);
+  width: var(--agent-touch-target);
   justify-content: center;
 }
 .gallery-header-action {
-  color: var(--sky-text);
+  color: var(--agent-text);
   font-size: 14px;
   font-weight: 600;
 }
@@ -1756,27 +1755,27 @@ onBeforeUnmount(() => {
   bottom: 0;
   left: 0;
 }
-.gallery-selection-toolbar :deep(.sky-toolbar__inner) {
+.gallery-selection-toolbar :deep(.agent-toolbar__inner) {
   width: 100%;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 .gallery-selection-count {
   padding: 0 14px;
-  color: var(--sky-muted);
+  color: var(--agent-muted);
   font-size: 14px;
   font-weight: 600;
 }
 .gallery-selection-actions {
   display: flex;
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
 }
 .gallery-selection-action {
   width: 48px;
   flex: 0 0 48px;
   justify-content: center;
 }
-.gallery-selection-action :deep(.sky-button) {
+.gallery-selection-action :deep(.agent-button) {
   color: #fff;
 }
 .gallery-grid--fill {
@@ -1872,11 +1871,11 @@ onBeforeUnmount(() => {
 .gallery-detail-navbar {
   flex: 0 0 auto;
 }
-.gallery-detail-navbar :deep(.sky-navbar__title) {
+.gallery-detail-navbar :deep(.agent-navbar__title) {
   color: #fff;
   font-size: 17px;
 }
-.gallery-detail-navbar :deep(.sky-navbar__subtitle) {
+.gallery-detail-navbar :deep(.agent-navbar__subtitle) {
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -1885,7 +1884,7 @@ onBeforeUnmount(() => {
   color: #fff;
 }
 .gallery-detail-navbar :deep(.gallery-detail-back svg) {
-  transition: transform var(--sky-transition-fast, 100ms) ease;
+  transition: transform var(--agent-transition-fast, 100ms) ease;
 }
 @media (hover: hover) {
   .gallery-detail-navbar :deep(.gallery-detail-back:hover:not(:disabled)) {
@@ -1931,17 +1930,17 @@ onBeforeUnmount(() => {
 .gallery-detail-toolbar {
   flex: 0 0 auto;
 }
-.gallery-detail-toolbar :deep(.sky-toolbar__inner) {
+.gallery-detail-toolbar :deep(.agent-toolbar__inner) {
   width: 100%;
   gap: 8px;
 }
-.gallery-detail-toolbar :deep(.sky-toolbar__background) {
+.gallery-detail-toolbar :deep(.agent-toolbar__background) {
   background: linear-gradient(to top, #000 72%, transparent);
 }
-.gallery-detail-toolbar :deep(.sky-button) {
+.gallery-detail-toolbar :deep(.agent-button) {
   color: #fff;
 }
-.gallery-detail-toolbar :deep(.sky-button:active:not(:disabled)) {
+.gallery-detail-toolbar :deep(.agent-button:active:not(:disabled)) {
   background: rgba(255, 255, 255, 0.14);
 }
 .gallery-detail-tools {

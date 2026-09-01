@@ -1,27 +1,9 @@
---[[
-    Agent Phone configuration
-
-    General settings live in this file. Media providers and upload limits live
-    in config/media.lua, while translations remain in config/locales/*.lua.
-    Sections marked "SERVER ONLY" are guarded with IsDuplicityVersion(), so
-    passwords, API keys, migration settings, and server-owned locations are not
-    applied by game clients.
-
-    Keep option names unchanged. Restart agent_phone after editing this file.
-]]
 
 -- CONFIG_DEFAULT_EXCLUDE_START
--- When enabled, the active configuration is loaded from SQL and managed through
--- /phonepanel. Frontend builds snapshot the shipped defaults from config.lua and
--- media.lua into source/shared/config_default.lua.
 Config.PhoneConfigurator = {
     Enabled = true,
 }
 
--- Fixed server permissions. These values remain authoritative even while the
--- Phone Configurator is enabled and are intentionally not shown in its panel.
--- Group names use the active framework's permissions. On Qbox they also match
--- ACE objects such as "admin" from the standard permissions.cfg.
 Config.CommandPermissions = {
     phonepanel = { "god", "superadmin", "admin" },
     phonetestdata = { "god", "superadmin", "admin" },
@@ -30,39 +12,28 @@ Config.CommandPermissions = {
     picstagramadmin = { "god", "superadmin", "admin" },
 }
 -- CONFIG_DEFAULT_EXCLUDE_END
-
--- =============================================================================
--- Core, framework and device
--- =============================================================================
-
 Config.Bridge = {
-    Framework = "auto", -- auto, esx, qbox, qb
-    -- auto, ak47, codem, core, jaksam, jpr, lj, mf, one, origen, ox, ps, qb, qs, smx, tgiann, hex, esx
-    -- Compatibility aliases: qb-inv -> qb, qbox -> ox
+    Framework = "auto",
     Inventory = "auto",
-    Locale = "en",
+    Locale = "fr",
     CallbackTimeout = 15000,
-    Debug = false, -- true: show debug/info output; warnings and errors are always shown
+    Debug = false,
 }
 
 Config.Command = "phone"
-
 Config.Phone = {
     Item = "phone",
-    Unique = true, -- true: data follows each phone item; false: one persistent phone per character; forced false for metadata-free inventories
-    Keybind = "F1", -- false disables the configurable phone key mapping
+    Unique = true,
+    Keybind = "F1",
     OpenRequestsPerMinute = 20,
-    AllowMovement = true, -- true: game input stays active while the mobile phone is open
+    AllowMovement = true,
     HoldToLook = {
-        Enabled = true, -- hold the configured control to hide the cursor and look around; independent of AllowMovement
-        Control = 19, -- INPUT_CHARACTER_WHEEL (Left Alt by default)
+        Enabled = true,
+        Control = 19,
     },
     DevelopmentCommand = true,
     DeviceName = "iFruit Phone",
 }
-
--- Server-wide availability for bundled apps. Set an entry to false to hide it
--- from every phone, the App Store and per-device app management.
 Config.Apps = {
     ["app-store"] = true,
     banking = true,
@@ -94,34 +65,30 @@ Config.Apps = {
     snake = true,
     weather = true,
 }
-
 Config.TestData = {
-    Enabled = false, -- development/test servers only; keep disabled in production
+    Enabled = false,
     Command = "phonetestdata",
-    AdminOnly = false, -- enable only on development servers; every run is scoped to the executing player's phone
+    AdminOnly = false,
 }
-
 Config.CustomApps = {
     Enabled = true,
     BundledApps = true,
     ExternalApps = true,
-    Debug = false, -- detailed client traces for exports, registration, catalog sync and lifecycle events
+    Debug = false,
     ReadyTimeoutMs = 8000,
     MaximumMessageBytes = 65536,
     MaximumStorageBytesPerApp = 262144,
-    MaximumStorageValueBytes = 65536, -- Bridge v1 ceiling; lower values tighten the server policy.
-    MaximumStorageKeyLength = 64, -- Bridge v1 ceiling; lower values tighten the server policy.
+    MaximumStorageValueBytes = 65536,
+    MaximumStorageKeyLength = 64,
     MaximumStorageKeysPerApp = 128,
     StorageRequestsPerMinute = 120,
     TrustedAdapters = {},
 }
-
 Config.Security = {
     MaximumAttempts = 5,
     LockSeconds = 30,
     AttemptsPerMinute = 12,
 }
-
 Config.AdminPanel = {
     Enabled = true,
     Command = "phonepanel",
@@ -132,49 +99,40 @@ Config.AdminPanel = {
     AuditLimit = 40,
     ActivityLimit = 40,
 }
-
 Config.Sim = {
-    Enabled = true, -- false: devices receive a persistent random number automatically; forced false for metadata-free inventories
+    Enabled = true,
     RegisteredItem = "agent_phone_sim_registered",
     AnonymousItem = "agent_phone_sim_anonymous",
-    NumberLength = 10, -- total number of digits, including NumberPrefix
-    NumberPrefix = "", -- digits only; use "555", not "555-"
-    NumberGroups = { 3, 3, 4 }, -- display groups separated by spaces
+    NumberLength = 10,
+    NumberPrefix = "",
+    NumberGroups = { 3, 3, 4 },
 }
-
--- =============================================================================
--- Calls and voice
--- =============================================================================
 
 Config.Speaker = {
-    Enabled = true, -- global phone speaker controls
+    Enabled = true,
 }
-
 Config.Calls = {
-    VoiceProvider = "pma", -- auto, yaca (alias: yaca-voice), pma (alias: pma-voice), saltychat (alias: salty)
+    VoiceProvider = "pma",
     RingSeconds = 30,
     ContactNameMaxLength = 80,
     ContactNotesMaxLength = 500,
     RecentPageSize = 100,
 }
-
 Config.Payphones = {
     Enabled = true,
-    -- Existing world props with these models are detected automatically.
     Props = {
         "prop_phonebox_01b",
         "p_phonebox_01b_s",
         "prop_phonebox_01a",
         "prop_phonebox_04",
     },
-    -- Additional booths are spawned only at these custom positions.
+
     CustomProp = "prop_phonebox_01b",
     CustomLocations = {
-        -- vector4(x, y, z, heading),
     },
     ReplacementProp = "sf_prop_sf_phonebox_01b_s",
     PricePerSecond = 1,
-    PaymentAccount = "cash", -- cash or bank
+    PaymentAccount = "cash",
     Currency = "$",
     NoAnswerTimeoutSeconds = 30,
     CallerNumber = "PAYPHONE",
@@ -191,11 +149,6 @@ Config.Payphones = {
         HangupDurationMs = 2000,
     },
 }
-
--- =============================================================================
--- Phone presentation and animations
--- =============================================================================
-
 Config.Animations = {
     Enabled = true,
     PropModel = "prop_npc_phone_02",
@@ -229,11 +182,6 @@ Config.Animations = {
         },
     },
 }
-
--- =============================================================================
--- Built-in applications
--- =============================================================================
-
 Config.Messages = {
     BodyMaxLength = 2000,
     ConversationScanLimit = 1000,
@@ -246,7 +194,6 @@ Config.Messages = {
     VideoMaxDurationMs = 30000,
     DeleteBatchSize = 20,
 }
-
 Config.Memos = {
     MaximumCount = 100,
     MaximumDurationMs = 300000,
@@ -260,10 +207,9 @@ Config.Memos = {
     MaximumPendingUploads = 1,
     UploadSessionTimeoutMs = 60000,
 }
-
 Config.EasyShare = {
     Enabled = true,
-    DefaultVisibility = "everyone", -- everyone, contacts or hidden
+    DefaultVisibility = "everyone",
     MaximumDistance = 15.0,
     HistoryLimit = 50,
     PendingSeconds = 30,
@@ -274,7 +220,6 @@ Config.EasyShare = {
     ActionsPerMinute = 30,
     PayloadMaxBytes = 24000,
 }
-
 Config.DarkChat = {
     AliasMaxLength = 32,
     BodyMaxLength = 2000,
@@ -289,7 +234,7 @@ Config.DarkChat = {
     CleanupBatchSize = 250,
     AllowedDisappearTimers = {
         [0] = true,
-        [-1] = true, -- after reading
+        [-1] = true,
         [60] = true,
         [300] = true,
         [3600] = true,
@@ -297,7 +242,6 @@ Config.DarkChat = {
         [604800] = true,
     },
 }
-
 Config.Mail = {
     Domain = "ifruit.com",
     LocalPartMinLength = 3,
@@ -315,7 +259,6 @@ Config.Mail = {
     DeleteBatchSize = 50,
     DeleteRequestsPerMinute = 12,
 }
-
 Config.Banking = {
     Currency = "$",
     MinimumAmount = 1,
@@ -323,11 +266,10 @@ Config.Banking = {
     ActionsPerMinute = 12,
     HistoryLimit = 50,
 }
-
 Config.Billing = {
     Enabled = true,
     Currency = "$",
-    PaymentAccount = "bank", -- bank or cash
+    PaymentAccount = "bank",
     MinimumAmount = 1,
     MaximumAmount = 1000000,
     PageSize = 30,
@@ -338,16 +280,13 @@ Config.Billing = {
     MaximumTitleLength = 160,
     MaximumDescriptionLength = 1000,
 }
-
 Config.Garage = {
-    System = "auto", -- auto, custom, esx, qb, qbox, ak47, bp, cd, codem, ds-servercreator, hex, jg, my, okok, op, quasar, rx, vms, ws, zyke_garages
+    System = "auto",
     MaximumVehicles = 250,
     RequestsPerMinute = 30,
     VehicleImages = {
         Enabled = true,
-        UrlTemplate = "https://cdn.sky-systems.net/vehicles/{model}.png",
-        -- Optional spawn-name overrides for garages that only store model hashes.
-        -- Example: [970598228] = "sultan",
+        UrlTemplate = "https://docs.fivem.net/vehicles/{model}.webp",
         ModelNames = {},
     },
     Custom = {
@@ -357,7 +296,7 @@ Config.Garage = {
     Valet = {
         Enabled = true,
         Price = 750,
-        Account = "bank", -- bank or cash
+        Account = "bank",
         RequestsPerMinute = 3,
         CooldownSeconds = 60,
         TimeoutSeconds = 180,
@@ -366,7 +305,6 @@ Config.Garage = {
         DriveSpeed = 20.0,
         DrivingStyle = 786603,
         DriverModel = "s_m_m_autoshop_01",
-        -- The current valet driver route supports road vehicles. Keep non-road types disabled.
         VehicleTypes = {
             car = true,
             bike = true,
@@ -376,7 +314,6 @@ Config.Garage = {
         },
     },
 }
-
 Config.Marketplace = {
     PageSize = 20,
     MessagePageSize = 50,
@@ -421,11 +358,6 @@ Config.Marketplace = {
         "linear-gradient(135deg, #ffc75f, #f96d80 48%, #4b4453)",
     },
 }
-
--- =============================================================================
--- Social applications
--- =============================================================================
-
 Config.FlipTok = {
     PageSize = 12,
     CaptionMaxLength = 500,
@@ -439,7 +371,6 @@ Config.FlipTok = {
     VerifyCommand = "fliptokverify",
     ReportWebhookConvar = "agent_phone_fliptok_report_webhook",
 }
-
 Config.Picstagram = {
     PageSize = 12,
     CommentPageSize = 100,
@@ -459,7 +390,6 @@ Config.Picstagram = {
     ReportReasons = { "spam", "harassment", "dangerous", "illegal", "other" },
     VerifyCommand = "picstagramverify",
 }
-
 Config.Feather = {
     PageSize = 20,
     TextMaxLength = 360,
@@ -475,11 +405,6 @@ Config.Feather = {
     ActionsPerMinute = 90,
     ReportsPerDay = 10,
 }
-
--- =============================================================================
--- Utilities, groups and transport
--- =============================================================================
-
 Config.MapMarkers = {
     MaximumMarkers = 50,
     LabelMaxLength = 40,
@@ -501,7 +426,7 @@ Config.AgentRide = {
     Currency = "$",
     ProfileNameMinLength = 2,
     ProfileNameMaxLength = 50,
-    DistanceUnit = "kilometer", -- kilometer or mile
+    DistanceUnit = "kilometer",
     QuoteLifetimeSeconds = 120,
     HistoryLimit = 50,
     ReadsPerMinute = 120,
@@ -594,34 +519,13 @@ Config.AgentRide = {
         },
     },
 }
-
--- =============================================================================
--- Server-only configuration
--- =============================================================================
-
 if IsDuplicityVersion() then
-    -- -------------------------------------------------------------------------
-    -- Server secrets
-    -- -------------------------------------------------------------------------
 
-    -- Les peppers vivent dans config/secrets.lua, charge uniquement en
-    -- server_scripts et exclu du depot. Ils ne peuvent pas rester ici : ce
-    -- fichier est aussi declare en client_scripts, donc telecharge dans le
-    -- cache de chaque joueur et lisible tel quel. IsDuplicityVersion() empeche
-    -- l affectation cote client, pas la distribution du fichier.
-    --
-    -- Pour creer le tien : copie config/secrets.example.lua en
-    -- config/secrets.lua et remplis les trois valeurs.
     Config.Server = {
         PasscodePepper = "",
         FlipTokPasswordPepper = "",
         PicstagramPasswordPepper = "",
     }
-
-    -- -------------------------------------------------------------------------
-    -- Company directory
-    -- -------------------------------------------------------------------------
-
     Config.Companies = {
         Enabled = true,
         PageSize = 20,
@@ -883,23 +787,10 @@ if IsDuplicityVersion() then
             },
         },
     }
-
-    -- -------------------------------------------------------------------------
-    -- Music library
-    -- -------------------------------------------------------------------------
-
     Config.Music = {
-        -- Files are found recursively in config/music by their Id. For example,
-        -- Id = "night-drive" finds night-drive.ogg/mp3 and optional artwork with
-        -- the same name (.webp/.png/.jpg/.jpeg), even inside subdirectories.
         Tracks = {
-            -- {
-            --     Id = "night-drive",
-            --     Title = "Night Drive",
-            --     Artist = "Agent Records",
-            -- },
-        },
 
+        },
         MaximumPersonalSongs = 100,
         MaximumPlaylists = 50,
         MaximumPlaylistSongs = 250,
@@ -908,27 +799,12 @@ if IsDuplicityVersion() then
         MetadataTimeoutMs = 4500,
     }
 
-    -- -------------------------------------------------------------------------
-    -- Database migrations
-    -- -------------------------------------------------------------------------
-
     Config.Migrations = Config.Migrations or {}
 
-    -- Manual, non-destructive import from LB Phone's `phone_*` database tables.
-    -- The migration never starts during a resource/server restart. Completed
-    -- domains are recorded in `agent_phone_migrations` for idempotent retries.
-    -- Import: agentphone:migrate lb-phone
-    -- Console preview: agentphone:migrate lb-phone dry
-    -- Idempotent retry: agentphone:migrate lb-phone force
-    -- Remove imported Agent data: agentphone:migrate lb-phone remove
     Config.Migrations.LbPhone = {
         SourcePrefix = "phone_",
 
-        -- auto: direct framework identifier first, then an unambiguous license match.
-        -- identifier: only match phone_phones.owner_id to the framework identifier.
-        -- license: only resolve phone_phones.owner_id through the framework license.
         IdentifierMode = "auto",
-
         Domains = {
             devices = true,
             settings = true,

@@ -7,19 +7,19 @@ const source = readFileSync(
   'utf8',
 )
 const navigationSource = source.slice(
-  source.indexOf('<SkyPillNavigation'),
-  source.indexOf('</SkyPillNavigation>') + '</SkyPillNavigation>'.length,
+  source.indexOf('<AgentPillNavigation'),
+  source.indexOf('</AgentPillNavigation>') + '</AgentPillNavigation>'.length,
 )
 
-describe('AppStoreApp Sky navigation contract', () => {
+describe('AppStoreApp Agent navigation contract', () => {
   it('uses only the first-party Agent UI surface', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyAppPage')
-    expect(source).toContain('<SkyNavbar')
-    expect(source).toContain('<SkyPillNavigation')
-    expect(source).toContain('<SkySearchbar')
-    expect(source.match(/<SkyScrollArea/g)).toHaveLength(1)
+    expect(source).toContain('<AgentAppPage')
+    expect(source).toContain('<AgentNavbar')
+    expect(source).toContain('<AgentPillNavigation')
+    expect(source).toContain('<AgentSearchbar')
+    expect(source.match(/<AgentScrollArea/g)).toHaveLength(1)
   })
 
   it('renders the Today, Apps, Games and Search glass navigation', () => {
@@ -29,12 +29,12 @@ describe('AppStoreApp Sky navigation contract', () => {
     expect(source).toContain("{ id: 'search', icon: Search }")
     expect(source).toContain('class="app-store-navigation"')
     expect(source).toContain('layout="full"')
-    expect(source).toContain('<SkySegmented')
+    expect(source).toContain('<AgentSegmented')
     expect(source).toContain('navigation')
-    expect(source.match(/<SkySegmented\b/g)).toHaveLength(1)
+    expect(source.match(/<AgentSegmented\b/g)).toHaveLength(1)
     expect(source).toContain(':active-index="activeTabIndex"')
     expect(source).toContain(':item-count="tabs.length"')
-    expect(source).toContain('<SkySegmentedButton')
+    expect(source).toContain('<AgentSegmentedButton')
     expect(source).toContain(':active="tab === item.id"')
     expect(navigationSource).toContain('class="app-store-navigation__item"')
     expect(navigationSource).not.toContain('compact')
@@ -52,11 +52,11 @@ describe('AppStoreApp Sky navigation contract', () => {
       /\.app-store-navbar--search\s*\{[^}]*margin-bottom:\s*-24px;/s,
     )
     expect(source).toMatch(
-      /\.app-store-navbar--search :deep\(\.sky-navbar__subnavbar\)\s*\{[^}]*- 24px/s,
+      /\.app-store-navbar--search :deep\(\.agent-navbar__subnavbar\)\s*\{[^}]*- 24px/s,
     )
     expect(source).toContain('class="store-search__recommendations"')
     expect(source).toMatch(
-      /\.store-search__recommendations article\.store-search__recommendation--promoted\s*\{[^}]*margin:\s*0 calc\(0px - var\(--sky-space-2\)\);[^}]*border-radius:\s*var\(--sky-radius-control\);[^}]*padding:\s*var\(--sky-space-3\) var\(--sky-space-2\);[^}]*rgba\(10, 132, 255, 0\.18\)/s,
+      /\.store-search__recommendations article\.store-search__recommendation--promoted\s*\{[^}]*margin:\s*0 calc\(0px - var\(--agent-space-2\)\);[^}]*border-radius:\s*var\(--agent-radius-control\);[^}]*padding:\s*var\(--agent-space-3\) var\(--agent-space-2\);[^}]*rgba\(10, 132, 255, 0\.18\)/s,
     )
     expect(source).toContain('class="store-search__discover-grid"')
     expect(source).toContain(
@@ -69,7 +69,7 @@ describe('AppStoreApp Sky navigation contract', () => {
     expect(source).toMatch(
       /\.store-search__discover-grid > button\s*\{[^}]*min-height:\s*124px/s,
     )
-    expect(source).toContain('<SkyEmptyState')
+    expect(source).toContain('<AgentEmptyState')
     expect(source).toContain("phone.t('Apps.appStore.search.noResultsBody')")
     expect(source).toContain('<Search :size="38"')
     expect(source).toMatch(
@@ -93,7 +93,7 @@ describe('AppStoreApp Sky navigation contract', () => {
       /\.store-account__primary-action\s*\{[^}]*min-width:\s*66px;[^}]*height:\s*30px;/s,
     )
     expect(source).toMatch(
-      /\.store-account__summary > div\s*\{[^}]*border-radius:\s*16px;[^}]*background:\s*var\(--sky-surface\);/s,
+      /\.store-account__summary > div\s*\{[^}]*border-radius:\s*16px;[^}]*background:\s*var\(--agent-surface\);/s,
     )
     expect(source.match(/phone-effect--expensive-shadow/g)?.length ?? 0).toBeGreaterThanOrEqual(9)
     expect(source).not.toContain('appStore.updateApp(')
@@ -145,19 +145,19 @@ describe('AppStoreApp Sky navigation contract', () => {
 
   it('keeps one scroll owner and accessible 44px app actions', () => {
     expect(source).toMatch(
-      /<SkyScrollArea\s+ref="storeScroll"\s+(?:padded\s+)?class="store-scroll"[\s\S]*?with-tabbar\s*>/,
+      /<AgentScrollArea\s+ref="storeScroll"\s+(?:padded\s+)?class="store-scroll"[\s\S]*?with-tabbar\s*>/,
     )
     expect(source).toMatch(/\.store-scroll\s*\{[^}]*overflow-y:\s*auto/s)
     expect(source).not.toMatch(/\.store-scroll\s*\{[^}]*padding\s*:/s)
     expect(source).toMatch(/\.store-scroll\s*\{[^}]*padding-top:\s*0/s)
     expect(source).toMatch(
-      /\.store-scroll\s*\{[^}]*padding-right:\s*calc\(var\(--sky-page-gutter\) \+ var\(--sky-safe-area-right\)\)/s,
+      /\.store-scroll\s*\{[^}]*padding-right:\s*calc\(var\(--agent-page-gutter\) \+ var\(--agent-safe-area-right\)\)/s,
     )
     expect(source).toMatch(
-      /\.store-scroll\s*\{[^}]*padding-left:\s*calc\(var\(--sky-page-gutter\) \+ var\(--sky-safe-area-left\)\)/s,
+      /\.store-scroll\s*\{[^}]*padding-left:\s*calc\(var\(--agent-page-gutter\) \+ var\(--agent-safe-area-left\)\)/s,
     )
     expect(source).toMatch(
-      /\.store-list article > button:not\(\.store-list__detail-link\)\s*\{[^}]*min-height:\s*var\(--sky-touch-target\)/s,
+      /\.store-list article > button:not\(\.store-list__detail-link\)\s*\{[^}]*min-height:\s*var\(--agent-touch-target\)/s,
     )
     expect(source).toContain(':clear-label="phone.t(\'Common.clear\')"')
     expect(source).toContain(
@@ -167,7 +167,7 @@ describe('AppStoreApp Sky navigation contract', () => {
       ':class="{ \'store-scroll--detail\': selectedApp }"',
     )
     expect(source).toMatch(
-      /\.store-scroll--detail\s*\{[^}]*margin-top:\s*var\(--sky-safe-area-top\)/s,
+      /\.store-scroll--detail\s*\{[^}]*margin-top:\s*var\(--agent-safe-area-top\)/s,
     )
   })
 
@@ -180,7 +180,7 @@ describe('AppStoreApp Sky navigation contract', () => {
       '.store-list--browse article:hover',
     )
     expect(source).toMatch(
-      /button\.store-action-button--get:not\(\.store-list__detail-link\):hover\s*\{[^}]*background:\s*var\(--sky-app-accent-soft\);[^}]*filter:\s*none;[^}]*transform:\s*none;/s,
+      /button\.store-action-button--get:not\(\.store-list__detail-link\):hover\s*\{[^}]*background:\s*var\(--agent-app-accent-soft\);[^}]*filter:\s*none;[^}]*transform:\s*none;/s,
     )
     expect(source).toContain('.app-store-page .store-action-button--icon:hover')
     expect(source).toContain(
@@ -196,8 +196,6 @@ describe('AppStoreApp Sky navigation contract', () => {
     )
     expect(source).toContain('getDailyHighlights(')
     expect(source).toContain('!DEFAULT_INSTALLED_PHONE_APP_IDS.has(app.id)')
-    // Les onglets sont enveloppes dans une Transition : la premiere branche
-    // porte donc v-if, et la bascule est animee.
     expect(source).toContain('<Transition v-else name="store-tab" mode="out-in">')
     expect(source).toContain('v-if="tab === \'today\'"')
     expect(source).toContain(
@@ -218,7 +216,7 @@ describe('AppStoreApp Sky navigation contract', () => {
     )
     expect(source).toContain('editorialHighlights')
     expect(source).toContain('topToday')
-    expect(source).toContain('var(--sky-touch-target)')
+    expect(source).toContain('var(--agent-touch-target)')
   })
 
   it('opens app details from every Today banner without hijacking app actions', () => {
@@ -243,7 +241,7 @@ describe('AppStoreApp Sky navigation contract', () => {
     expect(source).not.toContain('0 0 0 28px')
     expect(source).not.toContain('0 0 0 22px')
     expect(source).toMatch(
-      /\.store-highlight__footer\s*\{[^}]*border-radius:\s*0 0 var\(--sky-radius-card\) var\(--sky-radius-card\);[^}]*linear-gradient/s,
+      /\.store-highlight__footer\s*\{[^}]*border-radius:\s*0 0 var\(--agent-radius-card\) var\(--agent-radius-card\);[^}]*linear-gradient/s,
     )
     expect(source).toMatch(
       /\.store-highlight__footer::before\s*\{[^}]*top:\s*-28px;[^}]*linear-gradient/s,
@@ -299,7 +297,7 @@ describe('AppStoreApp Sky navigation contract', () => {
     expect(source).toContain('function appStoreTagline(')
     expect(source).toContain('app.description.trim() || app.developer')
     expect(source).toMatch(
-      /\.store-list__tagline\s*\{[^}]*color:\s*var\(--sky-muted\);[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;/s,
+      /\.store-list__tagline\s*\{[^}]*color:\s*var\(--agent-muted\);[^}]*font-size:\s*11px;[^}]*font-weight:\s*500;/s,
     )
     expect(source).toContain('featuredCandidates')
     expect(source).toContain('ref="featuredScroller"')
@@ -324,7 +322,7 @@ describe('AppStoreApp Sky navigation contract', () => {
       /\.store-browse-feature footer::before\s*\{[^}]*top:\s*-28px;[^}]*linear-gradient\(180deg, transparent, rgba\(5, 8, 16, 0\.3\)\);[^}]*backdrop-filter:\s*blur\(7px\) saturate\(110%\);/s,
     )
     expect(source).toMatch(
-      /\.store-browse__pages button\s*\{[^}]*width:\s*var\(--sky-touch-target\)[^}]*height:\s*var\(--sky-touch-target\)/s,
+      /\.store-browse__pages button\s*\{[^}]*width:\s*var\(--agent-touch-target\)[^}]*height:\s*var\(--agent-touch-target\)/s,
     )
   })
 
@@ -336,6 +334,6 @@ describe('AppStoreApp Sky navigation contract', () => {
     expect(source).toContain('phone.player.firstName')
     expect(source).toContain('phone.player.lastName')
     expect(source).toContain('{{ profileInitials }}')
-    expect(source).toContain('var(--sky-navbar-large-title-height) - 30px')
+    expect(source).toContain('var(--agent-navbar-large-title-height) - 30px')
   })
 })

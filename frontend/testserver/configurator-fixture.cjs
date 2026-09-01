@@ -723,10 +723,7 @@ function buildSections(scope, payload) {
   return sections
 }
 
-// Le dossier de la ressource porte un nom variable selon les installations.
-// On resout le premier qui contient reellement un fxmanifest, au lieu de coder
-// un nom en dur : un chemin faux faisait tomber le backend simule au demarrage.
-const RESOURCE_CANDIDATES = ['agent_phone', 'Phone', 'sky_phone']
+const RESOURCE_CANDIDATES = ['agent_phone', 'Phone', 'agent_phone']
 
 function resolveResourceDir() {
   const root = resolve(__dirname, '../..')

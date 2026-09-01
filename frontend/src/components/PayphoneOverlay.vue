@@ -402,7 +402,7 @@ onBeforeUnmount(() => {
     rgb(30 38 42 / 35%),
     rgb(0 0 0 / 84%) 72%
   );
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   pointer-events: auto;
   user-select: none;
 }

@@ -21,7 +21,7 @@ import { useAccountStore } from '@/stores/account'
 import { useAppStoreStore } from '@/stores/app-store'
 import { usePhoneStore } from '@/stores/phone'
 import type { BuiltinPhoneAppId } from '@/types/apps'
-import { SkyButton, SkyField, SkySpinner } from '@/ui'
+import { AgentButton, AgentField, AgentSpinner } from '@/ui'
 import { filterMailAddressInput, normalizeMailAddress } from '@/utils/mail'
 import {
   PHONE_SETUP_LAST_STEP,
@@ -311,9 +311,9 @@ function skipSetupForDevelopment(): void {
             </p>
           </div>
           <footer class="setup-welcome__footer">
-            <SkyButton class="setup-assistant__primary" @click="continueSetup">
+            <AgentButton class="setup-assistant__primary" @click="continueSetup">
               {{ phone.t('Setup.getStarted') }}
-            </SkyButton>
+            </AgentButton>
             <div class="setup-welcome__home-indicator" aria-hidden="true"></div>
           </footer>
         </template>
@@ -334,7 +334,7 @@ function skipSetupForDevelopment(): void {
               class="setup-connectivity-card__waves"
               aria-hidden="true"
             ></div>
-            <span class="setup-connectivity-card__label">Sky SIM</span>
+            <span class="setup-connectivity-card__label">Agent SIM</span>
             <strong>{{
               phone.device?.sim?.number ?? phone.t('Setup.connection.noSim')
             }}</strong>
@@ -349,9 +349,9 @@ function skipSetupForDevelopment(): void {
             <ShieldCheck :size="19" />
             <p>{{ phone.t('Setup.connection.preserved') }}</p>
           </div>
-          <SkyButton class="setup-assistant__primary" @click="continueSetup">
+          <AgentButton class="setup-assistant__primary" @click="continueSetup">
             {{ phone.t('Common.continue') }}
-          </SkyButton>
+          </AgentButton>
         </template>
 
         <template v-else-if="step === 2">
@@ -425,7 +425,7 @@ function skipSetupForDevelopment(): void {
             </div>
 
             <div class="setup-cloud-fields">
-              <SkyField
+              <AgentField
                 id="setup-cloud-name"
                 :model-value="email"
                 :label="phone.t('Setup.cloud.accountName')"
@@ -439,8 +439,8 @@ function skipSetupForDevelopment(): void {
                 <template #trailing>
                   <span class="setup-cloud-suffix">@ifruit.com</span>
                 </template>
-              </SkyField>
-              <SkyField
+              </AgentField>
+              <AgentField
                 id="setup-cloud-password"
                 v-model="password"
                 type="password"
@@ -450,7 +450,7 @@ function skipSetupForDevelopment(): void {
                 "
               />
               <Transition name="setup-account-field">
-                <SkyField
+                <AgentField
                   v-if="accountMode === 'register'"
                   id="setup-cloud-password-confirm"
                   v-model="passwordConfirm"
@@ -481,12 +481,12 @@ function skipSetupForDevelopment(): void {
             <p v-if="accountError" class="setup-assistant__error" role="alert">
               {{ accountError }}
             </p>
-            <SkyButton
+            <AgentButton
               class="setup-assistant__primary"
               :disabled="accountBusy"
               @click="submitAccount"
             >
-              <SkySpinner v-if="accountBusy" />
+              <AgentSpinner v-if="accountBusy" />
               <Transition v-else name="setup-account-action" mode="out-in">
                 <span :key="accountMode">{{
                   phone.t(
@@ -496,7 +496,7 @@ function skipSetupForDevelopment(): void {
                   )
                 }}</span>
               </Transition>
-            </SkyButton>
+            </AgentButton>
             <div class="setup-cloud-security-note">
               <LockKeyhole :size="13" />
               <span>{{ phone.t('Setup.cloud.securityNote') }}</span>
@@ -513,10 +513,10 @@ function skipSetupForDevelopment(): void {
             <Check :size="31" />
             <strong>{{ phone.t('Setup.cloud.connected') }}</strong>
             <span>{{ account.email }}</span>
-            <SkyButton
+            <AgentButton
               class="setup-assistant__primary"
               @click="continueSetup"
-              >{{ phone.t('Common.continue') }}</SkyButton
+              >{{ phone.t('Common.continue') }}</AgentButton
             >
           </div>
         </template>
@@ -569,14 +569,14 @@ function skipSetupForDevelopment(): void {
             <ShieldCheck :size="19" />
             <p>{{ phone.t('Setup.security.local') }}</p>
           </div>
-          <SkyButton
+          <AgentButton
             class="setup-assistant__primary"
             @click="passcodeStage = 'create'"
             >{{
               phone.t('Setup.security.createSelected', {
                 count: String(passcodeLength),
               })
-            }}</SkyButton
+            }}</AgentButton
           >
           <button
             type="button"
@@ -619,9 +619,9 @@ function skipSetupForDevelopment(): void {
               />
             </button>
           </div>
-          <SkyButton class="setup-assistant__primary" @click="continueSetup">{{
+          <AgentButton class="setup-assistant__primary" @click="continueSetup">{{
             phone.t('Common.continue')
-          }}</SkyButton>
+          }}</AgentButton>
         </template>
 
         <template v-else-if="step === 5">
@@ -676,9 +676,9 @@ function skipSetupForDevelopment(): void {
             <Gauge :size="19" />
             <p>{{ phone.t('Setup.performance.changeLater') }}</p>
           </div>
-          <SkyButton class="setup-assistant__primary" @click="continueSetup">{{
+          <AgentButton class="setup-assistant__primary" @click="continueSetup">{{
             phone.t('Common.continue')
-          }}</SkyButton>
+          }}</AgentButton>
         </template>
 
         <template v-else-if="step === 6">
@@ -711,9 +711,9 @@ function skipSetupForDevelopment(): void {
               />
             </button>
           </div>
-          <SkyButton class="setup-assistant__primary" @click="continueSetup">{{
+          <AgentButton class="setup-assistant__primary" @click="continueSetup">{{
             phone.t('Common.continue')
-          }}</SkyButton>
+          }}</AgentButton>
         </template>
 
         <template v-else-if="step === 7">
@@ -752,9 +752,9 @@ function skipSetupForDevelopment(): void {
               ></i>
             </button>
           </div>
-          <SkyButton class="setup-assistant__primary" @click="continueSetup">{{
+          <AgentButton class="setup-assistant__primary" @click="continueSetup">{{
             phone.t('Common.continue')
-          }}</SkyButton>
+          }}</AgentButton>
         </template>
 
         <template v-else-if="step === 8">
@@ -789,11 +789,11 @@ function skipSetupForDevelopment(): void {
               /></i>
             </button>
           </div>
-          <SkyButton class="setup-assistant__primary" @click="continueSetup">{{
+          <AgentButton class="setup-assistant__primary" @click="continueSetup">{{
             phone.t('Setup.apps.install', {
               count: String(selectedApps.length),
             })
-          }}</SkyButton>
+          }}</AgentButton>
         </template>
 
         <template v-else>
@@ -832,18 +832,18 @@ function skipSetupForDevelopment(): void {
               }}</b></span
             >
           </div>
-          <SkyButton
+          <AgentButton
             class="setup-assistant__primary"
             :disabled="setupCompleteBusy"
             @click="finish"
           >
-            <SkySpinner
+            <AgentSpinner
               v-if="setupCompleteBusy"
               :label="phone.t('Setup.ready.saving')"
               :size="18"
             />
             <span v-else>{{ phone.t('Setup.ready.enter') }}</span>
-          </SkyButton>
+          </AgentButton>
           <p
             v-if="setupCompleteError"
             class="setup-assistant__error"
@@ -896,7 +896,7 @@ function skipSetupForDevelopment(): void {
   overflow: clip;
   color: #f8fbff;
   background: #05070d;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   user-select: none;
 }
 .setup-assistant__aurora {
@@ -1529,39 +1529,39 @@ function skipSetupForDevelopment(): void {
   opacity: 1;
   transform: translateY(0);
 }
-.setup-cloud-fields :deep(.sky-field) {
+.setup-cloud-fields :deep(.agent-field) {
   border: 0;
   border-radius: 0;
   background: transparent;
 }
-.setup-cloud-fields :deep(.sky-field__inner) {
+.setup-cloud-fields :deep(.agent-field__inner) {
   padding: 0;
 }
-.setup-cloud-fields :deep(.sky-field + .sky-field) {
+.setup-cloud-fields :deep(.agent-field + .agent-field) {
   border-top: 1px solid rgb(255 255 255 / 8%);
 }
-.setup-cloud-fields :deep(.sky-field) {
+.setup-cloud-fields :deep(.agent-field) {
   padding: 3px 12px;
 }
-.setup-cloud-fields :deep(.sky-field__control),
-.setup-cloud-fields :deep(.sky-field__input) {
+.setup-cloud-fields :deep(.agent-field__control),
+.setup-cloud-fields :deep(.agent-field__input) {
   min-height: 43px;
 }
-.setup-cloud-fields :deep(.sky-field--floating-label .sky-field__control) {
+.setup-cloud-fields :deep(.agent-field--floating-label .agent-field__control) {
   min-height: 52px;
 }
-.setup-cloud-fields :deep(.sky-field--floating-label .sky-field__label) {
+.setup-cloud-fields :deep(.agent-field--floating-label .agent-field__label) {
   top: 6px;
   left: 12px;
 }
-.setup-cloud-fields :deep(.sky-field__label) {
+.setup-cloud-fields :deep(.agent-field__label) {
   color: rgb(255 255 255 / 52%);
 }
-.setup-cloud-fields :deep(.sky-field__input) {
+.setup-cloud-fields :deep(.agent-field__input) {
   color: #ffffff;
   caret-color: #5ba9ff;
 }
-.setup-cloud-fields :deep(.sky-field__input::placeholder) {
+.setup-cloud-fields :deep(.agent-field__input::placeholder) {
   color: rgb(255 255 255 / 24%);
 }
 .setup-cloud-suffix {
@@ -2155,7 +2155,6 @@ function skipSetupForDevelopment(): void {
   transform: translateX(16px);
 }
 
-/* Minimal system setup language, matching the restrained iOS setup hierarchy. */
 .setup-assistant,
 .setup-assistant--step-0 {
   --setup-background: #ffffff;
@@ -2387,17 +2386,17 @@ function skipSetupForDevelopment(): void {
   border: 0;
   background: var(--setup-surface);
 }
-.setup-cloud-fields :deep(.sky-field + .sky-field) {
+.setup-cloud-fields :deep(.agent-field + .agent-field) {
   border-top-color: var(--setup-separator);
 }
-.setup-cloud-fields :deep(.sky-field__label) {
+.setup-cloud-fields :deep(.agent-field__label) {
   color: var(--setup-tertiary);
 }
-.setup-cloud-fields :deep(.sky-field__input) {
+.setup-cloud-fields :deep(.agent-field__input) {
   color: var(--setup-text);
   caret-color: var(--setup-blue);
 }
-.setup-cloud-fields :deep(.sky-field__input::placeholder) {
+.setup-cloud-fields :deep(.agent-field__input::placeholder) {
   color: var(--setup-muted);
 }
 .setup-cloud-strength span {

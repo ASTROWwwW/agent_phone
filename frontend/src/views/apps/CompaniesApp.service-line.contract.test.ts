@@ -22,7 +22,7 @@ describe('CompaniesApp outbound service-line dialer contract', () => {
   it('gates the work action and its opener by service-line permission', () => {
     const openDialer = sourceBlock(
       'function openServiceLineDialer()',
-      '\n\nfunction closeServiceLineDialer()',
+      'function closeServiceLineDialer()',
     )
     const workAction = sourceBlock(
       `phone.t(${apostrophe}Apps.companies.work.takeCalls${apostrophe})`,
@@ -39,19 +39,19 @@ describe('CompaniesApp outbound service-line dialer contract', () => {
     expect(workAction).toContain('Apps.companies.work.dialServiceLine')
   })
 
-  it('uses a Sky sheet and telephone field for the target number', () => {
+  it('uses a Agent sheet and telephone field for the target number', () => {
     const sheet = sourceBlock(
       `<div class=${quote}companies-sheet companies-service-line-sheet${quote}>`,
       `<div class=${quote}companies-sheet companies-assignment-sheet${quote}>`,
     )
 
-    expect(sheet).toContain('<SkySheet')
+    expect(sheet).toContain('<AgentSheet')
     expect(sheet).toContain(`:opened=${quote}serviceLineSheetOpened${quote}`)
     expect(sheet).toContain(
-      `<SkyList inset strong class=${quote}service-line-sheet__form${quote}>`,
+      `<AgentList inset strong class=${quote}service-line-sheet__form${quote}>`,
     )
-    expect(sheet).toContain('<SkyField')
-    expect(sheet).not.toMatch(/<SkyField\s+outline/)
+    expect(sheet).toContain('<AgentField')
+    expect(sheet).not.toMatch(/<AgentField\s+outline/)
     expect(sheet).toContain(`type=${quote}tel${quote}`)
     expect(sheet).toContain(`:value=${quote}serviceLineTarget${quote}`)
     expect(sheet).toContain(`:disabled=${quote}!canDialServiceLine${quote}`)
@@ -61,7 +61,7 @@ describe('CompaniesApp outbound service-line dialer contract', () => {
   it('applies the authoritative call state before opening the Phone app', () => {
     const dial = sourceBlock(
       'async function dialServiceLine()',
-      '\n\nfunction syncManagerDraft(',
+      'function syncManagerDraft(',
     )
     const applyIndex = dial.indexOf('calls.applyCallState(response.data)')
     const routeIndex = dial.indexOf(

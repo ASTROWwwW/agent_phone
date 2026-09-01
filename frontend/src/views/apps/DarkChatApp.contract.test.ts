@@ -20,12 +20,12 @@ describe('DarkChatApp Agent UI contract', () => {
   it('uses first-party Agent UI without direct Konsta markup', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyAppPage')
-    expect(source).toContain('<SkyNavbar')
-    expect(source).toContain('<SkyScrollArea')
-    expect(source).toContain('<SkySettingsGroup')
-    expect(source).toContain('<SkyMessagebar')
-    expect(source).not.toContain('<SkyPillNavigation')
+    expect(source).toContain('<AgentAppPage')
+    expect(source).toContain('<AgentNavbar')
+    expect(source).toContain('<AgentScrollArea')
+    expect(source).toContain('<AgentSettingsGroup')
+    expect(source).toContain('<AgentMessagebar')
+    expect(source).not.toContain('<AgentPillNavigation')
   })
 
   it('keeps one identity action in the inbox header', () => {
@@ -59,7 +59,7 @@ describe('DarkChatApp Agent UI contract', () => {
 
   it('keeps the search visually compact without shrinking its wrapper', () => {
     expect(source).toMatch(
-      /\.dc-search :deep\(\.sky-searchbar__control\),[\s\S]*?height:\s*38px;[\s\S]*?min-height:\s*38px;/,
+      /\.dc-search :deep\(\.agent-searchbar__control\),[\s\S]*?height:\s*38px;[\s\S]*?min-height:\s*38px;/,
     )
   })
 
@@ -77,7 +77,7 @@ describe('DarkChatApp Agent UI contract', () => {
     const conversationStart = source.indexOf(
       'v-for="conversation in filteredConversations"',
     )
-    const conversationEnd = source.indexOf('</SkyListItem>', conversationStart)
+    const conversationEnd = source.indexOf('</AgentListItem>', conversationStart)
     const conversation = source.slice(conversationStart, conversationEnd)
 
     expect(conversation).not.toMatch(/\scontacts(?:\s|>)/)
@@ -99,11 +99,11 @@ describe('DarkChatApp Agent UI contract', () => {
     expect(source).toContain('class="dc-composer-action"')
     expect(source).toContain('class="dc-composer-pill"')
     expect(source).toMatch(
-      /<div v-else class="dc-composer-row">[\s\S]*?class="dc-composer-pill"[\s\S]*?class="dc-composer-action"[\s\S]*?<SkyMessagebar/,
+      /<div v-else class="dc-composer-row">[\s\S]*?class="dc-composer-pill"[\s\S]*?class="dc-composer-action"[\s\S]*?<AgentMessagebar/,
     )
     expect(composer).not.toContain('<template #left>')
     expect(source).toMatch(
-      /\.dc-composer-pill\s*\{[^}]*border-radius:\s*var\(--sky-radius-pill\)/s,
+      /\.dc-composer-pill\s*\{[^}]*border-radius:\s*var\(--agent-radius-pill\)/s,
     )
     expect(source).toMatch(
       /\.dc-composer-action\s*\{[^}]*border-radius:\s*50%/s,
@@ -118,7 +118,7 @@ describe('DarkChatApp Agent UI contract', () => {
     const attachments = source.slice(attachmentsStart, attachmentsEnd)
 
     expect(attachments.match(/class="dc-attachment-action"/g)).toHaveLength(5)
-    expect(attachments.match(/<SkyGlass/g)).toHaveLength(5)
+    expect(attachments.match(/<AgentGlass/g)).toHaveLength(5)
     expect(source).toMatch(
       /\.dc-attachments\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column;/s,
     )
@@ -136,7 +136,7 @@ describe('DarkChatApp Agent UI contract', () => {
   it('raises only the DarkChat inbox title block', () => {
     expect(source).toContain('class="dc-inbox-navbar"')
     expect(source).toMatch(
-      /\.dc-inbox-navbar :deep\(\.sky-navbar__title-container > div\)\s*\{[^}]*translateY\(-14px\)/s,
+      /\.dc-inbox-navbar :deep\(\.agent-navbar__title-container > div\)\s*\{[^}]*translateY\(-14px\)/s,
     )
   })
 

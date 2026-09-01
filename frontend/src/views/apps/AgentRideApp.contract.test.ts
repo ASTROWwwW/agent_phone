@@ -34,7 +34,7 @@ describe('AgentRide app layout', () => {
 
   it('scrolls Ride and Drive away without full-width nav backgrounds', () => {
     expect(source).toMatch(
-      /\.agentride-navbar :deep\(\.sky-navbar__blur\),\s*\.agentride-navbar :deep\(\.sky-navbar__background\)\s*\{[^}]*display:\s*none;/s,
+      /\.agentride-navbar :deep\(\.agent-navbar__blur\),\s*\.agentride-navbar :deep\(\.agent-navbar__background\)\s*\{[^}]*display:\s*none;/s,
     )
     expect(source).toMatch(
       /<div class="agentride-scroll">\s*<div class="agentride-mode">/s,
@@ -43,10 +43,10 @@ describe('AgentRide app layout', () => {
       /\.agentride-scroll\s*\{[^}]*box-sizing:\s*border-box;[^}]*inset:\s*114px 0 0;[^}]*padding:\s*0 0 116px;/s,
     )
     expect(source).toMatch(
-      /\.agentride-tabbar :deep\(\.sky-tabbar__blur\),\s*\.agentride-tabbar :deep\(\.sky-tabbar__background\)\s*\{[^}]*display:\s*none;/s,
+      /\.agentride-tabbar :deep\(\.agent-tabbar__blur\),\s*\.agentride-tabbar :deep\(\.agent-tabbar__background\)\s*\{[^}]*display:\s*none;/s,
     )
     expect(source).not.toMatch(
-      /\.agentride-tabbar :deep\(\.sky-tabbar__pane\)\s*\{\s*border:/s,
+      /\.agentride-tabbar :deep\(\.agent-tabbar__pane\)\s*\{\s*border:/s,
     )
   })
 
@@ -60,9 +60,9 @@ describe('AgentRide app layout', () => {
     expect(source).toMatch(
       /\.agentride-trip-card\s*\{[^}]*margin-bottom:\s*12px;/s,
     )
-    expect(source).toContain('.sky-button--primary:not(.sky-button--outline)')
+    expect(source).toContain('.agent-button--primary:not(.agent-button--outline)')
     expect(source).not.toMatch(
-      /\.agentride-app :deep\(\.sky-button--primary\)\s*\{/,
+      /\.agentride-app :deep\(\.agent-button--primary\)\s*\{/,
     )
   })
 
@@ -83,9 +83,9 @@ describe('AgentRide app layout', () => {
     expect(source).toContain('swipe-to-close')
     expect(source).toContain('@swipeclose="closeProfileEditor"')
     expect(source).toMatch(
-      /\.agentride-profile-sheet :deep\(\.sky-sheet__panel\)\s*\{[^}]*max-height:\s*78%;/s,
+      /\.agentride-profile-sheet :deep\(\.agent-sheet__panel\)\s*\{[^}]*max-height:\s*78%;/s,
     )
-    expect(source.match(/<SkyButton\s+block\s+large\s+rounded/g)).toHaveLength(
+    expect(source.match(/<AgentButton\s+block\s+large\s+rounded/g)).toHaveLength(
       2,
     )
     expect(source).toContain('agentride-profile-media-button')

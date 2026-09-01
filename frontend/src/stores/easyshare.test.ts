@@ -79,13 +79,13 @@ describe('easyshare store', () => {
 
   it('hands a prepared share message to the selected chat app once', () => {
     const easyShare = useEasyShareStore()
-    easyShare.open({ ...payload, link: 'https://notes.sky/note-1' })
+    easyShare.open({ ...payload, link: 'https://notes.agent/note-1' })
 
     expect(easyShare.prepareChatDraft('messages', '5551234567')).toBe(true)
     expect(easyShare.consumeChatDraft('messages')).toEqual({
       appId: 'messages',
-      body: 'Meet at Mission Row.\nhttps://notes.sky/note-1',
-      payload: { ...payload, link: 'https://notes.sky/note-1' },
+      body: 'Meet at Mission Row.\nhttps://notes.agent/note-1',
+      payload: { ...payload, link: 'https://notes.agent/note-1' },
       targetId: '5551234567',
     })
     expect(easyShare.consumeChatDraft('messages')).toBeNull()

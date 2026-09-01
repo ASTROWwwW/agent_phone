@@ -53,26 +53,26 @@ import { parseDatabaseDate, type DatabaseDateValue } from '@/utils/date'
 import { easyShareDarkChatInviteCode } from '@/utils/easyshare'
 import { handleEnterAction } from '@/utils/keyboard'
 import {
-  SkyAppPage,
-  SkyButton,
-  SkyCard,
-  SkyDialog,
-  SkyDialogButton,
-  SkyEmptyState,
-  SkyField,
-  SkyGlass,
-  SkyLink,
-  SkyList,
-  SkyListItem,
-  SkyMessagebar,
-  SkyNavbar,
-  SkyScrollArea,
-  SkySearchbar,
-  SkySettingsGroup,
-  SkySettingsRow,
-  SkySheet,
-  SkySpinner,
-  SkyNotification,
+  AgentAppPage,
+  AgentButton,
+  AgentCard,
+  AgentDialog,
+  AgentDialogButton,
+  AgentEmptyState,
+  AgentField,
+  AgentGlass,
+  AgentLink,
+  AgentList,
+  AgentListItem,
+  AgentMessagebar,
+  AgentNavbar,
+  AgentScrollArea,
+  AgentSearchbar,
+  AgentSettingsGroup,
+  AgentSettingsRow,
+  AgentSheet,
+  AgentSpinner,
+  AgentNotification,
 } from '@/ui'
 
 const VOICE_MAX_DURATION_MS = 60_000
@@ -1002,13 +1002,13 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .dc-ios {
-  --dc-accent: var(--sky-app-accent);
-  --dc-surface: var(--sky-surface);
-  --dc-surface-raised: var(--sky-surface-muted);
-  --dc-border: var(--sky-hairline);
-  --dc-label: var(--sky-text);
-  --dc-secondary: var(--sky-muted);
-  --dc-tertiary: var(--sky-muted-2);
+  --dc-accent: var(--agent-app-accent);
+  --dc-surface: var(--agent-surface);
+  --dc-surface-raised: var(--agent-surface-muted);
+  --dc-border: var(--agent-hairline);
+  --dc-label: var(--agent-text);
+  --dc-secondary: var(--agent-muted);
+  --dc-tertiary: var(--agent-muted-2);
 }
 
 .dc-ios button,
@@ -1047,7 +1047,7 @@ onBeforeUnmount(() => {
   border-radius: 24px;
 }
 
-.dc-gate-card :deep(.sky-card__content) {
+.dc-gate-card :deep(.agent-card__content) {
   padding: 26px 20px;
 }
 
@@ -1085,7 +1085,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   border-radius: 17px;
   color: var(--dc-accent);
-  background: var(--sky-app-accent-soft);
+  background: var(--agent-app-accent-soft);
 }
 
 .dc-preloader {
@@ -1113,7 +1113,7 @@ onBeforeUnmount(() => {
   padding-top: 12px;
 }
 
-.dc-inbox-navbar :deep(.sky-navbar__title-container > div) {
+.dc-inbox-navbar :deep(.agent-navbar__title-container > div) {
   transform: translateY(-14px);
 }
 
@@ -1126,22 +1126,22 @@ onBeforeUnmount(() => {
   margin: 0;
 }
 
-.dc-search :deep(.sky-searchbar__control),
-.dc-search :deep(.sky-searchbar__input) {
+.dc-search :deep(.agent-searchbar__control),
+.dc-search :deep(.agent-searchbar__input) {
   height: 38px;
   min-height: 38px;
 }
 
-.dc-search :deep(.sky-searchbar__input) {
+.dc-search :deep(.agent-searchbar__input) {
   font-size: 15px;
 }
 
-.dc-search :deep(.sky-searchbar__clear) {
+.dc-search :deep(.agent-searchbar__clear) {
   width: 38px;
   height: 38px;
 }
 
-.dc-search :deep(.sky-searchbar__clear::before) {
+.dc-search :deep(.agent-searchbar__clear::before) {
   position: absolute;
   inset: -3px;
   content: '';
@@ -1193,17 +1193,17 @@ onBeforeUnmount(() => {
   margin: 0 0 16px;
 }
 
-.dc-conversation-list :deep(.sky-list-item__row) {
+.dc-conversation-list :deep(.agent-list-item__row) {
   min-height: 76px;
 }
 
-.dc-conversation-list :deep(.sky-list-item__after) {
+.dc-conversation-list :deep(.agent-list-item__after) {
   color: var(--dc-tertiary);
   font-size: 11px;
   font-weight: 500;
 }
 
-.dc-conversation--unread :deep(.sky-list-item__title) {
+.dc-conversation--unread :deep(.agent-list-item__title) {
   font-weight: 760;
 }
 
@@ -1285,13 +1285,13 @@ onBeforeUnmount(() => {
 
 .dc-recipient-field,
 .dc-new-chat-contacts {
-  margin: 0 calc(var(--sky-page-gutter) * -1) 12px;
+  margin: 0 calc(var(--agent-page-gutter) * -1) 12px;
   border-top: 1px solid var(--dc-border);
   border-bottom: 1px solid var(--dc-border);
   background: transparent;
 }
 
-.dc-recipient-field :deep(.sky-field) {
+.dc-recipient-field :deep(.agent-field) {
   min-height: 52px;
   padding: 0 14px;
   display: flex;
@@ -1299,7 +1299,7 @@ onBeforeUnmount(() => {
   background: transparent;
 }
 
-.dc-recipient-field :deep(.sky-field__inner) {
+.dc-recipient-field :deep(.agent-field__inner) {
   min-width: 0;
   padding: 0;
   display: flex;
@@ -1308,7 +1308,7 @@ onBeforeUnmount(() => {
   gap: 10px;
 }
 
-.dc-recipient-field :deep(.sky-field__label) {
+.dc-recipient-field :deep(.agent-field__label) {
   margin: 0;
   flex: none;
   color: var(--dc-secondary);
@@ -1316,21 +1316,21 @@ onBeforeUnmount(() => {
   line-height: 20px;
 }
 
-.dc-recipient-field :deep(.sky-field__control),
-.dc-recipient-field :deep(.sky-field__input) {
+.dc-recipient-field :deep(.agent-field__control),
+.dc-recipient-field :deep(.agent-field__input) {
   min-height: 52px;
 }
 
-.dc-recipient-field :deep(.sky-field__control) {
+.dc-recipient-field :deep(.agent-field__control) {
   flex: 1;
   margin: 0;
 }
 
-.dc-recipient-field :deep(.sky-field__input) {
+.dc-recipient-field :deep(.agent-field__input) {
   font-size: 15px;
 }
 
-.dc-new-chat-contacts :deep(.sky-list-item__row) {
+.dc-new-chat-contacts :deep(.agent-list-item__row) {
   background: transparent;
 }
 
@@ -1349,7 +1349,7 @@ onBeforeUnmount(() => {
   gap: 3px;
   border-radius: 999px;
   color: var(--dc-accent);
-  background: var(--sky-app-accent-soft);
+  background: var(--agent-app-accent-soft);
   font-size: 10px;
   font-weight: 650;
 }
@@ -1403,7 +1403,7 @@ onBeforeUnmount(() => {
   line-height: 1.35;
 }
 
-.dc-qr-card :deep(.sky-button) {
+.dc-qr-card :deep(.agent-button) {
   grid-column: 1 / -1;
 }
 
@@ -1415,7 +1415,7 @@ onBeforeUnmount(() => {
   gap: 8px;
 }
 
-.dc-invite-actions :deep(.sky-button) {
+.dc-invite-actions :deep(.agent-button) {
   min-width: 0;
   grid-column: auto;
 }
@@ -1430,7 +1430,7 @@ onBeforeUnmount(() => {
   flex: 0 0 auto;
   border-bottom: 1px solid var(--dc-border);
   color: var(--dc-secondary);
-  background: var(--sky-surface);
+  background: var(--agent-surface);
   font-size: 10px;
 }
 
@@ -1588,8 +1588,8 @@ onBeforeUnmount(() => {
 .dc-attachments {
   position: absolute;
   z-index: 48;
-  bottom: calc(var(--sky-safe-area-bottom) + 78px);
-  left: calc(var(--sky-safe-area-left) + var(--sky-page-gutter));
+  bottom: calc(var(--agent-safe-area-bottom) + 78px);
+  left: calc(var(--agent-safe-area-left) + var(--agent-page-gutter));
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -1603,7 +1603,7 @@ onBeforeUnmount(() => {
   padding: 4px 14px 4px 5px;
   align-items: center;
   gap: 9px;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   color: var(--dc-label);
   font-size: 12px;
   font-weight: 650;
@@ -1616,7 +1616,7 @@ onBeforeUnmount(() => {
   flex: 0 0 32px;
   border-radius: 50%;
   color: var(--dc-accent);
-  background: var(--sky-app-accent-soft);
+  background: var(--agent-app-accent-soft);
   place-items: center;
 }
 
@@ -1704,23 +1704,23 @@ onBeforeUnmount(() => {
 .dc-composer-pill {
   box-sizing: border-box;
   min-width: 0;
-  margin: var(--sky-space-2)
-    calc(var(--sky-page-gutter) + var(--sky-safe-area-right))
-    calc(var(--sky-safe-area-bottom) + 10px)
-    calc(var(--sky-page-gutter) + var(--sky-safe-area-left));
+  margin: var(--agent-space-2)
+    calc(var(--agent-page-gutter) + var(--agent-safe-area-right))
+    calc(var(--agent-safe-area-bottom) + 10px)
+    calc(var(--agent-page-gutter) + var(--agent-safe-area-left));
   overflow: hidden;
   flex: 0 0 auto;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
 }
 
 .dc-composer-row {
   display: flex;
-  margin: var(--sky-space-2)
-    calc(var(--sky-page-gutter) + var(--sky-safe-area-right))
-    calc(var(--sky-safe-area-bottom) + 10px)
-    calc(var(--sky-page-gutter) + var(--sky-safe-area-left));
+  margin: var(--agent-space-2)
+    calc(var(--agent-page-gutter) + var(--agent-safe-area-right))
+    calc(var(--agent-safe-area-bottom) + 10px)
+    calc(var(--agent-page-gutter) + var(--agent-safe-area-left));
   align-items: center;
-  gap: var(--sky-space-2);
+  gap: var(--agent-space-2);
   flex: 0 0 auto;
 }
 
@@ -1766,12 +1766,12 @@ onBeforeUnmount(() => {
 }
 
 .dc-composer :deep(textarea) {
-  min-height: var(--sky-touch-target);
-  border-radius: var(--sky-radius-pill);
+  min-height: var(--agent-touch-target);
+  border-radius: var(--agent-radius-pill);
   padding: 12px 14px;
 }
 
-.dc-composer :deep(.sky-messagebar__right) {
+.dc-composer :deep(.agent-messagebar__right) {
   margin-right: 0;
 }
 
@@ -1787,7 +1787,7 @@ onBeforeUnmount(() => {
   margin-bottom: 1px;
 }
 
-.dc-profile-hero :deep(.sky-button) {
+.dc-profile-hero :deep(.agent-button) {
   min-height: 34px;
   padding: 5px 10px;
   font-size: 13px;
@@ -1808,17 +1808,17 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
-.dc-danger-row :deep(.sky-list-item__title),
+.dc-danger-row :deep(.agent-list-item__title),
 .dc-danger-row :deep(svg) {
-  color: var(--sky-danger);
+  color: var(--agent-danger);
 }
 
-.sky-dialog-button.dc-danger-text:not(:disabled) {
-  background: var(--sky-danger);
+.agent-dialog-button.dc-danger-text:not(:disabled) {
+  background: var(--agent-danger);
   color: #ffffff;
 }
 
-.sky-dialog-button.dc-danger-text:active:not(:disabled) {
+.agent-dialog-button.dc-danger-text:active:not(:disabled) {
   filter: brightness(0.86);
 }
 
@@ -1850,12 +1850,12 @@ onBeforeUnmount(() => {
   margin: 4px auto 10px;
   border-radius: 50%;
   color: var(--dc-accent);
-  background: var(--sky-app-accent-soft);
+  background: var(--agent-app-accent-soft);
   place-items: center;
 }
 
 .dc-dialog-icon--danger {
-  color: var(--sky-danger);
+  color: var(--agent-danger);
   background: rgb(255 69 58 / 14%);
 }
 
@@ -1870,11 +1870,11 @@ onBeforeUnmount(() => {
   text-align: center;
 }
 
-.dc-action-sheet :deep(.sky-sheet__panel) {
-  padding: 6px 0 calc(var(--sky-safe-area-bottom) + 12px);
+.dc-action-sheet :deep(.agent-sheet__panel) {
+  padding: 6px 0 calc(var(--agent-safe-area-bottom) + 12px);
 }
 
-.dc-selection-sheet :deep(.sky-sheet__panel) {
+.dc-selection-sheet :deep(.agent-sheet__panel) {
   max-height: 72%;
 }
 
@@ -1935,7 +1935,7 @@ onBeforeUnmount(() => {
     max-width: 86%;
   }
 
-  .dc-attachments :deep(.sky-button) {
+  .dc-attachments :deep(.agent-button) {
     padding-inline: 8px;
     font-size: 10px;
   }
@@ -1943,7 +1943,7 @@ onBeforeUnmount(() => {
 </style>
 
 <template>
-  <SkyAppPage
+  <AgentAppPage
     class="darkchat-page dc-ios"
     :label="t('name')"
     :dark="phone.isDarkMode"
@@ -1951,27 +1951,27 @@ onBeforeUnmount(() => {
     accent-soft="rgb(10 132 255 / 18%)"
   >
     <section v-if="!signedIn" class="dc-gate">
-      <SkyCard class="dc-gate-card" outline>
+      <AgentCard class="dc-gate-card" outline>
         <span class="dc-icon-tile"><LockKeyhole :size="28" /></span>
         <h1>{{ t('name') }}</h1>
         <p>{{ t('signInBody') }}</p>
         <small>{{ t('signInHint') }}</small>
-      </SkyCard>
+      </AgentCard>
     </section>
 
     <section v-else-if="darkchat.loading && !darkchat.profile" class="dc-gate">
-      <SkySpinner class="dc-preloader" />
+      <AgentSpinner class="dc-preloader" />
       <p>{{ phone.t('Common.loading') }}</p>
     </section>
 
     <section v-else-if="!darkchat.profile" class="dc-gate">
-      <SkyEmptyState
+      <AgentEmptyState
         :title="t('createIdentity')"
         :body="t('createIdentityBody')"
       >
         <template #icon><ShieldCheck :size="30" /></template>
         <template #actions>
-          <SkyButton
+          <AgentButton
             large
             rounded
             :disabled="profileActionPending"
@@ -1982,35 +1982,35 @@ onBeforeUnmount(() => {
                 ? phone.t('Common.loading')
                 : t('createIdentity')
             }}
-          </SkyButton>
+          </AgentButton>
         </template>
-      </SkyEmptyState>
+      </AgentEmptyState>
     </section>
 
     <template v-else>
       <section v-if="screen === 'inbox'" class="dc-screen dc-inbox">
-        <SkyNavbar
+        <AgentNavbar
           class="dc-inbox-navbar"
           :title="t('name')"
           :subtitle="t('privateNetwork')"
           variant="large"
         >
           <template #left>
-            <SkyLink
+            <AgentLink
               icon-only
               :aria-label="t('myIdentity')"
               @click="openProfile"
             >
               <UserRound :size="20" />
-            </SkyLink>
+            </AgentLink>
           </template>
           <template #right>
-            <SkyLink icon-only :aria-label="t('newChat')" @click="beginNewChat">
+            <AgentLink icon-only :aria-label="t('newChat')" @click="beginNewChat">
               <SquarePen :size="21" />
-            </SkyLink>
+            </AgentLink>
           </template>
           <template #subnavbar>
-            <SkySearchbar
+            <AgentSearchbar
               v-model="search"
               class="dc-search"
               :label="phone.t('Common.search')"
@@ -2018,10 +2018,10 @@ onBeforeUnmount(() => {
               :clear-label="phone.t('Common.clear')"
             />
           </template>
-        </SkyNavbar>
+        </AgentNavbar>
 
-        <SkyScrollArea padded class="dc-inbox-content">
-          <SkyGlass
+        <AgentScrollArea padded class="dc-inbox-content">
+          <AgentGlass
             component="button"
             class="dc-security"
             @click="copyIdentity(darkchat.profile.darkId)"
@@ -2032,15 +2032,15 @@ onBeforeUnmount(() => {
               <small>{{ darkchat.profile.darkId }}</small>
             </span>
             <Copy :size="16" />
-          </SkyGlass>
+          </AgentGlass>
 
-          <SkyList
+          <AgentList
             v-if="filteredConversations.length"
             inset
             strong
             class="dc-conversation-list"
           >
-            <SkyListItem
+            <AgentListItem
               v-for="conversation in filteredConversations"
               :key="conversation.id"
               link
@@ -2071,30 +2071,30 @@ onBeforeUnmount(() => {
                   {{ timerLabel(conversation.disappearingSeconds) }}
                 </span>
               </template>
-            </SkyListItem>
-          </SkyList>
+            </AgentListItem>
+          </AgentList>
 
-          <SkyEmptyState
+          <AgentEmptyState
             v-else
             class="dc-empty"
             :title="search ? t('noResults') : t('noChats')"
             :body="search ? t('noResultsBody') : t('noChatsBody')"
           >
             <template #icon><ShieldCheck :size="27" /></template>
-          </SkyEmptyState>
-        </SkyScrollArea>
+          </AgentEmptyState>
+        </AgentScrollArea>
       </section>
 
       <section v-else-if="screen === 'new'" class="dc-screen">
-        <SkyNavbar :title="t('newChat')">
+        <AgentNavbar :title="t('newChat')">
           <template #right>
-            <SkyLink @click="back">{{ phone.t('Common.cancel') }}</SkyLink>
+            <AgentLink @click="back">{{ phone.t('Common.cancel') }}</AgentLink>
           </template>
-        </SkyNavbar>
-        <SkyScrollArea padded class="dc-new-chat-scroll">
+        </AgentNavbar>
+        <AgentScrollArea padded class="dc-new-chat-scroll">
           <p class="dc-new-chat-intro">{{ t('newChatBody') }}</p>
-          <SkyList class="dc-recipient-field" density="compact" flush>
-            <SkyField
+          <AgentList class="dc-recipient-field" density="compact" flush>
+            <AgentField
               :label="t('to')"
               layout="inline"
               :value="identifier"
@@ -2106,13 +2106,13 @@ onBeforeUnmount(() => {
               @clear="identifier = ''"
               @keyup.enter="requestStart()"
             />
-          </SkyList>
-          <SkyList
+          </AgentList>
+          <AgentList
             v-if="contactSuggestions.length"
             class="dc-new-chat-contacts"
             flush
           >
-            <SkyListItem
+            <AgentListItem
               v-for="contact in contactSuggestions"
               :key="contact.id"
               link
@@ -2136,9 +2136,9 @@ onBeforeUnmount(() => {
                   <LockKeyhole :size="11" />{{ t('private') }}
                 </span>
               </template>
-            </SkyListItem>
-          </SkyList>
-          <SkyButton
+            </AgentListItem>
+          </AgentList>
+          <AgentButton
             v-else-if="identifier.trim()"
             rounded
             tonal
@@ -2147,8 +2147,8 @@ onBeforeUnmount(() => {
           >
             <MessageCirclePlus :size="17" />
             {{ identifier }}
-          </SkyButton>
-        </SkyScrollArea>
+          </AgentButton>
+        </AgentScrollArea>
       </section>
 
       <section
@@ -2156,7 +2156,7 @@ onBeforeUnmount(() => {
         class="dc-screen dc-thread"
         :class="{ 'dc-thread--panel': attachmentPanelOpen }"
       >
-        <SkyNavbar
+        <AgentNavbar
           :title="active.peer.alias"
           :subtitle="active.peer.activityVisible ? t('activeNow') : ''"
           show-back
@@ -2165,16 +2165,16 @@ onBeforeUnmount(() => {
           @back="back"
         >
           <template #right>
-            <SkyGlass
+            <AgentGlass
               component="button"
               class="dc-navbar-action"
               :aria-label="t('contactSecurity')"
               @click="openContact"
             >
               <UserRound :size="19" />
-            </SkyGlass>
+            </AgentGlass>
           </template>
-        </SkyNavbar>
+        </AgentNavbar>
         <div class="dc-thread-meta">
           <LockKeyhole :size="13" />{{ t('serverPrivate') }}
           <span v-if="active.disappearingSeconds !== 0">
@@ -2263,58 +2263,58 @@ onBeforeUnmount(() => {
             <small>{{ t('replying') }}</small>
             <strong>{{ replyTo.body || t(replyTo.messageType) }}</strong>
           </span>
-          <SkyLink icon-only @click="replyTo = null"><X :size="17" /></SkyLink>
+          <AgentLink icon-only @click="replyTo = null"><X :size="17" /></AgentLink>
         </div>
         <div v-if="attachmentOpen" class="dc-attachments">
-          <SkyGlass
+          <AgentGlass
             component="button"
             class="dc-attachment-action"
             @click="openMediaApp('photos', 'photo')"
           >
             <span><Images :size="19" /></span>
             <small>{{ t('photo') }}</small>
-          </SkyGlass>
-          <SkyGlass
+          </AgentGlass>
+          <AgentGlass
             component="button"
             class="dc-attachment-action"
             @click="openMediaApp('camera', 'photo')"
           >
             <span><Camera :size="19" /></span>
             <small>{{ t('takePhoto') }}</small>
-          </SkyGlass>
-          <SkyGlass
+          </AgentGlass>
+          <AgentGlass
             component="button"
             class="dc-attachment-action"
             @click="openEmojiPanel"
           >
             <span><Smile :size="19" /></span>
             <small>{{ t('emoji') }}</small>
-          </SkyGlass>
-          <SkyGlass
+          </AgentGlass>
+          <AgentGlass
             component="button"
             class="dc-attachment-action"
             @click="openGifPanel"
           >
             <span><ImagePlay :size="19" /></span>
             <small>{{ t('gif') }}</small>
-          </SkyGlass>
-          <SkyGlass
+          </AgentGlass>
+          <AgentGlass
             component="button"
             class="dc-attachment-action"
             @click="openMediaApp('photos', 'video')"
           >
             <span><Video :size="19" /></span>
             <small>{{ t('video') }}</small>
-          </SkyGlass>
+          </AgentGlass>
         </div>
-        <SkyCard v-if="gifOpen" class="dc-gif-panel" outline>
+        <AgentCard v-if="gifOpen" class="dc-gif-panel" outline>
           <header>
             <strong>{{ t('gifs') }}</strong>
-            <SkyLink @click="gifOpen = false">{{
+            <AgentLink @click="gifOpen = false">{{
               phone.t('Common.done')
-            }}</SkyLink>
+            }}</AgentLink>
           </header>
-          <SkySearchbar
+          <AgentSearchbar
             :value="gifQuery"
             :label="t('searchGifs')"
             :placeholder="t('searchGifs')"
@@ -2332,11 +2332,11 @@ onBeforeUnmount(() => {
               <img :src="gif.previewUrl" :alt="gif.title" />
             </button>
           </div>
-          <SkyButton v-if="gifHasMore && !gifLoading" clear @click="loadGifs()">
+          <AgentButton v-if="gifHasMore && !gifLoading" clear @click="loadGifs()">
             {{ t('loadMore') }}
-          </SkyButton>
-          <SkySpinner v-if="gifLoading" class="dc-preloader" />
-        </SkyCard>
+          </AgentButton>
+          <AgentSpinner v-if="gifLoading" class="dc-preloader" />
+        </AgentCard>
         <FullEmojiPicker
           v-if="emojiOpen"
           @close="emojiOpen = false"
@@ -2355,8 +2355,8 @@ onBeforeUnmount(() => {
             <X :size="15" />
           </button>
         </div>
-        <SkyGlass v-if="recording" class="dc-composer-pill dc-recorder">
-          <SkyLink icon-only @click="cancelRecording"><X :size="19" /></SkyLink>
+        <AgentGlass v-if="recording" class="dc-composer-pill dc-recorder">
+          <AgentLink icon-only @click="cancelRecording"><X :size="19" /></AgentLink>
           <i />
           <time>{{ recordingTime() }}</time>
           <span>
@@ -2366,13 +2366,13 @@ onBeforeUnmount(() => {
               :style="{ height: `${Math.max(3, level * 23)}px` }"
             />
           </span>
-          <SkyLink icon-only @click="stopRecording">
+          <AgentLink icon-only @click="stopRecording">
             <ArrowUpCircle :size="29" />
-          </SkyLink>
-        </SkyGlass>
+          </AgentLink>
+        </AgentGlass>
         <div v-else class="dc-composer-row">
-          <SkyGlass component="div" :highlight="false" class="dc-composer-pill">
-            <SkyGlass
+          <AgentGlass component="div" :highlight="false" class="dc-composer-pill">
+            <AgentGlass
               component="button"
               class="dc-composer-action"
               :class="{ active: attachmentOpen || attachmentPanelOpen }"
@@ -2380,8 +2380,8 @@ onBeforeUnmount(() => {
               @click="toggleAttachmentPanel"
             >
               <Plus :size="23" />
-            </SkyGlass>
-            <SkyMessagebar
+            </AgentGlass>
+            <AgentMessagebar
               class="dc-composer"
               embedded
               :outline="false"
@@ -2391,31 +2391,31 @@ onBeforeUnmount(() => {
               @keydown.enter.exact="handleEnterAction($event, sendText)"
             >
               <template #right>
-                <SkyLink
+                <AgentLink
                   v-if="draft.trim() || shareDraft"
                   icon-only
                   @click="sendText"
                 >
                   <ArrowUpCircle :size="27" />
-                </SkyLink>
-                <SkyLink v-else icon-only @click="startRecording">
+                </AgentLink>
+                <AgentLink v-else icon-only @click="startRecording">
                   <Mic :size="20" />
-                </SkyLink>
+                </AgentLink>
               </template>
-            </SkyMessagebar>
-          </SkyGlass>
+            </AgentMessagebar>
+          </AgentGlass>
         </div>
       </section>
 
       <section v-else-if="screen === 'contact' && active" class="dc-screen">
-        <SkyNavbar
+        <AgentNavbar
           :title="t('contactSecurity')"
           show-back
           back-appearance="surface"
           :back-label="phone.t('Common.back')"
           @back="back"
         />
-        <SkyScrollArea padded class="dc-scroll-content">
+        <AgentScrollArea padded class="dc-scroll-content">
           <div class="dc-profile-hero">
             <span
               class="dc-avatar dc-avatar--profile"
@@ -2424,50 +2424,50 @@ onBeforeUnmount(() => {
               {{ avatarGlyph(active.peer.avatarSeed) }}
             </span>
             <h2>{{ active.peer.alias }}</h2>
-            <SkyButton clear rounded @click="copyIdentity(active.peer.darkId)">
+            <AgentButton clear rounded @click="copyIdentity(active.peer.darkId)">
               {{ active.peer.darkId }}<Copy :size="14" />
-            </SkyButton>
+            </AgentButton>
             <small>{{
               t('chatSince', { date: dayLabel(active.createdAt) })
             }}</small>
           </div>
 
-          <SkySettingsGroup :title="t('chatSettings')">
-            <SkySettingsRow
+          <AgentSettingsGroup :title="t('chatSettings')">
+            <AgentSettingsRow
               kind="toggle"
               :title="t('notifications')"
               :model-value="active.notificationsEnabled"
               @update:model-value="setConversationNotifications"
             >
               <template #leading><Bell :size="20" /></template>
-            </SkySettingsRow>
-            <SkySettingsRow
+            </AgentSettingsRow>
+            <AgentSettingsRow
               kind="toggle"
               :title="t('readReceipts')"
               :model-value="active.readReceipts"
               @update:model-value="setReadReceipts"
             >
               <template #leading><Check :size="20" /></template>
-            </SkySettingsRow>
-            <SkySettingsRow
+            </AgentSettingsRow>
+            <AgentSettingsRow
               kind="navigation"
               :title="t('disappearing')"
               :value="timerLabel(active.disappearingSeconds)"
               @activate="selectionSheet = 'disappearing'"
             >
               <template #leading><Clock3 :size="20" /></template>
-            </SkySettingsRow>
-          </SkySettingsGroup>
+            </AgentSettingsRow>
+          </AgentSettingsGroup>
 
-          <SkyList inset strong class="dc-form-list">
-            <SkyField
+          <AgentList inset strong class="dc-form-list">
+            <AgentField
               :label="t('contactAlias')"
               :value="contactAliasDraft"
               maxlength="32"
               @input="setContactAliasDraft"
             />
-          </SkyList>
-          <SkyButton
+          </AgentList>
+          <AgentButton
             large
             rounded
             block
@@ -2476,47 +2476,47 @@ onBeforeUnmount(() => {
           >
             <UserPlus :size="18" />
             {{ active.peer.isContact ? t('saveContact') : t('addContact') }}
-          </SkyButton>
+          </AgentButton>
 
-          <SkySettingsGroup :title="t('contactActions')">
-            <SkySettingsRow
+          <AgentSettingsGroup :title="t('contactActions')">
+            <AgentSettingsRow
               v-if="active.peer.isContact"
               kind="action"
               :title="t('removeContact')"
               @activate="removeContact"
             >
               <template #leading><UserMinus :size="20" /></template>
-            </SkySettingsRow>
-            <SkySettingsRow
+            </AgentSettingsRow>
+            <AgentSettingsRow
               kind="action"
               tone="danger"
               :title="active.peer.blocked ? t('unblock') : t('block')"
               @activate="toggleBlock"
             >
               <template #leading><ShieldOff :size="20" /></template>
-            </SkySettingsRow>
-            <SkySettingsRow
+            </AgentSettingsRow>
+            <AgentSettingsRow
               kind="action"
               tone="danger"
               :title="t('report')"
               @activate="beginReport()"
             >
               <template #leading><BellOff :size="20" /></template>
-            </SkySettingsRow>
-            <SkySettingsRow
+            </AgentSettingsRow>
+            <AgentSettingsRow
               kind="action"
               tone="danger"
               :title="t('clearChat')"
               @activate="clearChat"
             >
               <template #leading><Trash2 :size="20" /></template>
-            </SkySettingsRow>
-          </SkySettingsGroup>
-        </SkyScrollArea>
+            </AgentSettingsRow>
+          </AgentSettingsGroup>
+        </AgentScrollArea>
       </section>
 
       <section v-else-if="screen === 'profile'" class="dc-screen">
-        <SkyNavbar
+        <AgentNavbar
           :title="t('myIdentity')"
           show-back
           back-appearance="surface"
@@ -2524,10 +2524,10 @@ onBeforeUnmount(() => {
           @back="back"
         >
           <template #right>
-            <SkyLink @click="saveProfile">{{ phone.t('Common.done') }}</SkyLink>
+            <AgentLink @click="saveProfile">{{ phone.t('Common.done') }}</AgentLink>
           </template>
-        </SkyNavbar>
-        <SkyScrollArea padded class="dc-scroll-content">
+        </AgentNavbar>
+        <AgentScrollArea padded class="dc-scroll-content">
           <div class="dc-profile-hero">
             <span
               class="dc-avatar dc-avatar--profile"
@@ -2538,26 +2538,26 @@ onBeforeUnmount(() => {
               {{ avatarGlyph(darkchat.profile.avatarSeed) }}
             </span>
             <h2>{{ darkchat.profile.alias }}</h2>
-            <SkyButton
+            <AgentButton
               clear
               rounded
               @click="copyIdentity(darkchat.profile.darkId)"
             >
               {{ darkchat.profile.darkId }}<Copy :size="14" />
-            </SkyButton>
+            </AgentButton>
           </div>
 
-          <SkyList inset strong class="dc-form-list">
-            <SkyField
+          <AgentList inset strong class="dc-form-list">
+            <AgentField
               :label="t('alias')"
               :value="aliasDraft"
               maxlength="32"
               @input="setAliasDraft"
             />
-          </SkyList>
+          </AgentList>
 
-          <SkySettingsGroup :title="t('privacySettings')">
-            <SkySettingsRow
+          <AgentSettingsGroup :title="t('privacySettings')">
+            <AgentSettingsRow
               kind="navigation"
               :title="t('notificationPrivacy')"
               :value="
@@ -2568,65 +2568,65 @@ onBeforeUnmount(() => {
               @activate="selectionSheet = 'notification'"
             >
               <template #leading><Bell :size="20" /></template>
-            </SkySettingsRow>
-            <SkySettingsRow
+            </AgentSettingsRow>
+            <AgentSettingsRow
               kind="toggle"
               :title="t('shareActivity')"
               :model-value="activityVisible"
               @update:model-value="setActivityVisible"
             >
               <template #leading><ShieldCheck :size="20" /></template>
-            </SkySettingsRow>
-          </SkySettingsGroup>
+            </AgentSettingsRow>
+          </AgentSettingsGroup>
 
-          <SkyCard class="dc-qr-card" outline :content-wrap="false">
+          <AgentCard class="dc-qr-card" outline :content-wrap="false">
             <div class="dc-faux-qr"><QrCode :size="58" /></div>
             <div>
               <strong>{{ darkchat.profile.inviteCode }}</strong>
               <small>{{ t('inviteCode') }}</small>
             </div>
             <div class="dc-invite-actions">
-              <SkyButton
+              <AgentButton
                 clear
                 rounded
                 @click="copyIdentity(darkchat.profile.inviteCode)"
               >
                 <Copy :size="16" />{{ t('copyInvite') }}
-              </SkyButton>
-              <SkyButton tonal rounded @click="sharePrivateInvite">
+              </AgentButton>
+              <AgentButton tonal rounded @click="sharePrivateInvite">
                 <Share2 :size="16" />{{ t('shareInvite') }}
-              </SkyButton>
+              </AgentButton>
             </div>
-          </SkyCard>
+          </AgentCard>
           <p class="dc-privacy-note">
             <LockKeyhole :size="17" />{{ t('privacyDisclaimer') }}
           </p>
 
-          <SkySettingsGroup
+          <AgentSettingsGroup
             :title="t('profileActions')"
             :footer="t('signOutHint')"
           >
-            <SkySettingsRow
+            <AgentSettingsRow
               kind="action"
               :title="t('signOut')"
               @activate="signOutOpen = true"
             >
               <template #leading><LogOut :size="20" /></template>
-            </SkySettingsRow>
-            <SkySettingsRow
+            </AgentSettingsRow>
+            <AgentSettingsRow
               kind="action"
               tone="danger"
               :title="t('deleteProfile')"
               @activate="deleteProfileOpen = true"
             >
               <template #leading><Trash2 :size="20" /></template>
-            </SkySettingsRow>
-          </SkySettingsGroup>
-        </SkyScrollArea>
+            </AgentSettingsRow>
+          </AgentSettingsGroup>
+        </AgentScrollArea>
       </section>
     </template>
 
-    <SkyDialog
+    <AgentDialog
       :opened="safetyOpen"
       class="dc-dialog"
       @backdropclick="safetyOpen = false"
@@ -2637,16 +2637,16 @@ onBeforeUnmount(() => {
       <p>{{ t('unknownIdentityBody') }}</p>
       <strong class="dc-dialog-id">{{ pendingIdentifier }}</strong>
       <template #buttons>
-        <SkyDialogButton @click="safetyOpen = false">
+        <AgentDialogButton @click="safetyOpen = false">
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton strong @click="confirmStart">
+        </AgentDialogButton>
+        <AgentDialogButton strong @click="confirmStart">
           {{ t('openSecureChat') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkySheet
+    <AgentSheet
       :opened="Boolean(selectedMessage)"
       :aria-label="t('messageActions')"
       class="dc-action-sheet"
@@ -2665,24 +2665,24 @@ onBeforeUnmount(() => {
             {{ reaction }}
           </button>
         </div>
-        <SkyList inset strong class="dc-action-list">
-          <SkyListItem
+        <AgentList inset strong class="dc-action-list">
+          <AgentListItem
             link
             link-component="button"
             :title="phone.t('Apps.easyShare.name')"
             @click="shareMessage(selectedMessage)"
           >
             <template #media><Share2 :size="20" /></template>
-          </SkyListItem>
-          <SkyListItem
+          </AgentListItem>
+          <AgentListItem
             link
             link-component="button"
             :title="t('reply')"
             @click="beginReply(selectedMessage)"
           >
             <template #media><Reply :size="20" /></template>
-          </SkyListItem>
-          <SkyListItem
+          </AgentListItem>
+          <AgentListItem
             v-if="
               selectedMessage.messageType === 'text' ||
               selectedMessage.messageType === 'emoji'
@@ -2693,16 +2693,16 @@ onBeforeUnmount(() => {
             @click="copyMessage(selectedMessage)"
           >
             <template #media><Copy :size="20" /></template>
-          </SkyListItem>
-          <SkyListItem
+          </AgentListItem>
+          <AgentListItem
             link
             link-component="button"
             :title="t('deleteForMe')"
             @click="messageAction(selectedMessage, 'delete_me')"
           >
             <template #media><Trash2 :size="20" /></template>
-          </SkyListItem>
-          <SkyListItem
+          </AgentListItem>
+          <AgentListItem
             v-if="selectedMessage.direction === 'sent'"
             link
             link-component="button"
@@ -2711,8 +2711,8 @@ onBeforeUnmount(() => {
             @click="messageAction(selectedMessage, 'delete_all')"
           >
             <template #media><Trash2 :size="20" /></template>
-          </SkyListItem>
-          <SkyListItem
+          </AgentListItem>
+          <AgentListItem
             v-if="selectedMessage.direction === 'received'"
             link
             link-component="button"
@@ -2721,9 +2721,9 @@ onBeforeUnmount(() => {
             @click="beginReport(selectedMessage)"
           >
             <template #media><ShieldOff :size="20" /></template>
-          </SkyListItem>
-        </SkyList>
-        <SkyButton
+          </AgentListItem>
+        </AgentList>
+        <AgentButton
           large
           rounded
           block
@@ -2732,11 +2732,11 @@ onBeforeUnmount(() => {
           @click="selectedMessage = null"
         >
           {{ phone.t('Common.cancel') }}
-        </SkyButton>
+        </AgentButton>
       </template>
-    </SkySheet>
+    </AgentSheet>
 
-    <SkyDialog
+    <AgentDialog
       :opened="reportOpen"
       class="dc-dialog dc-report-dialog"
       @backdropclick="closeReport"
@@ -2746,8 +2746,8 @@ onBeforeUnmount(() => {
       <span class="dc-dialog-icon dc-dialog-icon--danger">
         <ShieldOff :size="25" />
       </span>
-      <SkyList inset strong class="dc-action-list dc-report-reason">
-        <SkyListItem
+      <AgentList inset strong class="dc-action-list dc-report-reason">
+        <AgentListItem
           link
           link-component="button"
           :title="t('reportUser')"
@@ -2761,28 +2761,28 @@ onBeforeUnmount(() => {
               }}
             </span>
           </template>
-        </SkyListItem>
-      </SkyList>
-      <SkyList inset strong class="dc-form-list">
-        <SkyField
+        </AgentListItem>
+      </AgentList>
+      <AgentList inset strong class="dc-form-list">
+        <AgentField
           type="textarea"
           :value="reportDetails"
           maxlength="500"
           :placeholder="t('reportDetails')"
           @input="setReportDetails"
         />
-      </SkyList>
+      </AgentList>
       <template #buttons>
-        <SkyDialogButton @click="closeReport">
+        <AgentDialogButton @click="closeReport">
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton strong class="dc-danger-text" @click="submitReport">
+        </AgentDialogButton>
+        <AgentDialogButton strong class="dc-danger-text" @click="submitReport">
           {{ t('submitReport') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkySheet
+    <AgentSheet
       :opened="selectionSheet !== null"
       :aria-label="selectionTitle"
       class="dc-action-sheet dc-selection-sheet"
@@ -2791,8 +2791,8 @@ onBeforeUnmount(() => {
     >
       <div class="dc-sheet-handle" />
       <h3>{{ selectionTitle }}</h3>
-      <SkyList inset strong class="dc-action-list dc-selection-list">
-        <SkyListItem
+      <AgentList inset strong class="dc-action-list dc-selection-list">
+        <AgentListItem
           v-for="option in selectionOptions"
           :key="option.value"
           link
@@ -2807,9 +2807,9 @@ onBeforeUnmount(() => {
           >
             <Check :size="20" />
           </template>
-        </SkyListItem>
-      </SkyList>
-      <SkyButton
+        </AgentListItem>
+      </AgentList>
+      <AgentButton
         large
         rounded
         block
@@ -2818,10 +2818,10 @@ onBeforeUnmount(() => {
         @click="selectionSheet = null"
       >
         {{ phone.t('Common.cancel') }}
-      </SkyButton>
-    </SkySheet>
+      </AgentButton>
+    </AgentSheet>
 
-    <SkyDialog
+    <AgentDialog
       :opened="signOutOpen"
       :title="t('signOutTitle')"
       :content="t('signOutBody')"
@@ -2829,23 +2829,23 @@ onBeforeUnmount(() => {
       @escape="signOutOpen = false"
     >
       <template #buttons>
-        <SkyDialogButton
+        <AgentDialogButton
           :disabled="profileActionPending"
           @click="signOutOpen = false"
         >
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton
+        </AgentDialogButton>
+        <AgentDialogButton
           strong
           :disabled="profileActionPending"
           @click="signOut"
         >
           {{ profileActionPending ? t('signingOut') : t('signOut') }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkyDialog
+    <AgentDialog
       :opened="deleteProfileOpen"
       :title="t('deleteProfileTitle')"
       :content="t('deleteProfileBody')"
@@ -2853,13 +2853,13 @@ onBeforeUnmount(() => {
       @escape="deleteProfileOpen = false"
     >
       <template #buttons>
-        <SkyDialogButton
+        <AgentDialogButton
           :disabled="profileActionPending"
           @click="deleteProfileOpen = false"
         >
           {{ phone.t('Common.cancel') }}
-        </SkyDialogButton>
-        <SkyDialogButton
+        </AgentDialogButton>
+        <AgentDialogButton
           strong
           class="dc-danger-text"
           :disabled="profileActionPending"
@@ -2870,14 +2870,14 @@ onBeforeUnmount(() => {
               ? t('deletingProfile')
               : phone.t('Common.delete')
           }}
-        </SkyDialogButton>
+        </AgentDialogButton>
       </template>
-    </SkyDialog>
+    </AgentDialog>
 
-    <SkyNotification
+    <AgentNotification
       :opened="Boolean(toast)"
       :text="toast"
       class="dc-notification"
     />
-  </SkyAppPage>
+  </AgentAppPage>
 </template>

@@ -69,7 +69,7 @@ function focusElement(element: HTMLElement | null): boolean {
 
 function focusFirstElement(entry: OverlayStackEntry): void {
   const preferred = entry.root.querySelector<HTMLElement>(
-    '[data-sky-autofocus], [autofocus]',
+    '[data-agent-autofocus], [autofocus]',
   )
 
   if (focusElement(preferred)) return
@@ -127,7 +127,7 @@ function trapTabKey(entry: OverlayStackEntry, event: KeyboardEvent): void {
 }
 
 function restoreOverlayAccessibility(entry: OverlayStackEntry): void {
-  entry.root.style.removeProperty('--sky-overlay-layer')
+  entry.root.style.removeProperty('--agent-overlay-layer')
 
   if (entry.previousAriaHidden === null) {
     entry.root.removeAttribute('aria-hidden')
@@ -146,7 +146,7 @@ function syncOverlayStack(): void {
   const topIndex = overlayStack.length - 1
 
   overlayStack.forEach((entry, index) => {
-    entry.root.style.setProperty('--sky-overlay-layer', String(80 + index))
+    entry.root.style.setProperty('--agent-overlay-layer', String(80 + index))
 
     if (index === topIndex) {
       if (entry.previousAriaHidden === null) {
@@ -222,7 +222,7 @@ function registerOverlay(
 ): () => void {
   const entry: OverlayStackEntry = {
     hadInertAttribute: root.hasAttribute('inert'),
-    id: Symbol('sky-overlay'),
+    id: Symbol('agent-overlay'),
     onEscape,
     panel,
     previousAriaHidden: root.getAttribute('aria-hidden'),

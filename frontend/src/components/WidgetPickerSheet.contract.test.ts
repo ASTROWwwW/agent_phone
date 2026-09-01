@@ -11,13 +11,13 @@ describe('WidgetPickerSheet Agent UI contract', () => {
   it('uses only first-party Agent UI primitives for the picker surface', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkyProvider')
-    expect(source).toContain('<SkySheet')
-    expect(source).toContain('<SkySearchbar')
-    expect(source).toContain('<SkyList')
-    expect(source).toContain('<SkyListItem')
-    expect(source).toContain('<SkyEmptyState')
-    expect(source).toContain('<SkyButton')
+    expect(source).toContain('<AgentProvider')
+    expect(source).toContain('<AgentSheet')
+    expect(source).toContain('<AgentSearchbar')
+    expect(source).toContain('<AgentList')
+    expect(source).toContain('<AgentListItem')
+    expect(source).toContain('<AgentEmptyState')
+    expect(source).toContain('<AgentButton')
   })
 
   it('keeps the modal inside the phone-owned springboard geometry', () => {
@@ -26,7 +26,7 @@ describe('WidgetPickerSheet Agent UI contract', () => {
       /\.widget-picker-provider\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*pointer-events:\s*none;/s,
     )
     expect(source).toMatch(
-      /\.widget-picker-sheet\s+:deep\(\.sky-sheet__panel\)\s*\{[^}]*height:\s*calc\(100%\s*-\s*var\(--sky-space-3\)\);[^}]*max-height:\s*calc\(100%\s*-\s*var\(--sky-space-3\)\);[^}]*overflow:\s*hidden;/s,
+      /\.widget-picker-sheet\s+:deep\(\.agent-sheet__panel\)\s*\{[^}]*height:\s*calc\(100%\s*-\s*var\(--agent-space-3\)\);[^}]*max-height:\s*calc\(100%\s*-\s*var\(--agent-space-3\)\);[^}]*overflow:\s*hidden;/s,
     )
   })
 
@@ -41,7 +41,7 @@ describe('WidgetPickerSheet Agent UI contract', () => {
   })
 
   it('has one explicit vertical scroll owner', () => {
-    expect(source.match(/<SkyScrollArea/g)).toHaveLength(1)
+    expect(source.match(/<AgentScrollArea/g)).toHaveLength(1)
     expect(source).toMatch(
       /\.widget-picker-scroll\s*\{[^}]*overflow-y:\s*auto;/s,
     )

@@ -215,8 +215,6 @@ describe('phone viewport geometry', () => {
         PHONE_WIDTH * zoom,
         PHONE_HEIGHT * zoom,
       )
-      // Live CEF 103 can report the zoomed canvas in a different coordinate
-      // space from pointer events. Preserve that mismatch in this fixture.
       const rawCanvas = measuredRect(
         display.width + 117.375,
         83.625,

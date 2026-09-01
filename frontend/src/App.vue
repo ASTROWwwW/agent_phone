@@ -10,7 +10,7 @@ import {
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { SkyProvider } from '@/ui'
+import { AgentProvider } from '@/ui'
 import AdminPanel from '@/components/AdminPanel.vue'
 import PhoneHomeIndicator from '@/components/PhoneHomeIndicator.vue'
 import PhoneControlCenter from '@/components/PhoneControlCenter.vue'
@@ -318,8 +318,6 @@ const isAppRoute = computed(() => route.name === 'app')
 const activeAppId = computed(() =>
   typeof route.params.appId === 'string' ? route.params.appId : '',
 )
-// Applications dont le canevas reste sombre quel que soit le theme : sans
-// cette liste, la barre d'etat passe en noir sur leur fond en theme clair.
 const WHITE_STATUS_BAR_APP_IDS = new Set([
   'calculator',
   'camera',
@@ -335,7 +333,7 @@ const isDynamicIslandGalleryRoute = computed(
 const isDevelopmentRoute = computed(
   () =>
     isDevelopment &&
-    (route.name === 'development-sky-ui' || isDynamicIslandGalleryRoute.value),
+    (route.name === 'development-agent-ui' || isDynamicIslandGalleryRoute.value),
 )
 const appTransitionName = computed(() =>
   route.query.transition === 'app-switch' ? 'app-switch' : 'app-window',
@@ -1695,7 +1693,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SkyProvider
+  <AgentProvider
     v-if="adminPanelOpen"
     dark
     :safe-areas="false"
@@ -1703,7 +1701,7 @@ onBeforeUnmount(() => {
     accent-soft="rgba(116, 214, 111, 0.14)"
   >
     <AdminPanel @close="adminPanelOpen = false" />
-  </SkyProvider>
+  </AgentProvider>
   <PhoneMediaCapture />
   <PhoneMemoRecorder />
   <PayphoneOverlay />
@@ -1883,7 +1881,7 @@ onBeforeUnmount(() => {
                     v-if="!isDevelopmentRoute && !setupRequired"
                     @edit-mode-change="springboardEditing = $event"
                   />
-                  <SkyProvider
+                  <AgentProvider
                     class="phone-app-theme"
                     :dark="displayedDarkMode"
                     safe-areas
@@ -1901,7 +1899,7 @@ onBeforeUnmount(() => {
                         />
                       </Transition>
                     </RouterView>
-                  </SkyProvider>
+                  </AgentProvider>
                   <PhoneHomeIndicator v-if="!isLocked && !setupRequired" />
                   <PhoneControlCenter
                     v-if="!setupRequired"

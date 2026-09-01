@@ -326,7 +326,6 @@ refresh_phone_key_mapping = function()
         return
     end
 
-    -- FiveM persists player rebindings by command name, so this identifier must remain stable.
     phone_key_mapping_registered = true
     RegisterKeyMapping(
         "agent_phone_toggle",
@@ -374,8 +373,6 @@ RegisterNUICallback("ui:ready", function(data, cb)
 
     end
     nui_generation = nui_generation + 1
-    -- Browser state is recreated on a CEF reload. Browser-owned focus claims
-    -- cannot survive unless their UI is replayed as part of this handshake.
     AgentPhoneFocus.BeginNuiHydration()
     Bridge.Debug("debug", "[agent_phone] NUI reported ready.", { always = true })
     AgentPhoneApps.SendCatalog()

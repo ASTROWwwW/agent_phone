@@ -11,10 +11,10 @@ describe('EasyShareSheet Agent UI contract', () => {
   it('uses the first-party bottom sheet without Konsta markup', () => {
     expect(source).not.toContain("from 'konsta/vue'")
     expect(source).not.toMatch(/<\/?k-[a-z]/)
-    expect(source).toContain('<SkySheet')
-    expect(source).toContain('<SkyList')
-    expect(source).toContain('<SkyGlass')
-    expect(source).toContain('.easyshare-host :deep(.sky-sheet__panel)')
+    expect(source).toContain('<AgentSheet')
+    expect(source).toContain('<AgentList')
+    expect(source).toContain('<AgentGlass')
+    expect(source).toContain('.easyshare-host :deep(.agent-sheet__panel)')
     expect(source).toMatch(/--easyshare-solid-surface:\s*#1c1c1d/)
     expect(source).toMatch(
       /background:\s*var\(--easyshare-solid-surface\)\s*!important/,

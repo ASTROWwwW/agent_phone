@@ -32,11 +32,11 @@ import type {
   WidgetSize,
 } from '@/types/widgets'
 import {
-  SkyActionButton,
-  SkyActionGroup,
-  SkyActionSheet,
-  SkyActionsLabel,
-  SkyProvider,
+  AgentActionButton,
+  AgentActionGroup,
+  AgentActionSheet,
+  AgentActionsLabel,
+  AgentProvider,
 } from '@/ui'
 import {
   deleteHomePage as previewHomePageDelete,
@@ -102,8 +102,6 @@ const wallpaperStyle = computed<Record<string, string>>(() => {
 })
 const searchQuery = ref('')
 const searchFocused = ref(false)
-// Le champ passe en mode actif des qu'il est focus ou rempli : au repos il
-// affiche un gabarit centre, comme la bibliotheque d'apps d'iOS.
 const searchActive = computed(() => searchFocused.value || searchQuery.value !== '')
 const showAllApps = ref(false)
 const editMode = ref(false)
@@ -250,7 +248,6 @@ const appPages = computed(() => {
 })
 const pageCount = computed(() => appPages.value.length + 2)
 const libraryPage = computed(() => pageCount.value - 1)
-// L'horloge de l'en-tete ne tourne que quand la page Aujourd'hui est affichee.
 const todayClock = useClockService(() => phone.currentPage === 0)
 const todayWidgets = computed(() =>
   widgets.layout.instances.filter((instance) => instance.page === 0),
@@ -1683,10 +1680,10 @@ onBeforeUnmount(() => {
       >
         <div class="springboard-widget-page-scroll">
           <header class="today-header">
-            <span class="today-header__eyebrow sky-type-eyebrow">{{
+            <span class="today-header__eyebrow agent-type-eyebrow">{{
               todayClock.weekday.value
             }}</span>
-            <h1 class="today-header__title sky-type-display">
+            <h1 class="today-header__title agent-type-display">
               {{ todayClock.monthDay.value }}
             </h1>
           </header>
@@ -1708,7 +1705,7 @@ onBeforeUnmount(() => {
             <span class="today-empty__mark" aria-hidden="true">
               <LayoutGrid :size="26" :stroke-width="1.7" />
             </span>
-            <strong class="sky-type-display">{{
+            <strong class="agent-type-display">{{
               phone.t('Home.widgets.empty')
             }}</strong>
             <p>{{ phone.t('Home.widgets.emptyBody') }}</p>
@@ -1723,7 +1720,7 @@ onBeforeUnmount(() => {
             @click="openTodayEditor"
           >
             <Sparkles :size="15" :stroke-width="2.2" aria-hidden="true" />
-            <span class="sky-type-display">{{
+            <span class="agent-type-display">{{
               phone.t('Home.widgets.edit')
             }}</span>
           </k-glass>
@@ -2119,12 +2116,12 @@ onBeforeUnmount(() => {
       />
     </Transition>
 
-    <SkyProvider
+    <AgentProvider
       class="widget-action-provider"
       :dark="phone.isDarkMode"
       safe-areas
     >
-      <SkyActionSheet
+      <AgentActionSheet
         class="widget-action-sheet"
         :opened="widgetActionId !== null"
         :aria-label="
@@ -2135,40 +2132,40 @@ onBeforeUnmount(() => {
         @backdropclick="widgetActionId = null"
         @escape="widgetActionId = null"
       >
-        <SkyActionGroup>
-          <SkyActionsLabel>
+        <AgentActionGroup>
+          <AgentActionsLabel>
             {{
               activeWidget
                 ? phone.t(`Home.widgetSystem.${activeWidget.kind}.name`)
                 : phone.t('Home.widgets.label')
             }}
-          </SkyActionsLabel>
-          <SkyActionButton
+          </AgentActionsLabel>
+          <AgentActionButton
             class="widget-action-button"
             @click="openWidgetConfig"
           >
             <Pencil :size="20" />
             <span>{{ phone.t('Home.widgetSystem.editWidget') }}</span>
-          </SkyActionButton>
-          <SkyActionButton
+          </AgentActionButton>
+          <AgentActionButton
             class="widget-action-button widget-action-remove"
             @click="activeWidget && removeWidget(activeWidget.id)"
           >
             <Trash2 :size="20" />
             <span>{{ phone.t('Home.widgetSystem.removeWidget') }}</span>
-          </SkyActionButton>
-        </SkyActionGroup>
-        <SkyActionGroup>
-          <SkyActionButton
+          </AgentActionButton>
+        </AgentActionGroup>
+        <AgentActionGroup>
+          <AgentActionButton
             bold
             class="widget-action-cancel"
             @click="widgetActionId = null"
           >
             {{ phone.t('Common.cancel') }}
-          </SkyActionButton>
-        </SkyActionGroup>
-      </SkyActionSheet>
-    </SkyProvider>
+          </AgentActionButton>
+        </AgentActionGroup>
+      </AgentActionSheet>
+    </AgentProvider>
 
     <WidgetPickerSheet
       :opened="widgetPickerOpened"
@@ -2193,37 +2190,37 @@ onBeforeUnmount(() => {
 }
 
 .widget-action-sheet {
-  --sky-overlay-layer: 105;
+  --agent-overlay-layer: 105;
 }
 
-.widget-action-sheet :deep(.sky-overlay-backdrop) {
+.widget-action-sheet :deep(.agent-overlay-backdrop) {
   background: rgb(0 0 0 / 58%);
 }
 
-.widget-action-sheet :deep(.sky-action-sheet__panel) {
+.widget-action-sheet :deep(.agent-action-sheet__panel) {
   max-width: 100%;
 }
 
-.widget-action-sheet :deep(.sky-action-group) {
-  border-radius: var(--sky-radius-card);
-  background: var(--sky-surface);
+.widget-action-sheet :deep(.agent-action-group) {
+  border-radius: var(--agent-radius-card);
+  background: var(--agent-surface);
 }
 
-.widget-action-sheet :deep(.sky-actions-label) {
-  color: var(--sky-muted);
+.widget-action-sheet :deep(.agent-actions-label) {
+  color: var(--agent-muted);
   background: transparent;
   font-size: 14px;
   font-weight: 600;
 }
 
-.widget-action-sheet :deep(.sky-action-button) {
+.widget-action-sheet :deep(.agent-action-button) {
   color: #fff;
   font-size: 17px;
 }
 
 .widget-action-sheet :deep(.widget-action-button) {
   justify-content: flex-start;
-  gap: var(--sky-space-3);
+  gap: var(--agent-space-3);
   text-align: left;
 }
 
@@ -2233,6 +2230,6 @@ onBeforeUnmount(() => {
 }
 
 .widget-action-sheet :deep(.widget-action-remove) {
-  color: var(--sky-danger);
+  color: var(--agent-danger);
 }
 </style>

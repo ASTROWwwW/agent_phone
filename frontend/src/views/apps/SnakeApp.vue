@@ -13,7 +13,7 @@ import type {
   SnakeSpeed,
 } from '@/features/games/snake/types'
 import { usePhoneStore } from '@/stores/phone'
-import { SkyButton } from '@/ui'
+import { AgentButton } from '@/ui'
 
 const phone = usePhoneStore()
 const snake = useSnakeStore()
@@ -21,14 +21,6 @@ const speedOptions: SnakeSpeed[] = ['relaxed', 'normal', 'fast']
 const game = computed(() => snake.game)
 const board = ref<HTMLCanvasElement | null>(null)
 
-/*
- * Le plateau etait un empilement de <span> absolus dont chaque segment animait
- * left/top/width/height. Chaque image declenchait donc une passe de layout par
- * segment, et le jeu s'effondrait des que le serpent s'allongeait. Tout passe
- * maintenant par une seule surface canvas : une boucle requestAnimationFrame
- * avance la logique a pas fixe et interpole l'affichage entre deux pas, ce qui
- * donne un deplacement continu quelle que soit la vitesse choisie.
- */
 const PALETTE = {
   body: '#3FE07A',
   bodyDeep: '#0E9B45',
@@ -38,7 +30,6 @@ const PALETTE = {
   head: '#8CF0A8',
   ink: '#0B2417',
 } as const
-
 let context: CanvasRenderingContext2D | null = null
 let frameHandle = 0
 let lastFrameAt = 0
@@ -50,16 +41,12 @@ let boardObserver: ResizeObserver | undefined
 let swipeOrigin: { x: number; y: number } | null = null
 let bodyGradient: CanvasGradient | null = null
 let bodyGradientHeight = 0
-
 function resizeBoard(): void {
   const canvas = board.value
   if (!canvas) return
-
   const rect = canvas.getBoundingClientRect()
   if (rect.width === 0 || rect.height === 0) return
 
-  // Le CEF embarque tourne souvent en ratio > 1 : plafonner a 2 garde le
-  // remplissage raisonnable sans que le trait paraisse cranele.
   const ratio = Math.min(2, window.devicePixelRatio || 1)
   boardWidth = rect.width
   boardHeight = rect.height
@@ -69,11 +56,9 @@ function resizeBoard(): void {
   context = canvas.getContext('2d')
   context?.setTransform(ratio, 0, 0, ratio, 0, 0)
 }
-
 function drawGrid(cell: number, originX: number, originY: number): void {
   const ctx = context
   if (!ctx) return
-
   ctx.strokeStyle = PALETTE.grid
   ctx.lineWidth = 1
   ctx.beginPath()
@@ -89,7 +74,6 @@ function drawGrid(cell: number, originX: number, originY: number): void {
   }
   ctx.stroke()
 }
-
 function drawFruit(
   fruit: SnakePoint,
   cell: number,
@@ -99,16 +83,13 @@ function drawFruit(
 ): void {
   const ctx = context
   if (!ctx) return
-
   const x = originX + (fruit.x + 0.5) * cell
   const y = originY + (fruit.y + 0.5) * cell
   const radius = cell * 0.3 * (1 + Math.sin(now / 260) * 0.08)
-
   ctx.fillStyle = PALETTE.fruit
   ctx.beginPath()
   ctx.arc(x, y, radius, 0, Math.PI * 2)
   ctx.fill()
-
   ctx.strokeStyle = PALETTE.fruitStem
   ctx.lineCap = 'round'
   ctx.lineWidth = Math.max(1.5, cell * 0.09)
@@ -117,7 +98,6 @@ function drawFruit(
   ctx.lineTo(x + radius * 0.5, y - radius * 1.6)
   ctx.stroke()
 }
-
 function drawSnake(
   points: SnakePoint[],
   cell: number,
@@ -125,7 +105,6 @@ function drawSnake(
 ): void {
   const ctx = context
   if (!ctx || points.length === 0) return
-
   if (!bodyGradient || bodyGradientHeight !== boardHeight) {
     bodyGradient = ctx.createLinearGradient(0, 0, 0, boardHeight)
     bodyGradient.addColorStop(0, PALETTE.body)
@@ -143,15 +122,11 @@ function drawSnake(
     ctx.lineTo(points[index].x, points[index].y)
   }
   ctx.stroke()
-
-  // Tete : une pastille un peu plus claire et plus large, avec deux yeux
-  // decales perpendiculairement au sens de deplacement.
   const head = points[0]
   ctx.fillStyle = PALETTE.head
   ctx.beginPath()
   ctx.arc(head.x, head.y, cell * 0.42, 0, Math.PI * 2)
   ctx.fill()
-
   const forward =
     direction === 'left'
       ? { x: -1, y: 0 }
@@ -175,12 +150,10 @@ function drawSnake(
     ctx.fill()
   }
 }
-
 function renderBoard(alpha: number, now: number): void {
   const ctx = context
   const state = snake.game
   if (!ctx || !state || boardWidth === 0) return
-
   const cell = Math.min(
     boardWidth / SNAKE_BOARD_WIDTH,
     boardHeight / SNAKE_BOARD_HEIGHT,
@@ -191,9 +164,6 @@ function renderBoard(alpha: number, now: number): void {
   ctx.clearRect(0, 0, boardWidth, boardHeight)
   drawGrid(cell, originX, originY)
   drawFruit(state.fruit, cell, originX, originY, now)
-
-  // Apres un pas, body[i] vaut previousBody[i - 1] : chaque anneau glisse vers
-  // la place de celui qui le precede, ce qui suffit a animer tout le corps.
   const points = state.body.map((segment, index) => {
     const previous =
       previousBody[index] ??
@@ -206,17 +176,13 @@ function renderBoard(alpha: number, now: number): void {
   })
   drawSnake(points, cell, state.direction)
 }
-
 function loop(timestamp: number): void {
   frameHandle = window.requestAnimationFrame(loop)
   const state = snake.game
   if (!state) return
 
-  // Un onglet revenu au premier plan peut rendre delta enorme : le plafond
-  // evite que le serpent traverse le plateau d'un coup.
   const delta = lastFrameAt === 0 ? 0 : Math.min(240, timestamp - lastFrameAt)
   lastFrameAt = timestamp
-
   if (state.status === 'playing') {
     tickAccumulator += delta
     while (tickAccumulator >= snake.tickMilliseconds) {
@@ -231,7 +197,6 @@ function loop(timestamp: number): void {
   } else {
     tickAccumulator = 0
   }
-
   const alpha =
     snake.game?.status === 'playing'
       ? Math.min(1, tickAccumulator / snake.tickMilliseconds)
@@ -251,11 +216,9 @@ function stopLoop(): void {
   window.cancelAnimationFrame(frameHandle)
   frameHandle = 0
 }
-
 function returnToMenu(): void {
   snake.showMenu()
 }
-
 function startGame(): void {
   previousBody = []
   tickAccumulator = 0
@@ -263,15 +226,12 @@ function startGame(): void {
   snake.start()
   previousBody = snake.game?.body ?? []
 }
-
 function turn(direction: SnakeDirection): void {
   snake.turn(direction)
 }
-
 function onBoardPointerDown(event: PointerEvent): void {
   swipeOrigin = { x: event.clientX, y: event.clientY }
 }
-
 function onBoardPointerMove(event: PointerEvent): void {
   if (!swipeOrigin) return
 
@@ -279,7 +239,6 @@ function onBoardPointerMove(event: PointerEvent): void {
   const distanceY = event.clientY - swipeOrigin.y
   const threshold = 14
   if (Math.abs(distanceX) < threshold && Math.abs(distanceY) < threshold) return
-
   turn(
     Math.abs(distanceX) > Math.abs(distanceY)
       ? distanceX > 0
@@ -289,15 +248,11 @@ function onBoardPointerMove(event: PointerEvent): void {
         ? 'down'
         : 'up',
   )
-  // On repart de la position courante : un long balayage peut ainsi enchainer
-  // plusieurs virages sans relever le doigt.
   swipeOrigin = { x: event.clientX, y: event.clientY }
 }
-
 function onBoardPointerUp(): void {
   swipeOrigin = null
 }
-
 function handleKeydown(event: KeyboardEvent): void {
   const directionByKey: Partial<Record<string, SnakeDirection>> = {
     ArrowDown: 'down',
@@ -310,13 +265,11 @@ function handleKeydown(event: KeyboardEvent): void {
     w: 'up',
   }
   const direction = directionByKey[event.key.toLowerCase()] ?? directionByKey[event.key]
-
   if (direction) {
     event.preventDefault()
     turn(direction)
     return
   }
-
   if (event.key === ' ' && snake.game) {
     event.preventDefault()
     if (snake.game.status === 'paused') snake.resume()
@@ -325,7 +278,6 @@ function handleKeydown(event: KeyboardEvent): void {
 }
 
 snake.hydrate()
-
 watch(
   () => Boolean(snake.game),
   async (playing) => {
@@ -339,7 +291,6 @@ watch(
   },
   { immediate: true },
 )
-
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
   if (typeof ResizeObserver !== 'undefined') {
@@ -356,7 +307,6 @@ onMounted(() => {
     { immediate: true },
   )
 })
-
 onBeforeUnmount(() => {
   stopLoop()
   boardObserver?.disconnect()
@@ -364,7 +314,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown)
 })
 </script>
-
 <template>
   <main
     class="snake-app"
@@ -400,18 +349,15 @@ onBeforeUnmount(() => {
           <circle class="snake-mark__fruit" cx="152" cy="176" r="24" fill="#FF5C50" />
         </svg>
       </div>
-
       <div class="snake-menu__copy">
-        <h1 class="sky-type-display">{{ phone.t('Apps.snake.readyTitle') }}</h1>
+        <h1 class="agent-type-display">{{ phone.t('Apps.snake.readyTitle') }}</h1>
         <p>{{ phone.t('Apps.snake.readyBody') }}</p>
       </div>
-
       <div class="snake-best">
         <Trophy :size="15" :stroke-width="2.2" aria-hidden="true" />
         <span>{{ phone.t('Apps.snake.highScore') }}</span>
         <strong>{{ snake.highScore }}</strong>
       </div>
-
       <fieldset class="snake-speed-picker">
         <legend>{{ phone.t('Apps.snake.speed') }}</legend>
         <span
@@ -432,16 +378,14 @@ onBeforeUnmount(() => {
           {{ phone.t(`Apps.snake.speeds.${speed}`) }}
         </button>
       </fieldset>
-
       <button type="button" class="snake-primary" @click="startGame">
         <Play :size="17" fill="currentColor" aria-hidden="true" />
         {{ phone.t('Apps.snake.start') }}
       </button>
     </section>
-
     <section v-else class="snake-game">
       <div class="snake-game__meta">
-        <SkyButton
+        <AgentButton
           glass
           icon-only
           rounded
@@ -452,12 +396,12 @@ onBeforeUnmount(() => {
           @click="returnToMenu"
         >
           <ChevronLeft :size="18" :stroke-width="2.7" aria-hidden="true" />
-        </SkyButton>
+        </AgentButton>
         <div class="snake-game__score">
-          <span class="sky-type-eyebrow">{{ phone.t('Apps.snake.score') }}</span>
-          <strong class="sky-type-display">{{ game.score }}</strong>
+          <span class="agent-type-eyebrow">{{ phone.t('Apps.snake.score') }}</span>
+          <strong class="agent-type-display">{{ game.score }}</strong>
         </div>
-        <SkyButton
+        <AgentButton
           v-if="game.status !== 'game-over'"
           glass
           icon-only
@@ -479,9 +423,8 @@ onBeforeUnmount(() => {
             fill="currentColor"
           />
           <Pause v-else :size="17" fill="currentColor" />
-        </SkyButton>
+        </AgentButton>
       </div>
-
       <div class="snake-board">
         <canvas
           ref="board"
@@ -494,11 +437,10 @@ onBeforeUnmount(() => {
           @pointermove="onBoardPointerMove"
           @pointerup="onBoardPointerUp"
         ></canvas>
-
         <Transition name="snake-overlay">
           <div v-if="game.status !== 'playing'" class="snake-overlay">
             <template v-if="game.status === 'paused'">
-              <h2 class="sky-type-display">
+              <h2 class="agent-type-display">
                 {{ phone.t('Apps.snake.paused') }}
               </h2>
               <button type="button" class="snake-primary" @click="snake.resume">
@@ -507,13 +449,13 @@ onBeforeUnmount(() => {
               </button>
             </template>
             <template v-else>
-              <span class="snake-overline sky-type-eyebrow">{{
+              <span class="snake-overline agent-type-eyebrow">{{
                 phone.t('Apps.snake.score')
               }}</span>
-              <strong class="snake-overlay__score sky-type-display">{{
+              <strong class="snake-overlay__score agent-type-display">{{
                 game.score
               }}</strong>
-              <h2 class="sky-type-display">
+              <h2 class="agent-type-display">
                 {{ phone.t('Apps.snake.gameOver') }}
               </h2>
               <button type="button" class="snake-primary" @click="startGame">
@@ -530,12 +472,10 @@ onBeforeUnmount(() => {
           </div>
         </Transition>
       </div>
-
       <p class="snake-hint">{{ phone.t('Apps.snake.swipeHint') }}</p>
     </section>
   </main>
 </template>
-
 <style scoped>
 .snake-app {
   position: absolute;
@@ -546,17 +486,13 @@ onBeforeUnmount(() => {
   background:
     radial-gradient(circle at 78% 6%, rgb(63 224 122 / 20%), transparent 42%),
     linear-gradient(168deg, #0f2a1c 0%, #0a1712 58%, #060d0b 100%);
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   user-select: none;
   touch-action: none;
 }
-
 .snake-app--playing {
   padding: 0;
 }
-
-/* ---------- Menu ---------- */
-
 .snake-menu {
   height: 100%;
   display: flex;
@@ -566,7 +502,6 @@ onBeforeUnmount(() => {
   gap: 18px;
   text-align: center;
 }
-
 .snake-mark {
   width: 116px;
   height: 116px;
@@ -578,52 +513,43 @@ onBeforeUnmount(() => {
     inset 0 1px 0 rgb(255 255 255 / 22%);
   place-items: center;
 }
-
 .snake-mark svg {
   width: 88px;
   height: 88px;
 }
-
 .snake-mark__body {
   animation: snake-mark-breathe 3.2s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
-
 .snake-mark__fruit {
   animation: snake-mark-fruit 1.9s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
-
 @keyframes snake-mark-breathe {
   0%,
   100% {
     transform: scale(0.985);
   }
-
   50% {
     transform: scale(1.015);
   }
 }
-
 @keyframes snake-mark-fruit {
   0%,
   100% {
     transform: scale(0.9);
   }
-
   50% {
     transform: scale(1.1);
   }
 }
-
 .snake-menu__copy h1 {
   margin: 0;
   font-size: 27px;
   font-weight: 700;
 }
-
 .snake-menu__copy p {
   max-width: 240px;
   margin: 6px auto 0;
@@ -631,18 +557,16 @@ onBeforeUnmount(() => {
   font-size: 13px;
   line-height: 1.4;
 }
-
 .snake-best {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 7px 14px;
   border: 1px solid rgb(255 255 255 / 10%);
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   color: #cfe9d6;
   background: rgb(255 255 255 / 6%);
 }
-
 .snake-best span {
   font-size: 11px;
   font-weight: 600;
@@ -654,7 +578,6 @@ onBeforeUnmount(() => {
   font-size: 15px;
   font-weight: 700;
 }
-
 .snake-speed-picker {
   position: relative;
   width: 100%;
@@ -666,7 +589,6 @@ onBeforeUnmount(() => {
   border-radius: 13px;
   background: rgb(255 255 255 / 7%);
 }
-
 .snake-speed-picker legend {
   position: absolute;
   width: 1px;
@@ -674,9 +596,6 @@ onBeforeUnmount(() => {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
 }
-
-/* Un seul curseur translate remplace un fond par bouton : la bascule glisse
-   au lieu de sauter d'un onglet a l'autre. */
 .snake-speed-picker__thumb {
   position: absolute;
   z-index: 0;
@@ -687,9 +606,8 @@ onBeforeUnmount(() => {
   border-radius: 10px;
   background: #e4f7dd;
   box-shadow: 0 4px 12px rgb(0 0 0 / 22%);
-  transition: transform 280ms var(--sky-ease-out);
+  transition: transform 280ms var(--agent-ease-out);
 }
-
 .snake-speed-picker button {
   position: relative;
   z-index: 1;
@@ -702,11 +620,9 @@ onBeforeUnmount(() => {
   font-weight: 650;
   transition: color 200ms ease;
 }
-
 .snake-speed-picker button.active {
   color: #0b2417;
 }
-
 .snake-primary {
   min-width: 168px;
   min-height: 46px;
@@ -723,16 +639,12 @@ onBeforeUnmount(() => {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.2px;
-  transition: transform 160ms var(--sky-ease-out);
+  transition: transform 160ms var(--agent-ease-out);
 }
-
-/* ---------- Partie ---------- */
-
 .snake-game {
   position: absolute;
   inset: 0;
 }
-
 .snake-game__meta {
   position: absolute;
   z-index: 7;
@@ -753,27 +665,23 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
-
 .snake-game__score {
   display: grid;
   align-content: center;
   justify-items: center;
 }
-
 .snake-game__score span {
   color: #8fae9d;
   line-height: 12px;
 }
-
 .snake-game__score strong {
   font-size: 19px;
   font-weight: 700;
   line-height: 21px;
   font-variant-numeric: tabular-nums;
 }
-
 .snake-game__control {
-  --sky-touch-target: 34px;
+  --agent-touch-target: 34px;
   width: 34px;
   height: 34px;
   display: grid;
@@ -783,7 +691,6 @@ onBeforeUnmount(() => {
 .snake-game__meta .snake-game__pause {
   justify-self: end;
 }
-
 .snake-game__meta .snake-game__back {
   justify-self: start;
 }
@@ -804,14 +711,12 @@ onBeforeUnmount(() => {
     inset 0 0 55px rgb(0 0 0 / 30%),
     0 14px 34px rgb(0 0 0 / 26%);
 }
-
 .snake-board__canvas {
   display: block;
   width: 100%;
   height: 100%;
   touch-action: none;
 }
-
 .snake-overlay {
   position: absolute;
   z-index: 5;
@@ -825,30 +730,25 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
-
 .snake-overlay h2 {
   margin: 0;
   font-size: 26px;
   font-weight: 700;
 }
-
 .snake-overlay__score {
   font-size: 44px;
   font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-
 .snake-overlay .snake-primary {
   min-width: 150px;
   min-height: 42px;
   margin-top: 4px;
 }
-
 .snake-overline {
   color: #6cec93;
 }
-
 .snake-secondary {
   min-width: 150px;
   min-height: 40px;
@@ -859,17 +759,14 @@ onBeforeUnmount(() => {
   font-size: 13px;
   font-weight: 600;
 }
-
 .snake-overlay-enter-active,
 .snake-overlay-leave-active {
   transition: opacity 220ms ease;
 }
-
 .snake-overlay-enter-from,
 .snake-overlay-leave-to {
   opacity: 0;
 }
-
 .snake-hint {
   position: absolute;
   z-index: 6;
@@ -883,17 +780,14 @@ onBeforeUnmount(() => {
   text-align: center;
   pointer-events: none;
 }
-
 button:active {
   transform: scale(0.96);
 }
-
 @media (prefers-reduced-motion: reduce) {
   .snake-mark__body,
   .snake-mark__fruit {
     animation: none;
   }
-
   .snake-speed-picker__thumb {
     transition: none;
   }

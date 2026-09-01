@@ -195,9 +195,9 @@ onMounted(() => screen.value?.focus())
 .passcode-screen {
   --passcode-text: #fff;
   --passcode-muted: rgb(255 255 255 / 72%);
-  --passcode-key-background: transparent;
-  --passcode-key-border: rgb(255 255 255 / 58%);
-  --passcode-key-pressed: rgb(255 255 255 / 24%);
+  --passcode-key-background: rgb(255 255 255 / 13%);
+  --passcode-key-border: rgb(255 255 255 / 20%);
+  --passcode-key-pressed: rgb(255 255 255 / 32%);
   position: absolute;
   inset: 0;
   z-index: 90;
@@ -207,7 +207,7 @@ onMounted(() => screen.value?.focus())
   background-position: center;
   background-size: cover;
   outline: none;
-  font-family: var(--sky-font-family);
+  font-family: var(--agent-font-family);
   user-select: none;
 }
 
@@ -291,8 +291,8 @@ onMounted(() => screen.value?.focus())
   background: transparent;
   box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
   transition:
-    background-color var(--sky-transition-fast) ease,
-    transform var(--sky-transition-fast) ease;
+    background-color var(--agent-transition-fast) ease,
+    transform var(--agent-transition-fast) ease;
 }
 
 .passcode-screen__dots .passcode-screen__dot--filled {
@@ -323,21 +323,26 @@ onMounted(() => screen.value?.focus())
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1.25px solid var(--passcode-key-border);
+  border: 0.5px solid var(--passcode-key-border);
   border-radius: 50%;
   padding: 0;
   color: inherit;
   background: var(--passcode-key-background);
-  box-shadow: 0 1px 5px rgb(0 0 0 / 12%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 22%),
+    inset 0 -1px 0 rgb(255 255 255 / 6%),
+    0 4px 14px rgb(0 0 0 / 22%);
   cursor: pointer;
   transition:
-    background-color var(--sky-transition-fast) ease,
-    transform var(--sky-transition-fast) ease;
+    background-color var(--agent-transition-fast) ease,
+    transform var(--agent-transition-fast) ease;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
 }
 
 .passcode-screen__key span {
   font-size: 32px;
-  font-weight: 320;
+  font-weight: 380;
   line-height: 32px;
   letter-spacing: -0.025em;
 }
@@ -381,9 +386,9 @@ onMounted(() => screen.value?.focus())
   justify-content: center;
   justify-self: end;
   min-width: 96px;
-  min-height: var(--sky-touch-target);
+  min-height: var(--agent-touch-target);
   border: 0;
-  border-radius: var(--sky-radius-pill);
+  border-radius: var(--agent-radius-pill);
   padding: 0 8px;
   color: inherit;
   background: transparent;

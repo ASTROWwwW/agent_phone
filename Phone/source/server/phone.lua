@@ -237,8 +237,6 @@ local function map_character_device(source, slot)
         return mapped_imei, error_code
     end
 
-    -- On the first switch from unique to shared phones, adopt the currently used
-    -- legacy device when it has not already been claimed by another character.
     local legacy_imei = slot.metadata and slot.metadata.imei or nil
     if AgentPhoneImei.IsValid(legacy_imei) then
         Bridge.Database.Query([[
@@ -268,8 +266,6 @@ local function map_character_device(source, slot)
         return cache_character_device(source, identifier, imei)
     end
 
-    -- Another simultaneous open may have created the mapping first. Keep its
-    -- winner and remove only the fresh, unmapped device reserved by this call.
     mapped_imei = load_character_device(source, identifier)
     Bridge.Database.Query([[
         DELETE d FROM `agent_phone_devices` d

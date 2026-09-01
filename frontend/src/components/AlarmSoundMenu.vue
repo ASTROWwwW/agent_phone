@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {
-  SkyList as kList,
-  SkyListItem as kListItem,
-  SkyNavbar as kNavbar,
-  SkyNavbarBackLink as kNavbarBackLink,
+  AgentList as kList,
+  AgentListItem as kListItem,
+  AgentNavbar as kNavbar,
+  AgentNavbarBackLink as kNavbarBackLink,
 } from '@/ui'
 import { Check } from 'lucide-vue-next'
 import { onBeforeUnmount } from 'vue'

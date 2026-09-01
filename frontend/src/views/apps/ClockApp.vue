@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import {
-  SkyBlock,
-  SkyButton,
-  SkyLink,
-  SkyList,
-  SkyField,
-  SkyListItem,
-  SkyNavbar,
-  SkyAppPage,
-  SkyTabBar,
-  SkyTabButton,
-  SkyToggle,
+  AgentBlock,
+  AgentButton,
+  AgentLink,
+  AgentList,
+  AgentField,
+  AgentListItem,
+  AgentNavbar,
+  AgentAppPage,
+  AgentTabBar,
+  AgentTabButton,
+  AgentToggle,
 } from '@/ui'
 import {
   AlarmClock,
@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <sky-app-page
+  <agent-app-page
     component="main"
     accent="#ff9f0a"
     accent-soft="rgba(255, 159, 10, 0.16)"
@@ -219,7 +219,7 @@ onBeforeUnmount(() => {
     />
 
     <template v-else>
-      <sky-navbar
+      <agent-navbar
         v-if="tab === 'alarm'"
         :title="phone.t(`Apps.clock.tabs.${tab}`)"
         variant="large"
@@ -227,31 +227,31 @@ onBeforeUnmount(() => {
         class="clock-navbar clock-navbar--alarm"
       >
         <template #left>
-          <sky-link
+          <agent-link
             component="button"
             icon-only
-            class="clock-navbar-action clock-navbar-action--icon sky-glass-surface"
+            class="clock-navbar-action clock-navbar-action--icon agent-glass-surface"
             :link-props="{ type: 'button' }"
             :aria-label="phone.t('Apps.clock.add')"
             @click="openAlarmEditor()"
           >
             <Plus aria-hidden="true" />
-          </sky-link>
+          </agent-link>
         </template>
         <template #right>
-          <sky-link
+          <agent-link
             v-if="clock.alarms.length"
             component="button"
-            class="clock-navbar-action clock-navbar-action--edit sky-glass-surface"
+            class="clock-navbar-action clock-navbar-action--edit agent-glass-surface"
             :link-props="{ type: 'button' }"
             @click="toggleAlarmEditing"
           >
             {{ phone.t(alarmsEditing ? 'Common.done' : 'Common.edit') }}
-          </sky-link>
+          </agent-link>
         </template>
-      </sky-navbar>
+      </agent-navbar>
 
-      <sky-block component="section" nested class="clock-content">
+      <agent-block component="section" nested class="clock-content">
         <section
           v-if="tab === 'alarm'"
           class="clock-alarm-list"
@@ -263,7 +263,7 @@ onBeforeUnmount(() => {
             class="clock-alarm-item"
             :class="{ 'clock-alarm-item--disabled': !alarm.enabled }"
           >
-            <sky-button
+            <agent-button
               v-if="alarmsEditing"
               rounded
               small
@@ -274,7 +274,7 @@ onBeforeUnmount(() => {
               @click="clock.deleteAlarm(alarm.id)"
             >
               <Minus aria-hidden="true" />
-            </sky-button>
+            </agent-button>
 
             <button
               type="button"
@@ -292,24 +292,24 @@ onBeforeUnmount(() => {
               class="clock-alarm-chevron"
               aria-hidden="true"
             />
-            <sky-toggle
+            <agent-toggle
               v-else
               :checked="alarm.enabled"
-              style="--sky-app-accent: #30d158"
+              style="--agent-app-accent: #30d158"
               :aria-label="`${alarm.time}, ${alarmSubtitle(alarm)}`"
               @change="clock.toggleAlarm(alarm.id)"
             />
           </article>
         </section>
 
-        <sky-block
+        <agent-block
           v-else-if="tab === 'stopwatch'"
           nested
           class="clock-tool clock-stopwatch"
         >
           <time class="clock-digits">{{ stopwatchDisplay }}</time>
           <div class="clock-actions clock-stopwatch-actions">
-            <sky-button
+            <agent-button
               rounded
               variant="secondary"
               class="clock-action-button clock-action-button--secondary"
@@ -329,8 +329,8 @@ onBeforeUnmount(() => {
                     : 'Apps.clock.lap',
                 )
               }}
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               rounded
               variant="secondary"
               class="clock-action-button"
@@ -352,18 +352,18 @@ onBeforeUnmount(() => {
                     : 'Common.stop',
                 )
               }}
-            </sky-button>
+            </agent-button>
           </div>
           <div class="clock-tool-divider" aria-hidden="true" />
-          <sky-list dividers class="clock-konsta-list clock-lap-list">
-            <sky-list-item
+          <agent-list dividers class="clock-konsta-list clock-lap-list">
+            <agent-list-item
               v-for="(lap, index) in clock.laps"
               :key="index"
               :title="`${phone.t('Apps.clock.lap')} ${clock.laps.length - index}`"
               :after="formatStopwatch(lap)"
             />
-          </sky-list>
-        </sky-block>
+          </agent-list>
+        </agent-block>
 
         <section v-else class="clock-tool clock-timer">
           <div
@@ -402,7 +402,7 @@ onBeforeUnmount(() => {
           />
 
           <div class="clock-actions clock-timer-actions">
-            <sky-button
+            <agent-button
               rounded
               variant="secondary"
               class="clock-action-button clock-action-button--secondary clock-action-button--icon"
@@ -410,8 +410,8 @@ onBeforeUnmount(() => {
               @click="clock.resetTimer()"
             >
               <X aria-hidden="true" />
-            </sky-button>
-            <sky-button
+            </agent-button>
+            <agent-button
               rounded
               variant="secondary"
               class="clock-action-button clock-action-button--start clock-action-button--icon"
@@ -431,18 +431,18 @@ onBeforeUnmount(() => {
             >
               <Play v-if="clock.timerStartedAt === null" aria-hidden="true" />
               <Pause v-else aria-hidden="true" />
-            </sky-button>
+            </agent-button>
           </div>
 
-          <sky-list strong inset class="clock-konsta-list clock-timer-settings">
-            <sky-field
+          <agent-list strong inset class="clock-konsta-list clock-timer-settings">
+            <agent-field
               :label="phone.t('Apps.clock.timer.description')"
               :placeholder="phone.t('Apps.clock.timer.notePlaceholder')"
               :value="clock.timerNote"
               maxlength="80"
               @input="setTimerNote"
             />
-            <sky-list-item
+            <agent-list-item
               link
               :chevron="false"
               :title="phone.t('Apps.clock.timer.sound')"
@@ -454,18 +454,18 @@ onBeforeUnmount(() => {
                   <ChevronRight aria-hidden="true" />
                 </span>
               </template>
-            </sky-list-item>
-          </sky-list>
+            </agent-list-item>
+          </agent-list>
         </section>
-      </sky-block>
+      </agent-block>
 
-      <sky-tab-bar
+      <agent-tab-bar
         icons
         labels
         class="clock-tabbar"
         :aria-label="phone.t('Apps.clock.name')"
       >
-        <sky-tab-button
+        <agent-tab-button
           v-for="item in tabs"
           :key="item.id"
           :active="tab === item.id"
@@ -478,8 +478,8 @@ onBeforeUnmount(() => {
           <template #label>
             {{ phone.t(`Apps.clock.tabs.${item.id}`) }}
           </template>
-        </sky-tab-button>
-      </sky-tab-bar>
+        </agent-tab-button>
+      </agent-tab-bar>
 
       <AlarmEditor
         v-if="alarmEditor"
@@ -489,5 +489,5 @@ onBeforeUnmount(() => {
         @save="saveAlarm"
       />
     </template>
-  </sky-app-page>
+  </agent-app-page>
 </template>
