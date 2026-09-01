@@ -63,7 +63,6 @@ Config.Apps = {
     flare = true,
     fliptok = true,
     garage = true,
-    house = true,
     mail = true,
     map = true,
     memos = true,
@@ -360,29 +359,6 @@ Config.Garage = {
             plane = false,
             helicopter = false,
         },
-    },
-}
-
-Config.Housing = {
-    System = "auto", -- auto, rtx, quasar, tgiann, vms, rx, nolag, sn, esx_property, qbx_properties
-    AutoPriority = { "esx_property", "qbx_properties", "rtx", "quasar", "tgiann", "vms", "rx", "nolag", "sn" },
-    MaximumProperties = 50,
-    OverviewRequestsPerMinute = 30,
-    ActionsPerMinute = 12,
-    Camera = {
-        HeightAboveEntrance = 2.5,
-        FieldOfView = 55.0,
-        MinimumFieldOfView = 20.0,
-        MaximumFieldOfView = 75.0,
-        RotateSpeed = 0.65,
-        ExitControl = 177, -- Backspace
-        NightVisionControl = 38, -- E
-        ZoomInControl = 241, -- Mouse wheel up
-        ZoomOutControl = 242, -- Mouse wheel down
-        LeftControl = 174,
-        RightControl = 175,
-        UpControl = 172,
-        DownControl = 173,
     },
 }
 

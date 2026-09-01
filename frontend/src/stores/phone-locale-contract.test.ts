@@ -335,7 +335,6 @@ describe('phone locale contract', () => {
       companies: 'Unternehmen',
       phone: 'Telefon',
       billing: 'Rechnungen',
-      house: 'Haus',
       calculator: 'Rechner',
       camera: 'Kamera',
       calendar: 'Kalender',

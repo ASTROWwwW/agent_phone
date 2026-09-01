@@ -54,7 +54,6 @@ local CLIENT_CONFIG_KEYS = {
     Feather = true,
     FlipTok = true,
     Garage = true,
-    Housing = true,
     Mail = true,
     MapMarkers = true,
     Marketplace = true,

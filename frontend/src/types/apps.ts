@@ -12,7 +12,6 @@ export type BuiltinPhoneAppId =
   | 'banking'
   | 'billing'
   | 'garage'
-  | 'house'
   | 'mail'
   | 'map'
   | 'notes'
