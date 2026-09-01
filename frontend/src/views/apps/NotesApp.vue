@@ -65,6 +65,80 @@ const visibleNotes = computed(() => {
         right.updatedAt - left.updatedAt,
     )
 })
+type NoteGroup = {
+  id: string
+  label: string
+  notes: Note[]
+}
+
+const DAY_MS = 86_400_000
+
+/*
+ * Notes d'iOS ne presente pas une liste plate : les epingles ouvrent la page,
+ * puis les notes se rangent par anciennete. Le decoupage se fait sur le debut
+ * du jour local, pas sur des multiples de 24 h, sinon une note d'hier soir
+ * bascule dans « Aujourd'hui » selon l'heure a laquelle on regarde.
+ */
+function startOfToday(): number {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return today.getTime()
+}
+
+const noteGroups = computed<NoteGroup[]>(() => {
+  const midnight = startOfToday()
+  const buckets: NoteGroup[] = [
+    { id: 'pinned', label: phone.t('Apps.notes.groups.pinned'), notes: [] },
+    { id: 'today', label: phone.t('Apps.notes.groups.today'), notes: [] },
+    {
+      id: 'yesterday',
+      label: phone.t('Apps.notes.groups.yesterday'),
+      notes: [],
+    },
+    {
+      id: 'previous7Days',
+      label: phone.t('Apps.notes.groups.previous7Days'),
+      notes: [],
+    },
+    {
+      id: 'previous30Days',
+      label: phone.t('Apps.notes.groups.previous30Days'),
+      notes: [],
+    },
+    { id: 'earlier', label: phone.t('Apps.notes.groups.earlier'), notes: [] },
+  ]
+  const byId = new Map(buckets.map((bucket) => [bucket.id, bucket]))
+
+  for (const note of visibleNotes.value) {
+    if (note.pinned) {
+      byId.get('pinned')?.notes.push(note)
+      continue
+    }
+    const age = midnight - note.updatedAt
+    const bucketId =
+      age < 0
+        ? 'today'
+        : age < DAY_MS
+          ? 'yesterday'
+          : age < 7 * DAY_MS
+            ? 'previous7Days'
+            : age < 30 * DAY_MS
+              ? 'previous30Days'
+              : 'earlier'
+    byId.get(bucketId)?.notes.push(note)
+  }
+
+  return buckets.filter((bucket) => bucket.notes.length > 0)
+})
+
+const noteCountLabel = computed(() =>
+  visibleNotes.value.length === 1
+    ? phone.t('Apps.notes.oneNote')
+    : phone.t('Apps.notes.noteCount', {
+        count: String(visibleNotes.value.length),
+      }),
+)
+
 const editorLabels = computed(() => ({
   bold: phone.t('Apps.notes.tools.bold'),
   bulletList: phone.t('Apps.notes.tools.bulletList'),
@@ -213,34 +287,50 @@ function shareNote(): void {
     />
 
     <SkyScrollArea as="main" class="notes-list-scroll">
-      <SkyList v-if="visibleNotes.length" inset strong>
-        <SkyListItem
-          v-for="note in visibleNotes"
-          :key="note.id"
-          link
-          link-component="button"
-          :title="noteTitle(note)"
-          :subtitle="noteSubtitle(note)"
-          :chevron="false"
-          strong-title="auto"
-          @click="editNote(note)"
+      <template v-if="visibleNotes.length">
+        <section
+          v-for="group in noteGroups"
+          :key="group.id"
+          class="notes-group"
         >
-          <template v-if="note.pinned" #after>
-            <Pin :size="15" aria-hidden="true" />
-          </template>
-          <template #actions>
-            <SkyButton
-              :aria-label="phone.t('Apps.notes.deleteNote')"
-              clear
-              icon-only
-              rounded
-              @click.stop="requestListDelete(note)"
+          <h2 class="notes-group__title sky-type-display">
+            <Pin v-if="group.id === 'pinned'" :size="12" aria-hidden="true" />
+            {{ group.label }}
+          </h2>
+          <div class="notes-group__card">
+            <article
+              v-for="note in group.notes"
+              :key="note.id"
+              class="notes-row"
             >
-              <Trash2 :size="18" aria-hidden="true" />
-            </SkyButton>
-          </template>
-        </SkyListItem>
-      </SkyList>
+              <button
+                class="notes-row__open"
+                type="button"
+                @click="editNote(note)"
+              >
+                <span class="notes-row__title sky-type-display">{{
+                  noteTitle(note)
+                }}</span>
+                <span class="notes-row__meta">
+                  <time class="notes-row__date">{{ noteDate(note) }}</time>
+                  <span class="notes-row__preview">{{
+                    notePreview(note)
+                  }}</span>
+                </span>
+              </button>
+              <button
+                class="notes-row__delete"
+                type="button"
+                :aria-label="phone.t('Apps.notes.deleteNote')"
+                @click.stop="requestListDelete(note)"
+              >
+                <Trash2 :size="17" aria-hidden="true" />
+              </button>
+            </article>
+          </div>
+        </section>
+        <p class="notes-count">{{ noteCountLabel }}</p>
+      </template>
 
       <template v-else>
         <sky-block-title large>{{
@@ -395,6 +485,120 @@ function shareNote(): void {
 
 :deep(.notes-list-navbar.sky-navbar--large.sky-navbar--no-navigation) {
   padding-top: calc(var(--sky-navbar-safe-area-top) + var(--sky-space-3));
+}
+
+/* Liste facon Notes d'iOS : sections par anciennete, carte par section,
+   filets internes decales et une seule ligne date + apercu par note. */
+.notes-group {
+  margin: 0 var(--sky-page-gutter) var(--sky-space-5);
+}
+
+.notes-group:first-child {
+  margin-top: var(--sky-space-2);
+}
+
+.notes-group__title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 0 7px 4px;
+  color: var(--sky-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.notes-group__card {
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--sky-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 6%);
+}
+
+.notes-row {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.notes-row + .notes-row::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 16px;
+  height: 1px;
+  background: var(--sky-hairline);
+  content: '';
+  transform: scaleY(var(--sky-hairline-scale));
+  transform-origin: top;
+}
+
+.notes-row__open {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 11px 6px 11px 16px;
+  border: 0;
+  color: var(--sky-text);
+  background: transparent;
+  text-align: left;
+}
+
+.notes-row__open:active {
+  background: var(--sky-pressed);
+}
+
+.notes-row__title {
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notes-row__meta {
+  display: flex;
+  min-width: 0;
+  gap: 6px;
+  color: var(--sky-muted);
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.notes-row__date {
+  flex: none;
+}
+
+.notes-row__preview {
+  min-width: 0;
+  overflow: hidden;
+  opacity: 0.78;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notes-row__delete {
+  display: grid;
+  width: 44px;
+  flex: none;
+  border: 0;
+  color: var(--sky-subtle);
+  background: transparent;
+  place-items: center;
+  transition: color 160ms ease;
+}
+
+.notes-row__delete:active {
+  color: var(--sky-danger);
+}
+
+.notes-count {
+  margin: 0 0 var(--sky-space-4);
+  color: var(--sky-subtle);
+  font-size: 13px;
+  text-align: center;
 }
 
 .notes-delete-confirm {
