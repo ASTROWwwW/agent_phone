@@ -171,10 +171,10 @@ describe('MailApp Agent UI contract', () => {
 
   it('keeps authentication hints legible and placeholders muted', () => {
     expect(source).toMatch(
-      /\.mail-auth__field input::placeholder\s*\{[^}]*color:\s*var\(--mail-muted\)[^}]*opacity:\s*0\.72/s,
+      /\.mail-auth__row input::placeholder\s*\{[^}]*color:\s*var\(--mail-muted\)[^}]*opacity:\s*0\.72/s,
     )
     expect(source).toMatch(
-      /\.mail-auth__warning\s*\{[^}]*color:\s*var\(--sky-text\)[^}]*font-size:\s*14px[^}]*font-weight:\s*500[^}]*line-height:\s*19px/s,
+      /\.mail-auth__note\s*\{[^}]*color:\s*var\(--sky-text\)[^}]*font-size:\s*14px[^}]*font-weight:\s*500[^}]*line-height:\s*19px/s,
     )
     expect(source).toContain('<ShieldCheck :size="17" />')
   })

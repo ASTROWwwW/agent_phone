@@ -1167,6 +1167,8 @@ Locales["de"] = {
                 loginBody = "Melde dich an, um dein geteiltes iFruit-Postfach zu benutzen.", registerBody = "Wähle deine neue @ifruit.com Adresse.",
                 localPart = "E-Mail-Adresse", email = "E-Mail", password = "Passwort", confirmPassword = "Passwort bestätigen",
                 accountEyebrow = "Dein Agent Cloud Konto", emailPlaceholder = "Name@ifruit.com", passwordPlaceholder = "Passwort eingeben",
+                showPassword = "Passwort anzeigen", hidePassword = "Passwort verbergen",
+                localPartPlaceholder = "deinname",
                 passwordWarning = "Verwende ein In-Character-Passwort. Nutze kein echtes Passwort erneut.",
                 mailboxes = "Postfächer", editMailboxes = "Bearbeiten", newMailbox = "Neue Mailbox",
                 mailboxName = "Name", mailboxNamePlaceholder = "Name des Postfachs", mailboxLocation = "Postfach",

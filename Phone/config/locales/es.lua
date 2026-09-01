@@ -1167,6 +1167,8 @@ Locales["es"] = {
                 loginBody = "Inicia sesión para usar tu buzón compartido de iFruit.", registerBody = "Elige tu nueva dirección @ifruit.com.",
                 localPart = "Dirección de correo electrónico", email = "Correo electrónico", password = "Contraseña", confirmPassword = "Confirmar contraseña",
                 accountEyebrow = "Tu cuenta Agent Cloud", emailPlaceholder = "name@ifruit.com", passwordPlaceholder = "Ingresa contraseña",
+                showPassword = "Mostrar contraseña", hidePassword = "Ocultar contraseña",
+                localPartPlaceholder = "tunombre",
                 passwordWarning = "Usa una contraseña del personaje. No reutilices una contraseña del mundo real.",
                 mailboxes = "Buzones", editMailboxes = "Editar", newMailbox = "Nuevo buzón",
                 mailboxName = "Nombre", mailboxNamePlaceholder = "Nombre del buzón", mailboxLocation = "Ubicación del buzón",
