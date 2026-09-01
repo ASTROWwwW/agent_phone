@@ -123,7 +123,7 @@ Config.Payphones = {
     },
     ReplacementProp = "sf_prop_sf_phonebox_01b_s",
     PricePerSecond = 1,
-    PaymentAccount = "cash",
+    PaymentAccount = "money",
     Currency = "$",
     NoAnswerTimeoutSeconds = 30,
     CallerNumber = "PAYPHONE",

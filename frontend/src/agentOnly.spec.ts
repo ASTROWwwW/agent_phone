@@ -53,7 +53,7 @@ describe('Agent is the only supported base', () => {
     const declared = [...systems![1].matchAll(/([\w-]+)\s*=\s*true/g)].map(([, name]) => name)
     expect(declared.sort()).toEqual(['agent', 'auto', 'custom'])
 
-    expect(garage).toContain('return "owned_vehicles", "owner", "agent"')
+    expect(garage).toContain('return "owned_vehicles", "owner"')
     expect(garage, 'player_vehicles is the QB schema').not.toContain('player_vehicles')
     expect(garage, 'no third-party garage resource must be probed').not.toContain(
       'jg-advancedgarages',
@@ -62,5 +62,47 @@ describe('Agent is the only supported base', () => {
 
   it('keeps no framework selector in the configuration', () => {
     expect(config).not.toMatch(/^\s*Framework\s*=/m)
+  })
+
+  it('reads only columns that owned_vehicles actually has', () => {
+    // Releve dans Base/sql.sql de la base : la table ne porte que ces dix
+    // colonnes. Le telephone en interrogeait vingt-cinq, heritees des systemes
+    // de propriete tiers ; les absentes valaient nil en silence.
+    const columns = new Set([
+      'garage',
+      'glovebox',
+      'job',
+      'job2',
+      'owner',
+      'plate',
+      'stored',
+      'trunk',
+      'type',
+      'vehicle',
+    ])
+
+    const read = new Set([...garage.matchAll(/\brow\.([a-z_]+)/g)].map(([, name]) => name))
+    const missing = [...read].filter((name) => !columns.has(name)).sort()
+
+    expect(missing).toEqual([])
+  })
+
+  it('recognises the impound yard the base actually writes', () => {
+    // La fourriere n'a pas de colonne : le module de garage ecrit stored = 0 et
+    // garage = 'fourriere_auto'. Chercher seulement "impound" ou "pound" ne
+    // pouvait jamais aboutir, et le vehicule s'affichait comme etant dehors.
+    const markers = garage.match(/local IMPOUND_GARAGES = \{([^}]*)\}/)
+    expect(markers, 'IMPOUND_GARAGES is missing').not.toBeNull()
+    expect(markers![1]).toContain('"fourriere"')
+  })
+
+  it('pays from an account the base declares', () => {
+    // Config.Accounts de la base : bank, black_money, money. Aucun compte cash.
+    const accounts = new Set(['bank', 'black_money', 'money'])
+    const used = [...config.matchAll(/(?:PaymentAccount|Account)\s*=\s*"([a-z_]+)"/g)]
+      .map(([, name]) => name)
+
+    expect(used.length).toBeGreaterThan(0)
+    expect(used.filter((name) => !accounts.has(name))).toEqual([])
   })
 })

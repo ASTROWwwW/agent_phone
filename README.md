@@ -21,8 +21,16 @@ sans système de propriété tiers ni autre téléphone. Les 2 autres frameworks
 compatibilité téléphone et la migration lb-phone ont été retirés — 51 fichiers.
 Le garage reconnaissait encore 21 systèmes de propriété pour deux schémas
 réels : il ne lit plus que celui d'Agent, `owned_vehicles` et sa colonne
-`owner`, avec `custom` pour un schéma maison. Un contrat verrouille cette
-cible unique.
+`owner`, avec `custom` pour un schéma maison.
+
+**Aligné sur le schéma réel.** La table ne porte que dix colonnes ; le
+téléphone en interrogeait vingt-cinq, héritées des systèmes retirés, et les
+absentes valaient `nil` en silence. Deux écarts avec la base sont corrigés :
+la fourrière, que le module de garage marque `garage = 'fourriere_auto'` et
+que le téléphone cherchait sous les seuls mots `impound` et `pound`, si bien
+qu'un véhicule saisi s'affichait dehors ; et le compte de paiement des
+cabines, réglé sur `cash` alors que `Config.Accounts` déclare `bank`,
+`black_money` et `money`. Un contrat verrouille ces trois points.
 Les tables d'adaptateurs ont été purgées en conséquence, sinon la détection
 automatique pouvait sélectionner un adaptateur dont le fichier n'existe plus.
 

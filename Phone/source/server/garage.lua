@@ -48,22 +48,16 @@ local function normalized_health(value, maximum)
     return math.max(0, math.min(100, math.floor(number + 0.5)))
 end
 
-local function vehicle_status(row, location, garage_system)
-    local state = tonumber(row.state)
+local IMPOUND_GARAGES = { "fourriere", "impound", "pound" }
+
+local function vehicle_status(row, location)
     local location_key = string.lower(tostring(location or ""))
-    if truthy_database_value(row.impound)
-        or truthy_database_value(row.impounded)
-        or truthy_database_value(row.pound)
-        or location_key:find("impound", 1, true)
-        or location_key:find("pound", 1, true)
-    then
-        return "impounded"
+    for _, marker in ipairs(IMPOUND_GARAGES) do
+        if location_key:find(marker, 1, true) then
+            return "impounded"
+        end
     end
-    if state == 2 then
-        return "impounded"
-    end
-    local stored = first_value(row.stored, row.in_garage, row.parked)
-    if truthy_database_value(stored) or state == 1 then
+    if truthy_database_value(row.stored) then
         return "garaged"
     end
     return "out"
@@ -87,7 +81,7 @@ local function vehicle_kind(value)
 end
 
 local function vehicle_properties(row)
-    local properties = decode_object(first_value(row.mods, row.vehicle_data, row.properties))
+    local properties = {}
     local vehicle_object = decode_object(row.vehicle)
     if next(vehicle_object) ~= nil then
         for key, value in pairs(vehicle_object) do
@@ -123,11 +117,11 @@ local function vehicle_image_url(model)
     return (template:gsub("{model}", model_name))
 end
 
-local function vehicle_dto(row, garage_system)
+local function vehicle_dto(row)
     local mods = vehicle_properties(row)
     local vehicle_value = row.vehicle
 
-    local model = first_value(row.model, row.hash, mods.model, mods.hash)
+    local model = first_value(mods.model, mods.hash)
     if type(vehicle_value) == "string" and vehicle_value:sub(1, 1) ~= "{" then
         model = first_value(model, vehicle_value)
     elseif type(vehicle_value) == "number" then
@@ -138,21 +132,21 @@ local function vehicle_dto(row, garage_system)
         model = numeric_model
     end
 
-    local location = first_value(row.garage_id, row.parking, row.garage, row.parked_at)
+    local location = row.garage
     local plate = tostring(first_value(row.plate, mods.plate) or ""):match("^%s*(.-)%s*$")
     return {
-        id = tostring(first_value(row.id, row.vin, plate)),
+        id = plate,
         plate = plate,
-        vin = tostring(row.vin or ""),
-        nickname = tostring(row.nickname or ""),
+        vin = "",
+        nickname = "",
         model = model,
         imageUrl = vehicle_image_url(model),
-        kind = vehicle_kind(first_value(row.garage_type, row.type, mods.type)),
-        status = vehicle_status(row, location, garage_system),
+        kind = vehicle_kind(first_value(row.type, mods.type)),
+        status = vehicle_status(row, location),
         location = tostring(location or ""),
-        fuel = normalized_health(first_value(row.fuel, mods.fuelLevel, mods.fuel), 100),
-        engine = normalized_health(first_value(row.engine, mods.engineHealth, mods.engine), 1000),
-        body = normalized_health(first_value(row.body, mods.bodyHealth, mods.body), 1000),
+        fuel = normalized_health(mods.fuelLevel, 100),
+        engine = normalized_health(mods.engineHealth, 1000),
+        body = normalized_health(mods.bodyHealth, 1000),
     }
 end
 
@@ -167,9 +161,9 @@ local function storage_config()
         if not table_name:match("^[%w_]+$") or not owner_column:match("^[%w_]+$") then
             error("[agent_phone] Custom garage table and owner column must be configured with SQL identifiers.")
         end
-        return table_name, owner_column, system
+        return table_name, owner_column
     end
-    return "owned_vehicles", "owner", "agent"
+    return "owned_vehicles", "owner"
 end
 
 local active_valets = {}
@@ -187,12 +181,12 @@ local function normalized_plate(value)
 end
 
 local function owned_vehicle_row(identifier, plate)
-    local table_name, owner_column, garage_system = storage_config()
+    local table_name, owner_column = storage_config()
     local rows = Bridge.Database.Query(
         ("SELECT * FROM %s WHERE %s = ? AND TRIM(plate) = ? LIMIT 1"):format(table_name, owner_column),
         { identifier, plate }
     )
-    return rows[1], table_name, owner_column, garage_system
+    return rows[1], table_name, owner_column
 end
 
 local function status_snapshot(row)
@@ -274,11 +268,11 @@ Bridge.Callbacks.Register("agent_phone:garage:valet-request", function(source, d
     if type(identifier) ~= "string" or identifier == "" then
         return { success = false, error = "garage_unavailable" }
     end
-    local row, table_name, owner_column, garage_system = owned_vehicle_row(identifier, plate)
+    local row, table_name, owner_column = owned_vehicle_row(identifier, plate)
     if not row then
         return { success = false, error = "vehicle_not_owned" }
     end
-    local vehicle = vehicle_dto(row, garage_system)
+    local vehicle = vehicle_dto(row)
     if vehicle.status ~= "garaged" then
         return { success = false, error = "vehicle_not_garaged" }
     end
@@ -400,14 +394,14 @@ Bridge.Callbacks.Register("agent_phone:garage:vehicles", function(source)
     if type(identifier) ~= "string" or identifier == "" then
         return { success = false, error = "garage_unavailable" }
     end
-    local table_name, owner_column, garage_system = storage_config()
+    local table_name, owner_column = storage_config()
     local rows = Bridge.Database.Query(
         ("SELECT * FROM `%s` WHERE `%s` = ? LIMIT ?"):format(table_name, owner_column),
         { identifier, Config.Garage.MaximumVehicles }
     )
     local vehicles = {}
     for _, row in ipairs(rows) do
-        local vehicle = vehicle_dto(row, garage_system)
+        local vehicle = vehicle_dto(row)
         if vehicle.plate ~= "" then
             vehicles[#vehicles + 1] = vehicle
         end
