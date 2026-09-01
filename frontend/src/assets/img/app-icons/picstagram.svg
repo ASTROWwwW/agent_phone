@@ -1,50 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Picstagram">
   <defs>
-    <!-- Degrade diagonal violet vers corail, propre a Picstagram. -->
-    <linearGradient id="piBg" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="472" y2="512">
+    <linearGradient id="piBg" x1="0" y1="0" x2="0.15" y2="1">
       <stop offset="0" stop-color="#A45CFF"/>
-      <stop offset="0.52" stop-color="#E14BC8"/>
+      <stop offset="0.5" stop-color="#E14BC8"/>
       <stop offset="1" stop-color="#FF7A5C"/>
     </linearGradient>
-    <radialGradient id="piBgLight" cx="0.3" cy="0.1" r="0.85">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.2"/>
-      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.04"/>
+    <radialGradient id="piBgLight" cx="0.32" cy="0.12" r="0.85">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.20"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.03"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="piBgFloor" x1="0" y1="0.55" x2="0" y2="1">
       <stop offset="0" stop-color="#3B0A44" stop-opacity="0"/>
-      <stop offset="1" stop-color="#3B0A44" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#3B0A44" stop-opacity="0.16"/>
     </linearGradient>
 
     <linearGradient id="piGlyph" gradientUnits="userSpaceOnUse" x1="61" y1="0" x2="451" y2="512">
       <stop offset="0" stop-color="#FFFFFF"/>
-      <stop offset="0.45" stop-color="#FDF7FF"/>
+      <stop offset="0.42" stop-color="#FDF7FF"/>
       <stop offset="1" stop-color="#EBD9F4"/>
     </linearGradient>
 
     <filter id="piDrop" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="3" dy="8" stdDeviation="9" flood-color="#4A0A44" flood-opacity="0.32"/>
+      <feDropShadow dx="3" dy="8" stdDeviation="9" flood-color="#4A0A44" flood-opacity="0.34"/>
     </filter>
+
+    <filter id="piRelief" x="-30%" y="-30%" width="160%" height="160%">
+      <feOffset in="SourceAlpha" dx="-5" dy="-7" result="sOff"/>
+      <feGaussianBlur in="sOff" stdDeviation="7" result="sBlur"/>
+      <feComposite in="SourceAlpha" in2="sBlur" operator="out" result="sMask"/>
+      <feFlood flood-color="#B08BC4" flood-opacity="0.42" result="sCol"/>
+      <feComposite in="sCol" in2="sMask" operator="in" result="innerShadow"/>
+
+      <feOffset in="SourceAlpha" dx="5" dy="7" result="lOff"/>
+      <feGaussianBlur in="lOff" stdDeviation="6" result="lBlur"/>
+      <feComposite in="SourceAlpha" in2="lBlur" operator="out" result="lMask"/>
+      <feFlood flood-color="#FFFDF6" flood-opacity="0.85" result="lCol"/>
+      <feComposite in="lCol" in2="lMask" operator="in" result="innerLight"/>
+
+      <feMerge>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="innerShadow"/>
+        <feMergeNode in="innerLight"/>
+      </feMerge>
+    </filter>
+    <mask id="piLens">
+      <path d="M206 118h100l24 42h46a46 46 0 0 1 46 46v148a46 46 0 0 1-46 46H136a46 46 0 0 1-46-46V206a46 46 0 0 1 46-46h46Z" fill="#fff"/>
+      <circle cx="256" cy="288" r="74" fill="#000"/>
+      <circle cx="256" cy="288" r="42" fill="#fff"/>
+    </mask>
   </defs>
 
   <rect width="512" height="512" fill="url(#piBg)"/>
   <rect width="512" height="512" fill="url(#piBgFloor)"/>
   <rect width="512" height="512" fill="url(#piBgLight)"/>
 
-  <!-- Cadre au trait, relief et soleil pleins : la silhouette reste ouverte en
-       bas, la ou une vignette pleine evidee par le relief mangeait ses coins. -->
   <g filter="url(#piDrop)">
-    <rect
-      x="126"
-      y="126"
-      width="260"
-      height="260"
-      rx="62"
-      fill="none"
-      stroke="url(#piGlyph)"
-      stroke-width="34"
-    />
-    <circle cx="197" cy="203" r="23" fill="url(#piGlyph)"/>
-    <path d="M165 356 226 278 268 330 306 286 350 356Z" fill="url(#piGlyph)"/>
+    <g filter="url(#piRelief)">
+      <path d="M206 118h100l24 42h46a46 46 0 0 1 46 46v148a46 46 0 0 1-46 46H136a46 46 0 0 1-46-46V206a46 46 0 0 1 46-46h46Z"
+            fill="url(#piGlyph)" mask="url(#piLens)"/>
+    </g>
   </g>
 </svg>
