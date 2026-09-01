@@ -42,7 +42,7 @@ describe('EasyShare deep links', () => {
     })
   })
 
-  it('opens CityMarkt links on the referenced listing', () => {
+  it('opens CityMarket links on the referenced listing', () => {
     expect(
       easyShareRoute(
         payload({

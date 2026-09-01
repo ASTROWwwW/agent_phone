@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Picstagram">
+  <defs>
+    <!-- Degrade radial ancre en bas a gauche : jaune, orange, magenta, violet. -->
+    <radialGradient id="pgBg" gradientUnits="userSpaceOnUse" cx="118" cy="486" r="612">
+      <stop offset="0" stop-color="#FFDD7C"/>
+      <stop offset="0.11" stop-color="#FCC663"/>
+      <stop offset="0.24" stop-color="#F79445"/>
+      <stop offset="0.36" stop-color="#F35C3D"/>
+      <stop offset="0.49" stop-color="#E1306C"/>
+      <stop offset="0.63" stop-color="#C1339A"/>
+      <stop offset="0.78" stop-color="#9333C6"/>
+      <stop offset="1" stop-color="#5B51DB"/>
+    </radialGradient>
+    <!-- Voile bleu en haut a droite, comme sur la marque d origine. -->
+    <linearGradient id="pgBlue" gradientUnits="userSpaceOnUse" x1="512" y1="0" x2="196" y2="316">
+      <stop offset="0" stop-color="#4B62E0" stop-opacity="0.85"/>
+      <stop offset="0.55" stop-color="#7B39C4" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#7B39C4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="pgFloor" gradientUnits="userSpaceOnUse" x1="0" y1="282" x2="0" y2="512">
+      <stop offset="0" stop-color="#3A0A2B" stop-opacity="0"/>
+      <stop offset="1" stop-color="#3A0A2B" stop-opacity="0.14"/>
+    </linearGradient>
+
+    <linearGradient id="pgGlyph" gradientUnits="userSpaceOnUse" x1="61" y1="0" x2="451" y2="512">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.45" stop-color="#FDFAFF"/>
+      <stop offset="1" stop-color="#EEE2F6"/>
+    </linearGradient>
+
+    <filter id="pgDrop" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="2" dy="7" stdDeviation="9" flood-color="#4A0A34" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#pgBg)"/>
+  <rect width="512" height="512" fill="url(#pgBlue)"/>
+  <rect width="512" height="512" fill="url(#pgFloor)"/>
+
+  <!-- Appareil photo au trait : cadre arrondi, objectif, temoin. -->
+  <g filter="url(#pgDrop)" fill="none" stroke="url(#pgGlyph)" stroke-width="32">
+    <rect x="112" y="112" width="288" height="288" rx="86"/>
+    <circle cx="256" cy="256" r="70"/>
+  </g>
+  <circle cx="338" cy="174" r="18" fill="url(#pgGlyph)" filter="url(#pgDrop)"/>
+</svg>

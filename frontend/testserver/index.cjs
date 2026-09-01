@@ -1825,7 +1825,7 @@ let mockNotes = [
     id: 'demo-note-marketplace',
     pinned: true,
     revision: 1,
-    title: 'CityMarkt viewing',
+    title: 'CityMarket viewing',
     updatedAt: Date.now() - 3_600_000,
   },
   {
@@ -1922,7 +1922,7 @@ let calendarEvents = [
     reminderMinutes: 60,
     revision: 2,
     startsAt: calendarTime(0, 20),
-    title: 'CityMarkt vehicle viewing',
+    title: 'CityMarket vehicle viewing',
   },
   {
     endsAt: calendarTime(1, 15, 30),
@@ -8524,7 +8524,7 @@ app.post('/api/:endpoint', (request, response) => {
       avatar_media_id: avatarMediaId || null,
       avatar_url: avatar?.url ?? null,
       bio: '',
-      display_name: linkedAccount?.email?.split('@')[0] ?? 'CityMarkt',
+      display_name: linkedAccount?.email?.split('@')[0] ?? 'CityMarket',
       exists: true,
     }
     response.json({ success: true, data: marketplaceProfile })

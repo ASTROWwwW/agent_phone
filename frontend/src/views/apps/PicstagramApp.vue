@@ -32,7 +32,7 @@ import {
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import picstagramIcon from '@/assets/img/app-icons/picstagram.webp'
+import picstagramIcon from '@/assets/img/app-icons/picstagram.svg'
 import { useEasyShareStore } from '@/stores/easyshare'
 import { useMessageMediaStore } from '@/stores/messageMedia'
 import { usePhoneStore } from '@/stores/phone'

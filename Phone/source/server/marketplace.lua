@@ -103,7 +103,7 @@ local function profile_dto(account)
     ]], { account.id, account.id })
     local row = rows[1]
     if not row then
-        error(("[agent_phone] Could not load CityMarkt profile account %s."):format(account.id))
+        error(("[agent_phone] Could not load CityMarket profile account %s."):format(account.id))
     end
     return {
         avatar_media_id = tonumber(row.avatar_media_id),
@@ -179,7 +179,7 @@ Bridge.Callbacks.Register("agent_phone:marketplace:auth", function(source, data)
     if avatar_media_id > 0
         and not AgentPhoneMedia.ResolveOwnedMedia(source, tostring(avatar_media_id), "photo")
     then
-        Bridge.Debug("warn", "[agent_phone] Rejected unowned CityMarkt registration image from source %s.", tostring(source))
+        Bridge.Debug("warn", "[agent_phone] Rejected unowned CityMarket registration image from source %s.", tostring(source))
         return { success = false, error = "invalid_profile_image" }
     end
 
@@ -211,7 +211,7 @@ Bridge.Callbacks.Register("agent_phone:marketplace:profile-save", function(sourc
         return { success = false, error = "invalid_profile" }
     end
     if avatar_media_id > 0 and not AgentPhoneMedia.ResolveOwnedMedia(source, tostring(avatar_media_id), "photo") then
-        Bridge.Debug("warn", "[agent_phone] Rejected unowned CityMarkt profile image from source %s.", tostring(source))
+        Bridge.Debug("warn", "[agent_phone] Rejected unowned CityMarket profile image from source %s.", tostring(source))
         return { success = false, error = "invalid_profile_image" }
     end
     Bridge.Database.Query([[

@@ -48,7 +48,7 @@ describe('marketplace store offers', () => {
     })
   })
 
-  it('authenticates CityMarkt with the iFruit password and stores the profile', async () => {
+  it('authenticates CityMarket with the iFruit password and stores the profile', async () => {
     const profile = {
       avatar_media_id: null,
       avatar_url: null,
