@@ -297,7 +297,9 @@ function selectContact(contact: PhoneContact): void {
   target.value = contact.phone_number
   formError.value = ''
   void nextTick(() =>
-    document.getElementById('banking-transfer-amount')?.focus(),
+    document.getElementById('banking-transfer-amount')?.focus({
+      preventScroll: true,
+    }),
   )
 }
 
@@ -359,7 +361,12 @@ watch(
 watch(action, async (currentAction) => {
   if (currentAction) {
     await nextTick()
-    document.getElementById('banking-transfer-target')?.focus()
+    // preventScroll obligatoire : .sky-app-page est en overflow hidden, ce qui
+    // n'empeche pas le navigateur de la faire defiler pour amener l'element au
+    // premier plan. La page sautait de la hauteur du panneau puis revenait.
+    document.getElementById('banking-transfer-target')?.focus({
+      preventScroll: true,
+    })
   }
 })
 

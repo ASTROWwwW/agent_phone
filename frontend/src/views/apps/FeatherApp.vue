@@ -291,7 +291,9 @@ function visibleCommentBody(post: FeatherPost): string {
 }
 
 function focusThreadInput(): void {
-  threadReplyInput.value?.querySelector('textarea')?.focus()
+  threadReplyInput.value
+    ?.querySelector('textarea')
+    ?.focus({ preventScroll: true })
 }
 
 function openMediaPreview(post: FeatherPost, index: number): void {

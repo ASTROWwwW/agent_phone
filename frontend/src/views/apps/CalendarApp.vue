@@ -350,7 +350,7 @@ async function toggleSearch(): Promise<void> {
     return
   }
   await nextTick()
-  searchToolbar.value?.querySelector('input')?.focus()
+  searchToolbar.value?.querySelector('input')?.focus({ preventScroll: true })
 }
 
 function isAllDayEvent(event: CalendarEvent): boolean {
