@@ -94,4 +94,25 @@ describe('Lua sources', () => {
 
     expect(broken).toEqual([])
   })
+
+  it('boots its configuration and locales when lua is available', () => {
+    // luac ne verifie que la syntaxe. Charger reellement la configuration et
+    // les locales, avec des bouchons pour le moteur, revele ce qui echouerait
+    // au demarrage de la ressource : une valeur manquante, une locale absente,
+    // une erreur d execution dans un fichier pourtant bien forme.
+    try {
+      execFileSync('lua', ['-v'], { stdio: 'ignore' })
+    } catch {
+      expect(sources.length).toBeGreaterThan(0)
+      return
+    }
+
+    const harness = fileURLToPath(new URL('../testserver/resourceBoot.lua', import.meta.url))
+    const posixRoot = resourceRoot.split(String.fromCharCode(92)).join('/')
+    const output = execFileSync('lua', [harness, posixRoot], { encoding: 'utf8' })
+
+    expect(output).toContain('locale configuree presente')
+    expect(output).not.toContain('ECHEC')
+    expect(output).not.toContain('MANQUE')
+  })
 })
