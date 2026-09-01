@@ -624,7 +624,7 @@ onBeforeUnmount(() => {
     <template v-else>
       <div class="agentride-scroll">
         <div class="agentride-mode">
-          <k-segmented v-if="agentride.driverEligible">
+          <k-segmented v-if="agentride.driverEligible" strong rounded>
             <k-segmented-button
               :active="mode === 'rider'"
               :disabled="Boolean(agentride.activeRide)"
@@ -678,24 +678,28 @@ onBeforeUnmount(() => {
                 <k-block-title class="agentride-custom-block-title">{{
                   phone.t('Apps.agentride.quickDestinations')
                 }}</k-block-title>
-                <k-block class="agentride-quick-grid">
-                  <k-button
+                <k-list
+                  inset
+                  strong
+                  density="compact"
+                  class="agentride-quick-list"
+                >
+                  <k-list-item
                     v-for="location in agentride.quickLocations.slice(0, 4)"
                     :key="location.id ?? location.label"
-                    large
-                    rounded
-                    variant="secondary"
-                    class="agentride-quick-card"
+                    link
+                    :title="locationLabel(location)"
                     @click="chooseQuickDestination(location)"
                   >
-                    <component
-                      :is="location.id === 'work' ? BriefcaseBusiness : MapPin"
-                      :size="18"
-                      aria-hidden="true"
-                    />
-                    <span>{{ locationLabel(location) }}</span>
-                  </k-button>
-                </k-block>
+                    <template #media>
+                      <component
+                        :is="location.id === 'work' ? BriefcaseBusiness : MapPin"
+                        :size="19"
+                        aria-hidden="true"
+                      />
+                    </template>
+                  </k-list-item>
+                </k-list>
 
                 <k-button
                   large
@@ -1234,8 +1238,6 @@ onBeforeUnmount(() => {
               <k-card
                 v-for="ride in agentride.history"
                 :key="ride.id"
-                header-divider
-                footer-divider
                 content-wrap-padding="px-4 py-2"
                 class="agentride-history-card"
               >
@@ -1252,7 +1254,9 @@ onBeforeUnmount(() => {
                       }}</strong
                       ><span>{{ formatDate(ride.createdAt) }}</span>
                     </div>
-                    <k-badge>{{ statusLabel(ride.status) }}</k-badge>
+                    <k-badge class="agentride-status-badge">{{
+                      statusLabel(ride.status)
+                    }}</k-badge>
                   </div>
                 </template>
                 <div class="agentride-history-route">
@@ -1842,17 +1846,36 @@ onBeforeUnmount(() => {
   z-index: 21;
   position: relative;
   min-height: 9px;
-  padding: 4px 16px 7px;
+  padding: 4px 16px 10px;
 }
 
 .agentride-mode > :deep(*) {
   width: 100%;
 }
 
+/* Variante « strong » du segment partage : piste neutre et pouce blanc
+   glissant. L'or reste la couleur des actions plutot que celle d'un onglet, ou
+   il ecrasait tout le haut de l'ecran. */
+.agentride-mode :deep(.sky-segmented) {
+  padding: 2px;
+  background: var(--sky-surface-muted);
+}
+
 .agentride-mode :deep(button) {
-  min-height: 38px;
-  font-size: 15px;
+  min-height: 34px;
+  color: var(--ride-muted);
+  font-size: 14px;
   font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.agentride-mode :deep(button.sky-segmented-button--active) {
+  color: var(--ride-text);
+}
+
+.agentride-mode :deep(.sky-segmented__highlight) {
+  background: var(--ride-card-strong);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 14%);
 }
 
 .agentride-scroll {
@@ -1954,6 +1977,8 @@ onBeforeUnmount(() => {
   letter-spacing: -0.55px;
 }
 
+/* Cette pastille est decorative : la remplir d'or plein la faisait passer pour
+   un bouton. Fond teinte, glyphe accentue, elle redevient une illustration. */
 .agentride-heading__icon,
 .agentride-status-icon {
   display: grid;
@@ -1962,8 +1987,8 @@ onBeforeUnmount(() => {
   height: 42px;
   place-items: center;
   border-radius: 15px;
-  color: #111;
-  background: var(--ride-accent);
+  color: var(--ride-accent-strong);
+  background: rgb(245 197 24 / 18%);
   box-shadow: none;
 }
 
@@ -2009,7 +2034,25 @@ onBeforeUnmount(() => {
   background: #171719;
 }
 
-.agentride-quick-grid,
+/* Raccourcis en liste d'une colonne : en deux colonnes, « Los Santos Airport »
+   et « Diamond Casino » etaient systematiquement tronques. */
+.agentride-quick-list {
+  margin: 0 2px 16px !important;
+}
+
+.agentride-quick-list :deep(li) {
+  background: var(--ride-card-strong);
+}
+
+.agentride-quick-list :deep(.sky-list-item__media) {
+  color: var(--ride-accent-strong);
+}
+
+.agentride-quick-list :deep(.sky-list-item__title) {
+  font-size: 16px;
+  font-weight: 550;
+}
+
 .agentride-driver-metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2081,33 +2124,40 @@ onBeforeUnmount(() => {
   line-height: 1.3;
 }
 
+/* Une seule ligne par raccourci : le clamp sur deux lignes donnait des cartes
+   de hauteurs differentes des qu'un nom depassait. */
 .agentride-quick-card {
   display: flex;
   width: 100%;
-  min-height: 64px;
+  min-height: 56px;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  padding: 11px 13px;
+  padding: 10px 13px;
   color: inherit;
   text-align: left;
+  transition: transform 160ms var(--sky-ease-out);
+}
+
+.agentride-quick-card:active {
+  transform: scale(0.97);
 }
 
 .agentride-quick-card svg,
 .agentride-driver-metrics svg {
+  flex: none;
   color: var(--ride-accent-strong);
 }
 
 .agentride-quick-card span {
-  display: -webkit-box;
   min-width: 0;
   overflow: hidden;
-  font-size: 12.5px;
-  font-weight: 650;
-  line-height: 16px;
-  overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .agentride-primary {
@@ -2117,6 +2167,19 @@ onBeforeUnmount(() => {
   gap: 5px;
   font-size: 16px;
   font-weight: 650;
+  transition: transform 160ms var(--sky-ease-out);
+}
+
+.agentride-primary:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+/* Desactive, le bouton restait or delave : il donnait l'impression d'un
+   composant casse plutot que d'une action indisponible. */
+.agentride-primary:disabled {
+  color: var(--ride-muted) !important;
+  background: var(--sky-surface-muted) !important;
+  opacity: 1;
 }
 
 .agentride-player-driver-notice {
@@ -2515,25 +2578,47 @@ onBeforeUnmount(() => {
   line-height: 15px;
 }
 
+/* Le trajet etait enferme dans une pastille grise qui decoupait la carte en
+   bandes ; il redevient une simple ligne, avec la fleche en couleur d'accent. */
 .agentride-request-route,
 .agentride-history-route {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  gap: 6px;
-  margin: 12px 0;
-  padding: 9px;
-  border-radius: 11px;
-  background: var(--ride-border);
+  gap: 8px;
+  margin: 8px 0 10px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.agentride-request-route > svg,
+.agentride-history-route > svg {
+  color: var(--ride-accent-strong);
 }
 
 .agentride-request-route span,
 .agentride-history-route span {
   overflow: hidden;
-  font-size: 12px;
-  line-height: 16px;
+  color: var(--ride-text);
+  font-size: 13.5px;
+  font-weight: 550;
+  line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Pastille d'etat teintee plutot qu'or plein : elle informe sans concurrencer
+   le prix, seule valeur que la carte met en avant. */
+.agentride-status-badge {
+  padding: 3px 9px;
+  border-radius: var(--sky-radius-pill);
+  color: var(--ride-accent-strong) !important;
+  background: rgb(245 197 24 / 20%) !important;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: -0.1px;
+  text-transform: none;
 }
 
 .agentride-request-route span:last-child,
