@@ -262,13 +262,13 @@ watch(
   color: #ef3f7c;
 }
 
-:global(.phone-app.dark) .shared-content-card--messages {
+.phone-app.dark .shared-content-card--messages {
   border-color: rgb(255 255 255 / 10%);
   color: #f5f5f7;
   background: linear-gradient(155deg, #34363b, #242a33);
 }
 
-:global(.phone-app.dark) .shared-content-card--messages .shared-content-card__copy p {
+.phone-app.dark .shared-content-card--messages .shared-content-card__copy p {
   color: #b8b8bd;
 }
 </style>

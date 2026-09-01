@@ -157,7 +157,7 @@ onUnmounted(() =>
   box-shadow: 0 12px 28px #0009;
   scrollbar-width: none;
 }
-:global(.citymarkt--light) .citymarkt-select__menu {
+.citymarkt--light .citymarkt-select__menu {
   border-color: #00000012;
   background: #fff;
   box-shadow: 0 12px 28px #0003;
@@ -181,7 +181,7 @@ onUnmounted(() =>
   background: #ffffff0b;
   color: inherit;
 }
-:global(.citymarkt--light) .citymarkt-select__menu button.highlighted {
+.citymarkt--light .citymarkt-select__menu button.highlighted {
   background: #0000000b;
 }
 .citymarkt-select__menu button.selected {
@@ -189,7 +189,7 @@ onUnmounted(() =>
   color: inherit;
   font-weight: 800;
 }
-:global(.citymarkt--light) .citymarkt-select__menu button.selected {
+.citymarkt--light .citymarkt-select__menu button.selected {
   background: #0000000d;
 }
 .citymarkt-select-enter-active,

@@ -397,7 +397,7 @@ onMounted(() => screen.value?.focus())
   background: rgb(255 255 255 / 12%);
 }
 
-:global(.phone-app--light) .passcode-screen--surface {
+.phone-app--light .passcode-screen--surface {
   --passcode-text: #111;
   --passcode-muted: rgb(0 0 0 / 55%);
   --passcode-key-background: transparent;
