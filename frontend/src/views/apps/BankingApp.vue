@@ -380,8 +380,10 @@ onBeforeUnmount(() => {
     class="banking-app pb-safe-24"
     :label="phone.t('Apps.banking.name')"
     :dark="phone.isDarkMode"
-    accent="#e8e8e8"
-    accent-soft="rgba(255, 255, 255, 0.08)"
+    :accent="phone.isDarkMode ? '#e8e8e8' : '#1d1a2e'"
+    :accent-soft="
+      phone.isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(29, 26, 46, 0.09)'
+    "
   >
     <SkyNavbar
       class="banking-navbar"

@@ -28,12 +28,14 @@ describe('Clock app controls', () => {
     expect(mainCss).not.toContain('.clock-navbar.sky-navbar--no-navigation')
   })
 
-  it('keeps the single world clock centered with readable line boxes', () => {
-    expect(clockView).toContain('class="clock-world-now"')
-    expect(clockView).not.toContain('clock-world-list')
-    expect(mainCss).toMatch(
-      /\.clock-world-time\s*\{[^}]*font-size:\s*74px;[^}]*line-height:\s*1;/s,
-    )
+  it('opens on the alarms, the wall clock tab having been removed', () => {
+    // L'onglet libelle "Clock" a ete retire : plus aucune trace de world dans
+    // le composant ni de regle .clock-world dans la feuille partagee.
+    expect(clockView).toContain("? route.query.section")
+    expect(clockView).toContain(": 'alarm',")
+    expect(clockView).not.toContain('clock-world')
+    expect(clockView).not.toContain("'world'")
+    expect(mainCss).not.toContain('.clock-world')
   })
 
   it('uses the orange clock accent and state-specific circular actions', () => {

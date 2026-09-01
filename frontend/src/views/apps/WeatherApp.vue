@@ -2,7 +2,6 @@
 import {
   CloudSun,
   Droplets,
-  Gauge,
   Navigation,
   ThermometerSun,
   Umbrella,
@@ -17,7 +16,6 @@ import { useWeatherStore } from '@/stores/weather'
 import type { WeatherConditionId } from '@/types/weather'
 import {
   SkyAppPage,
-  SkyCard,
   SkyLink,
   SkyNavbar,
   SkyScrollArea,
@@ -59,6 +57,19 @@ const rainy = computed(
     forecast.value?.condition === 'rain' ||
     forecast.value?.condition === 'thunder',
 )
+// Un ciel degage de jour merite le soleil, pas seulement la condition sunny :
+// clear bascule deja sur l'icone du soleil aux memes heures.
+const sunlit = computed(
+  () =>
+    !isNight.value &&
+    (forecast.value?.condition === 'sunny' ||
+      forecast.value?.condition === 'clear'),
+)
+const overcast = computed(
+  () =>
+    forecast.value?.condition === 'cloudy' ||
+    forecast.value?.condition === 'partly_cloudy',
+)
 const rainDrops = [
   ['3%', '11px', '1.35s', '-0.3s', '0.32'],
   ['9%', '8px', '1.7s', '-1.1s', '0.2'],
@@ -82,35 +93,98 @@ const rainDrops = [
   '--rain-left': left,
   '--rain-opacity': opacity,
 }))
+// Colonne, duree de chute, retard, opacite, diametre. Les tailles melangees
+// donnent une profondeur : les gros flocons tombent devant, plus vite.
 const snowFlakes = [
-  ['4%', '1.8s', '-1.2s', '0.4'],
-  ['12%', '2.6s', '-0.5s', '0.65'],
-  ['19%', '2.1s', '-1.7s', '0.45'],
-  ['27%', '2.9s', '-0.9s', '0.7'],
-  ['36%', '2.3s', '-1.4s', '0.55'],
-  ['44%', '3.1s', '-0.2s', '0.45'],
-  ['53%', '2s', '-1.8s', '0.7'],
-  ['62%', '2.7s', '-1.1s', '0.48'],
-  ['70%', '2.2s', '-0.7s', '0.6'],
-  ['78%', '3s', '-1.6s', '0.42'],
-  ['87%', '2.4s', '-0.3s', '0.68'],
-  ['95%', '2.8s', '-1.3s', '0.5'],
-].map(([left, duration, delay, opacity]) => ({
+  ['4%', '3.2s', '-1.2s', '0.4', '2px'],
+  ['9%', '2.2s', '-2.4s', '0.72', '4px'],
+  ['14%', '2.6s', '-0.5s', '0.6', '3px'],
+  ['21%', '3.6s', '-1.7s', '0.35', '2px'],
+  ['27%', '2.1s', '-0.9s', '0.75', '4px'],
+  ['33%', '2.9s', '-2.1s', '0.5', '3px'],
+  ['39%', '3.4s', '-1.4s', '0.38', '2px'],
+  ['45%', '2.3s', '-0.2s', '0.7', '4px'],
+  ['51%', '2.8s', '-2.6s', '0.55', '3px'],
+  ['57%', '3.5s', '-1.1s', '0.36', '2px'],
+  ['62%', '2s', '-1.8s', '0.78', '4px'],
+  ['68%', '2.7s', '-0.7s', '0.58', '3px'],
+  ['74%', '3.3s', '-2.2s', '0.4', '2px'],
+  ['80%', '2.4s', '-1.6s', '0.68', '4px'],
+  ['85%', '3s', '-0.4s', '0.52', '3px'],
+  ['90%', '3.7s', '-2.8s', '0.34', '2px'],
+  ['95%', '2.2s', '-1.3s', '0.74', '4px'],
+  ['98%', '2.9s', '-0.6s', '0.5', '3px'],
+].map(([left, duration, delay, opacity, size]) => ({
   '--snow-delay': delay,
   '--snow-duration': duration,
   '--snow-left': left,
   '--snow-opacity': opacity,
+  '--snow-size': size,
 }))
+// Nuages : de larges taches floues qui traversent l'ecran en une minute. Ce
+// sont les seules animations de ciel couvert, ou rien ne bougeait jusqu'ici.
+const cloudDrifts = [
+  ['6%', '62%', '86px', '38s', '-6s', '0.2'],
+  ['19%', '86%', '120px', '54s', '-28s', '0.14'],
+  ['34%', '70%', '96px', '46s', '-16s', '0.11'],
+  ['52%', '104%', '140px', '66s', '-44s', '0.09'],
+].map(([top, width, height, duration, delay, opacity]) => ({
+  '--cloud-delay': delay,
+  '--cloud-duration': duration,
+  '--cloud-height': height,
+  '--cloud-opacity': opacity,
+  '--cloud-top': top,
+  '--cloud-width': width,
+}))
+// Etoiles filantes : rares, decalees, pour que la nuit ne soit pas figee.
+const shootingStars = [
+  ['12%', '8%', '-2s'],
+  ['58%', '3%', '-11s'],
+].map(([left, top, delay]) => ({
+  '--star-delay': delay,
+  '--star-left': left,
+  '--star-top': top,
+}))
+// Brume : retard, duree, opacite, hauteur, position verticale, depart et
+// arrivee horizontaux. Les nappes ne vont pas toutes dans le meme sens, sinon
+// l'ensemble ressemble a un tapis roulant plutot qu'a du brouillard.
 const fogLayers = [
-  ['-18s', '44s', '0.28', '12%'],
-  ['-7s', '38s', '0.18', '34%'],
-  ['-27s', '51s', '0.23', '57%'],
-].map(([delay, duration, opacity, top]) => ({
+  ['-16s', '58s', '0.5', '34%', '-4%', '-45%', '30%'],
+  ['-38s', '72s', '0.34', '46%', '14%', '25%', '-40%'],
+  ['-7s', '64s', '0.42', '38%', '33%', '-38%', '34%'],
+  ['-52s', '80s', '0.3', '52%', '52%', '30%', '-42%'],
+  ['-24s', '68s', '0.38', '40%', '72%', '-40%', '28%'],
+].map(([delay, duration, opacity, height, top, from, to]) => ({
   '--fog-delay': delay,
   '--fog-duration': duration,
+  '--fog-from': from,
+  '--fog-height': height,
   '--fog-opacity': opacity,
+  '--fog-to': to,
   '--fog-top': top,
 }))
+
+// Les quatre tuiles ne different que par leur icone, leur teinte et leur clef
+// de locale : les decrire une fois evite quatre blocs de balisage jumeaux.
+const DETAIL_TILES = [
+  { accent: 'gold', icon: ThermometerSun, key: 'feelsLike' },
+  { accent: 'sky', icon: Wind, key: 'wind' },
+  { accent: 'teal', icon: Droplets, key: 'humidity' },
+  { accent: 'cyan', icon: Umbrella, key: 'rain' },
+] as const
+
+const details = computed(() => {
+  const data = forecast.value
+  if (!data) return []
+  const values: Record<(typeof DETAIL_TILES)[number]['key'], string> = {
+    feelsLike: `${data.feelsLike}°`,
+    humidity: `${data.humidity}%`,
+    rain: `${data.rainChance}%`,
+    wind: `${data.windSpeed} km/h`,
+  }
+  return DETAIL_TILES.map((tile) => ({ ...tile, value: values[tile.key] }))
+})
+
 function conditionLabel(condition: WeatherConditionId): string {
   return phone.t(`Apps.weather.conditions.${condition}`)
 }
@@ -172,12 +246,13 @@ watch(
     >
       <i v-for="(flake, index) in snowFlakes" :key="index" :style="flake"></i>
     </div>
-    <div
-      v-if="forecast?.condition === 'sunny'"
-      class="weather-app__sun-glow"
-      aria-hidden="true"
-    ></div>
-    <div v-if="isNight" class="weather-app__stars" aria-hidden="true"></div>
+    <div v-if="overcast" class="weather-app__clouds" aria-hidden="true">
+      <i v-for="(cloud, index) in cloudDrifts" :key="index" :style="cloud"></i>
+    </div>
+    <div v-if="sunlit" class="weather-app__sun-glow" aria-hidden="true"></div>
+    <div v-if="isNight" class="weather-app__stars" aria-hidden="true">
+      <i v-for="(star, index) in shootingStars" :key="index" :style="star"></i>
+    </div>
     <SkyNavbar class="weather-navbar" :title="phone.t('Apps.weather.name')" />
 
     <SkyScrollArea
@@ -196,20 +271,25 @@ watch(
       >
         <SkySpinner :label="phone.t('Common.loading')" />
       </div>
+
       <header class="weather-hero">
-        <div class="weather-location">
-          <Navigation :size="13" fill="currentColor" />
+        <p class="weather-location">
+          <Navigation :size="11" fill="currentColor" />
           {{ phone.t(`Apps.weather.regions.${forecast.region}`) }}
-        </div>
+        </p>
         <WeatherConditionIcon
           :condition="forecast.condition"
           :timestamp="forecast.timestamp"
           class="weather-hero__icon"
-          :size="82"
+          :size="84"
         />
-        <div class="weather-temperature">{{ forecast.temperature }}°</div>
-        <strong>{{ conditionLabel(forecast.condition) }}</strong>
-        <p>{{ phone.t(`Apps.weather.summaries.${forecast.condition}`) }}</p>
+        <p class="weather-temperature">{{ forecast.temperature }}°</p>
+        <strong class="weather-hero__condition">{{
+          conditionLabel(forecast.condition)
+        }}</strong>
+        <p class="weather-hero__summary">
+          {{ phone.t(`Apps.weather.summaries.${forecast.condition}`) }}
+        </p>
       </header>
 
       <p
@@ -220,50 +300,62 @@ watch(
         {{ phone.t('Apps.weather.stale') }}
       </p>
 
-      <section
-        class="weather-details"
-        :aria-label="phone.t('Apps.weather.details')"
-      >
-        <SkyCard :content-wrap="false" class="weather-detail-card">
-          <ThermometerSun :size="18" />
-          <span>{{ phone.t('Apps.weather.feelsLike') }}</span>
-          <strong>{{ forecast.feelsLike }}°</strong>
-        </SkyCard>
-        <SkyCard :content-wrap="false" class="weather-detail-card">
-          <Wind :size="18" />
-          <span>{{ phone.t('Apps.weather.wind') }}</span>
-          <strong>{{ forecast.windSpeed }} km/h</strong>
-        </SkyCard>
-        <SkyCard :content-wrap="false" class="weather-detail-card">
-          <Droplets :size="18" />
-          <span>{{ phone.t('Apps.weather.humidity') }}</span>
-          <strong>{{ forecast.humidity }}%</strong>
-        </SkyCard>
-        <SkyCard :content-wrap="false" class="weather-detail-card">
-          <Umbrella :size="18" />
-          <span>{{ phone.t('Apps.weather.rain') }}</span>
-          <strong>{{ forecast.rainChance }}%</strong>
-        </SkyCard>
+      <section class="weather-panel" aria-labelledby="weather-details-title">
+        <header class="weather-panel__head">
+          <h2 id="weather-details-title">
+            {{ phone.t('Apps.weather.details') }}
+          </h2>
+        </header>
+        <div class="weather-details">
+          <article
+            v-for="detail in details"
+            :key="detail.key"
+            class="weather-tile"
+            :class="`weather-tile--${detail.accent}`"
+          >
+            <span class="weather-tile__head">
+              <span class="weather-tile__icon">
+                <component :is="detail.icon" :size="14" />
+              </span>
+              <span class="weather-tile__label">{{
+                phone.t(`Apps.weather.${detail.key}`)
+              }}</span>
+            </span>
+            <strong class="weather-tile__value">{{ detail.value }}</strong>
+          </article>
+        </div>
       </section>
 
-      <SkyCard :content-wrap="false" class="weather-panel weather-hourly-panel">
-        <h2><Gauge :size="15" />{{ phone.t('Apps.weather.hourly') }}</h2>
+      <section class="weather-panel" aria-labelledby="weather-hourly-title">
+        <header class="weather-panel__head">
+          <h2 id="weather-hourly-title">
+            {{ phone.t('Apps.weather.hourly') }}
+          </h2>
+        </header>
         <div class="weather-hourly">
           <div
             v-for="(hour, index) in forecast.hourly"
             :key="hour.timestamp"
             class="weather-hour"
+            :class="{ 'is-now': index === 0 }"
           >
-            <span>{{ formatHour(hour.timestamp, index) }}</span>
+            <span class="weather-hour__time">{{
+              formatHour(hour.timestamp, index)
+            }}</span>
             <WeatherConditionIcon
               :condition="hour.condition"
               :timestamp="hour.timestamp"
+              :size="26"
             />
-            <small v-if="hour.rainChance >= 30">{{ hour.rainChance }}%</small>
-            <strong>{{ hour.temperature }}°</strong>
+            <span class="weather-hour__rain">{{
+              hour.rainChance >= 30 ? `${hour.rainChance}%` : ''
+            }}</span>
+            <strong class="weather-hour__temperature">{{
+              hour.temperature
+            }}°</strong>
           </div>
         </div>
-      </SkyCard>
+      </section>
     </SkyScrollArea>
 
     <div v-else class="weather-empty">

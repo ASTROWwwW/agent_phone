@@ -16,6 +16,7 @@ import WeatherConditionIcon from '@/components/WeatherConditionIcon.vue'
 import { WIDGET_REGISTRY_BY_KIND } from '@/config/widgets'
 import {
   useBankService,
+  useCalendarService,
   useClockService,
   useContactsService,
   useMusicService,
@@ -69,11 +70,13 @@ const usesBank = computed(() =>
   ['transactions', 'wallet'].includes(props.instance.kind),
 )
 const usesContacts = computed(() => props.instance.kind === 'contacts')
+const usesCalendar = computed(() => props.instance.kind === 'date')
 const clock = useClockService(usesClock)
 const weather = useWeatherService()
 const music = useMusicService()
 const bank = useBankService(usesBank)
 const contactsService = useContactsService(usesContacts)
+const calendarService = useCalendarService(usesCalendar)
 const isDragging = ref(false)
 const dragOffset = ref({ x: 0, y: 0 })
 const suppressClick = ref(false)
@@ -127,6 +130,32 @@ const weatherDayPhase = computed(() => {
   const hour = new Date(timestamp).getUTCHours()
   return hour >= 7 && hour < 20 ? 'day' : 'night'
 })
+const weatherRainy = computed(
+  () =>
+    weatherConditionId.value === 'rain' ||
+    weatherConditionId.value === 'thunder',
+)
+// Colonne, longueur, duree de chute, retard. Une trame repetee ne convenait
+// pas : des traits verticaux que l'on translate verticalement paraissent
+// immobiles. Huit gouttes reelles suffisent a lire l'averse.
+const widgetRainDrops = [
+  ['8%', '9px', '1.6s', '-0.2s'],
+  ['17%', '7px', '2s', '-1.1s'],
+  ['27%', '12px', '1.7s', '-0.7s'],
+  ['36%', '8px', '2.2s', '-1.6s'],
+  ['45%', '10px', '1.8s', '-0.4s'],
+  ['54%', '7px', '2.1s', '-1.3s'],
+  ['63%', '13px', '1.65s', '-0.9s'],
+  ['72%', '8px', '1.95s', '-0.6s'],
+  ['81%', '11px', '1.75s', '-1.45s'],
+  ['89%', '9px', '2.05s', '-0.35s'],
+  ['97%', '7px', '1.85s', '-1.2s'],
+].map(([left, height, duration, delay]) => ({
+  '--widget-rain-delay': delay,
+  '--widget-rain-duration': duration,
+  '--widget-rain-height': height,
+  '--widget-rain-left': left,
+}))
 const visibleHourlyWeather = computed(
   () =>
     weather.forecast.value?.hourly.slice(
@@ -168,6 +197,45 @@ function formatMoney(value: number): string {
 
 function avatar(name: string): string {
   return name.trim().charAt(0).toLocaleUpperCase(phone.lang) || '?'
+}
+
+// Teinte de la pastille derivee du nom plutot que du rang dans la grille : un
+// contact garde sa couleur meme si l'ordre des favoris change.
+const AVATAR_HUE_BASE = 210
+const AVATAR_HUE_SPREAD = 88
+
+function contactHue(name: string): number {
+  let hash = 0
+  for (let index = 0; index < name.length; index += 1) {
+    hash = (hash * 31 + name.charCodeAt(index)) % 100003
+  }
+  return AVATAR_HUE_BASE + (hash % AVATAR_HUE_SPREAD)
+}
+
+// La reference interne d'un mouvement n'apprend rien au joueur : on affiche
+// le moment ou il a eu lieu, comme la liste de l'application Banking.
+function formatTransactionMoment(createdAt: number): string {
+  return new Intl.DateTimeFormat(phone.lang, {
+    day: 'numeric',
+    hour: '2-digit',
+    hourCycle: 'h23',
+    minute: '2-digit',
+    month: 'short',
+  }).format(createdAt)
+}
+
+// Trois rendez-vous au plus dans un widget moyen : au-dela la colonne se
+// tasse et rien n'est lisible.
+const visibleEvents = computed(() =>
+  calendarService.events.value.slice(0, props.instance.size === 'large' ? 5 : 3),
+)
+
+function formatEventHour(timestamp: number): string {
+  return new Intl.DateTimeFormat(phone.lang, {
+    hour: '2-digit',
+    hourCycle: 'h23',
+    minute: '2-digit',
+  }).format(timestamp)
 }
 
 function formatForecastHour(timestamp: number): string {
@@ -402,11 +470,40 @@ onBeforeUnmount(() => {
             <span class="widget-date-weekday">{{ clock.weekday.value }}</span>
             <time class="widget-date-time">{{ clock.time.value }}</time>
           </div>
-          <strong class="widget-date-day">{{ clock.day.value }}</strong>
-          <small>{{ clock.month.value }}</small>
+          <div class="widget-date-body">
+            <div class="widget-date-mark">
+              <strong class="widget-date-day">{{ clock.day.value }}</strong>
+              <small>{{ clock.month.value }}</small>
+            </div>
+            <ul
+              v-if="visibleEvents.length"
+              class="widget-date-events"
+              :aria-label="phone.t('Apps.calendar.name')"
+            >
+              <li v-for="event in visibleEvents" :key="event.id">
+                <time>{{ formatEventHour(event.startsAt) }}</time>
+                <span>{{ event.title }}</span>
+              </li>
+            </ul>
+            <p v-else class="widget-date-empty">
+              {{ phone.t('Apps.calendar.noEvents') }}
+            </p>
+          </div>
         </template>
 
         <template v-else-if="instance.kind === 'weather'">
+          <span
+            class="widget-weather-sky phone-effect--decorative"
+            aria-hidden="true"
+          >
+            <template v-if="weatherRainy">
+              <i
+                v-for="(drop, index) in widgetRainDrops"
+                :key="index"
+                :style="drop"
+              ></i>
+            </template>
+          </span>
           <div v-if="weather.forecast.value" class="widget-weather-summary">
             <span class="widget-weather-location">{{
               weather.location.value
@@ -556,7 +653,7 @@ onBeforeUnmount(() => {
           >
             <span>
               <strong>{{ transaction.label }}</strong>
-              <small>{{ transaction.reference }}</small>
+              <small>{{ formatTransactionMoment(transaction.createdAt) }}</small>
             </span>
             <b
               :class="{
@@ -580,26 +677,26 @@ onBeforeUnmount(() => {
           </header>
           <div class="widget-contacts">
             <article v-for="contact in favoriteContacts" :key="contact.id">
-              <span class="widget-contact-avatar">{{
-                avatar(contact.name)
-              }}</span>
-              <strong>{{ contact.name }}</strong>
-              <div data-widget-control>
+              <span class="widget-contact-mark" data-widget-control>
                 <button
                   type="button"
+                  class="widget-contact-avatar"
+                  :style="{ '--widget-avatar-hue': contactHue(contact.name) }"
                   :aria-label="phone.t('Apps.messages.call')"
                   @click.stop="callContact(contact.phone_number)"
                 >
-                  <Phone :size="15" fill="currentColor" />
+                  {{ avatar(contact.name) }}
                 </button>
                 <button
                   type="button"
+                  class="widget-contact-message"
                   :aria-label="phone.t('Apps.messages.messageAction')"
                   @click.stop="messageContact(contact.phone_number)"
                 >
-                  <MessageCircle :size="15" fill="currentColor" />
+                  <MessageCircle :size="12" fill="currentColor" />
                 </button>
-              </div>
+              </span>
+              <strong>{{ contact.name }}</strong>
             </article>
           </div>
         </template>
@@ -761,18 +858,88 @@ onBeforeUnmount(() => {
 
 .home-widget--date {
   justify-content: flex-start;
-  background: rgb(24 24 26 / 94%);
+  background:
+    radial-gradient(
+      120% 70% at 50% -14%,
+      rgb(255 69 58 / 16%),
+      transparent 62%
+    ),
+    linear-gradient(180deg, rgb(30 24 26 / 95%), rgb(18 17 19 / 96%));
   color: #fff;
 }
 
 .home-widget--date small {
-  margin-top: auto;
-  color: rgb(255 255 255 / 58%);
+  color: rgb(255 255 255 / 55%);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Le chiffre du jour a gauche, les rendez-vous a droite : c'est la
+   composition de la vraie tuile Calendrier d'iOS. */
+.widget-date-body {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.widget-date-mark {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+}
+
+.widget-date-events {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 7px;
+  margin: 1px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.widget-date-events li {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+  padding-left: 9px;
+  border-left: 2px solid #ff453a;
+}
+
+.widget-date-events time {
+  color: rgb(255 255 255 / 52%);
+  font-size: 9.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.widget-date-events span {
+  overflow: hidden;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.widget-date-empty {
+  flex: 1 1 auto;
+  margin: 3px 0 0;
+  color: rgb(255 255 255 / 40%);
+  font-size: 11.5px;
+  font-weight: 500;
 }
 
 .widget-date-header {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  left: 15px;
   display: flex;
-  width: 100%;
   min-width: 0;
   align-items: center;
   justify-content: space-between;
@@ -781,10 +948,20 @@ onBeforeUnmount(() => {
 
 .widget-date-weekday,
 .widget-date-time {
-  color: #ff3b30;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   line-height: 1;
+}
+
+.widget-date-weekday {
+  color: #ff453a;
+}
+
+/* L'heure est une indication secondaire : en rouge elle rivalisait avec le
+   jour de la semaine et la carte semblait porter deux titres. */
+.widget-date-time {
+  color: rgb(255 255 255 / 45%);
+  font-weight: 600;
 }
 
 .widget-date-weekday {
@@ -801,117 +978,292 @@ onBeforeUnmount(() => {
 }
 
 .widget-date-day {
-  font-size: 52px;
-  font-weight: 400;
-  letter-spacing: -2px;
-  line-height: 0.95;
+  font-size: 46px;
+  font-weight: 320;
+  letter-spacing: -2.6px;
+  line-height: 0.92;
 }
 
 .home-widget--weather {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
   color: #fff;
   background:
-    radial-gradient(
-      circle at 72% 13%,
-      rgb(255 232 132 / 40%) 0 7%,
-      transparent 27%
-    ),
-    linear-gradient(170deg, #2878bb 0%, #274f8d 48%, #14233f 100%);
+    radial-gradient(120% 72% at 50% -12%, rgb(122 166 250 / 44%), transparent 64%),
+    radial-gradient(78% 44% at 92% 6%, rgb(255 206 132 / 24%), transparent 58%),
+    linear-gradient(180deg, #2c3566 0%, #1e2650 34%, #11162e 72%, #0a0b16 100%);
   transition: background 0.35s ease;
 }
 
-.home-widget--weather[data-weather-condition='sunny'] {
+.home-widget--weather[data-weather-condition='sunny'],
+.home-widget--weather[data-weather-condition='clear'][data-weather-period='day'] {
   background:
-    radial-gradient(
-      circle at 75% 15%,
-      rgb(255 232 132 / 48%) 0 7%,
-      transparent 29%
-    ),
-    linear-gradient(170deg, #2878bb 0%, #274f8d 48%, #14233f 100%);
+    radial-gradient(120% 70% at 50% -14%, rgb(255 172 58 / 46%), transparent 62%),
+    radial-gradient(76% 42% at 88% 4%, rgb(255 216 128 / 32%), transparent 56%),
+    linear-gradient(180deg, #472a58 0%, #32204a 34%, #191530 70%, #0c0a16 100%);
 }
 
 .home-widget--weather[data-weather-condition='clear'] {
   background:
-    radial-gradient(
-      circle at 77% 19%,
-      rgb(191 207 255 / 13%) 0 2%,
-      transparent 3%
-    ),
-    radial-gradient(
-      circle at 24% 32%,
-      rgb(255 255 255 / 27%) 0 1px,
-      transparent 2px
-    ),
-    linear-gradient(165deg, #15183c 0%, #202c61 49%, #11172f 100%);
-}
-
-.home-widget--weather[data-weather-condition='clear'][data-weather-period='day'] {
-  background:
-    radial-gradient(
-      circle at 75% 15%,
-      rgb(255 232 132 / 38%) 0 6%,
-      transparent 27%
-    ),
-    linear-gradient(170deg, #2878bb 0%, #274f8d 48%, #14233f 100%);
+    radial-gradient(124% 72% at 50% -12%, rgb(92 132 255 / 44%), transparent 64%),
+    radial-gradient(74% 40% at 90% 6%, rgb(150 116 255 / 28%), transparent 58%),
+    linear-gradient(180deg, #1f2358 0%, #171b46 34%, #0e1028 70%, #07080f 100%);
 }
 
 .home-widget--weather[data-weather-condition='partly_cloudy'] {
   background:
-    radial-gradient(
-      ellipse at 72% 22%,
-      rgb(255 255 255 / 33%),
-      transparent 34%
-    ),
-    linear-gradient(165deg, #506f91 0%, #354b6e 48%, #17233e 100%);
+    radial-gradient(120% 72% at 50% -12%, rgb(122 166 250 / 44%), transparent 64%),
+    radial-gradient(78% 44% at 92% 6%, rgb(255 206 132 / 24%), transparent 58%),
+    linear-gradient(180deg, #2c3566 0%, #1e2650 34%, #11162e 72%, #0a0b16 100%);
 }
 
 .home-widget--weather[data-weather-condition='cloudy'] {
   background:
-    radial-gradient(
-      ellipse at 72% 22%,
-      rgb(255 255 255 / 24%),
-      transparent 34%
-    ),
-    linear-gradient(165deg, #536b82 0%, #34485e 48%, #172535 100%);
+    radial-gradient(122% 72% at 50% -12%, rgb(150 170 205 / 38%), transparent 64%),
+    radial-gradient(80% 44% at 92% 8%, rgb(126 148 188 / 24%), transparent 58%),
+    linear-gradient(180deg, #363e5a 0%, #262d46 34%, #161b2c 72%, #0a0b12 100%);
 }
 
 .home-widget--weather[data-weather-condition='rain'] {
   background:
-    repeating-linear-gradient(
-      104deg,
-      transparent 0 22px,
-      rgb(188 236 255 / 9%) 23px 25px,
-      transparent 26px 49px
-    ),
-    linear-gradient(165deg, #354b69 0%, #253952 46%, #101b2d 100%);
+    radial-gradient(124% 74% at 50% -12%, rgb(78 146 214 / 44%), transparent 64%),
+    radial-gradient(78% 42% at 12% 8%, rgb(126 200 240 / 22%), transparent 56%),
+    linear-gradient(180deg, #24395c 0%, #1a2a48 34%, #0f172c 72%, #070a12 100%);
 }
 
 .home-widget--weather[data-weather-condition='thunder'] {
   background:
-    radial-gradient(circle at 75% 18%, rgb(220 233 255 / 45%), transparent 23%),
-    linear-gradient(165deg, #27334d 0%, #2d3155 48%, #11172b 100%);
+    radial-gradient(126% 76% at 50% -12%, rgb(152 118 255 / 46%), transparent 64%),
+    radial-gradient(74% 40% at 86% 6%, rgb(202 182 255 / 26%), transparent 56%),
+    linear-gradient(180deg, #2e2760 0%, #201c46 34%, #12102a 72%, #08070f 100%);
 }
 
 .home-widget--weather[data-weather-condition='fog'] {
   background:
-    linear-gradient(180deg, rgb(217 225 229 / 40%) 0 20%, transparent 55%),
-    linear-gradient(165deg, #596b75 0%, #40525e 48%, #21303b 100%);
+    radial-gradient(128% 78% at 50% -16%, rgb(188 200 212 / 34%), transparent 66%),
+    radial-gradient(90% 46% at 50% 48%, rgb(158 174 190 / 20%), transparent 62%),
+    linear-gradient(180deg, #414a55 0%, #2c343f 34%, #191f26 72%, #0b0d10 100%);
 }
 
 .home-widget--weather[data-weather-condition='snow'] {
   background:
+    radial-gradient(124% 74% at 50% -12%, rgb(154 200 255 / 42%), transparent 64%),
+    radial-gradient(78% 42% at 88% 6%, rgb(212 234 255 / 28%), transparent 56%),
+    linear-gradient(180deg, #31446e 0%, #223052 34%, #141c2e 72%, #080b12 100%);
+}
+
+/* -------------------------------------------------------------------------
+   Ciel anime. Une seule couche par widget : les gouttes, les flocons et les
+   nappes sont des degrades repetes que l'on fait defiler, pas des elements.
+   ------------------------------------------------------------------------- */
+
+/* phone-effect--decorative retire cette couche en mode performance : un
+   springboard peut porter plusieurs widgets a la fois. */
+.widget-weather-sky {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.home-widget--weather > *:not(.widget-weather-sky) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Le masque s'applique a l'element et a ses enfants : les gouttes s'effacent
+   en descendant vers le releve, au lieu de le traverser. mask-image sans
+   prefixe n'arrive qu'avec Chrome 120, c'est la version -webkit- qui compte
+   pour le CEF vise. */
+[data-weather-condition='rain'] .widget-weather-sky,
+[data-weather-condition='thunder'] .widget-weather-sky {
+  mask-image: radial-gradient(
+    152% 132% at 80% -10%,
+    #000 0%,
+    rgb(0 0 0 / 70%) 54%,
+    transparent 94%
+  );
+  -webkit-mask-image: radial-gradient(
+    152% 132% at 80% -10%,
+    #000 0%,
+    rgb(0 0 0 / 70%) 54%,
+    transparent 94%
+  );
+}
+
+.widget-weather-sky i {
+  position: absolute;
+  top: -16px;
+  left: var(--widget-rain-left);
+  width: 1.2px;
+  height: var(--widget-rain-height);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgb(210 242 255 / 85%) 42%,
+    transparent
+  );
+  opacity: 0;
+  animation: widget-weather-drop var(--widget-rain-duration) linear
+    var(--widget-rain-delay) infinite;
+}
+
+[data-weather-condition='thunder'] .widget-weather-sky::after {
+  position: absolute;
+  inset: 0;
+  background: rgb(220 233 255 / 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  content: '';
+  animation: widget-weather-flash 9s steps(1, end) infinite;
+}
+
+[data-weather-condition='snow'] .widget-weather-sky {
+  background-image:
+    radial-gradient(circle at 18% 12%, #fff 0 1.6px, transparent 2.3px),
+    radial-gradient(circle at 62% 30%, #fff 0 1.3px, transparent 2px),
+    radial-gradient(circle at 88% 14%, #fff 0 1.5px, transparent 2.2px),
+    radial-gradient(circle at 36% 62%, #fff 0 1.3px, transparent 1.9px),
+    radial-gradient(circle at 8% 80%, #fff 0 1.6px, transparent 2.3px),
+    radial-gradient(circle at 74% 86%, #fff 0 1.4px, transparent 2.1px);
+  opacity: 0.34;
+  animation: widget-weather-snow 10s linear infinite;
+}
+
+[data-weather-condition='partly_cloudy'] .widget-weather-sky,
+[data-weather-condition='cloudy'] .widget-weather-sky {
+  background-image:
     radial-gradient(
-      circle at 20% 22%,
-      rgb(255 255 255 / 60%) 0 2px,
-      transparent 3px
+      ellipse 56% 34% at 22% 28%,
+      rgb(255 255 255 / 11%),
+      transparent 72%
     ),
     radial-gradient(
-      circle at 70% 36%,
-      rgb(255 255 255 / 47%) 0 2px,
-      transparent 3px
-    ),
-    linear-gradient(165deg, #55738e 0%, #3d5873 48%, #23364f 100%);
+      ellipse 44% 28% at 72% 64%,
+      rgb(255 255 255 / 7%),
+      transparent 74%
+    );
+  background-size: 190% 100%;
+  animation: widget-weather-clouds 46s linear infinite;
+}
+
+[data-weather-condition='fog'] .widget-weather-sky {
+  background-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgb(228 236 244 / 12%) 46%,
+    transparent 100%
+  );
+  background-size: 100% 58%;
+  animation: widget-weather-fog 24s ease-in-out infinite alternate;
+}
+
+[data-weather-condition='sunny'] .widget-weather-sky,
+[data-weather-condition='clear'][data-weather-period='day']
+  .widget-weather-sky {
+  background: radial-gradient(
+    circle at 78% 14%,
+    rgb(255 226 150 / 22%) 0 7%,
+    rgb(255 198 96 / 8%) 22%,
+    transparent 48%
+  );
+  animation: widget-weather-sun 9s ease-in-out infinite alternate;
+}
+
+[data-weather-period='night'] .widget-weather-sky::before {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 14% 16%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 44% 9%, rgb(220 236 255 / 100%) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 82% 22%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 66% 46%, rgb(220 236 255 / 100%) 0 1px, transparent 1.5px);
+  opacity: 0.32;
+  content: '';
+  animation: widget-weather-twinkle 6s ease-in-out infinite alternate;
+}
+
+/* La chute depasse volontairement la hauteur du widget : le conteneur rogne,
+   et la meme animation sert aux trois tailles de widget. */
+@keyframes widget-weather-drop {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(9deg);
+  }
+  16%,
+  78% {
+    opacity: 0.52;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(22px, 230px) rotate(9deg);
+  }
+}
+
+@keyframes widget-weather-snow {
+  to {
+    background-position: -14px 100%;
+  }
+}
+
+@keyframes widget-weather-clouds {
+  to {
+    background-position: 190% 0;
+  }
+}
+
+@keyframes widget-weather-fog {
+  from {
+    background-position: -30% 22%;
+  }
+  to {
+    background-position: 30% 62%;
+  }
+}
+
+@keyframes widget-weather-sun {
+  to {
+    opacity: 0.74;
+    transform: scale(1.035);
+  }
+}
+
+@keyframes widget-weather-twinkle {
+  to {
+    opacity: 0.16;
+  }
+}
+
+@keyframes widget-weather-flash {
+  0%,
+  93%,
+  95%,
+  100% {
+    opacity: 0;
+  }
+  94% {
+    opacity: 0.06;
+  }
+  94.5% {
+    opacity: 0.018;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .widget-weather-sky,
+  .widget-weather-sky i,
+  .widget-weather-sky::before,
+  .widget-weather-sky::after {
+    animation: none;
+  }
+  .widget-weather-sky i {
+    display: none;
+  }
 }
 
 .widget-weather-summary {
@@ -1236,8 +1588,9 @@ onBeforeUnmount(() => {
   gap: 2px;
 }
 
-.widget-music-controls button,
-.widget-contacts button {
+/* Regle des seules commandes de lecture : elle imposait aussi sa taille et
+   son fond gris aux pastilles de contact, qui sont devenues des boutons. */
+.widget-music-controls button {
   display: grid;
   width: 44px;
   height: 44px;
@@ -1272,6 +1625,33 @@ onBeforeUnmount(() => {
   background: rgb(25 26 29 / 94%);
 }
 
+.home-widget--wallet {
+  background:
+    linear-gradient(
+      135deg,
+      rgb(255 255 255 / 9%) 0%,
+      rgb(255 255 255 / 0%) 58%
+    ),
+    linear-gradient(180deg, rgb(42 42 46 / 94%), rgb(15 15 17 / 96%));
+}
+
+/* Le halo d'angle de la carte de debit de Banking, repris en plus discret. */
+.home-widget--wallet::after {
+  position: absolute;
+  right: -48px;
+  bottom: -48px;
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(255 255 255 / 9%),
+    rgb(255 255 255 / 0%) 70%
+  );
+  content: '';
+  pointer-events: none;
+}
+
 .widget-wallet-icon {
   position: absolute;
   top: 13px;
@@ -1280,16 +1660,33 @@ onBeforeUnmount(() => {
   width: 36px;
   height: 36px;
   place-items: center;
+  border: 1px solid rgb(255 255 255 / 12%);
   border-radius: 11px;
-  color: #64d2ff;
-  background: rgb(100 210 255 / 13%);
+  color: #fff;
+  background: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 12%),
+    rgb(255 255 255 / 2%)
+  );
+}
+
+.home-widget--wallet .widget-eyebrow {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
 }
 
 .widget-balance {
-  margin: 2px 0;
+  margin: 3px 0 1px;
   font-size: 30px;
   font-weight: 650;
-  letter-spacing: -1.2px;
+  letter-spacing: -1.1px;
+}
+
+.home-widget--wallet small {
+  font-size: 11.5px;
+  letter-spacing: 0.3px;
 }
 
 .home-widget--transactions,
@@ -1298,39 +1695,50 @@ onBeforeUnmount(() => {
   flex-direction: column;
 }
 
-.home-widget--transactions {
-  background: rgb(29 29 31 / 94%);
-}
-
+.home-widget--transactions,
 .home-widget--contacts {
-  background: rgb(25 26 29 / 94%);
+  background: linear-gradient(
+    180deg,
+    rgb(30 30 33 / 94%),
+    rgb(18 18 20 / 95%)
+  );
 }
 
+/* L'en-tete d'un widget n'est pas un titre colore : il nomme la source, en
+   blanc, et seule l'icone porte la teinte de l'application. */
 .widget-list-header {
   display: flex;
-  margin-bottom: 7px;
+  margin-bottom: 9px;
   align-items: center;
   justify-content: space-between;
-  color: #64d2ff;
+  color: #fff;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 650;
+  letter-spacing: -0.2px;
 }
 
-.home-widget--transactions .widget-list-header {
-  color: #30d158;
+.widget-list-header svg {
+  color: #6fbf8a;
+  opacity: 0.9;
 }
 
 .widget-transaction {
   display: flex;
   min-height: 43px;
-  padding: 5px 0;
+  gap: 10px;
+  padding: 7px 0;
   align-items: center;
   justify-content: space-between;
   border: 0;
-  border-top: 0.5px solid rgb(255 255 255 / 11%);
+  border-top: 0.5px solid rgb(255 255 255 / 9%);
   color: #fff;
   background: transparent;
   text-align: left;
+}
+
+.widget-transaction:first-of-type {
+  border-top: 0;
+  padding-top: 0;
 }
 
 .widget-transaction > span {
@@ -1340,23 +1748,33 @@ onBeforeUnmount(() => {
 }
 
 .widget-transaction strong {
-  font-size: 12px;
+  overflow: hidden;
+  font-size: 12.5px;
   font-weight: 650;
+  letter-spacing: -0.1px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .widget-transaction small {
-  margin-top: 1px;
-  font-size: 9px;
+  margin-top: 2px;
+  color: rgb(255 255 255 / 45%);
+  font-size: 9.5px;
+  font-weight: 500;
 }
 
 .widget-transaction b {
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
+  flex: 0 0 auto;
+  color: rgb(255 255 255 / 78%);
+  font-size: 12.5px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
 }
 
 .widget-transaction b.positive {
-  color: #30d158;
+  color: #6fbf8a;
 }
 
 .widget-contacts {
@@ -1377,48 +1795,59 @@ onBeforeUnmount(() => {
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 7px;
+}
+
+.widget-contact-mark {
+  position: relative;
+  display: block;
+  width: 46px;
+  height: 46px;
 }
 
 .widget-contact-avatar {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   place-items: center;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 14%);
   border-radius: 50%;
   color: #fff;
-  background: #5e5ce6;
-  box-shadow: inset 0 1px rgb(255 255 255 / 20%);
-  font-size: 16px;
+  background: linear-gradient(
+    160deg,
+    hsl(var(--widget-avatar-hue, 210) 68% 60%),
+    hsl(var(--widget-avatar-hue, 210) 46% 36%)
+  );
+  box-shadow: inset 0 1px rgb(255 255 255 / 24%);
+  font-size: 17px;
   font-weight: 650;
 }
 
-.widget-contacts article:nth-child(2n) .widget-contact-avatar {
-  background: #ff9f0a;
-}
-
-.widget-contacts article:nth-child(3n) .widget-contact-avatar {
-  background: #34c759;
+/* Le message se loge dans l'angle de la pastille : dans une tuile de 46 px il
+   n'y a pas la place pour deux boutons cote a cote sous le nom. */
+.widget-contact-message {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  display: grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  padding: 0;
+  border: 1.5px solid rgb(20 20 22 / 95%);
+  border-radius: 50%;
+  color: #fff;
+  background: #2f80ed;
 }
 
 .widget-contacts strong {
   max-width: 100%;
   overflow: hidden;
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 550;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.widget-contacts article > div {
-  display: flex;
-  gap: 3px;
-}
-
-.widget-contacts button {
-  width: 25px;
-  height: 25px;
-  color: #64d2ff;
-  background: rgb(100 210 255 / 12%);
 }
 
 .home-widget-remove {

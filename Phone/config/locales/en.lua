@@ -1173,8 +1173,8 @@ Locales["en"] = {
                 },
             },
             clock = {
-                name = "Clock", lap = "Lap", minutes = "Minutes", add = "Add alarm", location = "Los Santos",
-                tabs = { world = "Clock", alarm = "Alarm", stopwatch = "Stopwatch", timer = "Timer" },
+                name = "Clock", lap = "Lap", minutes = "Minutes", add = "Add alarm",
+                tabs = { alarm = "Alarm", stopwatch = "Stopwatch", timer = "Timer" },
                 alarm = {
                     add = "Add Alarm", edit = "Edit Alarm", ringing = "Alarm", time = "Time", hours = "Hours", ["repeat"] = "Repeat", note = "Note",
                     notePlaceholder = "Alarm", sound = "Sound", delete = "Delete Alarm", never = "Never",

@@ -46,22 +46,52 @@ describe('Billing app Agent UI migration', () => {
     expect(source).toContain("<strong>{{ t('name') }}</strong>")
   })
 
-  it('blends every navbar into dark and light page backgrounds', () => {
+  it('lets the navbar float over the page gradient without a fade strip', () => {
+    // La colonne defilante rogne son contenu a son propre bord haut : le fondu
+    // qui masquait le passage sous le bandeau n'a plus d'objet, et il posait
+    // une couleur unie par-dessus le degrade.
     expect(source).toMatch(
-      /\.billing-navbar::after\s*\{[^}]*bottom:\s*-18px;[^}]*height:\s*18px;[^}]*linear-gradient\(to bottom, rgb\(7 9 12 \/ 88%\), transparent\);/s,
+      /\.billing-navbar\s*\{[^}]*--sky-navbar-glass:\s*transparent;/s,
     )
+    expect(source).not.toContain('.billing-navbar::after')
+  })
+
+  it('lets the page gradient show through the Sky page backdrop', () => {
+    // SkyAppPage peint un fond opaque dans .sky-app-page__backdrop, place en
+    // z-index -1 : sans neutralisation il masque entierement le degrade.
     expect(source).toMatch(
-      /\.billing-app--light \.billing-navbar::after\s*\{[^}]*linear-gradient\(to bottom, rgb\(245 247 250 \/ 88%\), transparent\);/s,
+      /\.sky-app-page__backdrop\)\s*\{\s*background:\s*transparent;/s,
+    )
+    expect(source).toMatch(/\.billing-app\s*\{[^}]*isolation:\s*isolate;/s)
+  })
+
+  it('carries the three overview figures on one statement card', () => {
+    // Les trois tuiles plates sont devenues une carte unique, construite comme
+    // la carte de debit de Banking : le total du, le nombre de factures
+    // ouvertes et le nombre en retard.
+    expect(source).toContain('class="billing-statement"')
+    expect(source).toContain("t('summary.due')")
+    expect(source).toContain("t('summary.open')")
+    expect(source).toContain("t('summary.overdue')")
+    expect(source).not.toContain('billing-summary__item')
+    // Zero facture en retard ne doit pas s'afficher comme une alerte.
+    expect(source).toContain("'is-clear': billing.overview.overdueCount === 0")
+    expect(source).toMatch(
+      /\.billing-statement__figure--overdue\.is-clear[\s\S]{0,220}?color:/s,
     )
   })
 
-  it('keeps every overview box icon white', () => {
+  it('keeps filter selectors quieter than the page accent', () => {
+    // Le kit remplit la pastille active avec --sky-app-accent : on repointe la
+    // variable sur une surface neutre plutot que de surencherir en
+    // specificite, ce qui donnerait une egalite tranchee par l'ordre des
+    // fichiers.
     expect(source).toMatch(
-      /\.billing-summary__item svg\s*\{[^}]*color:\s*#fff;/s,
+      /\.billing-direction,\s*\n\.billing-filters\s*\{\s*--sky-app-accent:/s,
     )
-    expect(source).not.toContain('.billing-summary__item--open svg')
-    expect(source).not.toContain('.billing-summary__item--due svg')
-    expect(source).not.toContain('.billing-summary__item--overdue svg')
+    expect(source).toMatch(
+      /\.billing-app--light \.billing-direction,[\s\S]{0,90}?--sky-app-accent:/s,
+    )
   })
 
   it('aligns invoice information and note with the detail hero edges', () => {

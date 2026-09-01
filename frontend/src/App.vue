@@ -318,12 +318,15 @@ const isAppRoute = computed(() => route.name === 'app')
 const activeAppId = computed(() =>
   typeof route.params.appId === 'string' ? route.params.appId : '',
 )
+// Applications dont le canevas reste sombre quel que soit le theme : sans
+// cette liste, la barre d'etat passe en noir sur leur fond en theme clair.
 const WHITE_STATUS_BAR_APP_IDS = new Set([
   'calculator',
   'camera',
   'fliptok',
   'agent-flappy',
   'snake',
+  'weather',
 ])
 const DARK_STATUS_BAR_APP_IDS = new Set(['number-merge'])
 const isDynamicIslandGalleryRoute = computed(

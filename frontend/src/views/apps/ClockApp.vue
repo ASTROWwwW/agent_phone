@@ -15,7 +15,6 @@ import {
 import {
   AlarmClock,
   ChevronRight,
-  Globe2,
   Minus,
   Pause,
   Play,
@@ -46,10 +45,10 @@ import {
 const phone = usePhoneStore()
 const clock = useClockStore()
 const route = useRoute()
-const tab = ref<'world' | 'alarm' | 'stopwatch' | 'timer'>(
+const tab = ref<'alarm' | 'stopwatch' | 'timer'>(
   route.query.section === 'timer' || route.query.section === 'stopwatch'
     ? route.query.section
-    : 'world',
+    : 'alarm',
 )
 const alarmEditor = ref<
   { mode: 'create' } | { id: string; mode: 'edit' } | null
@@ -57,7 +56,6 @@ const alarmEditor = ref<
 const timerSoundMenuOpen = ref(false)
 const alarmsEditing = ref(false)
 const now = ref(Date.now())
-const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 let ticker: ReturnType<typeof setInterval> | undefined
 let stopwatchFrame: number | undefined
 
@@ -83,23 +81,6 @@ const timerPicker = computed({
   set: (value: string) =>
     clock.setTimerDuration(timerPickerMilliseconds(value)),
 })
-const currentTime = computed(() =>
-  new Intl.DateTimeFormat(phone.lang, {
-    hour: '2-digit',
-    hourCycle: 'h23',
-    minute: '2-digit',
-    timeZone: browserTimeZone,
-  }).format(now.value),
-)
-const currentTimeZone = computed(
-  () =>
-    new Intl.DateTimeFormat(phone.lang, {
-      timeZone: browserTimeZone,
-      timeZoneName: 'short',
-    })
-      .formatToParts(now.value)
-      .find((part) => part.type === 'timeZoneName')?.value ?? browserTimeZone,
-)
 const stopwatchDecimalSeparator = computed(
   () =>
     new Intl.NumberFormat(phone.lang)
@@ -119,7 +100,6 @@ const selectedAlarm = computed(() => {
     : undefined
 })
 const tabs = [
-  { id: 'world', icon: Globe2 },
   { id: 'alarm', icon: AlarmClock },
   { id: 'stopwatch', icon: Timer },
   { id: 'timer', icon: TimerReset },
@@ -272,16 +252,8 @@ onBeforeUnmount(() => {
       </sky-navbar>
 
       <sky-block component="section" nested class="clock-content">
-        <sky-block v-if="tab === 'world'" nested class="clock-world-now">
-          <span class="clock-world-location">{{
-            phone.t('Apps.clock.location')
-          }}</span>
-          <time class="clock-world-time">{{ currentTime }}</time>
-          <span class="clock-world-zone">{{ currentTimeZone }}</span>
-        </sky-block>
-
         <section
-          v-else-if="tab === 'alarm'"
+          v-if="tab === 'alarm'"
           class="clock-alarm-list"
           :aria-label="phone.t('Apps.clock.tabs.alarm')"
         >

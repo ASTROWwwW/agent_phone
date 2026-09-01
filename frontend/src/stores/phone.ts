@@ -3407,9 +3407,7 @@ const defaultLocales: LocaleTree = {
       lap: 'Lap',
       minutes: 'Minutes',
       add: 'Add alarm',
-      location: 'Los Santos',
       tabs: {
-        world: 'Clock',
         alarm: 'Alarm',
         stopwatch: 'Stopwatch',
         timer: 'Timer',

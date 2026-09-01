@@ -7417,16 +7417,31 @@ app.post('/api/:endpoint', (request, response) => {
   }
   if (endpoint === 'weather:get') {
     const weatherScenario = {
+      'weather-clear': 'clear',
+      'weather-cloudy': 'cloudy',
       'weather-fog': 'fog',
+      'weather-partly-cloudy': 'partly_cloudy',
       'weather-rain': 'rain',
       'weather-snow': 'snow',
       'weather-sunny': 'sunny',
       'weather-thunder': 'thunder',
+      'weather-night': 'clear',
+      'weather-night-rain': 'rain',
+      'weather-night-snow': 'snow',
     }[testScenario]
+    // Une heure creuse fait basculer l'application sur ses decors de nuit :
+    // etoiles, voile sombre et icones nocturnes.
+    const nightScenario = String(testScenario).startsWith('weather-night')
     response.json({
       success: true,
       data: {
-        clock: { year: 2026, month: 8, day: 5, hour: 17, minute: 20 },
+        clock: {
+          year: 2026,
+          month: 8,
+          day: 5,
+          hour: nightScenario ? 23 : 17,
+          minute: 20,
+        },
         condition: weatherScenario ?? 'partly_cloudy',
         nextCondition: weatherScenario ?? 'rain',
         rainLevel:

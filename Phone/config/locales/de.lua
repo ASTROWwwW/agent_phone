@@ -1173,8 +1173,8 @@ Locales["de"] = {
                 },
             },
             clock = {
-                name = "Uhr", lap = "Runde", minutes = "Minuten", add = "Wecker hinzufügen", location = "Los Santos",
-                tabs = { world = "Uhr", alarm = "Wecker", stopwatch = "Stoppuhr", timer = "Timer" },
+                name = "Uhr", lap = "Runde", minutes = "Minuten", add = "Wecker hinzufügen",
+                tabs = { alarm = "Wecker", stopwatch = "Stoppuhr", timer = "Timer" },
                 alarm = {
                     add = "Wecker hinzufügen", edit = "Wecker bearbeiten", ringing = "Wecker", time = "Zeit", hours = "Stunden", ["repeat"] = "Wiederholen", note = "Notiz",
                     notePlaceholder = "Wecker", sound = "Ton", delete = "Wecker löschen", never = "Niemals",

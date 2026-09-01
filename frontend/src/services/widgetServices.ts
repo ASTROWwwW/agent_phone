@@ -9,6 +9,7 @@ import {
 } from 'vue'
 
 import { useBankingStore } from '@/stores/banking'
+import { useCalendarStore } from '@/stores/calendar'
 import { useCallsStore } from '@/stores/calls'
 import { useMusicStore } from '@/stores/music'
 import { usePhoneStore } from '@/stores/phone'
@@ -18,6 +19,7 @@ const now = ref(new Date())
 let clockConsumers = 0
 let clockInterval: number | undefined
 let contactsRequest: Promise<void> | undefined
+let calendarRequest: Promise<void> | undefined
 
 export function useClockService(enabled: MaybeRefOrGetter<boolean> = true) {
   const phone = usePhoneStore()
@@ -167,6 +169,45 @@ export function useBankService(enabled: MaybeRefOrGetter<boolean> = true) {
   watch(() => toValue(enabled), loadIfNeeded)
   onMounted(loadIfNeeded)
   return { overview }
+}
+
+const DAY_MS = 86_400_000
+
+// Les rendez-vous du jour, tries, sans ceux qui sont deja termines. Le magasin
+// du Calendrier demande une plage : on lui donne la journee en cours.
+export function useCalendarService(enabled: MaybeRefOrGetter<boolean> = true) {
+  const calendar = useCalendarStore()
+
+  const todayEvents = computed(() => {
+    const reference = now.value.getTime()
+    const startOfDay = new Date(now.value)
+    startOfDay.setHours(0, 0, 0, 0)
+    const dayStart = startOfDay.getTime()
+    return calendar.events
+      .filter(
+        (event) =>
+          event.startsAt >= dayStart &&
+          event.startsAt < dayStart + DAY_MS &&
+          event.endsAt >= reference,
+      )
+      .sort((first, second) => first.startsAt - second.startsAt)
+  })
+
+  function loadIfNeeded(): void {
+    if (!toValue(enabled) || calendar.events.length || calendarRequest) return
+    const startOfDay = new Date()
+    startOfDay.setHours(0, 0, 0, 0)
+    calendarRequest = calendar
+      .load(startOfDay.getTime(), startOfDay.getTime() + DAY_MS)
+      .then(() => undefined)
+      .finally(() => {
+        calendarRequest = undefined
+      })
+  }
+
+  watch(() => toValue(enabled), loadIfNeeded)
+  onMounted(loadIfNeeded)
+  return { events: todayEvents }
 }
 
 export function useContactsService(enabled: MaybeRefOrGetter<boolean> = true) {
