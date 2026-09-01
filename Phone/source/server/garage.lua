@@ -200,9 +200,6 @@ local function normalized_plate(value)
     return plate
 end
 
--- Reproduit la portee de propriete de la base : personnel quand owner porte
--- l'identifiant, de service quand il porte job:<metier> et que la colonne du
--- metier correspond a celui du joueur.
 local function ownership_clause(source, identifier)
     local clauses = { "`owner` = ?" }
     local parameters = { identifier }

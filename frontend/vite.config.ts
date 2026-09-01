@@ -4,14 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
-// Les fragments portaient un prefixe et une empreinte : agent-CameraApp-B3rfK1ic.js.
-// Ils sont desormais nommes d'apres leur seul contenu, en minuscules, le systeme
-// de fichiers de Windows et le CEF ignorant la casse.
-//
-// Sans empreinte, deux fragments homonymes s'ecraseraient en silence et le
-// paquet serait casse sans que rien ne le signale. Le registre ci-dessous
-// interrompt la construction au premier doublon, avant que le fichier ne parte
-// dans la ressource.
 const emittedNames = new Map<string, string>()
 
 function uniqueName(name: string, source: string): string {
@@ -47,23 +39,14 @@ export default defineConfig({
           return 'assets/' + uniqueName(base.toLowerCase() + '.' + extension.toLowerCase(), source)
         },
         chunkFileNames(chunk) {
-          // Rollup nomme le bloc script d'un composant partage
-          // Foo.vue_vue_type_script_setup_true_lang : on ne garde que Foo.
           const base = chunk.name.replace(/\.vue_vue_type_.*$/, '')
           return 'assets/' + uniqueName(base.toLowerCase() + '.js', chunk.name)
         },
-        // L'entree ne peut pas s'appeler index : le fragment du kit porte deja
-        // ce nom une fois l'empreinte retiree. Elle passe par le meme registre
-        // que les fragments, sans quoi une collision entre l'entree et un
-        // fragment echapperait au controle.
         entryFileNames() {
           return 'assets/' + uniqueName('app.js', '<entree>')
         },
         manualChunks(id) {
           if (!id.includes('node_modules')) return undefined
-          // Les 220 icones distinctes finissaient dans le fragment d'entree,
-          // que le CEF doit analyser avant le premier rendu. Isolees, elles
-          // sont analysees en parallele des applications chargees a la demande.
           if (id.includes('lucide-vue-next')) return 'icons'
           if (id.includes('dompurify')) return 'purify'
           if (
@@ -74,9 +57,6 @@ export default defineConfig({
           ) {
             return 'vue'
           }
-          // Le reste revient a Rollup : un fourre-tout vendor rassemblerait les
-          // dependances propres a une application dans un fragment charge des
-          // le demarrage, ce qui annulerait le chargement a la demande.
           return undefined
         },
       },

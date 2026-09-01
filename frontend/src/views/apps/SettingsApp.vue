@@ -130,8 +130,6 @@ const FACTORY_RESET_DURATION_MS = 8_000
 
 const phone = usePhoneStore()
 
-// Le personnage et son metier viennent de la base : les afficher ici evite que
-// la section A propos ne parle que de l appareil.
 const ownerName = computed(() =>
   [phone.player.firstName, phone.player.lastName]
     .map((part) => part.trim())

@@ -14,7 +14,7 @@ function source(path: string | URL): string {
 const config = source(resourceUrl('config/config.lua'))
 const configDefault = source(resourceUrl('source/shared/config_default.lua'))
 const framework = source(resourceUrl('source/bridge/server/framework.lua'))
-const esx = source(resourceUrl('source/bridge/server/frameworks/esx.lua'))
+const esx = source(resourceUrl('source/bridge/server/framework.lua'))
 const configurator = source(
   resourceUrl('source/server/phone_configurator.lua'),
 )

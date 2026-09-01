@@ -541,9 +541,6 @@ local function load_device_data(imei)
     return data
 end
 
--- Identite du personnage telle que la base la connait. Le metier vient du meme
--- endroit que celui dont Companies verifie les droits, ce qui evite deux
--- sources de verite pour la meme information.
 local function player_identity(source)
     local job = Bridge.Framework.GetJob(source) or {}
     local job2 = Bridge.Framework.GetJob2 and Bridge.Framework.GetJob2(source) or {}

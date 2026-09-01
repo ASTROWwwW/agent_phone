@@ -2,9 +2,6 @@ Bridge.Database.AfterMigration("agent_phone", function()
 
 AgentPhoneSim = {}
 
--- Le systeme de carte SIM peut etre actif alors que ses objets n existent pas
--- dans l inventaire : le joueur n obtient alors aucun numero, donc ni appel ni
--- message, et rien ne le signale. Le demarrage l annonce en clair.
 CreateThread(function()
     Wait(2000)
     if type(Bridge.Inventory.ItemExists) ~= "function" then

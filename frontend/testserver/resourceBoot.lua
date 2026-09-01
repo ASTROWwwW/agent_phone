@@ -1,14 +1,9 @@
--- Charge la configuration et les locales de la ressource comme le ferait le
--- serveur, avec des bouchons pour les fonctions du moteur. Une erreur ici est
--- une erreur au demarrage : c'est ce que luac -p ne peut pas voir, puisqu'il ne
--- verifie que la syntaxe.
 local root = ...
 assert(root, "chemin de la ressource attendu")
 
 local loaded = {}
 local failures = {}
 
--- ------------------------------------------------------------- bouchons Cfx
 local resource_name = "agent_phone"
 
 function GetCurrentResourceName() return resource_name end
@@ -38,7 +33,6 @@ Config = {}
 
 function TranslateCap(key) return key end
 
--- ------------------------------------------------------------------ chargeur
 local function run(relative)
   local path = root .. "/" .. relative
   local chunk, syntax_error = loadfile(path)
@@ -65,7 +59,6 @@ run("config/locales/de.lua")
 run("config/locales/es.lua")
 run("source/shared/config_default.lua")
 
--- ------------------------------------------------------------------ rapport
 print("  fichiers charges : " .. #loaded)
 
 for _, failure in ipairs(failures) do
@@ -76,7 +69,6 @@ if #failures > 0 then
   os.exit(1)
 end
 
--- Quelques invariants que seule l'execution revele.
 local checks = {
   { "Config.Bridge.Locale", Config.Bridge and Config.Bridge.Locale },
   { "Config.Phone.Item", Config.Phone and Config.Phone.Item },

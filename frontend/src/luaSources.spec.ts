@@ -39,9 +39,6 @@ describe('Lua sources', () => {
   })
 
   it('never calls a local before it is declared', () => {
-    // Lua resout alors le nom en variable globale nil : la syntaxe passe, et
-    // l'appel echoue au premier declenchement. Aucun compilateur ne le signale,
-    // et l'erreur ne se voit qu'en jeu.
     const offenders: string[] = []
 
     for (const file of sources) {
@@ -73,9 +70,6 @@ describe('Lua sources', () => {
   })
 
   it('compiles every file when luac is available', () => {
-    // luac rejette la syntaxe propre a CfxLua, comme les hash entre accents
-    // graves ; la ressource n'en utilise aucun, le compilateur reste donc un
-    // juge valable ici. Absent de la machine, le test se contente de le dire.
     if (!hasLuac()) {
       expect(sources.length).toBeGreaterThan(0)
       return
@@ -96,10 +90,6 @@ describe('Lua sources', () => {
   })
 
   it('boots its configuration and locales when lua is available', () => {
-    // luac ne verifie que la syntaxe. Charger reellement la configuration et
-    // les locales, avec des bouchons pour le moteur, revele ce qui echouerait
-    // au demarrage de la ressource : une valeur manquante, une locale absente,
-    // une erreur d execution dans un fichier pourtant bien forme.
     try {
       execFileSync('lua', ['-v'], { stdio: 'ignore' })
     } catch {

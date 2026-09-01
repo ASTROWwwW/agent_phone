@@ -68,10 +68,6 @@ describe('password pepper placement', () => {
     expect(existsSync(resourceRoot + 'config/secrets.example.lua')).toBe(true)
   })
   it('never lets the SQL configurator overwrite the server secrets', () => {
-    // config.lua declare Config.Server avec des coquilles vides, que
-    // config/secrets.lua remplit ensuite. L instantane stocke en base est pris
-    // sur config.lua : le reappliquer effacait les peppers, et le serveur
-    // signalait des empreintes sans secret cote production.
     expect(configurator).toMatch(/key ~= "CommandPermissions" and key ~= "Server"/)
   })
 })

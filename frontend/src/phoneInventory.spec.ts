@@ -12,7 +12,7 @@ const readFrontendFile = (path: string) =>
   readFileSync(new URL(path, import.meta.url), 'utf8')
 
 const inventoryAdapters = [
-  ['ox', 'source/bridge/server/inventory/ox.lua'],
+  ['ox', 'source/bridge/server/inventory.lua'],
 ] as const
 
 describe('phone inventory contracts', () => {

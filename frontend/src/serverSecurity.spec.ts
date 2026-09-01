@@ -20,11 +20,6 @@ const banking = read(serverRoot, 'banking.lua')
 
 describe('server security invariants', () => {
   it('never interpolates a client value into a query', () => {
-    // Assembler une clause a partir de fragments litteraux est sans danger et
-    // le depot le fait sciemment : agentride compose un WHERE choisi parmi
-    // quatre blocs constants, companies ajoute une condition selon un booleen.
-    // Ce qui doit rester impossible, c'est qu'une valeur issue du payload
-    // client entre dans le texte de la requete au lieu d'un parametre lie.
     const offenders: string[] = []
     const clientValue = /\.\.[^\n]*\b(?:data\b|payload\b|request\b)[.[]/
 
@@ -51,10 +46,6 @@ describe('server security invariants', () => {
       /agent_phone:security:unlock[\s\S]{0,200}?AgentPhone\.AllowOperation\(\s*source,\s*"security_unlock"/,
     )
 
-    // change et disable verifient le meme secret : ils doivent passer par
-    // verify_passcode, qui persiste failed_attempts et locked_until par IMEI.
-    // Sans cela ils deviendraient un oracle de force brute contournant la
-    // limite posee sur unlock.
     for (const callback of ['change-passcode', 'disable-passcode']) {
       const block = security.slice(security.indexOf(`agent_phone:security:${callback}`))
       const body = block.slice(0, block.indexOf('\nend)'))
@@ -101,8 +92,6 @@ describe('server security invariants', () => {
     const offenders: string[] = []
 
     for (const { name, source } of serverFiles) {
-      // Un identifiant de joueur fourni par le client ne doit jamais servir a
-      // designer l'auteur de l'action.
       const assignments = source.matchAll(
         /local\s+identifier\s*=\s*(?:trim\()?\s*data\s*(?:and\s*data)?\.(identifier|citizenid|owner)/g,
       )
@@ -113,8 +102,6 @@ describe('server security invariants', () => {
       }
     }
 
-    // darkchat lit un Dark-ID de destination, pas l'identite de l'appelant :
-    // le profil de l'auteur y vient de require_profile(source).
     expect(offenders.filter((entry) => !entry.startsWith('darkchat.lua'))).toEqual([])
   })
 })

@@ -76,10 +76,6 @@ fs.writeFileSync(targetIndex, normalizedIndex)
 generateConfigDefault()
 console.log(`Published NUI to ${targetDirectory}`)
 
-// FXServer ne decouvre pas une ressource montee par lien : elle doit exister
-// comme dossier reel sous resources/. Quand AGENT_PHONE_DEPLOY designe ce
-// dossier, la ressource y est recopiee a chaque construction, ce qui evite que
-// le serveur tourne sur une version perimee.
 const deployTarget = process.env.AGENT_PHONE_DEPLOY
 if (deployTarget) {
   if (path.resolve(deployTarget) === path.resolve(resourceDirectory)) {
