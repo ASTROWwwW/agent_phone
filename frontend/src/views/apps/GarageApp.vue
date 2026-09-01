@@ -269,32 +269,34 @@ onBeforeUnmount(() => {
     </SkyEmptyState>
 
     <SkyScrollArea v-else padded class="garage-scroll">
-      <SkyGlass class="garage-summary">
-        <div class="garage-summary__heading">
+      <article class="garage-summary">
+        <header class="garage-summary__heading">
           <span>
-            <small>{{ phone.t('Apps.garage.myVehicles') }}</small>
-            <strong>{{ counts.all }}</strong>
+            <small class="sky-type-eyebrow">{{
+              phone.t('Apps.garage.myVehicles')
+            }}</small>
+            <strong class="sky-type-display">{{ counts.all }}</strong>
           </span>
-          <i><CarFront :size="27" /></i>
-        </div>
+          <i><CarFront :size="24" /></i>
+        </header>
         <div class="garage-summary__stats">
           <span>
             <i class="is-garaged" />
             <b>{{ counts.garaged }}</b>
-            {{ phone.t('Apps.garage.filters.garaged') }}
+            <em>{{ phone.t('Apps.garage.filters.garaged') }}</em>
           </span>
           <span>
             <i class="is-out" />
             <b>{{ counts.out }}</b>
-            {{ phone.t('Apps.garage.filters.out') }}
+            <em>{{ phone.t('Apps.garage.filters.out') }}</em>
           </span>
           <span>
             <i class="is-impounded" />
             <b>{{ counts.impounded }}</b>
-            {{ phone.t('Apps.garage.filters.impounded') }}
+            <em>{{ phone.t('Apps.garage.filters.impounded') }}</em>
           </span>
         </div>
-      </SkyGlass>
+      </article>
 
       <SkyGlass v-if="garage.valet" class="garage-valet-live">
         <div class="garage-valet-live__icon">
@@ -346,6 +348,11 @@ onBeforeUnmount(() => {
       </SkySegmented>
 
       <section v-if="filteredVehicles.length" class="garage-vehicles">
+        <header class="garage-vehicles__head">
+          <h2 class="sky-type-display">{{ phone.t('Apps.garage.fleet') }}</h2>
+          <span>{{ filteredVehicles.length }}</span>
+        </header>
+
         <SkyGlass
           v-for="vehicle in filteredVehicles"
           :key="vehicle.id"
@@ -362,28 +369,30 @@ onBeforeUnmount(() => {
               loading="lazy"
               @error="useVehicleIcon(vehicle)"
             />
-            <component v-else :is="kindIcons[vehicle.kind]" :size="47" />
-            <i :class="`is-${vehicle.status}`">
-              {{ phone.t(`Apps.garage.status.${vehicle.status}`) }}
-            </i>
+            <component v-else :is="kindIcons[vehicle.kind]" :size="26" />
           </span>
           <span class="garage-vehicle__content">
             <span class="garage-vehicle__title">
-              <span>
-                <strong>{{ displayName(vehicle) }}</strong>
-                <small>{{ modelName(vehicle) }}</small>
-              </span>
+              <strong class="sky-type-display">{{
+                displayName(vehicle)
+              }}</strong>
+              <i class="garage-vehicle__status" :class="`is-${vehicle.status}`">
+                {{ phone.t(`Apps.garage.status.${vehicle.status}`) }}
+              </i>
+            </span>
+            <span class="garage-vehicle__model">
+              {{ modelName(vehicle) }}
               <b>{{ vehicle.plate }}</b>
             </span>
             <span class="garage-vehicle__meta">
-              <span
-                ><MapPin :size="13" />{{
-                  vehicle.location || phone.t('Apps.garage.unknownLocation')
-                }}</span
-              >
-              <span v-if="conditionValue(vehicle) !== null"
-                ><Gauge :size="13" />{{ conditionValue(vehicle) }}%</span
-              >
+              <span>
+                <MapPin :size="12" aria-hidden="true" />
+                {{ vehicle.location || phone.t('Apps.garage.unknownLocation') }}
+              </span>
+              <span v-if="conditionValue(vehicle) !== null">
+                <Gauge :size="12" aria-hidden="true" />
+                {{ conditionValue(vehicle) }}%
+              </span>
             </span>
           </span>
         </SkyGlass>
@@ -585,6 +594,31 @@ onBeforeUnmount(() => {
   --garage-text: var(--sky-text);
   --garage-secondary: var(--sky-muted);
   --garage-separator: var(--sky-hairline);
+  background:
+    radial-gradient(
+      120% 58% at 50% -10%,
+      rgb(10 132 255 / 16%),
+      transparent 62%
+    ),
+    radial-gradient(90% 40% at 96% 12%, rgb(88 86 214 / 10%), transparent 58%),
+    linear-gradient(180deg, #f4f7fd 0%, #eef0f6 50%, #e9ebf1 100%);
+}
+
+/* SkyAppPage peint un fond opaque dans son backdrop, place en z-index -1 :
+   sans cette neutralisation il masque entierement le degrade. */
+.garage-page :deep(.sky-app-page__backdrop) {
+  background: transparent;
+}
+
+.garage-page.sky-app-page--dark {
+  background:
+    radial-gradient(
+      124% 62% at 50% -10%,
+      rgb(10 132 255 / 26%),
+      transparent 62%
+    ),
+    radial-gradient(90% 42% at 96% 12%, rgb(88 86 214 / 18%), transparent 58%),
+    linear-gradient(180deg, #101724 0%, #0b1018 54%, #06090e 100%);
 }
 .garage-navbar :deep(.sky-navbar__title-container > div) {
   transform: translateY(-30px);
@@ -592,83 +626,133 @@ onBeforeUnmount(() => {
 .garage-scroll {
   padding-top: 0;
 }
+/* Carte d'en-tete alignee sur la carte bancaire de Banking : fond sombre,
+   surtitre en capitales espacees, chiffre en grand, badge de glyphe a droite. */
 .garage-summary {
-  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  padding: 17px 18px 15px;
+  border: 1px solid rgb(255 255 255 / 8%);
   border-radius: var(--sky-radius-card);
+  color: #fff;
+  background:
+    linear-gradient(
+      135deg,
+      rgb(255 255 255 / 10%) 0%,
+      rgb(255 255 255 / 0%) 58%
+    ),
+    linear-gradient(180deg, rgb(38 44 58 / 96%), rgb(12 15 21 / 98%));
+  box-shadow:
+    0 12px 30px rgb(8 16 32 / 32%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
 }
+
+.garage-summary::after {
+  position: absolute;
+  right: -54px;
+  bottom: -54px;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(90 160 255 / 20%),
+    rgb(255 255 255 / 0%) 70%
+  );
+  content: '';
+  pointer-events: none;
+}
+
 .garage-summary__heading {
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
+
 .garage-summary__heading > span {
   display: flex;
   flex-direction: column;
 }
+
 .garage-summary__heading small {
-  color: var(--garage-secondary);
-  font-size: 12px;
-  font-weight: 650;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
+  color: rgb(255 255 255 / 58%);
 }
+
 .garage-summary__heading strong {
-  margin-top: 2px;
-  font-size: 35px;
+  margin-top: 3px;
+  font-size: 38px;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
 }
+
 .garage-summary__heading > i {
-  width: 46px;
-  height: 46px;
   display: grid;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 13px;
+  color: #9dc6ff;
+  background: linear-gradient(180deg, rgb(255 255 255 / 10%), rgb(0 0 0 / 22%));
   place-items: center;
-  border-radius: var(--sky-radius-control);
-  background: var(--garage-blue);
-  color: #fff;
 }
+
 .garage-summary__stats {
-  margin-top: 14px;
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 7px;
+  margin-top: 16px;
 }
+
 .garage-summary__stats span {
   min-width: 0;
-  padding: 9px 7px;
   display: grid;
   grid-template-columns: 7px auto;
+  grid-template-rows: auto auto;
   align-items: center;
-  column-gap: 5px;
+  column-gap: 6px;
+  padding: 9px 10px;
+  border: 1px solid rgb(255 255 255 / 8%);
   border-radius: var(--sky-radius-control);
-  border: 1px solid var(--garage-separator);
-  background: var(--garage-surface-muted);
-  color: var(--garage-secondary);
-  font-size: 11px;
-  font-weight: 560;
+  background: rgb(255 255 255 / 6%);
 }
+
 .garage-summary__stats i {
   width: 7px;
   height: 7px;
+  grid-row: 1 / 3;
   border-radius: 50%;
   background: #34c759;
 }
+
 .garage-summary__stats i.is-out {
   background: #ff9f0a;
 }
+
 .garage-summary__stats i.is-impounded {
   background: #ff453a;
 }
+
 .garage-summary__stats b {
-  color: var(--garage-text);
-  font-size: 16px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
 }
-.garage-summary__stats span {
-  grid-template-rows: auto auto;
+
+.garage-summary__stats em {
+  overflow: hidden;
+  color: rgb(255 255 255 / 56%);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.garage-summary__stats span > i {
-  grid-row: 1 / 3;
-}
+
 .garage-search {
   margin: 13px 0 10px;
 }
@@ -711,147 +795,220 @@ onBeforeUnmount(() => {
   font-size: 10px;
   font-weight: 700;
 }
+/* Section liste : en-tete titre + compteur, comme les blocs de Banking. */
 .garage-vehicles {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 9px;
 }
+
+.garage-vehicles__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 4px 2px 0;
+}
+
+.garage-vehicles__head h2 {
+  margin: 0;
+  color: var(--garage-text);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.garage-vehicles__head span {
+  color: var(--garage-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ligne de vehicule : vignette carree a gauche, trois niveaux d'information a
+   droite, pastille d'etat alignee sur le nom. */
 .garage-vehicle {
   width: 100%;
-  min-height: 104px;
-  padding: 0;
-  overflow: hidden;
   display: flex;
-  flex-direction: row;
-  border-radius: var(--sky-radius-card);
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: 18px;
   color: var(--garage-text);
   text-align: left;
   transition:
     transform 0.16s ease,
     opacity 0.16s ease;
 }
+
 .garage-vehicle:active {
   transform: scale(0.985);
-  opacity: 0.82;
+  opacity: 0.86;
 }
+
 .garage-vehicle__visual {
   position: relative;
-  width: 86px;
-  min-width: 86px;
-  min-height: 104px;
   display: grid;
-  place-items: center;
-  border-right: 1px solid var(--garage-separator);
-  background: var(--sky-app-accent-soft);
+  width: 52px;
+  height: 52px;
+  flex: none;
+  overflow: hidden;
+  border-radius: 15px;
   color: var(--garage-blue);
+  background: var(--sky-app-accent-soft);
+  place-items: center;
 }
+
 .garage-vehicle__visual.is-bike {
-  background: #f2eaff;
   color: #57368e;
+  background: #f2eaff;
 }
+
 .garage-vehicle__visual.is-boat {
-  background: #e3f8fb;
   color: #11546b;
+  background: #e3f8fb;
 }
+
 .garage-vehicle__visual.is-plane,
 .garage-vehicle__visual.is-helicopter {
-  background: #fff4dd;
   color: #744914;
+  background: #fff4dd;
 }
-.garage-vehicle__visual > img,
-.garage-detail__visual > img {
+
+.garage-vehicle__visual > img {
   width: 100%;
   height: 100%;
   display: block;
+  box-sizing: border-box;
+  padding: 5px;
   object-fit: contain;
 }
-.garage-vehicle__visual > img {
-  padding: 20px 7px 7px;
-  box-sizing: border-box;
-}
-.garage-vehicle__visual > i {
-  position: absolute;
-  top: 7px;
-  left: 50%;
-  display: inline-grid;
-  width: max-content;
-  min-width: 48px;
-  max-width: 70px;
-  height: 16px;
-  padding: 1px 6px 0;
-  place-items: center;
-  box-sizing: border-box;
-  border-radius: var(--sky-radius-pill);
-  background: var(--sky-success);
-  color: #fff;
-  font-size: 7px;
-  font-style: normal;
-  font-weight: 720;
-  line-height: normal;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  transform: translateX(-50%);
-}
-.garage-vehicle__visual > i.is-out {
-  background: var(--sky-warning);
-}
-.garage-vehicle__visual > i.is-impounded {
-  background: var(--sky-danger);
-}
+
 .garage-vehicle__content {
   min-width: 0;
   flex: 1;
-  padding: 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 3px;
 }
+
 .garage-vehicle__title {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 9px;
-}
-.garage-vehicle__title > span {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-.garage-vehicle__title strong {
-  overflow: hidden;
-  color: var(--garage-text);
-  font-size: 16px;
-  font-weight: 740;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.garage-vehicle__title small {
-  color: var(--garage-secondary);
-  font-size: 12px;
-  line-height: 1.25;
-}
-.garage-vehicle__title > b {
-  flex: none;
-  padding: 2px 5px;
-  border: 1px solid var(--garage-separator);
-  border-radius: var(--sky-radius-control);
-  background: var(--garage-surface-muted);
-  color: var(--garage-text);
-  font-size: 8px;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-}
-.garage-vehicle__meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 9px;
+}
+
+.garage-vehicle__title strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.garage-vehicle__status {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: var(--sky-radius-pill);
+  color: #1a7a37;
+  background: rgb(52 199 89 / 16%);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 650;
+  letter-spacing: -0.1px;
+}
+
+.garage-vehicle__status.is-out {
+  color: #9a5b00;
+  background: rgb(255 159 10 / 18%);
+}
+
+.garage-vehicle__status.is-impounded {
+  color: #b3241a;
+  background: rgb(255 69 58 / 16%);
+}
+
+/* Sur fond sombre, le vert et l'ambre fonces des pastilles passent sous le
+   seuil de lisibilite : on remonte la teinte plutot que l'opacite du fond. */
+.sky-app-page--dark .garage-vehicle__status {
+  color: #4cd97a;
+  background: rgb(52 199 89 / 20%);
+}
+
+.sky-app-page--dark .garage-vehicle__status.is-out {
+  color: #ffb340;
+  background: rgb(255 159 10 / 20%);
+}
+
+.sky-app-page--dark .garage-vehicle__status.is-impounded {
+  color: #ff6961;
+  background: rgb(255 69 58 / 20%);
+}
+
+.sky-app-page--dark .garage-detail__status {
+  color: #4cd97a;
+  background: rgb(52 199 89 / 20%);
+}
+
+.sky-app-page--dark .garage-detail__status.is-out {
+  color: #ffb340;
+  background: rgb(255 159 10 / 20%);
+}
+
+.sky-app-page--dark .garage-detail__status.is-impounded {
+  color: #ff6961;
+  background: rgb(255 69 58 / 20%);
+}
+
+.sky-app-page--dark .garage-vehicle__visual.is-bike {
+  color: #c3a6f5;
+  background: rgb(124 77 255 / 18%);
+}
+
+.sky-app-page--dark .garage-vehicle__visual.is-boat {
+  color: #7fd6ea;
+  background: rgb(48 176 199 / 18%);
+}
+
+.sky-app-page--dark .garage-vehicle__visual.is-plane,
+.sky-app-page--dark .garage-vehicle__visual.is-helicopter {
+  color: #f0c07a;
+  background: rgb(255 159 10 / 16%);
+}
+
+.garage-vehicle__model {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--garage-secondary);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.garage-vehicle__model b {
+  flex: none;
+  padding: 1px 5px;
+  border: 1px solid var(--garage-separator);
+  border-radius: 5px;
+  color: var(--garage-text);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.garage-vehicle__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2px;
   color: var(--garage-secondary);
   font-size: 12px;
-  font-weight: 520;
+  font-weight: 500;
 }
+
 .garage-vehicle__meta span {
   min-width: 0;
   display: flex;
@@ -861,6 +1018,11 @@ onBeforeUnmount(() => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.garage-vehicle__meta span:last-child {
+  flex: none;
+}
+
 .garage-empty {
   margin: var(--sky-space-5) 0;
 }
@@ -918,20 +1080,20 @@ onBeforeUnmount(() => {
   place-items: center;
   box-sizing: border-box;
   border-radius: var(--sky-radius-pill);
-  background: var(--sky-success-soft);
-  color: var(--sky-success);
+  background: rgb(52 199 89 / 16%);
+  color: #1a7a37;
   font-size: 12px;
-  font-weight: 720;
+  font-weight: 650;
+  letter-spacing: -0.1px;
   line-height: normal;
-  text-transform: uppercase;
 }
 .garage-detail__status.is-out {
-  background: var(--sky-warning-soft);
-  color: var(--sky-warning);
+  background: rgb(255 159 10 / 18%);
+  color: #9a5b00;
 }
 .garage-detail__status.is-impounded {
-  background: var(--sky-danger-soft);
-  color: var(--sky-danger);
+  background: rgb(255 69 58 / 16%);
+  color: #b3241a;
 }
 .garage-detail h2 {
   margin: 8px 0 1px;

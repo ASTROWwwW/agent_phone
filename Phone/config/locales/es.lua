@@ -903,7 +903,7 @@ Locales["es"] = {
                 },
             },
             garage = {
-                name = "Garaje", subtitle = "Tu colección de vehículos", myVehicles = "Mis vehículos",
+                name = "Garaje", subtitle = "Tu colección de vehículos", myVehicles = "Mis vehículos", fleet = "Tu flota",
                 searchPlaceholder = "Buscar nombre, matrícula o garaje",
                 tryAgain = "Inténtalo de nuevo", unavailable = "Garaje no disponible",
                 noVehicles = "No hay vehículos", noVehiclesBody = "Los vehículos propiedad de este personaje aparecerán aquí.",
