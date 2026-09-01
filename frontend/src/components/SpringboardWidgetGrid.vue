@@ -83,6 +83,13 @@ const instances = computed(() =>
   left: auto;
 }
 
+/* Hors edition, la page Aujourd'hui ne reserve pas de rangees vides : la grille
+   s'arrete au dernier widget pour que le bouton d'edition le suive de pres.
+   En edition, les rangees reservees redeviennent des cibles de depot. */
+.springboard-widget-grid--page:not(.springboard-widget-grid--editing) {
+  grid-template-rows: none;
+}
+
 .springboard-widget-grid--drag-source {
   z-index: 50;
 }

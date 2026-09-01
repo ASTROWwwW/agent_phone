@@ -69,6 +69,12 @@ export function useClockService(enabled: MaybeRefOrGetter<boolean> = true) {
     month: computed(() =>
       new Intl.DateTimeFormat(phone.lang, { month: 'long' }).format(now.value),
     ),
+    monthDay: computed(() =>
+      new Intl.DateTimeFormat(phone.lang, {
+        day: 'numeric',
+        month: 'long',
+      }).format(now.value),
+    ),
     time: computed(() =>
       new Intl.DateTimeFormat(phone.lang, {
         hour: '2-digit',

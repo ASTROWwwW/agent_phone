@@ -8325,10 +8325,153 @@ button {
 }
 .springboard-widget-page-scroll {
   height: 100%;
-  padding: 21px 0 42px;
+  padding: 14px 0 42px;
   overflow-y: auto;
   scrollbar-width: none;
   touch-action: pan-y;
+}
+/* En-tete de la page Aujourd'hui : jour en capitales puis date en grand titre,
+   sur le meme reglage typographique que la bibliotheque d'apps. */
+.today-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+.today-header__eyebrow {
+  color: #ffffff8f;
+  text-shadow: 0 1px 4px #000a;
+}
+.today-header__title {
+  margin: 0;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-shadow: 0 1px 8px #0009;
+}
+.today-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 34px 18px;
+  border: 1px solid #ffffff1f;
+  border-radius: var(--sky-widget-radius-large);
+  background: #00000038;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.today-empty__mark {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  border-radius: 16px;
+  background: #ffffff1c;
+  color: #fff;
+  place-items: center;
+}
+.today-empty strong {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+}
+.today-empty p {
+  margin: 0;
+  max-width: 220px;
+  color: #ffffff9e;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.today-edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  height: 44px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: var(--sky-radius-pill);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  transition: transform 160ms var(--sky-ease-out);
+}
+.today-edit:active {
+  transform: scale(0.97);
+}
+/* Entree en cascade des widgets : la surface et le libelle sont animes plutot
+   que la coque, dont la transform sert deja au glisser-deposer. */
+@keyframes today-widget-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.springboard-page--widgets-active .today-header,
+.springboard-page--widgets-active .today-edit,
+.springboard-page--widgets-active .today-empty,
+.springboard-page--widgets-active
+  .springboard-widget-grid--page
+  .sky-widget-frame
+  > * {
+  animation: today-widget-in 0.46s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.springboard-page--widgets-active
+  .springboard-widget-grid--page
+  .home-widget-shell:nth-child(1)
+  .sky-widget-frame
+  > * {
+  animation-delay: 0.05s;
+}
+.springboard-page--widgets-active
+  .springboard-widget-grid--page
+  .home-widget-shell:nth-child(2)
+  .sky-widget-frame
+  > * {
+  animation-delay: 0.1s;
+}
+.springboard-page--widgets-active
+  .springboard-widget-grid--page
+  .home-widget-shell:nth-child(3)
+  .sky-widget-frame
+  > * {
+  animation-delay: 0.15s;
+}
+.springboard-page--widgets-active
+  .springboard-widget-grid--page
+  .home-widget-shell:nth-child(4)
+  .sky-widget-frame
+  > * {
+  animation-delay: 0.2s;
+}
+.springboard-page--widgets-active
+  .springboard-widget-grid--page
+  .home-widget-shell:nth-child(n + 5)
+  .sky-widget-frame
+  > * {
+  animation-delay: 0.25s;
+}
+.springboard-page--widgets-active .today-edit {
+  animation-delay: 0.3s;
+}
+.springboard--editing .springboard-page--widgets-active .today-header,
+.springboard--editing .springboard-page--widgets-active .today-edit,
+.springboard--editing .springboard-page--widgets-active .today-empty,
+.springboard--editing
+  .springboard-page--widgets-active
+  .springboard-widget-grid--page
+  .sky-widget-frame
+  > * {
+  animation: none;
 }
 .springboard-widget-page-scroll::-webkit-scrollbar {
   display: none;

@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { Check, Pencil, Plus, Search, Trash2, X } from 'lucide-vue-next'
+import {
+  Check,
+  LayoutGrid,
+  Pencil,
+  Plus,
+  Search,
+  Sparkles,
+  Trash2,
+  X,
+} from 'lucide-vue-next'
 import { kButton, kGlass } from 'konsta/vue'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 
@@ -12,6 +21,7 @@ import WidgetPickerSheet from '@/components/WidgetPickerSheet.vue'
 import { getPhoneAppLabel, PHONE_APPS } from '@/config/apps'
 import { useAppStoreStore } from '@/stores/app-store'
 import { usePhoneStore } from '@/stores/phone'
+import { useClockService } from '@/services/widgetServices'
 import { useWidgetsStore } from '@/stores/widgets'
 import type { PhoneAppCategory, PhoneAppDefinition } from '@/types/apps'
 import type { LaunchablePhoneAppId } from '@/types/apps'
@@ -240,6 +250,16 @@ const appPages = computed(() => {
 })
 const pageCount = computed(() => appPages.value.length + 2)
 const libraryPage = computed(() => pageCount.value - 1)
+// L'horloge de l'en-tete ne tourne que quand la page Aujourd'hui est affichee.
+const todayClock = useClockService(() => phone.currentPage === 0)
+const todayWidgets = computed(() =>
+  widgets.layout.instances.filter((instance) => instance.page === 0),
+)
+const todayPageActive = computed(() => phone.currentPage === 0)
+const todayEditGlassColors = {
+  bgIos: 'bg-[rgba(72,72,74,0.52)]',
+  shadowIos: 'shadow-ios-dark-glass',
+}
 const isAppPage = computed(
   () => phone.currentPage > 0 && phone.currentPage < libraryPage.value,
 )
@@ -733,6 +753,11 @@ async function addWidget(kind: WidgetKind, size: WidgetSize): Promise<void> {
     (instance) => instance.id === addedId,
   )
   if (added) changePage(added.page)
+}
+
+function openTodayEditor(): void {
+  editMode.value = true
+  widgetPickerOpened.value = true
 }
 
 function openWidgetConfig(): void {
@@ -1652,10 +1677,20 @@ onBeforeUnmount(() => {
     >
       <section
         class="springboard-page springboard-page--widgets"
+        :class="{ 'springboard-page--widgets-active': todayPageActive }"
         :style="pageStyle"
         :aria-label="phone.t('Home.widgets.label')"
       >
         <div class="springboard-widget-page-scroll">
+          <header class="today-header">
+            <span class="today-header__eyebrow sky-type-eyebrow">{{
+              todayClock.weekday.value
+            }}</span>
+            <h1 class="today-header__title sky-type-display">
+              {{ todayClock.monthDay.value }}
+            </h1>
+          </header>
+
           <SpringboardWidgetGrid
             :page="0"
             :dragging-widget-id="draggingWidgetId"
@@ -1668,6 +1703,30 @@ onBeforeUnmount(() => {
             @remove="removeWidget"
             @reorder="reorderWidget"
           />
+
+          <div v-if="todayWidgets.length === 0" class="today-empty">
+            <span class="today-empty__mark" aria-hidden="true">
+              <LayoutGrid :size="26" :stroke-width="1.7" />
+            </span>
+            <strong class="sky-type-display">{{
+              phone.t('Home.widgets.empty')
+            }}</strong>
+            <p>{{ phone.t('Home.widgets.emptyBody') }}</p>
+          </div>
+
+          <k-glass
+            component="button"
+            class="today-edit"
+            type="button"
+            :colors="todayEditGlassColors"
+            :highlight="false"
+            @click="openTodayEditor"
+          >
+            <Sparkles :size="15" :stroke-width="2.2" aria-hidden="true" />
+            <span class="sky-type-display">{{
+              phone.t('Home.widgets.edit')
+            }}</span>
+          </k-glass>
         </div>
       </section>
 
