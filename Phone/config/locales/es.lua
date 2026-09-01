@@ -1063,7 +1063,7 @@ Locales["es"] = {
                 readyBody = "Recolecta frutas, crece más y evita todas las paredes.", readyTitle = "¿Listo para jugar?",
                 restart = "Jugar de nuevo", resume = "Continuar juego", score = "Puntuación", speed = "Velocidad",
                 speeds = { fast = "Rápido", normal = "Normal", relaxed = "Relajado" }, start = "Empezar juego",
-                swipeHint = "Usa las teclas de flecha para dirigir",
+                swipeHint = "Desliza en el tablero o usa las flechas / WASD",
             },
             numberMerge = {
                 name = "2048", backToMenu = "Volver al menú del juego", best = "Mejor", board = "Tablero de 2048",

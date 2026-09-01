@@ -1063,7 +1063,7 @@ Locales["en"] = {
                 readyBody = "Collect fruit, grow longer, and stay clear of every wall.", readyTitle = "Ready to play?",
                 restart = "Play Again", resume = "Resume game", score = "Score", speed = "Speed",
                 speeds = { fast = "Fast", normal = "Normal", relaxed = "Relaxed" }, start = "Start Game",
-                swipeHint = "Use the arrow keys to steer",
+                swipeHint = "Swipe the board or use the arrow keys / WASD",
             },
             numberMerge = {
                 name = "2048", backToMenu = "Back to game menu", best = "Best", board = "2048 game board",
