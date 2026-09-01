@@ -417,7 +417,7 @@ onBeforeUnmount(() => {
     <SkyWidgetFrame
       class="home-widget-drag-surface"
       :label="widgetLabel"
-      :show-label="!preview"
+      :show-label="!preview && instance.page !== 0"
       :size="instance.size"
       :style="dragPointerStyle"
     >

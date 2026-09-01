@@ -183,6 +183,7 @@ Locales["es"] = {
             },
             widgets = {
                 label = "Widgets",
+                edit = "Editar widgets", empty = "Aún no hay widgets", emptyBody = "Añade widgets para tener lo importante a mano.",
                 weather = { city = "Los Santos", condition = "Parcialmente nublado" },
                 calendar = { event = "No hay más eventos hoy" },
                 battery = { label = "Teléfono" },
