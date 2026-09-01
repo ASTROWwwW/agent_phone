@@ -90,6 +90,16 @@ Elle est retirée.
 ## Installation
 
 Place la ressource dans `resources/[script]/agent_phone`, puis démarre-la.
+
+Elle doit y être un **dossier réel**. FXServer ne découvre pas une ressource
+montée par lien ou par jonction : elle n'apparaît alors ni dans txAdmin ni
+dans le journal, sans le moindre message d'erreur. Pour travailler depuis un
+dépôt situé ailleurs, définis `AGENT_PHONE_DEPLOY` sur le dossier de la
+ressource : chaque `pnpm build` l'y recopie.
+
+```bash
+AGENT_PHONE_DEPLOY="D:/serveur/resources/[script]/agent_phone" pnpm build
+```
 Le nom du dossier fait foi : c'est lui que FiveM utilise comme nom de
 ressource, et le NUI le résout par `GetParentResourceName()`.
 
