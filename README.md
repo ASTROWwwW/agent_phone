@@ -11,14 +11,18 @@ Le dépôt contient deux choses :
 ## Ce qui a changé par rapport à l'amont
 
 **Intégration à la base Agent.** ESX y est publié sous le nom de ressource
-`Agent` et non `es_extended`. Le pont résout désormais le nom réel au lieu de
-le coder en dur, côté serveur comme côté client, et expose le résultat en
-`Bridge.Framework.Resource`.
+`Agent`. Le pont ne vise plus que cette ressource, côté serveur comme côté
+client : ni `es_extended`, ni sélection automatique, ni réglage de framework.
+Le nom résolu reste exposé en `Bridge.Framework.Resource`.
 
 **Adaptateurs réduits au nécessaire.** La base tourne sur ESX + ox_inventory,
 sans système de propriété tiers ni autre téléphone. Les 2 autres frameworks,
 14 adaptateurs d'inventaire, 18 fichiers de pont immobilier, 15 fichiers de
 compatibilité téléphone et la migration lb-phone ont été retirés — 51 fichiers.
+Le garage reconnaissait encore 21 systèmes de propriété pour deux schémas
+réels : il ne lit plus que celui d'Agent, `owned_vehicles` et sa colonne
+`owner`, avec `custom` pour un schéma maison. Un contrat verrouille cette
+cible unique.
 Les tables d'adaptateurs ont été purgées en conséquence, sinon la détection
 automatique pouvait sélectionner un adaptateur dont le fichier n'existe plus.
 
@@ -48,8 +52,8 @@ ciel météo, la sonnerie Skyline et l'attribution de licence ci-dessous.
 
 ## Prérequis
 
-`oxmysql`, `ox_lib`, `ox_inventory`, et ESX (ressource `Agent` ou
-`es_extended`). La voix est détectée automatiquement parmi `pma-voice`,
+`oxmysql`, `ox_lib`, `ox_inventory`, et la base `Agent`. La voix est
+détectée automatiquement parmi `pma-voice`,
 `yaca-voice` et `saltychat`.
 
 L'item du téléphone doit exister dans `ox_inventory` :

@@ -5,7 +5,6 @@ Config = {}
 
 
 Config.Bridge = {
-    Framework = "auto",
     Inventory = "auto",
     Locale = "fr",
     CallbackTimeout = 15000,

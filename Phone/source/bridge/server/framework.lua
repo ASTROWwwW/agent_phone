@@ -1,31 +1,11 @@
-local ESX_RESOURCES = { "es_extended", "Agent" }
+local FRAMEWORK_RESOURCE = "Agent"
 
-local function resolve_esx_resource()
-    for _, resource_name in ipairs(ESX_RESOURCES) do
-        if GetResourceState(resource_name) == "started" then
-            return resource_name
-        end
-    end
-    return nil
+if GetResourceState(FRAMEWORK_RESOURCE) ~= "started" then
+    error(("[agent_phone] The %s resource is not started. This build targets the Agent base only."):format(FRAMEWORK_RESOURCE))
 end
 
-local configured_framework = Config.Bridge.Framework
-local esx_resource = resolve_esx_resource()
-
-if configured_framework == "auto" then
-    configured_framework = esx_resource and "esx" or configured_framework
-end
-
-if configured_framework ~= "esx" then
-    error(("[agent_phone] Unsupported or unavailable framework '%s'. This build only ships the ESX adapter."):format(tostring(configured_framework)))
-end
-
-if not esx_resource then
-    error(("[agent_phone] ESX is configured, but none of these resources is started: %s."):format(table.concat(ESX_RESOURCES, ", ")))
-end
-
-Bridge.Framework.Name = configured_framework
-Bridge.Framework.Resource = esx_resource
+Bridge.Framework.Name = "agent"
+Bridge.Framework.Resource = FRAMEWORK_RESOURCE
 
 function Bridge.Framework.GetName()
     return Bridge.Framework.Name

@@ -3,26 +3,9 @@ AgentPhoneGarage = {}
 Bridge.Database.AfterMigration("agent_phone", function()
 
 local supported_systems = {
+    agent = true,
     auto = true,
     custom = true,
-    esx = true,
-    qb = true,
-    qbox = true,
-    ak47 = true,
-    bp = true,
-    cd = true,
-    codem = true,
-    ["ds-servercreator"] = true,
-    hex = true,
-    jg = true,
-    my = true,
-    okok = true,
-    op = true,
-    quasar = true,
-    rx = true,
-    vms = true,
-    ws = true,
-    zyke_garages = true,
 }
 
 local function decode_object(value)
@@ -75,9 +58,6 @@ local function vehicle_status(row, location, garage_system)
         or location_key:find("pound", 1, true)
     then
         return "impounded"
-    end
-    if garage_system == "jg" then
-        return truthy_database_value(row.in_garage) and "garaged" or "out"
     end
     if state == 2 then
         return "impounded"
@@ -189,19 +169,7 @@ local function storage_config()
         end
         return table_name, owner_column, system
     end
-    if system == "esx" then
-        return "owned_vehicles", "owner", system
-    end
-    if system == "qb" or system == "qbox" then
-        return "player_vehicles", "citizenid", system
-    end
-    if system == "auto" and GetResourceState("jg-advancedgarages") == "started" then
-        system = "jg"
-    end
-    if Bridge.Framework.GetName() == "esx" then
-        return "owned_vehicles", "owner", system == "auto" and "esx" or system
-    end
-    return "player_vehicles", "citizenid", system == "auto" and Bridge.Framework.GetName() or system
+    return "owned_vehicles", "owner", "agent"
 end
 
 local active_valets = {}

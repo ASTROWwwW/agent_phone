@@ -2,9 +2,7 @@ local inventory_adapters = {
     { name = "ox", resource = "ox_inventory" },
 }
 
-local inventory_aliases = {
-    qbox = "ox",
-}
+local inventory_aliases = {}
 local supported_inventories = {}
 for _, adapter in ipairs(inventory_adapters) do
     inventory_aliases[adapter.resource] = adapter.name
