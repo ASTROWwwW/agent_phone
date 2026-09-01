@@ -90,11 +90,12 @@ describe('AppStoreApp Sky navigation contract', () => {
     expect(source).toContain("phone.t('Apps.appStore.account.downloadedOn'")
     expect(source).toContain('<small>{{ downloadDateDescription }}</small>')
     expect(source).toMatch(
-      /\.store-account__primary-action\s*\{[^}]*min-width:\s*60px;[^}]*height:\s*30px;/s,
+      /\.store-account__primary-action\s*\{[^}]*min-width:\s*66px;[^}]*height:\s*30px;/s,
     )
     expect(source).toMatch(
-      /\.store-account__summary > div\s*\{[^}]*border:\s*1px solid var\(--sky-hairline\);[^}]*border-radius:\s*var\(--sky-radius-card\);[^}]*background:\s*var\(--sky-surface-muted\);/s,
+      /\.store-account__summary > div\s*\{[^}]*border-radius:\s*16px;[^}]*background:\s*var\(--sky-surface\);/s,
     )
+    expect(source.match(/phone-effect--expensive-shadow/g)?.length ?? 0).toBeGreaterThanOrEqual(9)
     expect(source).not.toContain('appStore.updateApp(')
     expect(source).not.toContain('appStore.updatedAppReleases')
     expect(source).not.toContain('appStore.updatingApps')
@@ -195,7 +196,10 @@ describe('AppStoreApp Sky navigation contract', () => {
     )
     expect(source).toContain('getDailyHighlights(')
     expect(source).toContain('!DEFAULT_INSTALLED_PHONE_APP_IDS.has(app.id)')
-    expect(source).toContain('v-else-if="tab === \'today\'"')
+    // Les onglets sont enveloppes dans une Transition : la premiere branche
+    // porte donc v-if, et la bascule est animee.
+    expect(source).toContain('<Transition v-else name="store-tab" mode="out-in">')
+    expect(source).toContain('v-if="tab === \'today\'"')
     expect(source).toContain(
       'class="store-highlight store-highlight--hero phone-effect--expensive-shadow"',
     )

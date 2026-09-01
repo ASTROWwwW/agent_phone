@@ -5,6 +5,7 @@ import {
   Crown,
   Gamepad2,
   Grid2X2,
+  LayoutGrid,
   Newspaper,
   Plane,
   Search,
@@ -475,7 +476,8 @@ watch(
         @back="selectedApp = null"
         @share="shareSelectedApp"
       />
-      <section v-else-if="tab === 'today'" class="store-today">
+      <Transition v-else name="store-tab" mode="out-in">
+      <section v-if="tab === 'today'" key="today" class="store-today">
         <article
           v-if="dailyHighlights[0]"
           class="store-highlight store-highlight--hero phone-effect--expensive-shadow"
@@ -726,6 +728,7 @@ watch(
 
       <section
         v-else-if="tab === 'apps' || tab === 'games'"
+        :key="tab"
         class="store-browse"
       >
         <div
@@ -873,7 +876,7 @@ watch(
         </section>
       </section>
 
-      <section v-else class="store-search">
+      <section v-else key="search" class="store-search">
         <template v-if="!hasSearchQuery">
           <section class="store-search__section">
             <header class="store-search__heading">
@@ -1003,6 +1006,7 @@ watch(
           </SkyEmptyState>
         </section>
       </section>
+      </Transition>
     </SkyScrollArea>
 
     <SkyPillNavigation
@@ -1065,35 +1069,47 @@ watch(
         </button>
         <header class="store-account__toolbar">
           <div>
-            <span>{{ phone.t('Apps.appStore.account.account') }}</span>
-            <h2>{{ phone.t('Apps.appStore.account.title') }}</h2>
+            <span class="sky-type-eyebrow">{{
+              phone.t('Apps.appStore.account.account')
+            }}</span>
+            <h2 class="sky-type-display">
+              {{ phone.t('Apps.appStore.account.title') }}
+            </h2>
           </div>
         </header>
 
         <section class="store-account__identity phone-effect--expensive-shadow">
-          <span>{{ profileInitials }}</span>
+          <span class="store-account__avatar">{{ profileInitials }}</span>
           <div>
-            <strong>{{ profileName }}</strong>
+            <strong class="sky-type-display">{{ profileName }}</strong>
             <small>{{ phone.t('Apps.appStore.account.agentAccount') }}</small>
           </div>
-          <ShieldCheck :size="24" :stroke-width="1.8" aria-hidden="true" />
+          <i class="store-account__verified" aria-hidden="true">
+            <ShieldCheck :size="18" :stroke-width="2" />
+          </i>
         </section>
 
         <dl class="store-account__summary">
-          <div>
-            <dt>{{ installedApps.length }}</dt>
+          <div class="phone-effect--expensive-shadow">
+            <i aria-hidden="true"><LayoutGrid :size="15" /></i>
             <dd>{{ phone.t('Apps.appStore.account.apps') }}</dd>
+            <dt class="sky-type-display">{{ installedApps.length }}</dt>
           </div>
-          <div>
-            <dt>{{ installedGameCount }}</dt>
+          <div class="phone-effect--expensive-shadow">
+            <i aria-hidden="true"><Gamepad2 :size="15" /></i>
             <dd>{{ phone.t('Apps.appStore.account.games') }}</dd>
+            <dt class="sky-type-display">{{ installedGameCount }}</dt>
           </div>
         </dl>
 
         <header class="store-account__section-heading">
           <div>
-            <span>{{ phone.t('Apps.appStore.account.library') }}</span>
-            <h3>{{ phone.t('Apps.appStore.account.myApps') }}</h3>
+            <span class="sky-type-eyebrow">{{
+              phone.t('Apps.appStore.account.library')
+            }}</span>
+            <h3 class="sky-type-display">
+              {{ phone.t('Apps.appStore.account.myApps') }}
+            </h3>
           </div>
           <strong>{{ installedApps.length }}</strong>
         </header>
@@ -1102,7 +1118,9 @@ watch(
           <article v-for="app in installedApps" :key="app.id">
             <img :src="app.iconImage" alt="" draggable="false" />
             <div>
-              <strong>{{ getPhoneAppLabel(app, phone.t) }}</strong>
+              <strong class="sky-type-display">{{
+                getPhoneAppLabel(app, phone.t)
+              }}</strong>
               <small>{{ downloadDateDescription }}</small>
             </div>
             <button
@@ -1123,7 +1141,7 @@ watch(
               "
               @click.stop="requestUninstall(app)"
             >
-              <Trash2 :size="17" :stroke-width="2" aria-hidden="true" />
+              <Trash2 :size="16" :stroke-width="2" aria-hidden="true" />
             </button>
           </article>
         </div>
@@ -1295,48 +1313,47 @@ watch(
   min-width: 0;
 }
 
+/* Les surtitres passent en gris : dans cette feuille le bleu porte les
+   actions (Open) et le badge de compte, pas la hierarchie de titres. */
 .store-account__toolbar span,
 .store-account__section-heading span {
-  color: var(--sky-app-accent);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  display: block;
+  color: var(--sky-muted);
 }
 
 .store-account__toolbar h2,
 .store-account__section-heading h3 {
-  margin: 2px 0 0;
+  margin: 3px 0 0;
   color: var(--sky-text);
+  font-weight: 700;
   line-height: 1.08;
 }
 
 .store-account__toolbar h2 {
-  font-size: var(--sky-font-medium-title);
+  font-size: 26px;
 }
 
 .store-account__identity {
-  min-height: 82px;
   display: flex;
   align-items: center;
   gap: var(--sky-space-3);
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-card);
-  padding: var(--sky-space-4);
-  background: var(--sky-surface-muted);
+  padding: 14px;
+  border-radius: 18px;
+  background: var(--sky-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 7%);
 }
 
-.store-account__identity > span {
-  width: 54px;
-  height: 54px;
+.store-account__avatar {
   display: grid;
-  place-items: center;
-  flex: 0 0 54px;
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
   border-radius: 50%;
   color: #fff;
-  background: linear-gradient(145deg, #8eacf0, #586db8);
+  background: linear-gradient(145deg, #7ea6f2, #4d63c4);
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
+  place-items: center;
 }
 
 .store-account__identity > div {
@@ -1353,17 +1370,30 @@ watch(
   white-space: nowrap;
 }
 
+.store-account__identity strong {
+  font-size: 17px;
+  font-weight: 650;
+}
+
 .store-account__identity small {
-  margin-top: 3px;
+  margin-top: 2px;
   color: var(--sky-muted);
-  font-size: 11px;
+  font-size: 13px;
 }
 
-.store-account__identity > svg {
-  flex: 0 0 auto;
+.store-account__verified {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 50%;
   color: var(--sky-app-accent);
+  background: var(--sky-app-accent-soft);
+  place-items: center;
 }
 
+/* Tuiles alignees sur celles de Banking : glyphe, libelle, valeur, le tout
+   cale a gauche plutot que centre. */
 .store-account__summary {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1372,27 +1402,39 @@ watch(
 }
 
 .store-account__summary > div {
-  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--sky-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 7%);
+}
+
+.store-account__summary i {
   display: grid;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 4px;
+  border-radius: 9px;
+  color: var(--sky-app-accent);
+  background: var(--sky-app-accent-soft);
   place-items: center;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-card);
-  padding: var(--sky-space-3);
-  background: var(--sky-surface-muted);
-  text-align: center;
+}
+
+.store-account__summary dd {
+  margin: 0;
+  color: var(--sky-muted);
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .store-account__summary dt {
   color: var(--sky-text);
   font-size: 22px;
-  font-weight: 800;
-}
-
-.store-account__summary dd {
-  margin: -4px 0 0;
-  color: var(--sky-muted);
-  font-size: 11px;
   font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
 }
 
 .store-account__section-heading {
@@ -1407,41 +1449,68 @@ watch(
 }
 
 .store-account__section-heading > strong {
+  display: grid;
   min-width: 28px;
   height: 28px;
-  display: grid;
-  place-items: center;
   border-radius: var(--sky-radius-pill);
   color: var(--sky-muted);
   background: var(--sky-surface-variant);
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
 }
 
 .store-account__apps {
   overflow: hidden;
-  border: 1px solid var(--sky-hairline);
-  border-radius: var(--sky-radius-card);
+  border-radius: 18px;
   background: var(--sky-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 7%);
 }
 
 .store-account__apps article {
-  min-height: 76px;
+  position: relative;
+  min-height: 68px;
   display: flex;
   align-items: center;
   gap: var(--sky-space-3);
-  border-bottom: 1px solid var(--sky-hairline);
-  padding: var(--sky-space-3);
+  padding: 10px 14px;
+  animation: store-row-in 0.34s var(--sky-ease-out) both;
 }
 
-.store-account__apps article:last-child {
-  border-bottom: 0;
+.store-account__apps article + article::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 72px;
+  height: 1px;
+  background: var(--sky-hairline);
+  content: '';
+  transform: scaleY(var(--sky-hairline-scale));
+  transform-origin: top;
+}
+
+.store-account__apps article:nth-child(2) {
+  animation-delay: 0.03s;
+}
+
+.store-account__apps article:nth-child(3) {
+  animation-delay: 0.06s;
+}
+
+.store-account__apps article:nth-child(4) {
+  animation-delay: 0.09s;
+}
+
+.store-account__apps article:nth-child(n + 5) {
+  animation-delay: 0.12s;
 }
 
 .store-account__apps article > img {
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
-  border-radius: calc(var(--sky-radius-control) + var(--sky-space-1));
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border-radius: 11px;
   object-fit: cover;
 }
 
@@ -1460,41 +1529,53 @@ watch(
 }
 
 .store-account__apps article > div strong {
-  font-size: 13px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .store-account__apps article > div small {
+  margin-top: 1px;
   color: var(--sky-muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .store-account__primary-action {
-  min-width: 60px;
+  min-width: 66px;
   height: 30px;
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  flex: 0 0 auto;
+  padding: 0 12px;
   border: 0;
   border-radius: var(--sky-radius-pill);
-  padding: 0 10px;
   color: var(--sky-app-accent);
-  background: var(--sky-surface-muted);
-  font-size: 11px;
-  font-weight: 850;
+  background: var(--sky-app-accent-soft);
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: -0.2px;
+  transition: transform 160ms var(--sky-ease-out);
+}
+
+.store-account__primary-action:active {
+  transform: scale(0.94);
 }
 
 .store-account__remove {
-  width: var(--sky-touch-target);
-  height: var(--sky-touch-target);
   display: grid;
-  place-items: center;
-  flex: 0 0 var(--sky-touch-target);
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
   border: 0;
   border-radius: 50%;
   color: var(--sky-danger);
   background: var(--sky-danger-soft);
+  place-items: center;
+  transition: transform 160ms var(--sky-ease-out);
+}
+
+.store-account__remove:active {
+  transform: scale(0.94);
 }
 
 .store-account__uninstall-error {
@@ -1799,7 +1880,7 @@ watch(
 }
 
 .store-today__section-heading span {
-  color: var(--sky-app-accent);
+  color: var(--sky-muted);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.09em;
@@ -2184,7 +2265,7 @@ watch(
 }
 
 .store-browse-feature__copy span {
-  color: #55b6ff;
+  color: rgb(255 255 255 / 78%);
   font-size: 10px;
   font-weight: 850;
   letter-spacing: 0.09em;
@@ -2406,7 +2487,7 @@ watch(
 }
 
 .store-browse__list-heading span {
-  color: var(--sky-app-accent);
+  color: var(--sky-muted);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.09em;
@@ -2439,13 +2520,89 @@ watch(
 }
 
 .store-list--browse article {
+  position: relative;
   min-height: 76px;
   padding: var(--sky-space-3) var(--sky-space-4);
+  border-bottom: 0;
   transition: background-color var(--sky-transition-fast) var(--sky-ease-out);
 }
 
-.store-list--browse article:last-of-type {
-  border-bottom: 0;
+/* Filet decale sous la vignette, comme les listes groupees d'iOS : le trait
+   pleine largeur coupait la carte en tranches. */
+.store-list--browse article + article::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc(var(--sky-space-4) + 52px + var(--sky-space-3));
+  height: 1px;
+  background: var(--sky-hairline);
+  content: '';
+  transform: scaleY(var(--sky-hairline-scale));
+  transform-origin: top;
+}
+
+/* Entree en cascade des lignes a l'arrivee sur l'onglet. */
+.store-list--browse article {
+  animation: store-row-in 0.34s var(--sky-ease-out) both;
+}
+
+.store-list--browse article:nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.store-list--browse article:nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+.store-list--browse article:nth-child(4) {
+  animation-delay: 0.12s;
+}
+
+.store-list--browse article:nth-child(n + 5) {
+  animation-delay: 0.16s;
+}
+
+@keyframes store-row-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.store-tab-enter-active {
+  transition:
+    opacity 0.22s var(--sky-ease-out),
+    transform 0.22s var(--sky-ease-out);
+}
+
+.store-tab-leave-active {
+  transition:
+    opacity 0.12s ease-in,
+    transform 0.12s ease-in;
+}
+
+.store-tab-enter-from {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+}
+
+.store-tab-leave-to {
+  opacity: 0;
+  transform: translate3d(0, -6px, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .store-list--browse article,
+  .store-tab-enter-active,
+  .store-tab-leave-active {
+    animation: none;
+    transition-duration: 1ms;
+  }
 }
 
 .store-list--browse .store-icon {
