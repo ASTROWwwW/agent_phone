@@ -31,8 +31,6 @@ const browserDataRequests = [
   ['gallery:counts', {}],
   ['garage:vehicles', {}],
   ['garage:valet-state', {}],
-  ['housing:overview', {}],
-  ['housing:key-candidates', { action: 'give' }],
   ['mail:counts', {}],
   ['mail:list', { folder: 'inbox' }],
   ['mail:mailboxes', {}],
@@ -95,11 +93,11 @@ function verifyBrowserTestData(dataByEndpoint) {
   expectItems(
     development.device.data.apps.payload.claimedApps,
     'installed demo apps',
-    30,
+    29,
   )
   assert.equal(
     new Set(development.device.data.apps.payload.claimedApps).size,
-    30,
+    29,
     'browser demo apps were not uniquely installed',
   )
   assert.equal(
@@ -149,11 +147,6 @@ function verifyBrowserTestData(dataByEndpoint) {
     dataByEndpoint.get('garage:vehicles').vehicles,
     'garage vehicles',
     4,
-  )
-  expectItems(
-    dataByEndpoint.get('housing:overview').properties,
-    'housing properties',
-    5,
   )
   expectItems(dataByEndpoint.get('mail:list').items, 'inbox mail', 2)
   expectItems(

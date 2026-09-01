@@ -5,7 +5,6 @@ import {
   Bluetooth,
   Calculator,
   Camera,
-  Flashlight,
   Moon,
   Pause,
   Plane,
@@ -473,7 +472,9 @@ onBeforeUnmount(() => {
             :highlight="false"
           >
             <div class="control-center__media-copy">
-              <span>{{ phone.t('ControlCenter.media') }}</span>
+              <span class="sky-type-eyebrow">{{
+                phone.t('ControlCenter.media')
+              }}</span>
               <strong>{{
                 music.currentTrack?.title ?? phone.t('ControlCenter.notPlaying')
               }}</strong>
@@ -617,7 +618,9 @@ onBeforeUnmount(() => {
             @click="togglePreference('focusMode')"
           >
             <Moon aria-hidden="true" />
-            <span>{{ phone.t('ControlCenter.focus') }}</span>
+            <span class="sky-type-display">{{
+              phone.t('ControlCenter.focus')
+            }}</span>
           </k-glass>
         </div>
 
@@ -640,7 +643,17 @@ onBeforeUnmount(() => {
               :aria-pressed="flashlightActive"
               @click="toggleFlashlight"
             >
-              <Flashlight aria-hidden="true" />
+              <svg
+                class="control-center__flashlight-glyph"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  class="control-center__flashlight-head"
+                  d="M5.8 3h12.4l-2.2 4.6H8Z"
+                />
+                <rect x="8" y="8.7" width="8" height="12.5" rx="2.6" />
+              </svg>
             </k-glass>
             <span>{{ phone.t('ControlCenter.flashlight') }}</span>
           </div>
@@ -822,6 +835,8 @@ onBeforeUnmount(() => {
 }
 
 .control-center__connectivity-button:first-child svg {
+  width: 22px;
+  height: 22px;
   fill: currentcolor;
   stroke-width: 1.5;
 }
@@ -841,9 +856,7 @@ onBeforeUnmount(() => {
 }
 
 .control-center__media-copy span {
-  color: rgba(255, 255, 255, 0.66);
-  font-size: 11px;
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.58);
 }
 
 .control-center__media-copy strong {
@@ -948,9 +961,12 @@ onBeforeUnmount(() => {
   border: 0;
   border-radius: 37px;
   color: #fff;
-  font-size: 15px;
-  font-weight: 650;
   transition: transform 160ms ease;
+}
+
+.control-center__focus-button span {
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .control-center__focus-button:active {
@@ -958,8 +974,8 @@ onBeforeUnmount(() => {
 }
 
 .control-center__focus-button svg {
-  width: 27px;
-  height: 27px;
+  width: 22px;
+  height: 22px;
   fill: currentcolor;
 }
 
@@ -1045,6 +1061,22 @@ onBeforeUnmount(() => {
 
 .control-center__quick-button.control-center__quick-button--flashlight-active {
   color: #bf5af2 !important;
+}
+
+/* Torche dessinee a la main : le glyphe lucide etait une boite droite, celui-ci
+   reprend la tete evasee des reglages iOS et sort un faisceau une fois allume. */
+.control-center__flashlight-glyph {
+  width: 26px;
+  height: 26px;
+  fill: currentcolor;
+}
+
+/* Les coins de la tete sont arrondis par la jointure du trait plutot que par
+   des arcs : le glyphe reste net a 26 px sans path illisible. */
+.control-center__flashlight-head {
+  stroke: currentcolor;
+  stroke-linejoin: round;
+  stroke-width: 1.1;
 }
 
 .control-center__slider--brightness .control-center__slider-icon {

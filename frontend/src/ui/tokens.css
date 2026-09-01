@@ -43,6 +43,11 @@
   --sky-font-medium-title: 24px;
   --sky-font-large-title: 34px;
   --sky-font-family: 'Inter', Arial, sans-serif;
+  /* Meme famille, reglage typographique different : le G a ergot et les
+     virgules rondes d'Inter sont ce qui rapproche le plus la fonte des
+     formes d'SF Pro, et l'axe optique resserre le dessin en grande taille. */
+  --sky-font-display-features: 'cv10' 1, 'ss03' 1;
+  --sky-font-display-tracking: -0.022em;
   --sky-transition-fast: 100ms;
   --sky-transition-normal: 200ms;
   --sky-ease-out: cubic-bezier(0.22, 1, 0.36, 1);

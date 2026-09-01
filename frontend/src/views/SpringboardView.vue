@@ -92,6 +92,9 @@ const wallpaperStyle = computed<Record<string, string>>(() => {
 })
 const searchQuery = ref('')
 const searchFocused = ref(false)
+// Le champ passe en mode actif des qu'il est focus ou rempli : au repos il
+// affiche un gabarit centre, comme la bibliotheque d'apps d'iOS.
+const searchActive = computed(() => searchFocused.value || searchQuery.value !== '')
 const showAllApps = ref(false)
 const editMode = ref(false)
 const widgetPickerOpened = ref(false)
@@ -1763,17 +1766,26 @@ onBeforeUnmount(() => {
       >
         <div
           class="app-library-search"
-          :class="{ 'app-library-search--focused': searchFocused }"
+          :class="{ 'app-library-search--focused': searchActive }"
         >
-          <Search :size="16" aria-hidden="true" />
+          <span
+            v-if="!searchActive"
+            class="app-library-search__hint"
+            aria-hidden="true"
+          >
+            <Search :size="15" />
+            {{ phone.t('Home.appLibrarySearch') }}
+          </span>
+          <Search v-else :size="15" aria-hidden="true" />
           <input
             v-model="searchQuery"
             type="search"
-            :placeholder="phone.t('Home.appLibrarySearch')"
+            :aria-label="phone.t('Home.appLibrarySearch')"
+            :placeholder="searchActive ? phone.t('Home.appLibrarySearch') : ''"
             @focus="openAllApps"
           />
           <button
-            v-if="searchQuery || searchFocused"
+            v-if="searchActive"
             type="button"
             :aria-label="phone.t('Common.cancel')"
             @click="clearSearch"
