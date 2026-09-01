@@ -229,7 +229,8 @@ function collectFrontendFiles(directory: string): string[] {
     if (entry.isDirectory()) {
       return entry.name === 'development' ? [] : collectFrontendFiles(path)
     }
-    return /\.(?:ts|vue)$/.test(entry.name) && !entry.name.includes('.test.')
+    return /\.(?:ts|vue)$/.test(entry.name) && !entry.name.includes('.test.') &&
+      !entry.name.includes('.spec.')
       ? [path]
       : []
   })
