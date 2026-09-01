@@ -25,7 +25,6 @@ import {
   SkyLink,
   SkyList,
   SkyListButton,
-  SkyListItem,
   SkyNavbar,
   SkyNavbarBackLink,
   SkyScrollArea,
@@ -174,10 +173,6 @@ function noteDate(note: Note): string {
     month: 'short',
     ...(sameYear ? {} : { year: 'numeric' }),
   }).format(date)
-}
-
-function noteSubtitle(note: Note): string {
-  return `${noteDate(note)} · ${notePreview(note)}`
 }
 
 function titleFromDraftBody(body: string): string {

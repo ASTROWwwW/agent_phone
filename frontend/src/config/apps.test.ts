@@ -1,6 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import { Newspaper, Siren } from 'lucide-vue-next'
-
 import { isPhoneAppId, PHONE_APPS } from './apps'
 describe('app registry', () => {
   it('has unique ids and routes with the reference dock order', () => {

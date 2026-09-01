@@ -4,7 +4,6 @@ import {
   MessageCircle,
   Music2,
   Pause,
-  Phone,
   Play,
   SkipForward,
   WalletCards,

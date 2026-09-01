@@ -27,7 +27,10 @@ describe('PhonePasscode iOS presentation contract', () => {
   })
 
   it('keeps light, dark and reduced-motion treatments explicit', () => {
-    expect(source).toContain(':global(.phone-app--light)')
+    // `:global(x) y` est compile en `x` seul par @vue/compiler-sfc : la regle
+    // de theme clair doit rester une descendance simple pour s'appliquer.
+    expect(source).toContain('.phone-app--light .passcode-screen--surface')
+    expect(source).not.toMatch(/:global\([^)]*\)\s+[.#a-zA-Z]/)
     expect(source).toContain('@media (prefers-reduced-motion: reduce)')
     expect(source).toContain('passcode-screen__backdrop')
   })

@@ -2425,7 +2425,7 @@ onMounted(async () => {
   font-weight: 700;
   transform: translateX(-50%);
 }
-:global(.dark) .feather-app {
+.dark .feather-app {
   background: #090d12;
   color: #f4f7fa;
 }
@@ -2436,7 +2436,7 @@ onMounted(async () => {
   border-bottom: 0.5px solid color-mix(in srgb, currentColor 12%, transparent);
   backdrop-filter: blur(18px);
 }
-:global(.dark) .feather-navbar {
+.dark .feather-navbar {
   --sky-navbar-glass: color-mix(in srgb, #090d12 91%, transparent);
 }
 .feather-explore-search {
@@ -2540,7 +2540,7 @@ onMounted(async () => {
   box-shadow: 0 18px 42px rgb(31 66 120 / 12%);
   backdrop-filter: blur(20px);
 }
-:global(.dark) .feather-auth__card {
+.dark .feather-auth__card {
   border-color: rgb(118 192 255 / 16%);
   background: rgb(18 25 34 / 88%);
   box-shadow: 0 18px 42px rgb(0 0 0 / 25%);
@@ -3020,7 +3020,7 @@ onMounted(async () => {
   color: #fff;
   background: linear-gradient(145deg, #71c8ff, #377be7);
 }
-:global(.dark) .feather-profile__avatar {
+.dark .feather-profile__avatar {
   border-color: #090d12;
 }
 .feather-profile__avatar img {
@@ -5333,7 +5333,7 @@ onMounted(async () => {
     --sky-navbar-glass: rgb(255 255 255 / 91%);
     border-bottom-color: rgb(127 127 127 / 18%);
   }
-  :global(.dark) .feather-navbar {
+  .dark .feather-navbar {
     --sky-navbar-glass: rgb(9 13 18 / 91%);
   }
   .dark.feather-app .feather-navbar {

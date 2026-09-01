@@ -6,7 +6,6 @@ import {
   Camera,
   CarFront,
   ChevronRight,
-  CircleCheck,
   CirclePlus,
   Gift,
   Hammer,
@@ -58,7 +57,6 @@ import CityMarktAuth from '@/components/citymarkt/CityMarktAuth.vue'
 import AccountLogoutDialog from '@/components/account/AccountLogoutDialog.vue'
 import { useAccountStore } from '@/stores/account'
 import { useAppAuthStore } from '@/stores/app-auth'
-import { useAppStoreStore } from '@/stores/app-store'
 import { useEasyShareStore } from '@/stores/easyshare'
 import { useMarketplaceStore } from '@/stores/marketplace'
 import { useMessageMediaStore } from '@/stores/messageMedia'
@@ -122,7 +120,6 @@ const route = useRoute()
 const router = useRouter()
 const account = useAccountStore()
 const appAuth = useAppAuthStore()
-const appStore = useAppStoreStore()
 const easyShare = useEasyShareStore()
 const marketplace = useMarketplaceStore()
 const messageMedia = useMessageMediaStore()
@@ -361,6 +358,19 @@ function formatPrice(item: {
   return item.price_type === 'negotiable'
     ? phone.t('Apps.citymarkt.negotiablePrice', { price: formatted })
     : phone.t('Apps.citymarkt.money', { price: formatted })
+}
+
+/** Montant seul, sans la mention de negociation : la carte l'affiche a part. */
+function formatAmount(item: {
+  price?: number | string | null
+  price_type?: MarketplacePriceType | null
+}): string {
+  if (item.price_type === 'free') return phone.t('Apps.citymarkt.free')
+  return phone.t('Apps.citymarkt.money', {
+    price: new Intl.NumberFormat(phone.lang, {
+      maximumFractionDigits: 0,
+    }).format(Number(item.price ?? 0)),
+  })
 }
 
 function relativeDate(value: DatabaseDateValue): string {
@@ -1160,7 +1170,12 @@ onMounted(async () => {
                 }}</i>
               </span>
               <span class="citymarkt-listing-card__body">
-                <strong>{{ formatPrice(item) }}</strong>
+                <span class="citymarkt-listing-card__price">
+                  <strong>{{ formatAmount(item) }}</strong>
+                  <em v-if="item.price_type === 'negotiable'">{{
+                    label('priceTypes', 'negotiable')
+                  }}</em>
+                </span>
                 <span class="citymarkt-listing-card__title">{{
                   item.title
                 }}</span>
@@ -2711,8 +2726,12 @@ onMounted(async () => {
   min-height: 44px;
   margin: 0;
 }
+/* Un jaune a 45 % d'opacite passait pour un bouton casse plutot que pour une
+   action indisponible : fond neutre et libelle attenue a la place. */
 .citymarkt__contact-fixed:disabled {
-  opacity: 0.45;
+  background: var(--panel);
+  color: var(--muted);
+  opacity: 1;
 }
 .citymarkt__owner-actions {
   display: grid;
@@ -3053,6 +3072,13 @@ onMounted(async () => {
   right: 0;
   left: 0;
 }
+
+/* « Los Santos marketplace » depassait a la largeur reelle du telephone : le
+   sous-titre descend d'un cran et laisse la ligne entiere. */
+.citymarkt-navbar :deep(.sky-navbar__subtitle) {
+  font-size: 12px;
+  letter-spacing: -0.1px;
+}
 .citymarkt__content {
   position: absolute;
   inset: 0;
@@ -3138,10 +3164,10 @@ onMounted(async () => {
 .citymarkt__segmented button.active span {
   background: #17181626;
 }
-:global(.citymarkt--light) .citymarkt__segmented {
+.citymarkt--light .citymarkt__segmented {
   border-color: #0000000b;
 }
-:global(.citymarkt--light) .citymarkt__segmented button span {
+.citymarkt--light .citymarkt__segmented button span {
   background: #0000000b;
 }
 .citymarkt__messages {
@@ -3278,11 +3304,11 @@ onMounted(async () => {
 .citymarkt__offer-panel > button:disabled {
   opacity: 0.45;
 }
-:global(.citymarkt--light) .citymarkt__offer-panel {
+.citymarkt--light .citymarkt__offer-panel {
   background: #fff;
   box-shadow: 0 14px 35px #0003;
 }
-:global(.citymarkt--light) .citymarkt__offer-panel label > span {
+.citymarkt--light .citymarkt__offer-panel label > span {
   border-color: #00000012;
   background: #f4f4ef;
 }
@@ -3555,14 +3581,14 @@ onMounted(async () => {
 .citymarkt__preview-image {
   overflow: hidden;
 }
-:global(.citymarkt--light) .citymarkt__card-image--empty,
-:global(.citymarkt--light) .citymarkt__thumb--empty {
+.citymarkt--light .citymarkt__card-image--empty,
+.citymarkt--light .citymarkt__thumb--empty {
   background: linear-gradient(145deg, #ecece7, #dedfd8) !important;
 }
-:global(.citymarkt--light) .citymarkt__photo-actions > button {
+.citymarkt--light .citymarkt__photo-actions > button {
   border-color: #00000010;
 }
-:global(.citymarkt--light) .citymarkt__selected-strip button {
+.citymarkt--light .citymarkt__selected-strip button {
   border-color: #00000018;
 }
 .citymarkt__sell > header strong {
@@ -3832,16 +3858,22 @@ onMounted(async () => {
   gap: 2px;
   padding: 0 4px;
 }
+/* Tuiles pleines a la place des pastilles de verre : sur fond clair, le cercle
+   translucide se lisait a peine et la grille perdait toute structure. */
 .citymarkt__category-icon {
-  width: 42px;
-  height: 42px;
-  margin: 0 auto 4px;
-  border-radius: 9999px;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 5px;
+  border-radius: 14px;
   display: grid;
   place-items: center;
   color: var(--yellow);
+  background: rgb(239 185 17 / 16%) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   transition:
-    filter 0.18s ease,
+    background 0.18s ease,
     transform 0.18s ease;
 }
 .citymarkt__categories button {
@@ -3850,18 +3882,51 @@ onMounted(async () => {
     transform 0.18s ease;
 }
 .citymarkt__categories button:hover .citymarkt__category-icon {
-  filter: brightness(1.04);
   transform: translateY(-1px);
+}
+
+.citymarkt__categories button:active .citymarkt__category-icon {
+  transform: scale(0.94);
+}
+
+/* Prix et mention de negociation sur une meme ligne, la mention en pastille
+   pour qu'elle ne mange pas la largeur du montant. */
+.citymarkt-listing-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.citymarkt-listing-card__price strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.citymarkt-listing-card__price em {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: var(--sky-radius-pill);
+  color: var(--yellow);
+  background: rgb(239 185 17 / 18%);
+  font-size: 9.5px;
+  font-style: normal;
+  font-weight: 650;
+  letter-spacing: -0.1px;
 }
 .citymarkt__categories button.active {
   color: #fff;
   font-weight: 800;
 }
 .citymarkt__categories button.active .citymarkt__category-icon {
-  filter: brightness(1.22);
-  transform: scale(1.06);
+  color: #171816;
+  background: var(--yellow) !important;
+  filter: none;
+  transform: none;
 }
-:global(.citymarkt--light) .citymarkt__categories button.active {
+.citymarkt--light .citymarkt__categories button.active {
   color: #171816;
 }
 .citymarkt__glass-actions {
@@ -4130,7 +4195,7 @@ onMounted(async () => {
   font-size: 9px;
   line-height: 13px;
 }
-:global(.citymarkt--light) .citymarkt-profile-listing__body > small {
+.citymarkt--light .citymarkt-profile-listing__body > small {
   background: #0000000c;
 }
 .citymarkt__glass-profile {
@@ -4438,7 +4503,7 @@ onMounted(async () => {
 .citymarkt__profile-actions button:disabled {
   opacity: 0.4;
 }
-:global(.citymarkt--light) .citymarkt__profile-editor {
+.citymarkt--light .citymarkt__profile-editor {
   border-color: #00000012;
 }
 .citymarkt-create-navbar :deep(.citymarkt-create-action--close) {

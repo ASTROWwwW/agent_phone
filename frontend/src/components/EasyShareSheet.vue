@@ -514,7 +514,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   pointer-events: none;
   transform: translateZ(0);
 }
-:global(.phone-app--light) .easyshare-host {
+.phone-app--light .easyshare-host {
   --easyshare-solid-surface: #fff;
 }
 .easyshare-host--opened {
@@ -875,7 +875,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown, true))
   --easyshare-text: #f5f5f7;
   --easyshare-secondary: #a1a1a6;
 }
-:global(.phone-app--light) .easyshare-host {
+.phone-app--light .easyshare-host {
   --easyshare-list-surface: #f2f2f7;
   --easyshare-text: #171719;
   --easyshare-secondary: #6e6e73;
