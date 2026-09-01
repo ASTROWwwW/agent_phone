@@ -13,6 +13,7 @@ const config = read('config/config.lua')
 const configDefault = read('source/shared/config_default.lua')
 const manifest = read('fxmanifest.lua')
 const gitignore = read('.gitignore')
+const configurator = read('source/server/phone_configurator.lua')
 
 const PEPPER_KEYS = [
   'PasscodePepper',
@@ -65,5 +66,12 @@ describe('password pepper placement', () => {
   it('never ships the secrets file itself', () => {
     expect(gitignore).toMatch(/^config\/secrets\.lua$/m)
     expect(existsSync(resourceRoot + 'config/secrets.example.lua')).toBe(true)
+  })
+  it('never lets the SQL configurator overwrite the server secrets', () => {
+    // config.lua declare Config.Server avec des coquilles vides, que
+    // config/secrets.lua remplit ensuite. L instantane stocke en base est pris
+    // sur config.lua : le reappliquer effacait les peppers, et le serveur
+    // signalait des empreintes sans secret cote production.
+    expect(configurator).toMatch(/key ~= "CommandPermissions" and key ~= "Server"/)
   })
 })

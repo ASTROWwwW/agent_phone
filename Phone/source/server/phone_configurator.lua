@@ -379,7 +379,12 @@ local function apply_runtime_configuration()
 
     local runtime_config = deserialize_value(stored_config)
     for key, value in pairs(runtime_config) do
-        if key ~= "CommandPermissions" then
+        -- Server porte les secrets serveur, definis dans config/secrets.lua qui
+        -- est hors depot et charge apres config.lua. L instantane SQL, lui, est
+        -- pris sur config.lua ou ces cles sont des coquilles vides : le
+        -- reappliquer effacait les peppers, et le serveur signalait ensuite des
+        -- empreintes sans secret. Ces cles ne transitent jamais par la base.
+        if key ~= "CommandPermissions" and key ~= "Server" then
             if type(Config[key]) == "table" and type(value) == "table" then
                 apply_runtime_table(Config[key], value)
             else

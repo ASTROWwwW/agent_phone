@@ -40,7 +40,7 @@ describe('fixed server permissions', () => {
 
   it('keeps fixed permissions outside SQL and removes legacy group fields', () => {
     expect(configurator).toContain('key ~= "CommandPermissions"')
-    expect(configurator).toContain('if key ~= "CommandPermissions" then')
+    expect(configurator).toContain('if key ~= "CommandPermissions" and key ~= "Server" then')
     expect(configuratorFixture).toContain('delete config.CommandPermissions')
     for (const path of [
       'AdminPanel.AdminGroups',
