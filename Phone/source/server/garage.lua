@@ -179,7 +179,7 @@ local function storage_config()
         local table_name = tostring(Config.Garage.Custom.Table or "")
         local owner_column = tostring(Config.Garage.Custom.OwnerColumn or "")
         if not table_name:match("^[%w_]+$") or not owner_column:match("^[%w_]+$") then
-            error("[agent_phone] Custom garage table and owner column must be configured with SQL identifiers.")
+            error("[agent_phone] La table et la colonne de proprietaire du garage doivent etre des identifiants SQL.")
         end
         return table_name, owner_column
     end

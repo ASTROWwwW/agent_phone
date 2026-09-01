@@ -9,7 +9,7 @@ end)
 if passcode_pepper == "" then
     Bridge.Debug(
         "warn",
-        "[agent_phone] Config.Server.PasscodePepper is empty. Device passcodes still work, but their hashes lack the required server-side secret. Set a stable random value in config/config.lua before production; changing it later invalidates existing device passcodes.",
+        "[agent_phone] Config.Server.PasscodePepper est vide. Les codes de verrouillage fonctionnent toujours, mais leurs empreintes n ont pas le secret serveur requis. Definis une valeur aleatoire stable dans config/secrets.lua avant la production ; la changer ensuite invalide les codes existants.",
         { always = true }
     )
 end
@@ -156,7 +156,7 @@ Bridge.Callbacks.Register("agent_phone:security:set-passcode", function(source, 
     local salts = Bridge.Database.Query("SELECT REPLACE(UUID(), '-', '') AS `salt`", {})
     local salt = salts[1] and salts[1].salt
     if type(salt) ~= "string" or #salt ~= 32 then
-        error("[agent_phone] Database did not generate a valid passcode salt.")
+        error("[agent_phone] La base n a pas genere un sel de code valide.")
     end
     local result = Bridge.Database.Query([[
         INSERT INTO `agent_phone_device_security`
@@ -186,7 +186,7 @@ Bridge.Callbacks.Register("agent_phone:security:change-passcode", function(sourc
     local salts = Bridge.Database.Query("SELECT REPLACE(UUID(), '-', '') AS `salt`", {})
     local salt = salts[1] and salts[1].salt
     if type(salt) ~= "string" or #salt ~= 32 then
-        error("[agent_phone] Database did not generate a valid passcode salt.")
+        error("[agent_phone] La base n a pas genere un sel de code valide.")
     end
     local result = Bridge.Database.Query([[
         UPDATE `agent_phone_device_security`

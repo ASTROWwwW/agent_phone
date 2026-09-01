@@ -407,7 +407,7 @@ local function write_audit(actor_source, target_source, target_identifier, imei,
         json.encode(details or {}),
     })
     if affected_rows(result) ~= 1 then
-        error("[agent_phone] Admin audit insert did not affect exactly one row.")
+        error("[agent_phone] L ecriture au journal d audit n a pas touche exactement une ligne.")
     end
 end
 

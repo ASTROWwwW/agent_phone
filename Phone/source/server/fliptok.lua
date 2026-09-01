@@ -39,7 +39,7 @@ refresh_runtime_configuration()
 if password_pepper == "" then
     Bridge.Debug(
         "warn",
-        "[agent_phone] Config.Server.FlipTokPasswordPepper is empty. FlipTok passwords still work, but their hashes lack the required server-side secret. Set a stable random value in config/config.lua before production; changing it later invalidates existing FlipTok passwords.",
+        "[agent_phone] Config.Server.FlipTokPasswordPepper est vide. Les mots de passe FlipTok fonctionnent toujours, mais leurs empreintes n ont pas le secret serveur requis. Definis une valeur aleatoire stable dans config/secrets.lua avant la production ; la changer ensuite invalide les mots de passe existants.",
         { always = true }
     )
 end
@@ -105,7 +105,7 @@ end
 local function new_id()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a FlipTok id.")
+        error("[agent_phone] La base n a pas genere un identifiant FlipTok.")
     end
     return rows[1].id
 end
@@ -372,7 +372,7 @@ Bridge.Callbacks.Register("agent_phone:fliptok:register", function(source, data)
 
     local salts = Bridge.Database.Query("SELECT REPLACE(UUID(), '-', '') AS `salt`", {})
     local salt = salts[1] and salts[1].salt
-    if type(salt) ~= "string" or #salt ~= 32 then error("[agent_phone] Database did not generate a FlipTok password salt.") end
+    if type(salt) ~= "string" or #salt ~= 32 then error("[agent_phone] La base n a pas genere un sel de mot de passe FlipTok.") end
     local credential_result = Bridge.Database.Query([[INSERT IGNORE INTO `agent_phone_fliptok_credentials`
         (`profile_id`, `password_hash`, `password_salt`) VALUES (?, UNHEX(SHA2(CONCAT(?, ?, ?), 256)), ?)]], {
         profile_id, password_pepper, salt, data.password, salt,

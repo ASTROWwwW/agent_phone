@@ -47,7 +47,7 @@ local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     local id = rows[1] and rows[1].id
     if type(id) ~= "string" then
-        error("[agent_phone] Database did not generate an EasyShare id.")
+        error("[agent_phone] La base n a pas genere un identifiant EasyShare.")
     end
     return id
 end

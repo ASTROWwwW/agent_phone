@@ -5,7 +5,7 @@ local RESOURCE_NAME = GetCurrentResourceName()
 local function reject_argument(provider_name, export_name, argument_name, expectation)
     Bridge.Debug(
         "warn",
-        "[agent_phone] %s:%s rejected: %s must be %s.",
+        "[agent_phone] %s:%s refuse : %s doit etre %s.",
         provider_name,
         export_name,
         argument_name,
@@ -73,7 +73,7 @@ function AgentPhoneCompatibilityServer.GetCalls(provider_name, export_name)
 
     Bridge.Debug(
         "error",
-        "[agent_phone] %s:%s unavailable: the call service is not ready.",
+        "[agent_phone] %s:%s indisponible : le service d appel n est pas pret.",
         provider_name,
         export_name
     )
@@ -88,7 +88,7 @@ function AgentPhoneCompatibilityServer.GetNotifications(provider_name, export_na
 
     Bridge.Debug(
         "error",
-        "[agent_phone] %s:%s unavailable: the notification service is not ready.",
+        "[agent_phone] %s:%s indisponible : le service de notification n est pas pret.",
         provider_name,
         export_name
     )

@@ -233,7 +233,7 @@ end
 local function new_database_id()
     local rows = Bridge.Database.Query("SELECT UUID() AS id", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a mail id.")
+        error("[agent_phone] La base n a pas genere un identifiant de message.")
     end
 
     return rows[1].id
@@ -371,7 +371,7 @@ Bridge.Callbacks.Register("agent_phone:mail:create-mailbox", function(source, da
         LIMIT 1
     ]], { session.id, name })
     if not created[1] then
-        error("[agent_phone] Created mail mailbox could not be loaded.")
+        error("[agent_phone] La boite mail creee n a pas pu etre chargee.")
     end
 
     created[1].id = tonumber(created[1].id)

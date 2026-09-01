@@ -12,7 +12,7 @@ end
 if account_tables.agent_phone_mail_accounts and not account_tables.agent_phone_accounts then
     Bridge.Database.Query("RENAME TABLE `agent_phone_mail_accounts` TO `agent_phone_accounts`", {})
 elseif account_tables.agent_phone_mail_accounts and account_tables.agent_phone_accounts then
-    error("[agent_phone] Both legacy and current Agent Cloud account tables exist; refusing an ambiguous migration.")
+    error("[agent_phone] Les anciennes et les nouvelles tables de comptes Agent Cloud coexistent ; migration ambigue refusee.")
 end
 
 local schema = {

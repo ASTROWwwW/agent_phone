@@ -13,7 +13,7 @@ local reroute_company_call
 local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a call UUID.")
+        error("[agent_phone] La base n a pas genere un UUID d appel.")
     end
     return rows[1].id
 end
@@ -915,7 +915,7 @@ reroute_company_call = function(call, previous_status)
             call.rerouting = nil
             Bridge.Debug(
                 "error",
-                "[agent_phone] Could not reroute company call %s to the next target.",
+                "[agent_phone] Impossible de rediriger l appel d entreprise %s vers la cible suivante.",
                 tostring(call.id)
             )
             return false

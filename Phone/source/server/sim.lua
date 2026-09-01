@@ -61,7 +61,7 @@ end
 local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a SIM UUID.")
+        error("[agent_phone] La base n a pas genere un UUID de carte SIM.")
     end
     return rows[1].id
 end
@@ -80,7 +80,7 @@ local function reserve_sim(sim_type, is_virtual)
         return affected_rows(result) == 1
     end, Config.Sim.NumberLength, Config.Sim.NumberPrefix)
     if not number then
-        error("[agent_phone] Could not reserve a unique SIM number after 20 attempts.")
+        error("[agent_phone] Impossible de reserver un numero de SIM unique apres 20 tentatives.")
     end
     return { id = sim_id, phone_number = number, sim_type = sim_type }
 end
@@ -240,7 +240,7 @@ function AgentPhoneSim.ChangeNumber(source, imei, sim_id, value)
         if phone_slot then
             sim.phone_number = previous_number
             if not set_phone_sim_metadata(source, phone_slot, sim) then
-                error("[agent_phone] Could not restore SIM metadata after a failed admin number change.")
+                error("[agent_phone] Impossible de restaurer les metadonnees de la SIM apres un changement de numero echoue.")
             end
         end
         return false, "phone_number_taken"
@@ -259,7 +259,7 @@ local function resolve_used_sim(source, used_item, item_name)
     if #slots == 1 then
         return slots[1]
     end
-    Bridge.Debug("warn", "[agent_phone] Could not resolve exact SIM slot for source %s.", tostring(source))
+    Bridge.Debug("warn", "[agent_phone] Impossible de resoudre l emplacement exact de la SIM pour la source %s.", tostring(source))
     return nil
 end
 
@@ -321,7 +321,7 @@ local function list_phone_choices(source)
             else
                 Bridge.Debug(
                     "error",
-                    "[agent_phone] Could not prepare SIM target %s for source %s: %s.",
+                    "[agent_phone] Impossible de preparer la SIM cible %s pour la source %s : %s.",
                     imei,
                     tostring(source),
                     tostring(prepare_error)

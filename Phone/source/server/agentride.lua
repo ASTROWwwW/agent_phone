@@ -155,7 +155,7 @@ local function generate_uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     local id = rows[1] and rows[1].id
     if type(id) ~= "string" then
-        error("[agent_phone] Database did not generate a AgentRide id.")
+        error("[agent_phone] La base n a pas genere un identifiant AgentRide.")
     end
     return id
 end
@@ -457,7 +457,7 @@ local function active_ride(profile_id)
     if #rows > 1 then
         Bridge.Debug(
             "error",
-            "[agent_phone] AgentRide profile '%s' has multiple active rides.",
+            "[agent_phone] Le profil AgentRide '%s' a plusieurs courses actives.",
             tostring(profile_id)
         )
     end
@@ -880,7 +880,7 @@ Bridge.Callbacks.Register("agent_phone:agentride:update-profile", function(sourc
             WHERE `id` = ? AND `owner_identifier` = ?
         ]], { name, avatar_media_id, profile.id, profile.owner_identifier })
         if affected_rows(update) > 1 then
-            error(("[agent_phone] AgentRide profile update affected multiple rows for '%s'."):format(profile.id))
+            error(("[agent_phone] La mise a jour du profil AgentRide a touche plusieurs lignes pour '%s'."):format(profile.id))
         end
         local updated_profile = require_profile(source)
         local ride = active_ride(profile.id)
@@ -1189,7 +1189,7 @@ Bridge.Callbacks.Register("agent_phone:agentride:request", function(source, data
             elseif price > 0 then
                 Bridge.Debug(
                     "error",
-                    "[agent_phone] Could not verify fare recovery after AgentRide '%s' activation failed; manual reconciliation is required.",
+                    "[agent_phone] Impossible de verifier la recuperation du prix apres l echec d activation de la course '%s' ; un rapprochement manuel est requis.",
                     ride_id
                 )
                 return { success = false, error = "refund_failed" }
@@ -1448,7 +1448,7 @@ Bridge.Callbacks.Register("agent_phone:agentride:complete", function(source, dat
         if not completed_success then
             Bridge.Debug(
                 "error",
-                "[agent_phone] AgentRide '%s' completion query crashed after payout; completing state blocks an ambiguous retry and requires manual reconciliation: %s",
+                "[agent_phone] La requete de cloture AgentRide '%s' a echoue apres le paiement ; l etat de cloture empeche une reprise ambigue et demande un rapprochement manuel : %s",
                 ride_id,
                 tostring(completed)
             )
@@ -1826,7 +1826,7 @@ CreateThread(function()
     then
         Bridge.Debug(
             "error",
-            "[agent_phone] AgentRide has unresolved cross-system payments (refunds=%s, tips=%s, payouts=%s, ambiguous fares=%s); manual reconciliation is required.",
+            "[agent_phone] AgentRide a des paiements non resolus (remboursements=%s, pourboires=%s, versements=%s, courses ambigues=%s) ; un rapprochement manuel est requis.",
             tostring(reconciliation.processing_refunds or 0),
             tostring(reconciliation.unresolved_tips or 0),
             tostring(reconciliation.unresolved_payouts or 0),
@@ -1864,7 +1864,7 @@ CreateThread(function()
         else
             Bridge.Debug(
                 "error",
-                "[agent_phone] AgentRide refund recovery query failed: %s",
+                "[agent_phone] La requete de recuperation des remboursements AgentRide a echoue : %s",
                 tostring(recovery_rows)
             )
         end

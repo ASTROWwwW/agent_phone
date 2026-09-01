@@ -69,7 +69,7 @@ end
 AgentPhoneClient.GetState = get_phone_state
 AgentPhoneClient.GetEquippedPhoneNumber = get_authoritative_phone_number
 
-Bridge.Debug("debug", "[agent_phone] Client script initialized.", { always = true })
+Bridge.Debug("debug", "[agent_phone] Script client demarre.", { always = true })
 
 local locale, locale_name = AgentPhoneLocales.Resolve(Config.Bridge.Locale)
 
@@ -495,7 +495,7 @@ RegisterNetEvent("agent_phone:device:open", function(data)
     end
     Bridge.Debug(
         "debug",
-        "[agent_phone] Client received device open for IMEI %s account_linked=%s.",
+        "[agent_phone] Le client a recu une ouverture d appareil pour l IMEI %s compte_lie=%s.",
         tostring(data.device.imei),
         tostring(data.account ~= nil),
         { always = true }
@@ -540,7 +540,7 @@ RegisterNetEvent("agent_phone:device:error", function(error_code)
     end
     Bridge.Debug(
         "debug",
-        "[agent_phone] Client received device error: %s.",
+        "[agent_phone] Le client a recu une erreur d appareil : %s.",
         tostring(error_code),
         { always = true }
     )

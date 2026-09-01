@@ -51,16 +51,16 @@ describe('fixed server permissions', () => {
       expect(configurator).toContain(`["${path}"] = true`)
     }
     expect(configurator).toContain(
-      'AGENT PHONE CONFIGURATION FILES ARE DISABLED',
+      'LES FICHIERS DE CONFIGURATION AGENT PHONE SONT IGNORES',
     )
     expect(configurator).toContain(
-      '^1 Runtime settings from config.lua and media.lua are DISABLED.^0',
+      '^1 Les reglages de config.lua et media.lua ne sont pas appliques.^0',
     )
     expect(configurator).toContain(
-      '^1 Configure all phone and media settings IN GAME through /phonepanel.^0',
+      '^1 Configure le telephone et les medias EN JEU avec /phonepanel.^0',
     )
     expect(configurator).toContain(
-      '^1 Only Config.PhoneConfigurator.Enabled and Config.CommandPermissions remain file-based.^0',
+      '^1 Restent dans le fichier : PhoneConfigurator.Enabled, CommandPermissions,^0',
     )
   })
 

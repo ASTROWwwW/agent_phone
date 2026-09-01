@@ -211,7 +211,7 @@ local function discard_verified_upload(remote_id)
     if not deleted then
         Bridge.Debug(
             "warn",
-            "[agent_phone] Could not remove rejected voice memo upload %s: %s.",
+            "[agent_phone] Impossible de supprimer l envoi de memo vocal refuse %s : %s.",
             tostring(remote_id),
             tostring(delete_error)
         )
@@ -380,7 +380,7 @@ RegisterNetEvent("agent_phone:memos:request-upload", function(data)
     local ids = Bridge.Database.Query("SELECT UUID() AS `request_id`", {})
     local request_id = ids[1] and ids[1].request_id
     if type(request_id) ~= "string" then
-        error("[agent_phone] Database did not generate a voice memo upload request ID.")
+        error("[agent_phone] La base n a pas genere un identifiant de demande d envoi de memo.")
     end
     pending_uploads[request_id] = {
         media_type = "audio",
@@ -464,7 +464,7 @@ RegisterNetEvent("agent_phone:memos:complete-upload", function(data)
     local ids = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     local memo_id = ids[1] and ids[1].id
     if type(memo_id) ~= "string" then
-        error("[agent_phone] Database did not generate a voice memo id.")
+        error("[agent_phone] La base n a pas genere un identifiant de memo vocal.")
     end
     local media_query
     local media_params
@@ -515,7 +515,7 @@ RegisterNetEvent("agent_phone:memos:complete-upload", function(data)
     local memos = list_memos(owner)
     local created = find_memo(memos, memo_id)
     if not created then
-        error(("[agent_phone] Created voice memo %s could not be hydrated."):format(memo_id))
+        error(("[agent_phone] Le memo vocal %s cree n a pas pu etre charge."):format(memo_id))
     end
     upload_result(src, state.memo.correlation_id, true, nil, created)
 end)

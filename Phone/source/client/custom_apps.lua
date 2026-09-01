@@ -380,7 +380,7 @@ local function normalize_external_definition_value(owner_resource, adapter_resou
         end
         Bridge.Debug(
             "warn",
-            "[agent_phone] Custom app '%s' from '%s' uses an unavailable icon (%s); using the default icon.",
+            "[agent_phone] L app '%s' de '%s' utilise une icone indisponible (%s) ; l icone par defaut est utilisee.",
             definition.id,
             owner_resource,
             icon_error
@@ -513,20 +513,20 @@ local function normalize_bundled_manifest(manifest)
     local resource_base_path = ("custom_apps/%s/"):format(manifest.folder)
     local base_url = ("https://cfx-nui-%s/%s"):format(current_resource, resource_base_path)
     if LoadResourceFile(current_resource, resource_base_path .. manifest.entry) == nil then
-        error(("[agent_phone] Bundled custom app '%s' entry file is missing: %s"):format(
+        error(("[agent_phone] Le fichier d entree de l app fournie '%s' est absent : %s"):format(
             manifest.id,
             manifest.entry
         ))
     end
     if manifest.icon and LoadResourceFile(current_resource, resource_base_path .. manifest.icon) == nil then
-        error(("[agent_phone] Bundled custom app '%s' icon file is missing: %s"):format(
+        error(("[agent_phone] L icone de l app fournie '%s' est absente : %s"):format(
             manifest.id,
             manifest.icon
         ))
     end
     for index = 1, #manifest.screenshots do
         if LoadResourceFile(current_resource, resource_base_path .. manifest.screenshots[index]) == nil then
-            error(("[agent_phone] Bundled custom app '%s' screenshot file is missing: %s"):format(
+            error(("[agent_phone] La capture de l app fournie '%s' est absente : %s"):format(
                 manifest.id,
                 manifest.screenshots[index]
             ))
@@ -680,7 +680,7 @@ local function invoke_hook(app, hook_name, payload)
         return true
     end
 
-    Bridge.Debug("error", "[agent_phone] Custom app '%s' hook '%s' failed: %s",
+    Bridge.Debug("error", "[agent_phone] Le point d entree '%s' de l app '%s' a echoue : %s",
         app.catalog.id,
         hook_name,
         tostring(hook_error)
@@ -1596,7 +1596,7 @@ local function refresh_bundled_apps()
         elseif not existing then
             local registered, register_error = register_app(normalized)
             if not registered then
-                error(("[agent_phone] Could not register bundled custom app '%s': %s"):format(
+                error(("[agent_phone] Impossible d enregistrer l app fournie '%s' : %s"):format(
                     manifest.id,
                     register_error
                 ))

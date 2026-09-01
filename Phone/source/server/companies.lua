@@ -22,7 +22,7 @@ local status_transitions = {
 local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a Companies UUID.")
+        error("[agent_phone] La base n a pas genere un UUID Companies.")
     end
     return rows[1].id
 end
@@ -195,14 +195,14 @@ local function validate_configuration(configuration)
         end
     end
     if company_config.PageSize > company_config.MaximumPageSize then
-        return nil, "[agent_phone] Companies PageSize cannot exceed MaximumPageSize."
+        return nil, "[agent_phone] Companies : PageSize ne peut pas depasser MaximumPageSize."
     end
     if type(company_config.RateLimits) ~= "table" then
         return nil, "[agent_phone] Config.Companies.RateLimits must be configured."
     end
     for _, name in ipairs({ "Read", "Search", "CreateRequest", "Message", "RequestAction", "Profile", "CallAvailability" }) do
         if not valid_integer(company_config.RateLimits[name], 1, 100000) then
-            return nil, ("[agent_phone] Companies rate limit '%s' is invalid."):format(name)
+            return nil, ("[agent_phone] Companies : la limite de debit '%s' est invalide."):format(name)
         end
     end
     if type(company_config.CallRouting) ~= "table"
@@ -224,12 +224,12 @@ local function validate_configuration(configuration)
     end
     for status in pairs(configured_statuses) do
         if company_config.Statuses[status] ~= true then
-            return nil, ("[agent_phone] Companies status '%s' must be enabled."):format(status)
+            return nil, ("[agent_phone] Companies : le statut '%s' doit etre active."):format(status)
         end
     end
     for status, enabled in pairs(company_config.Statuses) do
         if not configured_statuses[status] or enabled ~= true then
-            return nil, ("[agent_phone] Companies status '%s' is unsupported."):format(tostring(status))
+            return nil, ("[agent_phone] Companies : le statut '%s' n est pas pris en charge."):format(tostring(status))
         end
     end
     if type(company_config.AvailabilityStatuses) ~= "table" then
@@ -238,12 +238,12 @@ local function validate_configuration(configuration)
     local configured_availability = { available = true, busy = true, closed = true }
     for _, status in ipairs({ "available", "busy", "closed" }) do
         if company_config.AvailabilityStatuses[status] ~= true then
-            return nil, ("[agent_phone] Companies availability status '%s' must be enabled."):format(status)
+            return nil, ("[agent_phone] Companies : la disponibilite '%s' doit etre activee."):format(status)
         end
     end
     for status, enabled in pairs(company_config.AvailabilityStatuses) do
         if not configured_availability[status] or enabled ~= true then
-            return nil, ("[agent_phone] Companies availability status '%s' is unsupported."):format(tostring(status))
+            return nil, ("[agent_phone] Companies : la disponibilite '%s' n est pas prise en charge."):format(tostring(status))
         end
     end
     if not valid_array(company_config.Categories, 100) then
@@ -255,7 +255,7 @@ local function validate_configuration(configuration)
         if type(category_id) ~= "string" or #category_id > 64
             or not category_id:match("^[a-z0-9_-]+$") or category_ids[category_id]
         then
-            return nil, "[agent_phone] Companies contains an invalid category ID."
+            return nil, "[agent_phone] Companies contient un identifiant de categorie invalide."
         end
         category_ids[category_id] = true
     end
@@ -313,11 +313,11 @@ local function validate_configuration(configuration)
         end
         local line = definition.ServiceLine
         if type(line) ~= "table" then
-            return nil, ("[agent_phone] Company '%s' has no service line configuration."):format(company_id)
+            return nil, ("[agent_phone] L entreprise '%s' n a aucune configuration de ligne de service."):format(company_id)
         end
         local number = AgentPhoneSimNumber.NormalizeService(line.Number, configuration.Sim.NumberLength)
         if not number then
-            return nil, ("[agent_phone] Company '%s' has an invalid service number."):format(company_id)
+            return nil, ("[agent_phone] L entreprise '%s' a un numero de service invalide."):format(company_id)
         end
         if validated_service_lines_by_number[number] then
             return nil, ("[agent_phone] Service number '%s' is assigned more than once."):format(number)
@@ -326,13 +326,13 @@ local function validate_configuration(configuration)
             or type(line.CanMessage) ~= "boolean"
             or not valid_integer(line.MinimumGrade, 0, 10000)
         then
-            return nil, ("[agent_phone] Company '%s' has invalid service line flags or grade."):format(company_id)
+            return nil, ("[agent_phone] L entreprise '%s' a des options ou un grade de ligne de service invalides."):format(company_id)
         end
         if line.AutoContact and not definition.Public then
             return nil, ("[agent_phone] Private company '%s' cannot create a public system contact."):format(company_id)
         end
         if line.Routing ~= "round_robin" then
-            return nil, ("[agent_phone] Company '%s' uses unsupported call routing '%s'."):format(
+            return nil, ("[agent_phone] L entreprise '%s' utilise un routage d appel '%s' non pris en charge."):format(
                 company_id,
                 tostring(line.Routing)
             )
@@ -344,7 +344,7 @@ local function validate_configuration(configuration)
         validated_service_lines_by_number[number] = company_id
         for _, permission in ipairs({ "WorkQueue", "Availability", "Assign", "Profile", "Hours", "Services", "Announcement" }) do
             if not definition.Permissions or not valid_integer(definition.Permissions[permission], 0, 10000) then
-                return nil, ("[agent_phone] Company '%s' has no valid '%s' grade."):format(company_id, permission)
+                return nil, ("[agent_phone] L entreprise '%s' n a aucun grade '%s' valide."):format(company_id, permission)
             end
         end
         local default_services = definition.Services
@@ -353,11 +353,11 @@ local function validate_configuration(configuration)
             definition.Services = default_services
         end
         if not valid_array(default_services, company_config.MaximumServices) then
-            return nil, ("[agent_phone] Company '%s' has an invalid default service list."):format(company_id)
+            return nil, ("[agent_phone] L entreprise '%s' a une liste de services par defaut invalide."):format(company_id)
         end
         for _, service in ipairs(default_services) do
             if type(service) ~= "table" then
-                return nil, ("[agent_phone] Company '%s' has an invalid default service."):format(company_id)
+                return nil, ("[agent_phone] L entreprise '%s' a un service par defaut invalide."):format(company_id)
             end
             local title = valid_text(service.Title, company_config.ServiceTitleMaxLength, false)
             local service_description = valid_text(
@@ -369,7 +369,7 @@ local function validate_configuration(configuration)
             if not valid_service_id(service.Id) or not title or not service_description or not price
                 or type(service.RequestsEnabled) ~= "boolean"
             then
-                return nil, ("[agent_phone] Company '%s' has an invalid default service."):format(company_id)
+                return nil, ("[agent_phone] L entreprise '%s' a un service par defaut invalide."):format(company_id)
             end
             service.Title = title
             service.Description = service_description
@@ -523,7 +523,7 @@ local function migrate_requestable_emergency_companies()
         },
     }
     if not Bridge.Database.Transaction(statements) then
-        error("[agent_phone] Could not migrate requestable emergency company profiles.")
+        error("[agent_phone] Impossible de migrer les entreprises d urgence sollicitables.")
     end
 end
 
@@ -559,7 +559,7 @@ local function tombstone_removed_companies()
                     params = { profile.company_id, mutation_token },
                 },
             }) then
-                error(("[agent_phone] Could not tombstone removed company '%s'."):format(
+                error(("[agent_phone] Impossible de marquer comme supprimee l entreprise '%s'."):format(
                     tostring(profile.company_id)
                 ))
             end
@@ -962,7 +962,7 @@ local function cleanup_retained_data()
         },
     })
     if not success then
-        Bridge.Debug("error", "[agent_phone] Companies retention cleanup failed.")
+        Bridge.Debug("error", "[agent_phone] Le nettoyage de retention de Companies a echoue.")
     end
 end
 

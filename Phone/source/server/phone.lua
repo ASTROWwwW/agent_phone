@@ -111,7 +111,7 @@ local function reserve_imei()
     end)
 
     if not imei then
-        error("[agent_phone] Could not generate a unique IMEI after 20 attempts.")
+        error("[agent_phone] Impossible de generer un IMEI unique apres 20 tentatives.")
     end
     return imei
 end
@@ -126,7 +126,7 @@ local function character_identifier(source)
     if identifier == "" or #identifier > 80 then
         Bridge.Debug(
             "warn",
-            "[agent_phone] Could not resolve a valid character identifier for source %s.",
+            "[agent_phone] Impossible de resoudre un identifiant de personnage valide pour la source %s.",
             tostring(source)
         )
         return nil
@@ -369,7 +369,7 @@ local function resolve_used_slot(source, used_item)
     for _, candidate in ipairs(slots) do
         Bridge.Debug(
             "debug",
-            "[agent_phone] Candidate slot=%s name=%s amount=%s metadata_imei=%s.",
+            "[agent_phone] Emplacement candidat=%s nom=%s quantite=%s imei_metadonnees=%s.",
             tostring(candidate.slot),
             tostring(candidate.name),
             tostring(candidate.amount or candidate.count),
@@ -462,7 +462,7 @@ local function ensure_device(source, slot)
             end
             Bridge.Debug(
                 "info",
-                "[agent_phone] Adopted LB Phone migrated device %s for source %s.",
+                "[agent_phone] Appareil %s migre depuis LB Phone repris pour la source %s.",
                 imei,
                 tostring(source),
                 { always = true }
@@ -571,7 +571,7 @@ local function bootstrap(source, security, security_loaded)
 
     local device = load_device(session.imei)
     if not device then
-        error(("[agent_phone] Active IMEI %s has no device row."):format(session.imei))
+        error(("[agent_phone] L IMEI actif %s n a aucune ligne d appareil."):format(session.imei))
     end
 
     session.account_id = device.account_id and tonumber(device.account_id) or nil
@@ -996,7 +996,7 @@ flush_pending_phone_opens()
 function AgentPhone.OpenDeviceForCall(source, imei)
     local matches = find_device_slots(source, imei)
     if not matches[1] then
-        Bridge.Debug("warn", "[agent_phone] Could not open ringing device %s for source %s.", tostring(imei), tostring(source))
+        Bridge.Debug("warn", "[agent_phone] Impossible d ouvrir l appareil %s qui sonne pour la source %s.", tostring(imei), tostring(source))
         return false
     end
     local security = AgentPhoneSecurity.Load(imei)
@@ -1019,7 +1019,7 @@ function AgentPhone.OpenDeviceForCall(source, imei)
     if not payload then
         Bridge.Debug(
             "error",
-            "[agent_phone] Call notification bootstrap failed for source %s IMEI %s: %s.",
+            "[agent_phone] L initialisation des notifications d appel a echoue pour la source %s IMEI %s : %s.",
             tostring(source),
             tostring(imei),
             tostring(type(bootstrap_error) == "table" and bootstrap_error.error or "request_failed")

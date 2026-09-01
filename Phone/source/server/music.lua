@@ -66,7 +66,7 @@ local function discover_music_assets()
     if type(io.readdir) ~= "function" then
         Bridge.Debug(
             "error",
-            "[agent_phone] Automatic music discovery requires io.readdir. Update the FXServer artifacts.",
+            "[agent_phone] La detection automatique des musiques exige io.readdir. Mets a jour les artefacts FXServer.",
             { always = true }
         )
         return nil
@@ -205,7 +205,7 @@ local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     local id = rows[1] and rows[1].id
     if type(id) ~= "string" then
-        error("[agent_phone] Database did not generate a music id.")
+        error("[agent_phone] La base n a pas genere un identifiant musical.")
     end
     return id
 end

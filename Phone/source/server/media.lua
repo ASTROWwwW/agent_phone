@@ -103,7 +103,7 @@ local function request_presigned_url()
     if api_key == "" then
         Bridge.Debug(
             "error",
-            "[agent_phone] FiveManage presigned upload request failed: Config.Media.FiveManage.ApiKey is empty or invalid.",
+            "[agent_phone] La demande d envoi FiveManage a echoue : Config.Media.FiveManage.ApiKey est vide ou invalide.",
             { always = true }
         )
         return nil, "missing_config"
@@ -120,7 +120,7 @@ local function request_presigned_url()
     if response.status == 401 or response.status == 403 then
         Bridge.Debug(
             "error",
-            "[agent_phone] FiveManage presigned upload request was rejected with HTTP %s. Check Config.Media.FiveManage.ApiKey and its file permissions.",
+            "[agent_phone] La demande d envoi FiveManage a ete refusee (HTTP %s). Verifie Config.Media.FiveManage.ApiKey et les droits du fichier.",
             tostring(response.status),
             { always = true }
         )
@@ -129,7 +129,7 @@ local function request_presigned_url()
     if response.status == 429 then
         Bridge.Debug(
             "error",
-            "[agent_phone] FiveManage presigned upload request was rate limited with HTTP 429.",
+            "[agent_phone] La demande d envoi FiveManage a ete limitee en debit (HTTP 429).",
             { always = true }
         )
         return nil, "media_provider_rate_limited"
@@ -138,7 +138,7 @@ local function request_presigned_url()
     if not data then
         Bridge.Debug(
             "error",
-            "[agent_phone] FiveManage presigned upload request failed with HTTP %s (%s): %s",
+            "[agent_phone] La demande d envoi FiveManage a echoue (HTTP %s, %s) : %s",
             tostring(response.status),
             tostring(response_error),
             response_error_message(response),
@@ -150,7 +150,7 @@ local function request_presigned_url()
     if type(presigned_url) ~= "string" or presigned_url == "" then
         Bridge.Debug(
             "error",
-            "[agent_phone] FiveManage presigned upload response did not contain a presignedUrl.",
+            "[agent_phone] La reponse FiveManage ne contenait aucune presignedUrl.",
             { always = true }
         )
         return nil, "media_provider_failed"
@@ -159,7 +159,7 @@ local function request_presigned_url()
     if not provider_base_url then
         Bridge.Debug(
             "error",
-            "[agent_phone] FiveManage returned a presigned URL on an unexpected host.",
+            "[agent_phone] FiveManage a renvoye une URL signee sur un hote inattendu.",
             { always = true }
         )
         return nil, "media_provider_failed"
@@ -351,7 +351,7 @@ local function verify_remote_upload(state, remote_id, uploaded_url)
     if not uploaded_host or uploaded_host:lower() ~= "r2.fivemanage.com" then
         Bridge.Debug(
             "error",
-            "[agent_phone][media-debug] FiveManage upload returned an unexpected media host."
+            "[agent_phone][media-debug] L envoi FiveManage a renvoye un hote de media inattendu."
         )
         return nil, "invalid_upload"
     end
@@ -806,7 +806,7 @@ RegisterNetEvent("agent_phone:media:complete-upload", function(data)
             if not deleted then
                 Bridge.Debug(
                     "warn",
-                    "[agent_phone] Could not remove rejected media upload %s: %s.",
+                    "[agent_phone] Impossible de supprimer l envoi de media refuse %s : %s.",
                     tostring(data.remoteId),
                     tostring(delete_error)
                 )
@@ -1066,7 +1066,7 @@ function AgentPhoneMedia.CleanupRemoteFiles(rows)
             if not deleted then
                 Bridge.Debug(
                     "warn",
-                    "[agent_phone] Could not delete remote media %s during factory reset: %s.",
+                    "[agent_phone] Impossible de supprimer le media distant %s pendant la reinitialisation : %s.",
                     tostring(row.id),
                     tostring(delete_error)
                 )
@@ -1087,7 +1087,7 @@ end)
 if AgentPhoneMediaProviderConfig.FiveManageApiKey() == "" then
     Bridge.Debug(
         "warn",
-        "[agent_phone] FiveManage media integration is disabled because Config.Media.FiveManage.ApiKey is empty in config/media.lua. Camera photo and video uploads, Voice Memo uploads, remote Gallery deletion, and FiveManage imports are unavailable. Add a FiveManage V3 token with Media access and restart agent_phone.",
+        "[agent_phone] L integration FiveManage est desactivee : Config.Media.FiveManage.ApiKey est vide dans config/media.lua. Les envois de photos et de videos, les memos vocaux, la suppression distante dans la Galerie et les imports FiveManage sont indisponibles. Ajoute un jeton FiveManage V3 avec l acces Media, puis redemarre agent_phone.",
         { always = true }
     )
 end

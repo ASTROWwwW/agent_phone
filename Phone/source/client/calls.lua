@@ -25,7 +25,7 @@ local function request_call_action(action, call)
         local call_error = result and result.error or "request_failed"
         Bridge.Debug(
             "error",
-            "[agent_phone] Call %s request failed: %s.",
+            "[agent_phone] La requete d appel %s a echoue : %s.",
             action,
             tostring(call_error)
         )
@@ -67,7 +67,7 @@ function AgentPhoneCalls.Dial(phone_number, company)
     })
     if not result or not result.success then
         local call_error = result and result.error or "request_failed"
-        Bridge.Debug("error", "[agent_phone] Call request failed: %s.", tostring(call_error))
+        Bridge.Debug("error", "[agent_phone] La requete d appel a echoue : %s.", tostring(call_error))
         return false, call_error
     end
 

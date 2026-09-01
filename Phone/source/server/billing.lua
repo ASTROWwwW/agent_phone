@@ -10,7 +10,7 @@ end
 local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a Billing UUID.")
+        error("[agent_phone] La base n a pas genere un UUID de facturation.")
     end
     return rows[1].id
 end
@@ -365,7 +365,7 @@ Bridge.Callbacks.Register("agent_phone:billing:pay", function(source, data)
             { query = "UPDATE `agent_phone_billing_invoices` SET `status` = 'open' WHERE `id` = ? AND `status` = 'processing'", params = { invoice_id } },
             { query = "UPDATE `agent_phone_billing_payments` SET `status` = 'failed', `error_code` = 'payment_failed' WHERE `id` = ?", params = { payment_id } },
         })
-        Bridge.Debug("error", "[agent_phone] Billing payment transaction failed for invoice %s; payer was refunded.", tostring(invoice_id))
+        Bridge.Debug("error", "[agent_phone] Le paiement de la facture %s a echoue ; le payeur a ete rembourse.", tostring(invoice_id))
         return { success = false, error = "payment_failed" }
     end
     TriggerClientEvent("agent_phone:banking:changed", source)

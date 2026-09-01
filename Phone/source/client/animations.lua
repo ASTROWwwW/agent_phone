@@ -221,7 +221,7 @@ local function play_animation(ped, dictionary, clip, looped, revision)
         if duration_seconds <= 0.0 then
             Bridge.Debug(
                 "error",
-                "[agent_phone] Animation '%s' was not found in dictionary '%s'.",
+                "[agent_phone] L animation '%s' est introuvable dans le dictionnaire '%s'.",
                 clip,
                 dictionary
             )

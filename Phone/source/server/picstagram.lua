@@ -15,7 +15,7 @@ refresh_runtime_configuration()
 if password_pepper == "" then
     Bridge.Debug(
         "warn",
-        "[agent_phone] Config.Server.PicstagramPasswordPepper is empty. Picstagram passwords still work, but their hashes lack the required server-side secret. Set a stable random value in config/config.lua before production; changing it later invalidates existing Picstagram passwords.",
+        "[agent_phone] Config.Server.PicstagramPasswordPepper est vide. Les mots de passe Picstagram fonctionnent toujours, mais leurs empreintes n ont pas le secret serveur requis. Definis une valeur aleatoire stable dans config/secrets.lua avant la production ; la changer ensuite invalide les mots de passe existants.",
         { always = true }
     )
 end
@@ -49,7 +49,7 @@ end
 local function new_id()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a Picstagram id.")
+        error("[agent_phone] La base n a pas genere un identifiant Picstagram.")
     end
     return rows[1].id
 end
@@ -358,7 +358,7 @@ Bridge.Callbacks.Register("agent_phone:picstagram:register", function(source, da
     end
     local entropy = Bridge.Database.Query("SELECT UUID() AS `id`, REPLACE(UUID(), '-', '') AS `salt`", {})[1]
     if not entropy or not valid_id(entropy.id) or type(entropy.salt) ~= "string" then
-        error("[agent_phone] Database did not generate Picstagram registration entropy.")
+        error("[agent_phone] La base n a pas genere l entropie d inscription Picstagram.")
     end
     if not Bridge.Database.Transaction({
         {

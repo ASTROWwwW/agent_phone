@@ -115,7 +115,7 @@ Bridge.Callbacks.Register("agent_phone:calendar:create", function(source, data)
     local ids = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     local id = ids[1] and ids[1].id
     if type(id) ~= "string" then
-        error("[agent_phone] Database did not generate a calendar event id.")
+        error("[agent_phone] La base n a pas genere un identifiant d evenement.")
     end
     Bridge.Database.Query([[
         INSERT INTO `agent_phone_calendar_events`

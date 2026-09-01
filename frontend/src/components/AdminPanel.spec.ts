@@ -385,7 +385,7 @@ describe('standalone admin panel contracts', () => {
       'function AgentPhoneConfigurator.Broadcast(target)',
     )
     expect(configuratorServer).toContain('AgentPhoneConfigurator.Broadcast(-1)')
-    expect(configuratorServer).toContain('through the internal runtime refresh')
+    expect(configuratorServer).toContain('par le rafraichissement interne')
     expect(configuratorClient).toContain(
       'Bridge.Callbacks.Trigger("agent_phone:configurator:runtime"',
     )

@@ -497,7 +497,7 @@ local function refresh_bundled_policies()
                 permissions = build_permission_set(manifest.permissions),
             })
             if not registered then
-                error(("[agent_phone] Could not register bundled custom app policy '%s': %s"):format(
+                error(("[agent_phone] Impossible d enregistrer la regle de l app fournie '%s' : %s"):format(
                     manifest.id,
                     register_error
                 ))

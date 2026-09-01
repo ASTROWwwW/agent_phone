@@ -88,7 +88,7 @@ function Bridge.Database.EnsureIndex(table_name, index_name, columns, options)
         {},
         ("adding index '%s'"):format(index_name)
     )
-    Bridge.Debug("info", "[agent_phone] Added database index '%s' to '%s'.", index_name, table_name)
+    Bridge.Debug("info", "[agent_phone] Index '%s' ajoute a la table '%s'.", index_name, table_name)
     return true
 end
 
@@ -133,7 +133,7 @@ function Bridge.Database.Migrate(migration_name, schema)
         local table_name = table_definition.name:lower()
         if not existing_tables[table_name] then
             query_or_error(build_create_query(table_definition), {}, ("creating table '%s'"):format(table_definition.name))
-            Bridge.Debug("info", "[agent_phone] Created database table '%s'.", table_definition.name)
+            Bridge.Debug("info", "[agent_phone] Table '%s' creee.", table_definition.name)
         else
             local columns = existing_columns[table_name] or {}
             for _, column in ipairs(table_definition.columns) do

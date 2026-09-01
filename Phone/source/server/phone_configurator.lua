@@ -17,8 +17,14 @@ local updated_at
 local updated_by_name
 local is_sequence
 
+-- Ces chemins viennent toujours du fichier. Bridge decrit l infrastructure,
+-- dont la langue : la laisser en base figeait l instantane pris a l installation
+-- et le telephone restait dans la langue de ce jour-la. Server porte les secrets
+-- serveur, qui n ont rien a faire en base.
 local FIXED_CONFIG_PATHS = {
+    Bridge = true,
     CommandPermissions = true,
+    Server = true,
     ["AdminPanel.AdminGroups"] = true,
     ["TestData.AdminGroups"] = true,
     ["FlipTok.AdminGroups"] = true,
@@ -29,12 +35,13 @@ if configurator_enabled then
     local border = "======================================================================"
     print(([[
 ^1%s^0
-^1          AGENT PHONE CONFIGURATION FILES ARE DISABLED              ^0
+^1       LES FICHIERS DE CONFIGURATION AGENT PHONE SONT IGNORES       ^0
 ^1%s^0
-^1 The Phone Configurator is ENABLED.^0
-^1 Runtime settings from config.lua and media.lua are DISABLED.^0
-^1 Configure all phone and media settings IN GAME through /phonepanel.^0
-^1 Only Config.PhoneConfigurator.Enabled and Config.CommandPermissions remain file-based.^0
+^1 Le configurateur du telephone est ACTIF.^0
+^1 Les reglages de config.lua et media.lua ne sont pas appliques.^0
+^1 Configure le telephone et les medias EN JEU avec /phonepanel.^0
+^1 Restent dans le fichier : PhoneConfigurator.Enabled, CommandPermissions,^0
+^1 Bridge (dont la langue) et Server (les secrets).^0
 ^1%s^0]]):format(border, border, border))
 end
 
@@ -1202,7 +1209,7 @@ local function migrate_blank_company_definitions()
         },
     }
     if not Bridge.Database.Transaction(statements) then
-        error("[agent_phone] Could not migrate blank Phone Configurator company definitions.")
+        error("[agent_phone] Impossible de migrer les entreprises vides du configurateur.")
     end
     if #migrated_companies == 0 then
         return
@@ -1266,7 +1273,7 @@ local function migrate_police_request_defaults()
         },
     }
     if not Bridge.Database.Transaction(statements) then
-        error("[agent_phone] Could not migrate Phone Configurator police request defaults.")
+        error("[agent_phone] Impossible de migrer les demandes police par defaut du configurateur.")
     end
     if not migrated then
         return
@@ -1327,7 +1334,7 @@ local function migrate_police_service_line_messaging()
         },
     }
     if not Bridge.Database.Transaction(statements) then
-        error("[agent_phone] Could not enable Phone Configurator police service-line messaging.")
+        error("[agent_phone] Impossible d activer les messages de la ligne police dans le configurateur.")
     end
     if not migrated then
         return
@@ -1465,7 +1472,7 @@ function AgentPhoneConfigurator.Save(expected_revision, changes, actor_identifie
     AgentPhoneConfigurator.Broadcast(-1)
     Bridge.Debug(
         "info",
-        "[agent_phone] Applied Phone Configurator revision %s through the internal runtime refresh.",
+        "[agent_phone] Revision %s du configurateur appliquee par le rafraichissement interne.",
         tostring(revision),
         { always = true }
     )

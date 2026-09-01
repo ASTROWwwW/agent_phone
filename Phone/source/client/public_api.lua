@@ -11,7 +11,7 @@ local required_services = {
 for index = 1, #required_services do
     local entry = required_services[index]
     if type(entry.service) ~= "table" then
-        error(("[agent_phone] Client public API initialized before %s."):format(entry.name))
+        error(("[agent_phone] L API publique client a demarre avant %s."):format(entry.name))
     end
 end
 
@@ -58,7 +58,7 @@ AddEventHandler("agent_phone:configurator:updated", refresh_configured_capabilit
 
 local custom_app_api = AgentPhoneApps.ClientPublicApi
 if type(custom_app_api) ~= "table" then
-    error("[agent_phone] Client public API initialized before the custom app API.")
+    error("[agent_phone] L API publique client a demarre avant l API des apps personnalisees.")
 end
 
 local camera_owner_resource

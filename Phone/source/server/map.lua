@@ -117,7 +117,7 @@ Bridge.Callbacks.Register("agent_phone:map:create-marker", function(source, data
     local ids = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     local id = ids[1] and ids[1].id
     if type(id) ~= "string" then
-        error("[agent_phone] Database did not generate a map marker id.")
+        error("[agent_phone] La base n a pas genere un identifiant de repere.")
     end
 
     Bridge.Database.Query([[

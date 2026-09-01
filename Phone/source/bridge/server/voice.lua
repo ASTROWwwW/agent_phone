@@ -194,7 +194,7 @@ function Bridge.Calls.SetSpeaker(player_source, enabled, provider)
     if not success then
         Bridge.Debug(
             "error",
-            "[agent_phone] %s could not update the phone speaker for source %s: %s",
+            "[agent_phone] %s n a pas pu changer le haut-parleur de la source %s : %s",
             selected == "yaca" and "Yaca" or "SaltyChat",
             tostring(player_source),
             tostring(error_message),

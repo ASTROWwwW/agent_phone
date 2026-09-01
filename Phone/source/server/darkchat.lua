@@ -55,7 +55,7 @@ end
 local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a DarkChat UUID.")
+        error("[agent_phone] La base n a pas genere un UUID DarkChat.")
     end
     return rows[1].id
 end
@@ -109,7 +109,7 @@ local function create_profile(account_id)
             return existing
         end
     end
-    error("[agent_phone] Could not generate a unique DarkChat profile after 10 attempts.")
+    error("[agent_phone] Impossible de generer un profil DarkChat unique apres 10 tentatives.")
 end
 
 local function require_profile(source)
@@ -186,7 +186,7 @@ local function message_payload(row, profile_id)
     local waveform = row.media_waveform and decode_array(row.media_waveform, "media_waveform") or nil
     local share_payload = row.message_type == "share" and json.decode(row.media_payload or "") or nil
     if row.message_type == "share" and type(share_payload) ~= "table" then
-        error(("[agent_phone] DarkChat message %s has an invalid share payload."):format(tostring(row.id)))
+        error(("[agent_phone] Le message DarkChat %s a un contenu de partage invalide."):format(tostring(row.id)))
     end
     return {
         id = row.id,

@@ -54,7 +54,7 @@ end
 local function new_id()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a marketplace id.")
+        error("[agent_phone] La base n a pas genere un identifiant d annonce.")
     end
     return rows[1].id
 end
@@ -103,7 +103,7 @@ local function profile_dto(account)
     ]], { account.id, account.id })
     local row = rows[1]
     if not row then
-        error(("[agent_phone] Could not load CityMarket profile account %s."):format(account.id))
+        error(("[agent_phone] Impossible de charger le compte du profil CityMarket %s."):format(account.id))
     end
     return {
         avatar_media_id = tonumber(row.avatar_media_id),

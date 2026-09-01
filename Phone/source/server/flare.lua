@@ -46,7 +46,7 @@ end
 local function uuid()
     local rows = Bridge.Database.Query("SELECT UUID() AS `id`", {})
     if not rows[1] or type(rows[1].id) ~= "string" then
-        error("[agent_phone] Database did not generate a Flare UUID.")
+        error("[agent_phone] La base n a pas genere un UUID Flare.")
     end
     return rows[1].id
 end
