@@ -52,11 +52,14 @@
 
   <g filter="url(#asDrop)">
     <g filter="url(#asRelief)">
-      <g fill="none" stroke="url(#asGlyph)" stroke-width="36" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M256 142 374 356"/>
-        <path d="M256 142 170 290"/>
-        <path d="M180 302h166"/>
-        <path d="M152 322 134 356"/>
+      <g fill="url(#asGlyph)">
+        <rect x="132" y="132" width="108" height="108" rx="30"/>
+        <rect x="272" y="132" width="108" height="108" rx="30"/>
+        <rect x="132" y="272" width="108" height="108" rx="30"/>
+      </g>
+      <g stroke="url(#asGlyph)" stroke-width="32" stroke-linecap="round">
+        <path d="M326 278v96"/>
+        <path d="M278 326h96"/>
       </g>
     </g>
   </g>
