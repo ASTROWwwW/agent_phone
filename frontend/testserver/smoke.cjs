@@ -163,7 +163,7 @@ function verifyBrowserTestData(dataByEndpoint) {
   expectItems(dataByEndpoint.get('map:markers'), 'map markers')
   expectItems(
     dataByEndpoint.get('marketplace:list').items,
-    'CityMarkt listings',
+    'CityMarket listings',
     4,
   )
   expectItems(

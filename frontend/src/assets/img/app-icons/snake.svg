@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Snake">
+  <defs>
+    <linearGradient id="snBg" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#3FE07A"/>
+      <stop offset="0.5" stop-color="#1FC85F"/>
+      <stop offset="1" stop-color="#0E9B45"/>
+    </linearGradient>
+    <radialGradient id="snBgLight" cx="0.32" cy="0.12" r="0.85">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.03"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="snBgFloor" x1="0" y1="0.55" x2="0" y2="1">
+      <stop offset="0" stop-color="#03411B" stop-opacity="0"/>
+      <stop offset="1" stop-color="#03411B" stop-opacity="0.16"/>
+    </linearGradient>
+
+    <linearGradient id="snGlyph" gradientUnits="userSpaceOnUse" x1="61" y1="0" x2="451" y2="512">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.42" stop-color="#F2FBF4"/>
+      <stop offset="1" stop-color="#CFEBD8"/>
+    </linearGradient>
+
+    <filter id="snDrop" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="3" dy="8" stdDeviation="9" flood-color="#04421C" flood-opacity="0.34"/>
+    </filter>
+
+    <filter id="snRelief" x="-30%" y="-30%" width="160%" height="160%">
+      <feOffset in="SourceAlpha" dx="-5" dy="-7" result="sOff"/>
+      <feGaussianBlur in="sOff" stdDeviation="7" result="sBlur"/>
+      <feComposite in="SourceAlpha" in2="sBlur" operator="out" result="sMask"/>
+      <feFlood flood-color="#79B58F" flood-opacity="0.42" result="sCol"/>
+      <feComposite in="sCol" in2="sMask" operator="in" result="innerShadow"/>
+
+      <feOffset in="SourceAlpha" dx="5" dy="7" result="lOff"/>
+      <feGaussianBlur in="lOff" stdDeviation="6" result="lBlur"/>
+      <feComposite in="SourceAlpha" in2="lBlur" operator="out" result="lMask"/>
+      <feFlood flood-color="#FFFDF6" flood-opacity="0.85" result="lCol"/>
+      <feComposite in="lCol" in2="lMask" operator="in" result="innerLight"/>
+
+      <feMerge>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="innerShadow"/>
+        <feMergeNode in="innerLight"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#snBg)"/>
+  <rect width="512" height="512" fill="url(#snBgFloor)"/>
+  <rect width="512" height="512" fill="url(#snBgLight)"/>
+
+  <g filter="url(#snDrop)">
+    <g filter="url(#snRelief)">
+      <path d="M140 340c56 0 56-88 112-88s56-88 112-88" fill="none" stroke="url(#snGlyph)" stroke-width="46" stroke-linecap="round"/>
+      <circle cx="364" cy="164" r="33" fill="url(#snGlyph)"/>
+      <circle cx="376" cy="152" r="10" fill="#0E9B45"/>
+      <circle cx="152" cy="176" r="24" fill="url(#snGlyph)"/>
+    </g>
+  </g>
+</svg>

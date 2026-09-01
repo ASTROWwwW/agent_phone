@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="CityMarket">
+  <defs>
+    <linearGradient id="cmBg" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#FFB84F"/>
+      <stop offset="0.5" stop-color="#FF9330"/>
+      <stop offset="1" stop-color="#EE6C17"/>
+    </linearGradient>
+    <radialGradient id="cmBgLight" cx="0.32" cy="0.12" r="0.85">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.03"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cmBgFloor" x1="0" y1="0.55" x2="0" y2="1">
+      <stop offset="0" stop-color="#6E2F03" stop-opacity="0"/>
+      <stop offset="1" stop-color="#6E2F03" stop-opacity="0.16"/>
+    </linearGradient>
+
+    <linearGradient id="cmGlyph" gradientUnits="userSpaceOnUse" x1="61" y1="0" x2="451" y2="512">
+      <stop offset="0" stop-color="#FFFDF7"/>
+      <stop offset="0.42" stop-color="#FBF1E0"/>
+      <stop offset="1" stop-color="#E6D2B2"/>
+    </linearGradient>
+
+    <filter id="cmDrop" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="3" dy="8" stdDeviation="9" flood-color="#7A3405" flood-opacity="0.34"/>
+    </filter>
+
+    <filter id="cmRelief" x="-30%" y="-30%" width="160%" height="160%">
+      <feOffset in="SourceAlpha" dx="-5" dy="-7" result="sOff"/>
+      <feGaussianBlur in="sOff" stdDeviation="7" result="sBlur"/>
+      <feComposite in="SourceAlpha" in2="sBlur" operator="out" result="sMask"/>
+      <feFlood flood-color="#B08E5E" flood-opacity="0.42" result="sCol"/>
+      <feComposite in="sCol" in2="sMask" operator="in" result="innerShadow"/>
+
+      <feOffset in="SourceAlpha" dx="5" dy="7" result="lOff"/>
+      <feGaussianBlur in="lOff" stdDeviation="6" result="lBlur"/>
+      <feComposite in="SourceAlpha" in2="lBlur" operator="out" result="lMask"/>
+      <feFlood flood-color="#FFFDF6" flood-opacity="0.85" result="lCol"/>
+      <feComposite in="lCol" in2="lMask" operator="in" result="innerLight"/>
+
+      <feMerge>
+        <feMergeNode in="SourceGraphic"/>
+        <feMergeNode in="innerShadow"/>
+        <feMergeNode in="innerLight"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#cmBg)"/>
+  <rect width="512" height="512" fill="url(#cmBgFloor)"/>
+  <rect width="512" height="512" fill="url(#cmBgLight)"/>
+
+  <g filter="url(#cmDrop)">
+    <g filter="url(#cmRelief)">
+      <g fill="none" stroke="url(#cmGlyph)" stroke-width="28" stroke-linecap="round">
+        <path d="M188 208v-24a68 68 0 0 1 136 0v24"/>
+      </g>
+      <path d="M152 196h208a28 28 0 0 1 27.9 24.6l19.8 160A32 32 0 0 1 376 417H136a32 32 0 0 1-31.7-36.4l19.8-160A28 28 0 0 1 152 196Z" fill="url(#cmGlyph)"/>
+    </g>
+  </g>
+</svg>

@@ -15,9 +15,9 @@ describe('phone locale fallback', () => {
     vi.unstubAllGlobals()
   })
 
-  it('keeps CityMarkt profile copy translated with a partial server locale', () => {
+  it('keeps CityMarket profile copy translated with a partial server locale', () => {
     const phone = usePhoneStore()
-    phone.open({ locales: { Apps: { citymarkt: { name: 'CityMarkt' } } } })
+    phone.open({ locales: { Apps: { citymarkt: { name: 'CityMarket' } } } })
 
     expect(phone.t('Apps.citymarkt.editProfile')).toBe('Edit profile')
     expect(phone.t('Apps.citymarkt.profileIntro')).toBe(
