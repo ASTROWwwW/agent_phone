@@ -973,9 +973,11 @@ onBeforeUnmount(() => {
   transform: scale(0.96);
 }
 
+/* Le croissant est un glyphe plein : a diametre egal il pese plus lourd que
+   les traits voisins, d'ou une taille nettement plus basse que les autres. */
 .control-center__focus-button svg {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   fill: currentcolor;
 }
 
