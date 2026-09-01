@@ -22,8 +22,12 @@ CreateThread(function()
     end
 
     if #missing > 0 then
-        print(("^1[agent_phone] Missing %s item(s): %s. Declare them in ox_inventory or players cannot use the phone.^0")
-            :format(Bridge.Inventory.GetResourceName(), table.concat(missing, ", ")))
+        Bridge.Debug(
+            "warn",
+            "[agent_phone] Objet(s) %s manquant(s) : %s.",
+            Bridge.Inventory.GetResourceName(),
+            table.concat(missing, ", ")
+        )
     end
 end)
 

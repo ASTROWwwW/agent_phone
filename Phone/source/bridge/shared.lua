@@ -63,10 +63,7 @@ function Bridge.Debug(level, message, ...)
     end
 
     local bridge_config = Config and Config.Bridge or nil
-    local important = level == "warn" or level == "error"
-    local notice = options and options.notice == true
-    local enabled = important or notice or bridge_config and bridge_config.Debug == true
-    if not enabled then
+    if not (bridge_config and bridge_config.Debug == true) then
         return
     end
 

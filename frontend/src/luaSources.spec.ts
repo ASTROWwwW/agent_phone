@@ -120,4 +120,28 @@ describe('Lua sources', () => {
     expect(output).toContain('toutes les resolutions sont correctes')
     expect(output).not.toContain('ECHEC')
   })
+  it('writes nothing to the console', () => {
+    try {
+      execFileSync('lua', ['-v'], { stdio: 'ignore' })
+    } catch {
+      expect(sources.length).toBeGreaterThan(0)
+      return
+    }
+
+    const harness = fileURLToPath(new URL('../testserver/consoleSilence.lua', import.meta.url))
+    const posixRoot = resourceRoot.split(String.fromCharCode(92)).join('/')
+    const output = execFileSync('lua', [harness, posixRoot], { encoding: 'utf8' })
+
+    expect(output).toContain('silence complet')
+    expect(output).not.toContain('ECHEC')
+  })
+
+  it('routes every console write through the single channel', () => {
+    const offenders = sources
+      .filter((file) => !file.endsWith('shared.lua'))
+      .filter((file) => new RegExp('(?<![\\w.])print\\(').test(readFileSync(file, 'utf8')))
+      .map((file) => file.slice(resourceRoot.length))
+
+    expect(offenders).toEqual([])
+  })
 })

@@ -107,7 +107,7 @@ describe('Agent is the only supported base', () => {
     expect(oxInventory).toContain('function Bridge.Inventory.ItemExists(item_name)')
     expect(sim).toContain('Config.Sim.RegisteredItem')
     expect(sim).toContain('Config.Sim.AnonymousItem')
-    expect(sim).toContain(String.fromCharCode(77) + 'issing %s item')
+    expect(sim).toContain('Bridge.Debug(')
   })
 
   it('exposes the second job the base carries', () => {

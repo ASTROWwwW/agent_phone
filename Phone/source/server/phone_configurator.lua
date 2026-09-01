@@ -32,17 +32,10 @@ local FIXED_CONFIG_PATHS = {
 }
 
 if configurator_enabled then
-    local border = "======================================================================"
-    print(([[
-^1%s^0
-^1       LES FICHIERS DE CONFIGURATION AGENT PHONE SONT IGNORES       ^0
-^1%s^0
-^1 Le configurateur du telephone est ACTIF.^0
-^1 Les reglages de config.lua et media.lua ne sont pas appliques.^0
-^1 Configure le telephone et les medias EN JEU avec /phonepanel.^0
-^1 Restent dans le fichier : PhoneConfigurator.Enabled, CommandPermissions,^0
-^1 Bridge (dont la langue) et Server (les secrets).^0
-^1%s^0]]):format(border, border, border))
+    Bridge.Debug(
+        "warn",
+        "[agent_phone] Configurateur actif : config.lua et media.lua ne sont pas appliques, sauf PhoneConfigurator.Enabled, CommandPermissions, Bridge et Server."
+    )
 end
 
 local CLIENT_CONFIG_KEYS = {

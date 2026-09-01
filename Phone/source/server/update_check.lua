@@ -1,3 +1,6 @@
+local function notify(message)
+    Bridge.Debug("warn", "%s", tostring(message))
+end
 local RELEASE_API_URL = "https://api.github.com/repos/ASTROWwwW/agent_phone/releases/latest"
 local RELEASE_PAGE_URL = "https://github.com/ASTROWwwW/agent_phone/releases/latest"
 
@@ -38,7 +41,7 @@ end
 
 local function print_update_notice(installed_version, release_version)
     local border = "======================================================================"
-    print(([[
+    notify(([[
 ^1%s^0
 ^1                 AGENT PHONE UPDATE AVAILABLE                         ^0
 ^1%s^0
@@ -53,14 +56,14 @@ local function check_for_update()
     local resource_name = GetCurrentResourceName()
     local installed_version = GetResourceMetadata(resource_name, "version", 0)
     if not parse_version(installed_version) then
-        print(("^3[agent_phone] Update check skipped because fxmanifest.lua has an invalid version: %s.^0")
+        notify(("^3[agent_phone] Update check skipped because fxmanifest.lua has an invalid version: %s.^0")
             :format(tostring(installed_version)))
         return
     end
 
     PerformHttpRequest(RELEASE_API_URL, function(status_code, response_body)
         if status_code ~= 200 then
-            print(("^3[agent_phone] GitHub update check failed with HTTP %s.^0"):format(tostring(status_code)))
+            notify(("^3[agent_phone] GitHub update check failed with HTTP %s.^0"):format(tostring(status_code)))
             return
         end
 
@@ -68,7 +71,7 @@ local function check_for_update()
         local release_version = decoded and type(release) == "table" and release.tag_name or nil
         local comparison = compare_versions(installed_version, release_version)
         if not comparison then
-            print(("^3[agent_phone] GitHub update check returned an invalid release tag: %s.^0")
+            notify(("^3[agent_phone] GitHub update check returned an invalid release tag: %s.^0")
                 :format(tostring(release_version)))
             return
         end
@@ -76,10 +79,10 @@ local function check_for_update()
         if comparison < 0 then
             print_update_notice(installed_version, release_version)
         elseif comparison > 0 then
-            print(("^3[agent_phone] Installed version %s is newer than the latest GitHub release %s.^0")
+            notify(("^3[agent_phone] Installed version %s is newer than the latest GitHub release %s.^0")
                 :format(installed_version, release_version))
         else
-            print(("^2[agent_phone] Version %s is up to date.^0"):format(installed_version))
+            notify(("^2[agent_phone] Version %s is up to date.^0"):format(installed_version))
         end
     end, "GET", "", {
         ["Accept"] = "application/vnd.github+json",

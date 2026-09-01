@@ -1,3 +1,6 @@
+local function notify(message)
+    Bridge.Debug("warn", "%s", tostring(message))
+end
 local resource_name = GetCurrentResourceName()
 local index_path = "source/html/index.html"
 local required_static_files = {
@@ -119,7 +122,7 @@ local function print_missing_nui_notice(missing_paths)
     lines[#lines + 1] = "^5 Build guide: https://github.com/ASTROWwwW/agent_phone#frontend-development^0"
     lines[#lines + 1] = ("^1%s^0"):format(border)
 
-    print(table.concat(lines, "\n"))
+    notify(table.concat(lines, "\n"))
 end
 
 local missing_paths = find_missing_nui_files()
