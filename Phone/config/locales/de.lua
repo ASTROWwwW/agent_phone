@@ -1385,6 +1385,8 @@ Locales["de"] = {
                 emptyBody = "Erstelle eine Notiz, um wichtige Details nahe bei der Hand zu halten.", noResults = "Keine Ergebnisse",
                 noResultsBody = "Versuch nach einem anderen Wort oder Satz zu suchen.", pin = "Hinweis zum Stift", unpin = "Anmerkung zum Öffnen",
                 deleteNote = "Anmerkung löschen", deleteTitle = "Notiz löschen?",
+                groups = { pinned = "Angeheftet", today = "Heute", yesterday = "Gestern", previous7Days = "Letzte 7 Tage", previous30Days = "Letzte 30 Tage", earlier = "Früher" },
+                noteCount = "{count} Notizen", oneNote = "1 Notiz",
                 deleteBody = "Diese Notiz wird dauerhaft gelöscht.",
                 tools = {
                     bold = "Fett", bulletList = "Aufzählung", decreaseText = "Kleinerer Text", increaseText = "Größerer Text",

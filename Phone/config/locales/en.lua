@@ -1385,6 +1385,8 @@ Locales["en"] = {
                 emptyBody = "Create a note to keep important details close at hand.", noResults = "No Results",
                 noResultsBody = "Try searching for a different word or phrase.", pin = "Pin note", unpin = "Unpin note",
                 deleteNote = "Delete note", deleteTitle = "Delete Note?",
+                groups = { pinned = "Pinned", today = "Today", yesterday = "Yesterday", previous7Days = "Previous 7 Days", previous30Days = "Previous 30 Days", earlier = "Earlier" },
+                noteCount = "{count} notes", oneNote = "1 note",
                 deleteBody = "This note will be permanently deleted.",
                 tools = {
                     bold = "Bold", bulletList = "Bullet list", decreaseText = "Smaller text", increaseText = "Larger text",
