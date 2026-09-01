@@ -1,7 +1,16 @@
 
 
 <script setup lang="ts">
-import { ChevronLeft, Pause, Play, RotateCcw, Volume2, VolumeX, Wind } from 'lucide-vue-next'
+import {
+  ChevronLeft,
+  Pause,
+  Play,
+  RotateCcw,
+  Trophy,
+  Volume2,
+  VolumeX,
+  Wind,
+} from 'lucide-vue-next'
 import { computed, onBeforeUnmount, ref, watch, type CSSProperties } from 'vue'
 
 import { playSkyFlappySound } from '@/features/games/agent-flappy/audio'
@@ -116,9 +125,23 @@ onBeforeUnmount(() => {
     :aria-label="phone.t('Apps.agentFlappy.name')"
   >
     <header v-if="flappy.menuOpen" class="flappy-header">
-      <div><span>{{ phone.t('Apps.agentFlappy.eyebrow') }}</span><h1>{{ phone.t('Apps.agentFlappy.name') }}</h1></div>
-      <SkyButton glass icon-only rounded type="button" :aria-label="phone.t(flappy.soundEnabled ? 'Apps.agentFlappy.mute' : 'Apps.agentFlappy.unmute')" @click="toggleSound">
-        <Volume2 v-if="flappy.soundEnabled" :size="18" /><VolumeX v-else :size="18" />
+      <h1 class="sky-type-display">{{ phone.t('Apps.agentFlappy.name') }}</h1>
+      <SkyButton
+        glass
+        icon-only
+        rounded
+        type="button"
+        :aria-label="
+          phone.t(
+            flappy.soundEnabled
+              ? 'Apps.agentFlappy.mute'
+              : 'Apps.agentFlappy.unmute',
+          )
+        "
+        @click="toggleSound"
+      >
+        <Volume2 v-if="flappy.soundEnabled" :size="18" />
+        <VolumeX v-else :size="18" />
       </SkyButton>
     </header>
 
@@ -129,15 +152,56 @@ onBeforeUnmount(() => {
         <div class="flappy-menu__tower flappy-menu__tower--top"></div>
         <div class="flappy-menu__tower flappy-menu__tower--bottom"></div>
       </div>
-      <div class="flappy-menu__copy"><span>{{ phone.t('Apps.agentFlappy.ready') }}</span><h2>{{ phone.t('Apps.agentFlappy.menuTitle') }}</h2><p>{{ phone.t('Apps.agentFlappy.menuBody') }}</p></div>
-      <div class="flappy-record"><span>{{ phone.t('Apps.agentFlappy.highScore') }}</span><strong>{{ flappy.highScore }}</strong></div>
-      <div class="flappy-designs" :aria-label="phone.t('Apps.agentFlappy.design')">
-        <button v-for="design in designs" :key="design" type="button" :class="{ active: flappy.design === design }" @click="flappy.setDesign(design)">
-          <i :class="`flappy-designs__${design}`"></i>{{ phone.t(`Apps.agentFlappy.designs.${design}`) }}
-        </button>
+      <div class="flappy-menu__copy">
+        <span class="sky-type-eyebrow">{{
+          phone.t('Apps.agentFlappy.eyebrow')
+        }}</span>
+        <h2 class="sky-type-display">
+          {{ phone.t('Apps.agentFlappy.menuTitle') }}
+        </h2>
+        <p>{{ phone.t('Apps.agentFlappy.menuBody') }}</p>
       </div>
-      <button type="button" class="flappy-primary" @click="startGame">{{ phone.t('Apps.agentFlappy.start') }}</button>
-      <p>{{ phone.t('Apps.agentFlappy.tapHint') }}</p>
+
+      <div class="flappy-menu__panel">
+        <div class="flappy-record">
+          <Trophy :size="15" :stroke-width="2.2" aria-hidden="true" />
+          <span>{{ phone.t('Apps.agentFlappy.highScore') }}</span>
+          <strong>{{ flappy.highScore }}</strong>
+        </div>
+
+        <div
+          class="flappy-designs"
+          role="tablist"
+          :aria-label="phone.t('Apps.agentFlappy.design')"
+        >
+          <span
+            class="flappy-designs__thumb"
+            :style="{
+              transform: `translate3d(${designs.indexOf(flappy.design) * 100}%, 0, 0)`,
+            }"
+            aria-hidden="true"
+          ></span>
+          <button
+            v-for="design in designs"
+            :key="design"
+            type="button"
+            role="tab"
+            :aria-selected="flappy.design === design"
+            :class="{ active: flappy.design === design }"
+            @click="flappy.setDesign(design)"
+          >
+            <i :class="`flappy-designs__${design}`" aria-hidden="true"></i>
+            {{ phone.t(`Apps.agentFlappy.designs.${design}`) }}
+          </button>
+        </div>
+
+        <button type="button" class="flappy-primary" @click="startGame">
+          {{ phone.t('Apps.agentFlappy.start') }}
+        </button>
+        <p class="flappy-menu__hint">
+          {{ phone.t('Apps.agentFlappy.tapHint') }}
+        </p>
+      </div>
     </section>
 
     <section v-else-if="game" class="flappy-game">
@@ -175,18 +239,179 @@ onBeforeUnmount(() => {
 .flappy-game{position:absolute;inset:0}.flappy-toolbar{position:absolute;z-index:10;top:48px;right:14px;left:14px;height:42px;display:grid;grid-template-columns:36px 1fr 1fr 36px;align-items:center;gap:7px;padding:4px 6px;border:1px solid #ffffff2b;border-radius:22px;background:#263c6da8;box-shadow:0 8px 24px #10193455;backdrop-filter:blur(14px)}.flappy-toolbar div{display:grid;justify-items:center}.flappy-toolbar span{color:#bac9df;font-size:8px;font-weight:850;text-transform:uppercase}.flappy-toolbar strong{font-size:16px}.flappy-toolbar button{width:34px;height:34px;border:0;border-radius:50%;box-shadow:none}.flappy-stage{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden;padding:0;border:0;border-radius:0;background:linear-gradient(var(--sky-a),var(--sky-b));box-shadow:inset 0 0 35px #15244c55;touch-action:manipulation}.flappy-clouds{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none}.flappy-clouds i{--cloud-scale:1;--cloud-opacity:.34;--cloud-duration:18s;--cloud-delay:0s;position:absolute;left:100%;width:70px;height:18px;border-radius:999px;background:linear-gradient(180deg,#ffffffd9,#eaf7ff9c);box-shadow:0 8px 16px #24376518;opacity:var(--cloud-opacity);animation:cloud-drift var(--cloud-duration) linear var(--cloud-delay) infinite;will-change:transform}.flappy-clouds i::before{position:absolute;bottom:4px;left:12px;width:29px;height:29px;border-radius:50%;background:#f8fcffe6;box-shadow:22px -8px 0 4px #f7fcff,40px 1px 0 -2px #eef9ff;content:""}.flappy-clouds i::after{position:absolute;right:8px;bottom:-3px;left:8px;height:8px;border-radius:50%;background:#bcdff477;filter:blur(4px);content:""}.flappy-clouds i:nth-child(1){--cloud-scale:.7;--cloud-opacity:.3;--cloud-duration:20s;--cloud-delay:-4s;top:9%}.flappy-clouds i:nth-child(2){--cloud-scale:1.05;--cloud-opacity:.4;--cloud-duration:15s;--cloud-delay:-11s;top:22%}.flappy-clouds i:nth-child(3){--cloud-scale:.52;--cloud-opacity:.25;--cloud-duration:23s;--cloud-delay:-17s;top:38%}.flappy-clouds i:nth-child(4){--cloud-scale:.88;--cloud-opacity:.36;--cloud-duration:17s;--cloud-delay:-7s;top:53%}.flappy-clouds i:nth-child(5){--cloud-scale:1.18;--cloud-opacity:.42;--cloud-duration:14s;--cloud-delay:-2s;top:68%}.flappy-clouds i:nth-child(6){--cloud-scale:.62;--cloud-opacity:.27;--cloud-duration:21s;--cloud-delay:-14s;top:78%}.flappy-clouds i:nth-child(7){--cloud-scale:.96;--cloud-opacity:.34;--cloud-duration:16s;--cloud-delay:-9s;top:86%}.flappy-obstacle{position:absolute;z-index:2;top:0;bottom:0}.flappy-obstacle span{position:absolute;right:0;left:0;background:linear-gradient(90deg,color-mix(in srgb,var(--tower),white 20%),var(--tower));box-shadow:inset -6px 0 8px #0003,0 0 13px #17204e55}.flappy-obstacle span::after{position:absolute;right:-4px;left:-4px;height:14px;border-radius:6px;background:color-mix(in srgb,var(--tower),white 10%);box-shadow:inset 0 3px 0 #ffffff25;content:""}.flappy-obstacle__top{top:0;border-radius:0 0 7px 7px}.flappy-obstacle__top::after{bottom:0}.flappy-obstacle__bottom{bottom:0;border-radius:7px 7px 0 0}.flappy-obstacle__bottom::after{top:0}.sky-bird--player{left:23%;animation:flappy-wing .24s ease-out}.sky-bird--player :deep(.agent-flappy-bird__wing){animation:flappy-bird-flap .24s cubic-bezier(.2,.75,.35,1)}.sky-bird--player :deep(.agent-flappy-bird__far-wing){transform-box:view-box;transform-origin:50px 38px;animation:flappy-bird-far-flap .24s cubic-bezier(.2,.75,.35,1)}.flappy-ready{position:absolute;z-index:6;top:36%;left:50%;padding:9px 15px;border-radius:17px;background:#15284fbb;font-size:11px;transform:translateX(-50%)}.flappy-horizon{position:absolute;z-index:3;right:0;bottom:0;left:0;height:12px;background:#263a62;box-shadow:0 -5px 14px #ffffff26}.flappy-stage--crashed{animation:flappy-crash .55s ease-out}.flappy-game__hint{position:absolute;z-index:6;right:45px;bottom:27px;left:45px;margin:0;padding:7px 10px;border-radius:999px;background:#263c6d91;backdrop-filter:blur(10px);text-align:center;pointer-events:none}.flappy-overlay{position:absolute;z-index:12;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:28px;background:#101a38dc;backdrop-filter:blur(7px);text-align:center}.flappy-overlay>svg{color:#ffdc71}.flappy-overlay>span{color:#ffad78;font-size:9px;font-weight:900;letter-spacing:1px;text-transform:uppercase}.flappy-overlay h2{margin:0 0 5px;font-size:26px}
 .flappy-menu__tower{border:2px solid var(--tower-dark);background:linear-gradient(90deg,var(--tower-light),var(--tower),var(--tower-dark));box-shadow:inset 7px 0 0 #ffffff38,inset -6px 0 9px #0004,0 0 18px var(--tower-glow)}
 .flappy-menu__tower::after{border-color:var(--tower-dark);background:linear-gradient(90deg,var(--tower-light),var(--tower));box-shadow:inset 0 4px 0 #ffffff45,0 0 14px var(--tower-glow)}
-.flappy-menu__copy>span{color:#ffdf7d;font-size:14px}
-.flappy-menu__copy h2{margin:4px 0 7px;font-size:30px}
-.flappy-menu__copy p{max-width:295px;color:#e4ebf7;font-size:18px;font-weight:550;line-height:1.4}
-.flappy-record{padding:12px 14px;border-color:#ffffff2b;background:#ffffff12}
-.flappy-record span{color:#d9e4f3;font-size:15px;font-weight:850}
-.flappy-record strong{font-size:26px}
-.flappy-designs button{gap:5px;padding:9px 3px;border-color:#ffffff25;color:#edf3ff;background:#ffffff0e;font-size:14px;font-weight:750}
-.flappy-designs button.active{background:#ffffff24}
-.flappy-designs i{width:32px;height:15px}
-.flappy-primary,.flappy-secondary{min-height:50px;gap:8px;font-size:18px}
-.flappy-secondary{border-color:#ffffff2c;background:#ffffff12}
-.flappy-menu>p,.flappy-game__hint{color:#e1e9f6;font-size:16px;font-weight:700;line-height:1.35}
+/* Accueil : hierarchie typographique calme, panneau unique pour le score, le
+   choix de decor et le lancement, plutot que quatre blocs empiles bord a bord. */
+.flappy-header {
+  height: 46px;
+  align-items: flex-start;
+}
+
+.flappy-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.flappy-menu {
+  height: calc(100% - 46px);
+  gap: 18px;
+  padding-bottom: 4px;
+}
+
+.flappy-menu__hero {
+  width: 194px;
+  height: 186px;
+  border-radius: 30px;
+}
+
+.sky-bird--hero {
+  top: 62px;
+  left: 34px;
+  width: 92px;
+  height: 63px;
+}
+
+.flappy-menu__copy > span {
+  color: #ffd47a;
+}
+
+.flappy-menu__copy h2 {
+  margin: 6px 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.flappy-menu__copy p {
+  max-width: 258px;
+  margin: 0 auto;
+  color: #c3cee6;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.flappy-menu__panel {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+}
+
+.flappy-record {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 15px;
+  border: 1px solid rgb(255 255 255 / 13%);
+  border-radius: 14px;
+  color: #dbe5f6;
+  background: rgb(255 255 255 / 8%);
+}
+
+.flappy-record span {
+  flex: 1;
+  color: #c3cee6;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+}
+
+.flappy-record strong {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Segment a curseur glissant : le decor selectionne n'est plus signale par une
+   bordure doree sur une carte, mais par la position d'un seul fond. */
+.flappy-designs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 3px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 8%);
+}
+
+.flappy-designs__thumb {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / 3);
+  height: calc(100% - 6px);
+  border-radius: 11px;
+  background: rgb(255 255 255 / 16%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 22%);
+  transition: transform 280ms var(--sky-ease-out);
+}
+
+.flappy-designs button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 5px;
+  padding: 9px 3px;
+  border: 0;
+  border-radius: 11px;
+  color: #b9c6e0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  place-items: center;
+  transition: color 200ms ease;
+}
+
+.flappy-designs button.active {
+  color: #fff;
+  background: transparent;
+}
+
+.flappy-designs i {
+  width: 30px;
+  height: 12px;
+  border-radius: 7px;
+}
+
+.flappy-primary,
+.flappy-secondary {
+  min-height: 48px;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.flappy-primary {
+  box-shadow: 0 10px 24px rgb(255 170 92 / 26%);
+}
+
+.flappy-secondary {
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(255 255 255 / 8%);
+}
+
+.flappy-menu__hint {
+  margin: 0;
+  color: #a9b6d2;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.flappy-game__hint {
+  color: #e1e9f6;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
 .flappy-toolbar span{color:#e0eafa;font-size:11px;line-height:10px;letter-spacing:.35px}
 .flappy-toolbar strong{display:block;font-size:19px;line-height:20px}
 .flappy-toolbar{top:66px;right:18px;left:18px;height:42px;grid-template-columns:32px 1fr 1fr 32px;gap:4px;padding:4px;border-radius:21px;box-sizing:border-box}
